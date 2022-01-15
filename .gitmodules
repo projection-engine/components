@@ -1,0 +1,9 @@
+[submodule "scene"]
+	path = scene
+	url = git@github.com:projection-engine/scene.git
+[submodule "files"]
+	path = files
+	url = git@github.com:projection-engine/file-system.git
+[submodule "scripting"]
+	path = scripting
+	url = git@github.com:projection-engine/visual-scripting.git
