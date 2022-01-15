@@ -1,0 +1,95 @@
+.wrapper {
+    display: grid;
+    align-items: flex-start;
+
+    width: 100%;
+    transition: 150ms linear;
+    overflow-x: hidden;
+    overflow-y: visible;
+    height: fit-content;
+
+}
+
+.row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 30px !important;
+    color: var(--fabric-color-tertiary);
+    border-left: transparent 2px solid;
+    overflow: hidden;
+}
+.row[data-selected = 'true']{
+    border-left-color: #0095ff;
+}
+.row:active {
+    border-left-color: #0095ff;
+}
+
+.row[data-highlight='true'] {
+    background-color: rgba(0, 149, 255, .5);
+}
+
+.hideButton {
+    width: 24px !important;
+    padding: 0 !important;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.rowContentWrapper {
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    align-content: center;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.rowContent {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    align-content: center;
+    font-size: .75rem;
+    overflow: hidden;
+}
+
+.input {
+    padding: 4px;
+    border: var(--fabric-border-primary) 1px solid;
+    outline: none;
+    border-radius: 5px;
+    background-color: var(--background-3);
+    color: var(--fabric-color-tertiary);
+
+}
+
+.rowType{
+    display: block;
+    text-align: right;
+    padding-right: 8px;
+    color: var(--fabric-color-quaternary);
+
+}
+.overflow{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+.indicator{
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background-color: #0095ff;
+    position: absolute;
+    left: 4px;
+
+}
