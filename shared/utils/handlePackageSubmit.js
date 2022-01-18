@@ -4,7 +4,7 @@ export default function handlePackageSubmit(pack, hook, file, setAlert) {
             type: 'success',
             message: 'Saved'
         })
-    }).catch(error => {
+    }).catch(() => {
         setAlert({
             type: 'error',
             message: 'Error during saving process'

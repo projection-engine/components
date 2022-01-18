@@ -79,14 +79,25 @@
 .option {
     display: flex;
     gap: 4px;
-    width: clamp(200px, 15vw, 250px);
-    padding: 4px 4px 0;
+    width: fit-content;
+    align-items: center;
+    padding: 8px !important;
+
 }
 
 .options {
+    /*background-color: red;*/
+    height: 35px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
     background-color: var(--background-2);
 }
-
+.divider{
+    height: 75%;
+    width: 1px;
+    background-color: var(--background-3);
+}
 .label {
     height: 100%;
     max-width: 100%;

@@ -23,13 +23,14 @@ export default function ContextMenu(props) {
                 return t
         })
         event.preventDefault()
-        console.log(targets)
+
         if (targets.length > 0) {
 
             const currentTarget = targets[0]
 
             setSelected(currentTarget)
-            currentTarget.style.outline = '#0095ff 2px solid'
+            if(props.onContext !== undefined)
+                props.onContext(currentTarget)
         } else
             setSelected(undefined)
 
@@ -40,9 +41,8 @@ export default function ContextMenu(props) {
     }
     const handleMouseDown = (event) => {
         if (!document.elementsFromPoint(event.clientX, event.clientY).includes(contextRef.current)) {
-
-
-            selected?.style.outline = 'transparent 2px solid'
+            if(props.onContextOut !== undefined)
+                props.onContextOut(selected)
             setSelected(undefined)
             contextRef.current.style.zIndex = '-1'
         }
@@ -56,6 +56,8 @@ export default function ContextMenu(props) {
             ref.current?.parentNode.removeEventListener('contextmenu', handleContext)
         }
     }, [selected])
+
+
     const options = useMemo(() => {
         return props.options.filter(o => Array.from(selected ? selected.attributes : []).find(attr => attr.nodeName === o.requiredTrigger))
     }, [selected])
@@ -89,6 +91,9 @@ export default function ContextMenu(props) {
 }
 
 ContextMenu.propTypes = {
+    onContext: PropTypes.func,
+    onContextOut: PropTypes.func,
+
     triggers: PropTypes.arrayOf(PropTypes.string),
     options: PropTypes.arrayOf(PropTypes.shape({
         onClick: PropTypes.func,

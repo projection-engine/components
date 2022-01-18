@@ -1,0 +1,17 @@
+.wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    gap: 4px;
+    padding: 4px;
+
+
+}
+.controlsWrapper{
+    width: 35%;
+    background-color: var(--background-1);
+    height: 100%;
+
+    border-radius: 5px;
+
+}

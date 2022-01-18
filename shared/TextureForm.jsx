@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from "react";
 import styles from "./Form.module.css";
 import {Button, Modal} from "@f-ui/core";
-import ImageVisualizer from "../visualizer/ImageVisualizer";
+import ImageVisualizer from "../image_preview/ImageVisualizer";
 import PropTypes from "prop-types";
 
 export default function TextureForm(props) {

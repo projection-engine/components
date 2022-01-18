@@ -1,11 +1,11 @@
-import {colorToImage} from "../../../../core/utils/imageManipulation";
-import PBR from "../../../../core/renderer/material/PBR";
+import {colorToImage} from "../../../core/utils/imageManipulation";
+import PBR from "../../../core/renderer/mesh/components/PBR";
 
 export function getFetchPromise(obj, database, allData=false) {
     return new Promise((resolve) => {
 
         if (obj.type === 'object')
-            database.table(`file`).get(obj.ref).then(res => resolve(allData ? res : res.blob)).catch(e => {
+            database.table(`file`).get(obj.ref).then(res => resolve(allData ? res : res.blob)).catch(() => {
                 resolve()
             })
         else if (obj.type === 'string')

@@ -44,5 +44,5 @@ Viewport.propTypes = {
     allowDrop: PropTypes.bool.isRequired,
     handleDrop: PropTypes.func,
     engine: PropTypes.object,
-    id: PropTypes.string.isRequired
+    id: PropTypes.string
 }

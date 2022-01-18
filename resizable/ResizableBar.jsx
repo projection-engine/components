@@ -15,7 +15,7 @@ export default function ResizableBar(props) {
     const handleMouseUp = () => {
         document.removeEventListener('mousemove', handleMouseMove)
     }
-    const handleMouseDown = (event) => {
+    const handleMouseDown = () => {
         document.addEventListener('mousemove', handleMouseMove)
         document.addEventListener('mouseup', handleMouseUp, {once: true})
     }

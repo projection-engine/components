@@ -1,12 +1,14 @@
 import PropTypes from "prop-types";
-import {useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import styles from './styles/Tabs.module.css'
 import {Button} from "@f-ui/core";
 import ControlProvider from "./components/ControlProvider";
 
 export default function Tabs(props) {
     const [options, setOptions] = useState([])
+    const [updated, setUpdated] = useState(false)
     const tabs = useMemo(() => {
+        setUpdated(false)
         setOptions([])
         return props.tabs.filter(t => t.open)
     }, [props.tabs])
@@ -20,7 +22,11 @@ export default function Tabs(props) {
     }
     return (
         <ControlProvider.Provider value={{
-            setOptions: setOptions
+            setOptions: (e) => {
+                setOptions(e)
+                setUpdated(true)
+            },
+            updated
         }}>
             <div className={styles.wrapper}>
                 <div className={styles.contentWrapper}>
@@ -64,7 +70,13 @@ export default function Tabs(props) {
                         ))}
                     </div>
                     <div className={styles.options}>
-                        {options.length > 0 ? options.map(option => getButton(option)) : props.fallbackOptions.map(option => getButton(option))}
+                        {
+                            (options.length > 0 ? options : props.fallbackOptions).map((option, i) => (
+                                <React.Fragment key={i + '-option'}>
+                                    <div className={styles.divider}/>
+                                    {getButton(option)}
+                                </React.Fragment>
+                            ))}
                     </div>
                 </div>
                 {tabs.map((tab, i) => (
