@@ -106,7 +106,9 @@ export default function TreeNode(props) {
 }
 
 TreeNode.propTypes = {
-    selected: PropTypes.object,
+    selected: PropTypes.shape({
+        id: PropTypes.string
+    }),
     handleRename: PropTypes.func.isRequired,
     node: PropTypes.shape({
         id: PropTypes.string.isRequired,
