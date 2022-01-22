@@ -4,7 +4,10 @@ import styles from './styles/Image.module.css'
 export default function ImageVisualizer(props) {
     return (
         <div className={styles.wrapper}>
-            <img src={props.data.blob} alt={props.data.name} className={styles.image}/>
+            {props.data.blob ? <img src={props.data.blob} alt={props.data.name} className={styles.image}/>
+            :
+                <div className={styles.image} style={{backgroundColor: '#e0e0e0'}}/>
+            }
             <label className={styles.label} title={props.data.name}>
                 {props.data.name}
             </label>

@@ -1,5 +1,4 @@
-import {useEffect, useState} from "react";
-import PostProcessing from "../../../core/renderer/postprocessing/entities/PostProcessing";
+import {useEffect} from "react";
 
 export default function useDimensions(id, engine) {
     let resizeObs

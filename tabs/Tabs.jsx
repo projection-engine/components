@@ -3,30 +3,23 @@ import React, {useMemo, useState} from "react";
 import styles from './styles/Tabs.module.css'
 import {Button} from "@f-ui/core";
 import ControlProvider from "./components/ControlProvider";
+import Options from "./components/Options";
 
 export default function Tabs(props) {
     const [options, setOptions] = useState([])
-    const [updated, setUpdated] = useState(false)
+
     const tabs = useMemo(() => {
-        setUpdated(false)
-        setOptions([])
+        if(props.tab === 0)
+            setOptions([])
         return props.tabs.filter(t => t.open)
     }, [props.tabs])
-    const getButton = (option) => {
-        return (
-            <Button onClick={option.onClick} className={styles.option}>
-                {option.icon}
-                {option.label}
-            </Button>
-        )
-    }
+
+
     return (
         <ControlProvider.Provider value={{
             setOptions: (e) => {
                 setOptions(e)
-                setUpdated(true)
-            },
-            updated
+            }
         }}>
             <div className={styles.wrapper}>
                 <div className={styles.contentWrapper}>
@@ -69,15 +62,7 @@ export default function Tabs(props) {
                             </div>
                         ))}
                     </div>
-                    <div className={styles.options}>
-                        {
-                            (options.length > 0 ? options : props.fallbackOptions).map((option, i) => (
-                                <React.Fragment key={i + '-option'}>
-                                    <div className={styles.divider}/>
-                                    {getButton(option)}
-                                </React.Fragment>
-                            ))}
-                    </div>
+                    <Options fallbackOptions={props.fallbackOptions} options={options}/>
                 </div>
                 {tabs.map((tab, i) => (
                     <div key={'tab-child-' + i} className={styles.content}
@@ -93,7 +78,10 @@ Tabs.propTypes = {
     fallbackOptions: PropTypes.arrayOf(PropTypes.shape({
         onClick: PropTypes.func,
         icon: PropTypes.node,
-        label: PropTypes.string
+        label: PropTypes.string,
+        group: PropTypes.string,
+        type: PropTypes.oneOf(['dropdown', 'default']),
+        options: PropTypes.arrayOf(PropTypes.object)
     })),
     onBeforeTabSwitch: PropTypes.func.isRequired,
     tabs: PropTypes.arrayOf(PropTypes.shape({

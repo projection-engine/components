@@ -35,15 +35,3 @@
 .basicIconWrapper > *{
     font-size: 1.2rem !important;
 }
-.highlightIconWrapper{
-    background-color: var(--background-2);
-    border-top: var(--background-1) 4px solid;
-    border-bottom: var(--background-1) 4px solid;
-    border-radius: 5px;
-    width: 45px;
-    height: 45px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}

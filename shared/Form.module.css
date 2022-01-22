@@ -1,6 +1,6 @@
 .wrapper {
     width: 100%;
-
+position: relative;
 }
 
 .button {
@@ -12,6 +12,11 @@
     background-color: rgba(0,149, 255, .2);
 }
 .modal {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+
     height: fit-content;
     max-height: 300px;
     overflow-y: auto;

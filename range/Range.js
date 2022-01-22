@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import styles from './styles/Range.module.css'
 import {useRef, useState} from "react";
-import {Button} from "@f-ui/core";
 
 export default function Range(props) {
     const [hovered, setHovered] = useState(false)
@@ -37,25 +36,9 @@ export default function Range(props) {
     }
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.labelWrapper}>
-                {props.label}
-            </div>
-            <div className={styles.content} onMouseEnter={() => setHovered(true)}
+        <div className={styles.wrapper} style={{'--accentColor': props.accentColor}} title={props.label}>
+            <div className={styles.content}  onMouseEnter={() => setHovered(true)}
                  onMouseLeave={() => setHovered(false)}>
-                {hovered && !props.disabled ?
-                    <Button
-
-                        className={styles.button}
-                        onClick={() => {
-                            props.handleChange((parseFloat(props.value) + (props.increment ? props.increment : 0.1)).toFixed(1))
-                        }}
-                    >
-                        <span className={'material-icons-round'}>chevron_left</span>
-                    </Button>
-                    :
-                    <div className={styles.button}/>
-                }
                 {focused ?
                     <input
                         disabled={props.disabled}
@@ -89,18 +72,6 @@ export default function Range(props) {
                         {parseFloat(props.value).toFixed(1)}
                     </div>
                 }
-
-                {hovered && !props.disabled ?
-                    <Button
-                        className={styles.button}
-                        onClick={() => {
-                            props.handleChange((parseFloat(props.value) - (props.increment ? props.increment : 0.1)).toFixed(1))
-                        }}>
-                        <span className={'material-icons-round'}>chevron_right</span>
-                    </Button>
-                    :
-                    <div className={styles.button}/>
-                }
             </div>
 
         </div>
@@ -109,6 +80,7 @@ export default function Range(props) {
 }
 
 Range.propTypes = {
+    accentColor: PropTypes.string,
     disabled: PropTypes.bool,
     incrementPercentage: PropTypes.number,
     increment: PropTypes.number,

@@ -4,17 +4,19 @@
     width: 100%;
     align-items: center;
     gap: 4px;
+    position: relative;
+    --accentColor: transparent;
 }
-.labelWrapper{
-    text-transform: capitalize;
-    font-weight: 600;
-    font-size: .9rem;
-    width: 60px;
 
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    text-align: right;
+.wrapper::before{
+    content: '';
+    background-color: var(--accentColor);
+    height: 70%;
+    width: 2px;
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    transform: translate(-50%, -50%);
 }
 
 .content{
