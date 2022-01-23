@@ -33,15 +33,15 @@ export default function Tabs(props) {
                                     highlight={props.tab === i}
                                     onClick={() => {
                                         if (props.tab !== i) {
-                                            props.onBeforeTabSwitch(i)
+
                                             props.setTab(i)
                                         }
                                     }}
                                 >
                                     {tab.icon}
-                                    <div className={styles.label}>
+
                                         {tab.label}
-                                    </div>
+
                                 </Button>
                                 {tab.canClose ?
                                     <Button
@@ -83,7 +83,7 @@ Tabs.propTypes = {
         type: PropTypes.oneOf(['dropdown', 'default']),
         options: PropTypes.arrayOf(PropTypes.object)
     })),
-    onBeforeTabSwitch: PropTypes.func.isRequired,
+
     tabs: PropTypes.arrayOf(PropTypes.shape({
         icon: PropTypes.node,
         label: PropTypes.string,

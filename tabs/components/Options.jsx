@@ -6,7 +6,7 @@ import {Button, Dropdown} from "@f-ui/core";
 
 export default function Options(props) {
     const groups = useMemo(() => {
-        console.log(props.options)
+
         if (props.options.length === 0) {
             return groupBy(props.fallbackOptions, 'group')
         } else

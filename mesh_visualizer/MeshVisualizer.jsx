@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styles from './styles/Mesh.module.css'
 import useEngine from "../../core/useEngine";
 import {useEffect, useLayoutEffect, useState} from "react";
-import randomID from "../shared/utils/randomID";
+import randomID from "../../utils/randomID";
 import Viewport from "../viewport/Viewport";
 import Controls from "./components/Controls";
 

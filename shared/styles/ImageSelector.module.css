@@ -1,6 +1,8 @@
 .wrapper {
     width: 100%;
-position: relative;
+    position: relative;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .button {
@@ -8,19 +10,22 @@ position: relative;
     padding: 0 !important;
     min-height: 50px;
 }
-.button:hover{
-    background-color: rgba(0,149, 255, .2);
+
+.button:hover {
+    background-color: rgba(0, 149, 255, .2);
 }
+
 .modal {
     position: absolute;
-    top: 50%;
+
     transform: translate(-50%, -50%);
     left: 50%;
 
     height: fit-content;
     max-height: 300px;
     overflow-y: auto;
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
     background-color: var(--fabric-background-primary);
     box-shadow: var(--fabric-box-shadow-primary) 2px 2px 10px 1px;
 

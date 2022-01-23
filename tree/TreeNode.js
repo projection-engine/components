@@ -25,10 +25,20 @@ export default function TreeNode(props) {
         <>
             <div
                 ref={ref}
-                style={{paddingLeft: (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24)) + 'px'}}
+                data-node={props.node.id}
+                id={props.node.id}
+
+                style={{paddingLeft: (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'}}
                 data-highlight={`${props.focusedNode === props.node.id}`}
-                data-selected={`${props.selected?.id === props.node.id}`}
+                data-selected={`${props.selected === props.node.id}`}
                 className={styles.row}
+
+                draggable={props.draggable && !onEdit}
+                onDrop={props.onDrop}
+                onDragOver={props.onDragOver}
+                onDragLeave={props.onDragLeave}
+                onDragStart={props.onDragStart}
+
                 onClick={() => {
                     props.setFocusedNode(props.node.id)
                     props.node.onClick()
@@ -90,6 +100,7 @@ export default function TreeNode(props) {
                 props.node.children?.map((child, index) => (
                     <React.Fragment key={props.index + '-tree-node-' + index}>
                         <TreeNode
+                            {...props}
                             selected={props.selected}
                             handleRename={props.handleRename}
                             node={child}
@@ -106,9 +117,7 @@ export default function TreeNode(props) {
 }
 
 TreeNode.propTypes = {
-    selected: PropTypes.shape({
-        id: PropTypes.string
-    }),
+    selected: PropTypes.string,
     handleRename: PropTypes.func.isRequired,
     node: PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -121,5 +130,11 @@ TreeNode.propTypes = {
     }).isRequired,
     index: PropTypes.number,
     focusedNode: PropTypes.string,
-    setFocusedNode: PropTypes.func
+    setFocusedNode: PropTypes.func,
+
+    draggable: PropTypes.bool,
+    onDrop: PropTypes.func,
+    onDragOver: PropTypes.func,
+    onDragLeave: PropTypes.func,
+    onDragStart: PropTypes.func,
 }

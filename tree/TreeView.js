@@ -2,6 +2,9 @@ import PropTypes from "prop-types";
 import React, {useEffect, useRef, useState} from "react";
 import styles from './styles/Tree.module.css'
 import TreeNode from "./TreeNode";
+import ContextMenu from "../context/ContextMenu";
+import getFolderOptions from "../files/utils/getFolderOptions";
+import Folder from "../files/templates/Folder";
 
 export default function TreeView(props) {
     const [focusedNode, setFocusedNode] = useState()
@@ -15,12 +18,27 @@ export default function TreeView(props) {
         document.addEventListener('mousedown', handleMouseDown)
         return () => document.removeEventListener('mousedown', handleMouseDown)
     }, [focusedNode])
-
-    return (
-        <div className={styles.wrapper}>
-            {props.nodes.map((child, index) => (
+    const content = (
+        props.nodes.map((child, index) => (
                 <React.Fragment key={'tree-' + index}>
                     <TreeNode
+                        onDragOver={(e) => {
+                            if (props.onDragOver)
+                                props.onDragOver(e, e.currentTarget.id)
+                        }}
+                        onDragLeave={(e) => {
+                            if (props.onDragLeave)
+                                props.onDragLeave(e, e.currentTarget.id)
+                        }}
+                        onDrop={(e) => {
+                            if (props.onDrop)
+                                props.onDrop(e, e.currentTarget.id)
+                        }}
+                        onDragStart={(e) => {
+                            e.dataTransfer.setData('text', e.currentTarget.id)
+                        }}
+                        draggable={props.draggable}
+
                         handleRename={props.handleRename}
                         node={child} index={0}
                         selected={props.selected}
@@ -29,15 +47,27 @@ export default function TreeView(props) {
 
                     />
                 </React.Fragment>
-            ))}
+            ))
+    )
+    return (
+        <div className={styles.wrapper}>
+            {props.options && props.options.length > 0 ?
+                <ContextMenu
+                    options={props.options}
+                    triggers={[
+                        'data-node'
+                    ]}>
+                    {content}
+                </ContextMenu>
+                :
+                content
+            }
         </div>
     )
 }
 
 TreeView.propTypes = {
-    selected: PropTypes.shape({
-        id: PropTypes.string
-    }),
+    selected: PropTypes.string,
     nodes: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         label: PropTypes.string,
@@ -48,4 +78,17 @@ TreeView.propTypes = {
         attributes: PropTypes.object
     })).isRequired,
     handleRename: PropTypes.func.isRequired,
+
+    draggable: PropTypes.bool,
+    onDrop: PropTypes.func,
+    onDragOver: PropTypes.func,
+    onDragLeave: PropTypes.func,
+
+    options: PropTypes.arrayOf(PropTypes.shape({
+        onClick: PropTypes.func,
+        label: PropTypes.string,
+        shortcut: PropTypes.any,
+        icon: PropTypes.node,
+        requiredTrigger: PropTypes.string
+    })),
 }

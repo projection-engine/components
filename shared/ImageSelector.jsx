@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
-import styles from "./Form.module.css";
+import styles from "./styles/ImageSelector.module.css";
 import {Button, Modal} from "@f-ui/core";
 import ImageVisualizer from "../image_preview/ImageVisualizer";
 import PropTypes from "prop-types";
 import {colorToImage} from "../../core/utils/imageManipulation";
 
-export default function TextureForm(props) {
+export default function ImageSelector(props) {
     const ref = useRef()
 
     const [state, setState] = useState({})
@@ -61,7 +61,7 @@ export default function TextureForm(props) {
     )
 }
 
-TextureForm.propTypes = {
+ImageSelector.propTypes = {
     availableTextures: PropTypes.array.isRequired,
     handleChange: PropTypes.func,
     classObject: PropTypes.object

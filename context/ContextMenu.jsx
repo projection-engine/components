@@ -11,17 +11,19 @@ export default function ContextMenu(props) {
     let targets
     const handleContext = (event) => {
         targets = document.elementsFromPoint(event.clientX, event.clientY)
-        targets = targets.filter(t => {
-            let hasAttribute = false
-            Array.from(t.attributes).forEach(attr => {
-                const has = props.triggers.find(f => attr.nodeName === f)
-                if (has)
-                    hasAttribute = hasAttribute || has
-            })
 
-            if (hasAttribute)
-                return t
-        })
+            targets = targets.filter(t => {
+                console.log(t)
+                let hasAttribute = false
+                Array.from(t.attributes).forEach(attr => {
+                    const has = props.triggers.find(f => attr.nodeName === f)
+                    if (has)
+                        hasAttribute = hasAttribute || has
+                })
+
+                if (hasAttribute)
+                    return t
+            })
         event.preventDefault()
 
         if (targets.length > 0) {
@@ -29,7 +31,7 @@ export default function ContextMenu(props) {
             const currentTarget = targets[0]
 
             setSelected(currentTarget)
-            if(props.onContext !== undefined)
+            if (props.onContext !== undefined)
                 props.onContext(currentTarget)
         } else
             setSelected(undefined)
@@ -41,7 +43,7 @@ export default function ContextMenu(props) {
     }
     const handleMouseDown = (event) => {
         if (!document.elementsFromPoint(event.clientX, event.clientY).includes(contextRef.current)) {
-            if(props.onContextOut !== undefined)
+            if (props.onContextOut !== undefined)
                 props.onContextOut(selected)
             setSelected(undefined)
             contextRef.current.style.zIndex = '-1'
@@ -49,8 +51,10 @@ export default function ContextMenu(props) {
     }
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleMouseDown)
-        ref.current?.parentNode.addEventListener('contextmenu', handleContext)
+        if (props.options.length > 0) {
+            document.addEventListener('mousedown', handleMouseDown)
+            ref.current?.parentNode.addEventListener('contextmenu', handleContext)
+        }
         return () => {
             document.removeEventListener('mousedown', handleMouseDown)
             ref.current?.parentNode.removeEventListener('contextmenu', handleContext)
@@ -83,7 +87,7 @@ export default function ContextMenu(props) {
                     </React.Fragment>
                 ))}
             </div>
-            <div className={props.className} style={props.styles} ref={ref}>
+            <div className={props.className} data-self={'true'} style={props.styles} ref={ref}>
                 {props.children}
             </div>
         </>
@@ -102,7 +106,8 @@ ContextMenu.propTypes = {
         icon: PropTypes.node,
         requiredTrigger: PropTypes.string
     })),
-    handleChange: PropTypes.func,
+
+
     children: PropTypes.node,
     styles: PropTypes.object,
     className: PropTypes.string
