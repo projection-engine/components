@@ -13,7 +13,6 @@ export default function ContextMenu(props) {
         targets = document.elementsFromPoint(event.clientX, event.clientY)
 
             targets = targets.filter(t => {
-                console.log(t)
                 let hasAttribute = false
                 Array.from(t.attributes).forEach(attr => {
                     const has = props.triggers.find(f => attr.nodeName === f)

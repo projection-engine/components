@@ -20,21 +20,25 @@ export default function Options(props) {
                 <React.Fragment key={i + '-group'}>
                     {i > 0 ? <div className={styles.divider}/> : null}
                     <div className={styles.group}>
-                        {groups[g].map(option => {
+                        {groups[g].map((option, index) => {
                             if (option.type === 'dropdown') {
                                 return (
+                                    <React.Fragment key={i + '-option-'+index}>
                                     <Dropdown align={'bottom'} justify={"start"} className={styles.option}
                                               options={option.options}>
                                         {option.icon}
                                         {option.label}
                                     </Dropdown>
+                                    </React.Fragment>
                                 )
                             } else
                                 return (
+                                    <React.Fragment key={i + '-option-'+index}>
                                     <Button onClick={option.onClick} className={styles.option}>
                                         {option.icon}
                                         {option.label}
                                     </Button>
+                                    </React.Fragment>
                                 )
                         })}
                     </div>
