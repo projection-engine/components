@@ -8,9 +8,9 @@ export default function ResizableBar(props) {
         const bBox = ref.current?.parentNode.getBoundingClientRect()
 
         if (props.direction === 'width')
-            ref.current?.parentNode.style.width = ( event.clientX - bBox.left) + 'px';
+            ref.current.parentNode.style.width = ( event.clientX - bBox.left) + 'px';
         else
-            ref.current?.parentNode.style.height = (-event.clientY + bBox.top) + 'px'
+            ref.current.parentNode.style.height = (-event.clientY + bBox.top) + 'px'
     }
     const handleMouseUp = () => {
         document.removeEventListener('mousemove', handleMouseMove)

@@ -75,7 +75,8 @@ export default function ContextMenu(props) {
                             onClick={() => {
                                 el.onClick(selected)
                                 contextRef.current.style.zIndex = '-1'
-                                selected?.style.outline = 'transparent 2px solid'
+                                if(selected)
+                                    selected.style.outline = 'transparent 2px solid'
                                 setSelected(undefined)
                             }}>
                             <div className={styles.basicIconWrapper}>
