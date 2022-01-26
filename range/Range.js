@@ -3,7 +3,6 @@ import styles from './styles/Range.module.css'
 import {useRef, useState} from "react";
 
 export default function Range(props) {
-    const [hovered, setHovered] = useState(false)
     const [focused, setFocused] = useState(false)
     let lastMousePlacement = undefined
 
@@ -37,8 +36,7 @@ export default function Range(props) {
 
     return (
         <div className={styles.wrapper} style={{'--accentColor': props.accentColor}} title={props.label}>
-            <div className={styles.content}  onMouseEnter={() => setHovered(true)}
-                 onMouseLeave={() => setHovered(false)}>
+            <div className={styles.content} >
                 {focused ?
                     <input
                         disabled={props.disabled}

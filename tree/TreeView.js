@@ -3,8 +3,6 @@ import React, {useEffect, useRef, useState} from "react";
 import styles from './styles/Tree.module.css'
 import TreeNode from "./TreeNode";
 import ContextMenu from "../context/ContextMenu";
-import getFolderOptions from "../files/utils/getFolderOptions";
-import Folder from "../files/templates/Folder";
 
 export default function TreeView(props) {
     const [focusedNode, setFocusedNode] = useState()

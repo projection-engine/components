@@ -1,9 +1,8 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import styles from "./styles/ImageSelector.module.css";
-import {Button, Modal} from "@f-ui/core";
+import {Button} from "@f-ui/core";
 import ImageVisualizer from "../image_preview/ImageVisualizer";
 import PropTypes from "prop-types";
-import {colorToImage} from "../../core/utils/imageManipulation";
 
 export default function ImageSelector(props) {
     const ref = useRef()

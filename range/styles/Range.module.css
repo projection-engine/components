@@ -6,6 +6,8 @@
     gap: 4px;
     position: relative;
     --accentColor: transparent;
+
+    user-select: none !important;
 }
 
 .wrapper::before{

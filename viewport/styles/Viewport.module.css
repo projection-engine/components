@@ -87,14 +87,6 @@
 
 }
 
-.alertContent{
-    color: var(--fabric-color-secondary);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100%;
-}
-
 .hovered{
     outline: #0095ff 1px dashed !important;
 }
