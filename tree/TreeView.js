@@ -23,14 +23,26 @@ export default function TreeView(props) {
                 <React.Fragment key={'tree-' + index}>
                     <TreeNode
                         onDragOver={(e) => {
+                            if(props.draggable) {
+                                e.preventDefault()
+                                e.currentTarget.classList.add(styles.hoveredNode)
+                            }
                             if (props.onDragOver)
                                 props.onDragOver(e, e.currentTarget.id)
                         }}
                         onDragLeave={(e) => {
+                            if(props.draggable) {
+                                e.preventDefault()
+                                e.currentTarget.classList.remove(styles.hoveredNode)
+                            }
                             if (props.onDragLeave)
                                 props.onDragLeave(e, e.currentTarget.id)
                         }}
                         onDrop={(e) => {
+                            if(props.draggable) {
+                                e.preventDefault()
+                                e.currentTarget.classList.remove(styles.hoveredNode)
+                            }
                             if (props.onDrop)
                                 props.onDrop(e, e.currentTarget.id)
                         }}

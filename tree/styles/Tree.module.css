@@ -11,7 +11,8 @@
 }
 
 .row {
-
+        outline: transparent 1px dashed;
+transition: 150ms linear;
     position: relative;
     display: flex;
     align-items: center;
@@ -92,5 +93,12 @@
     background-color: #0095ff;
     position: absolute;
     left: 4px;
+
+}
+
+.hoveredNode{
+    opacity: .5;
+    outline: #0095FF 1px dashed;
+
 
 }
