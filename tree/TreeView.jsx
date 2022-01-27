@@ -85,7 +85,8 @@ TreeView.propTypes = {
         children: PropTypes.array,
         icon: PropTypes.node,
         type: PropTypes.string,
-        attributes: PropTypes.object
+        attributes: PropTypes.object,
+        phantomNode: PropTypes.bool
     })).isRequired,
     handleRename: PropTypes.func.isRequired,
 

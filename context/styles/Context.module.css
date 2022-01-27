@@ -1,5 +1,5 @@
 .wrapper {
-    transition: 150ms linear;
+
     transform: translateY(-100%);
     position: fixed;
     top: 50%;

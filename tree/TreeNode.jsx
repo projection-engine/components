@@ -1,7 +1,7 @@
 import styles from './styles/Tree.module.css'
 import PropTypes from "prop-types";
 import React, {useEffect, useRef, useState} from "react";
-import {Button} from "@f-ui/core";
+import {Button, Ripple} from "@f-ui/core";
 import {TYPES_ARRAY} from "../scene/hierarchy/TYPES";
 
 export default function TreeNode(props) {
@@ -19,13 +19,17 @@ export default function TreeNode(props) {
                 ref.current?.setAttribute(attr, `${props.node.attributes[attr]}`)
             })
         }
+
+        if(!props.node.phantomNode)
+            ref.current?.setAttribute('data-node', `${props.node.id}`)
+
     }, [props.node.attributes])
 
     return (
         <>
             <div
                 ref={ref}
-                data-node={props.node.id}
+
                 id={props.node.id}
 
                 style={{paddingLeft: (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'}}
@@ -33,7 +37,7 @@ export default function TreeNode(props) {
                 data-selected={`${props.selected === props.node.id}`}
                 className={styles.row}
 
-                draggable={props.draggable && !onEdit}
+                draggable={!props.node.phantomNode && props.draggable && !onEdit}
                 onDrop={props.onDrop}
                 onDragOver={props.onDragOver}
                 onDragLeave={props.onDragLeave}
@@ -41,14 +45,16 @@ export default function TreeNode(props) {
 
                 onClick={() => {
                     props.setFocusedNode(props.node.id)
-                    props.node.onClick()
+                    if(!props.node.phantomNode)
+                        props.node.onClick()
                 }}
             >
 
                 {props.node.children?.length > 0 ? (
                     <Button
                         onClick={() => {
-                            props.node.onClick()
+                            if(!props.node.phantomNode)
+                                props.node.onClick()
                             setOpen(!open)
                         }}
                         className={styles.hideButton}>
@@ -90,6 +96,7 @@ export default function TreeNode(props) {
                                 {currentLabel}
                             </div>
                         </div>
+
                         <div className={[styles.rowContent, styles.rowType, styles.overflow].join(' ')}>
                             {props.node.type}
                         </div>
@@ -126,7 +133,8 @@ TreeNode.propTypes = {
         children: PropTypes.array,
         icon: PropTypes.node,
         type: PropTypes.oneOf(TYPES_ARRAY),
-        attributes: PropTypes.object
+        attributes: PropTypes.object,
+        phantomNode: PropTypes.bool
     }).isRequired,
     index: PropTypes.number,
     focusedNode: PropTypes.string,

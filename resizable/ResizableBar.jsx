@@ -1,22 +1,34 @@
 import PropTypes from "prop-types";
 import styles from './styles/Resizable.module.css'
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 
 export default function ResizableBar(props) {
     const ref = useRef()
+
     const handleMouseMove = (event) => {
-        const bBox = ref.current?.parentNode.getBoundingClientRect()
 
+        const bBox = ref.current?.previousSibling.getBoundingClientRect()
+        const prevBbox = ref.current?.nextSibling.getBoundingClientRect()
 
-        if (props.direction === 'width')
-            ref.current.parentNode.style.width = ( event.clientX - bBox.left) + 'px';
-        else
-            ref.current.parentNode.style.height = (event.clientY - bBox.top) + 'px'
+        if (props.type === 'width') {
+            const newW = (event.clientX - bBox.left)
+            const offset = newW - bBox.width
+            ref.current.previousSibling.style.width = (event.clientX - bBox.left) + 'px'
+            ref.current.nextSibling.style.width =  (prevBbox.width - offset) + 'px'
+        }
+        else {
+            const newH = (event.clientY - bBox.top)
+            const offset = newH - bBox.height
+            ref.current.previousSibling.style.height = (event.clientY - bBox.top) + 'px'
+            ref.current.nextSibling.style.height =  (prevBbox.height - offset) + 'px'
+        }
     }
     const handleMouseUp = () => {
+        ref.current.parentNode.style.userSelect = 'default'
         document.removeEventListener('mousemove', handleMouseMove)
     }
     const handleMouseDown = () => {
+        ref.current.parentNode.style.userSelect = 'none'
         ref.current.parentNode.style.transition = 'none'
         document.addEventListener('mousemove', handleMouseMove)
         document.addEventListener('mouseup', handleMouseUp, {once: true})
@@ -27,21 +39,19 @@ export default function ResizableBar(props) {
         return () => {
             ref.current?.removeEventListener('mousedown', handleMouseDown)
         }
-    }, [props.direction, props.disabled])
+    }, [props.disabled])
     return (
         <div style={{
-            top: props.direction === 'width' ? '0' : '100%',
-            transform: props.direction === 'width' ? undefined : 'translateY(-100%)',
-            height: props.direction === 'height' ? '5px' : '100%',
-            width: props.direction === 'width' ? '5px' : '100%',
-            cursor: props.direction === 'width' ? 'ew-resize' : 'ns-resize'
+            background: props.color,
+            height: props.type === 'height' ? '3px' : '100%',
+            width: props.type === 'width' ? '3px' : '100%',
+            cursor: props.type === 'width' ? 'ew-resize' : 'ns-resize'
         }} data-disabled={`${props.disabled}`} className={styles.wrapper} ref={ref}/>
     )
 }
 
 ResizableBar.propTypes = {
-    direction: PropTypes.oneOf(['width', 'height']),
-    minDimension: PropTypes.number,
-    maxDimension: PropTypes.number,
-    disabled: PropTypes.bool
+    type: PropTypes.oneOf(['width', 'height']).isRequired,
+    disabled: PropTypes.bool,
+    color: PropTypes.string
 }

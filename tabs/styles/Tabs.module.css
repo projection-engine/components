@@ -23,7 +23,7 @@
 .tabs {
     display: flex;
     gap: 4px;
-    padding: 4px 4px 0 16px;
+
 }
 
 .closeButton {
@@ -57,7 +57,7 @@
 
 .tabButtonWrapper {
     height: 35px;
-    width: clamp(200px, 15vw, 250px);
+    width: 225px;
 
     overflow: hidden;
 
@@ -67,7 +67,7 @@
 }
 
 .currentTabButton {
-    background-color: var(--background-2) !important;
+    background-color: var(--background-1) !important;
 }
 
 .contentWrapper {

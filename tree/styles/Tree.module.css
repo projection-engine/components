@@ -11,19 +11,28 @@
 }
 
 .row {
-        outline: transparent 1px dashed;
-transition: 150ms linear;
+    outline: transparent 1px dashed;
+    transition: 150ms linear;
+
+    border-radius:0  5px 5px 0;
+
     position: relative;
     display: flex;
     align-items: center;
-    height: 30px !important;
-    color: var(--fabric-color-tertiary);
+    height: 25px !important;
+
+    color: var(--fabric-color-secondary);
     border-left: transparent 2px solid;
     overflow: hidden;
 }
-.row[data-selected = 'true']{
+.row:hover{
+    color: #0095FF;
+}
+
+.row[data-selected = 'true'] {
     border-left-color: #0095ff;
 }
+
 .row:active {
     border-left-color: #0095ff;
 }
@@ -43,6 +52,7 @@ transition: 150ms linear;
 
 
 .rowContentWrapper {
+    cursor: pointer;
 
     width: 100%;
     display: flex;
@@ -59,8 +69,10 @@ transition: 150ms linear;
     align-items: center;
     gap: 4px;
     align-content: center;
-    font-size: .75rem;
+    font-size: .7rem;
     overflow: hidden;
+
+
 }
 
 .input {
@@ -73,20 +85,22 @@ transition: 150ms linear;
 
 }
 
-.rowType{
+.rowType {
     display: block;
     text-align: right;
     padding-right: 8px;
     color: var(--fabric-color-quaternary);
 
 }
-.overflow{
+
+.overflow {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 100%;
 }
-.indicator{
+
+.indicator {
     height: 15px;
     width: 15px;
     border-radius: 50%;
@@ -96,7 +110,7 @@ transition: 150ms linear;
 
 }
 
-.hoveredNode{
+.hoveredNode {
     opacity: .5;
     outline: #0095FF 1px dashed;
 

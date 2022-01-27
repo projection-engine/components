@@ -1,0 +1,17 @@
+import PropTypes from "prop-types";
+import styles from './styles/Search.module.css'
+export default function Search(props){
+    return(
+        <div className={styles.wrapper}>
+            <div className={styles.inputWrapper}>
+                <span style={{fontSize: '1rem'}} className={'material-icons-round'}>search</span>
+                <input className={styles.input} onChange={e => props.setSearchString(e.target.value)} value={props.searchString}/>
+            </div>
+        </div>
+    )
+}
+
+Search.propTypes={
+    searchString: PropTypes.string,
+    setSearchString: PropTypes.func
+}
