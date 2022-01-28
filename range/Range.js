@@ -6,9 +6,13 @@ export default function Range(props) {
     const [focused, setFocused] = useState(false)
 
     let currentValue = props.value
+    let locked = false
     const handleMouseMove = (e) => {
         const increment = Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * e.movementX)
-
+        if(!locked) {
+            locked = true
+            ref.current?.requestPointerLock()
+        }
         if (e.movementX < 0) {
             currentValue = parseFloat(currentValue) + increment
             props.handleChange(currentValue.toFixed(1))
@@ -22,9 +26,10 @@ export default function Range(props) {
     const ref = useRef()
     const handleMouseDown = (e) => {
         if (!focused && !props.disabled) {
-            ref.current?.requestPointerLock()
+
             document.addEventListener('mousemove', handleMouseMove)
             document.addEventListener('mouseup', () => {
+                locked = false
                 document.exitPointerLock()
                 document.removeEventListener('mousemove', handleMouseMove)
             }, {once: true})

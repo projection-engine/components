@@ -5,6 +5,7 @@ export default function useViewportOptions() {
     const [fps, setFps] = useState(false)
     const [res, setRes] = useState(100)
     const [fullscreen, setFullscreen] = useState(false)
+
     return {
         fov, setFov,
         fps, setFps,
