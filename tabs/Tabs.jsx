@@ -81,7 +81,9 @@ Tabs.propTypes = {
         label: PropTypes.string,
         group: PropTypes.string,
         type: PropTypes.oneOf(['dropdown', 'default']),
-        options: PropTypes.arrayOf(PropTypes.object)
+        options: PropTypes.arrayOf(PropTypes.object),
+        shortcut: PropTypes.string,
+        keepAlive: PropTypes.bool
     })),
 
     tabs: PropTypes.arrayOf(PropTypes.shape({
@@ -90,7 +92,9 @@ Tabs.propTypes = {
         children: PropTypes.node,
         open: PropTypes.bool,
         canClose: PropTypes.bool,
-        handleClose: PropTypes.func
+        handleClose: PropTypes.func,
+        shortcut: PropTypes.string,
+        keepAlive: PropTypes.bool
     })).isRequired,
     tab: PropTypes.number,
     setTab: PropTypes.func

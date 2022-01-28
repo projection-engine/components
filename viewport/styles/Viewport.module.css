@@ -34,40 +34,6 @@
 .viewport > * {
     transition: opacity 150ms linear;
 }
-.options {
-    display: flex;
-    width: 100%;
-    padding: 8px;
-    height: fit-content;
-    top: 0;
-    left: 0;
-
-    justify-content: flex-start;
-    gap: 8px;
-    position: absolute;
-
-}
-
-.optionWrapper {
-    border-radius: 5px;
-
-    background-color: rgba(0, 0, 0, .7);
-    width: fit-content;
-    display: flex;
-    align-content: center;
-    align-items: center;
-    height: 35px;
-    transition: 150ms linear;
-
-    color: white;
-    min-width: 35px;
-
-
-    font-weight: bold;
-    font-size: .9rem;
-}
-
-
 .button {
     display: flex;
     align-items: center;
@@ -78,11 +44,7 @@
     padding: 8px 0;
 }
 
-.explorerWrapper {
-    height: 30vh;
-    width: 100%;
 
-}
 
 .hovered{
     outline: #0095ff 1px dashed !important;

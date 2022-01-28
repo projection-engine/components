@@ -5,7 +5,7 @@ export default function Search(props){
         <div className={styles.wrapper}>
             <div className={styles.inputWrapper}>
                 <span style={{fontSize: '1rem'}} className={'material-icons-round'}>search</span>
-                <input className={styles.input} onChange={e => props.setSearchString(e.target.value)} value={props.searchString}/>
+                <input placeholder={'Search'} className={styles.input} onChange={e => props.setSearchString(e.target.value)} value={props.searchString}/>
             </div>
         </div>
     )

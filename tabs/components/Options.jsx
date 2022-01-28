@@ -2,7 +2,8 @@ import groupBy from "../../../utils/groupBy";
 import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 import styles from "../styles/Options.module.css";
-import {Button, Dropdown} from "@f-ui/core";
+import {Button} from "@f-ui/core";
+import {Dropdown, DropdownOption,DropdownOptions} from '../../../../fabric-ui/src/index'
 
 export default function Options(props) {
     const groups = useMemo(() => {
@@ -23,21 +24,31 @@ export default function Options(props) {
                         {groups[g].map((option, index) => {
                             if (option.type === 'dropdown') {
                                 return (
-                                    <React.Fragment key={i + '-option-'+index}>
-                                    <Dropdown align={'bottom'} justify={"start"} className={styles.option}
-                                              options={option.options}>
-                                        {option.icon}
-                                        {option.label}
-                                    </Dropdown>
+                                    <React.Fragment key={i + '-option-' + index}>
+                                        <Dropdown
+                                            align={'bottom'}
+                                            justify={"start"}
+                                            className={styles.option}
+                                        >
+                                            {option.icon}
+                                            {option.label}
+                                            <DropdownOptions>
+                                                {option.options.map((o, index) => (
+                                                    <React.Fragment key={index + '-option-'+o.label}>
+                                                        <DropdownOption option={o} />
+                                                    </React.Fragment>
+                                                ))}
+                                            </DropdownOptions>
+                                        </Dropdown>
                                     </React.Fragment>
                                 )
                             } else
                                 return (
-                                    <React.Fragment key={i + '-option-'+index}>
-                                    <Button onClick={option.onClick} className={styles.option}>
-                                        {option.icon}
-                                        {option.label}
-                                    </Button>
+                                    <React.Fragment key={i + '-option-' + index}>
+                                        <Button onClick={option.onClick} className={styles.option}>
+                                            {option.icon}
+                                            {option.label}
+                                        </Button>
                                     </React.Fragment>
                                 )
                         })}

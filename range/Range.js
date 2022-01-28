@@ -43,6 +43,7 @@ export default function Range(props) {
                         ref={ref}
                         value={props.value}
                         onMouseDown={handleMouseDown}
+
                         onChange={(e) => {
                             if (isNaN(parseFloat(e.target.value)))
                                 props.handleChange(0.0)
@@ -52,6 +53,8 @@ export default function Range(props) {
                         style={{cursor: 'text',background: 'var(--background-3)'}}
                         onBlur={() => {
                             setFocused(false)
+                            if(props.onFinish)
+                                props.onFinish()
                         }}
                         className={styles.draggable}
                     />
@@ -59,6 +62,10 @@ export default function Range(props) {
                     <div
                         ref={ref}
                         onMouseDown={handleMouseDown}
+                        onMouseUp={() => {
+                            if(props.onFinish)
+                                props.onFinish()
+                        }}
                         style={{
                             color: props.disabled ? 'var(--fabric-color-quaternary)' : undefined,
                             cursor: props.disabled ? 'default' : undefined,
@@ -78,11 +85,11 @@ export default function Range(props) {
 }
 
 Range.propTypes = {
+    onFinish: PropTypes.func,
     accentColor: PropTypes.string,
     disabled: PropTypes.bool,
     incrementPercentage: PropTypes.number,
     increment: PropTypes.number,
-    label: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     handleChange: PropTypes.func
 }
