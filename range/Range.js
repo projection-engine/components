@@ -4,31 +4,29 @@ import {useRef, useState} from "react";
 
 export default function Range(props) {
     const [focused, setFocused] = useState(false)
-    let lastMousePlacement = undefined
 
     let currentValue = props.value
     const handleMouseMove = (e) => {
-        if (lastMousePlacement === undefined)
-            lastMousePlacement = e.clientX
+        const increment = Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * e.movementX)
 
-        if (lastMousePlacement >= e.clientX) {
-            currentValue = parseFloat(currentValue) + Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * (e.clientX - lastMousePlacement))
+        if (e.movementX < 0) {
+            currentValue = parseFloat(currentValue) + increment
             props.handleChange(currentValue.toFixed(1))
         } else {
-            currentValue = parseFloat(currentValue) - Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * (e.clientX - lastMousePlacement))
+            currentValue = parseFloat(currentValue) - increment
             props.handleChange(currentValue.toFixed(1))
         }
 
 
-        lastMousePlacement = e.clientX
     }
     const ref = useRef()
     const handleMouseDown = (e) => {
         if (!focused && !props.disabled) {
+            ref.current?.requestPointerLock()
             document.addEventListener('mousemove', handleMouseMove)
             document.addEventListener('mouseup', () => {
+                document.exitPointerLock()
                 document.removeEventListener('mousemove', handleMouseMove)
-                lastMousePlacement = undefined
             }, {once: true})
         } else if (!document.elementsFromPoint(e.clientX, e.clientY).includes(ref.current))
             setFocused(false)
@@ -36,7 +34,7 @@ export default function Range(props) {
 
     return (
         <div className={styles.wrapper} style={{'--accentColor': props.accentColor}} title={props.label}>
-            <div className={styles.content} >
+            <div className={styles.content}>
                 {focused ?
                     <input
                         disabled={props.disabled}
@@ -50,10 +48,10 @@ export default function Range(props) {
                             else
                                 props.handleChange(parseFloat(e.target.value))
                         }} type={'number'}
-                        style={{cursor: 'text',background: 'var(--background-3)'}}
+                        style={{cursor: 'text', background: 'var(--background-3)'}}
                         onBlur={() => {
                             setFocused(false)
-                            if(props.onFinish)
+                            if (props.onFinish)
                                 props.onFinish()
                         }}
                         className={styles.draggable}
@@ -63,7 +61,7 @@ export default function Range(props) {
                         ref={ref}
                         onMouseDown={handleMouseDown}
                         onMouseUp={() => {
-                            if(props.onFinish)
+                            if (props.onFinish)
                                 props.onFinish()
                         }}
                         style={{

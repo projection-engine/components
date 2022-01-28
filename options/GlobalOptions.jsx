@@ -1,5 +1,6 @@
 import styles from './styles/GlobalOptions.module.css'
 import {Dropdown} from "@f-ui/core";
+
 export default function GlobalOptions(props){
     return (
         <div className={styles.wrapper}>

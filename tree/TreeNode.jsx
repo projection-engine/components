@@ -1,8 +1,7 @@
 import styles from './styles/Tree.module.css'
 import PropTypes from "prop-types";
 import React, {useEffect, useRef, useState} from "react";
-import {Button, Ripple} from "@f-ui/core";
-import {TYPES_ARRAY} from "../scene/hierarchy/TYPES";
+import {Button} from "@f-ui/core";
 
 export default function TreeNode(props) {
     const [open, setOpen] = useState(props.index === 0)
@@ -132,7 +131,7 @@ TreeNode.propTypes = {
         onClick: PropTypes.func,
         children: PropTypes.array,
         icon: PropTypes.node,
-        type: PropTypes.oneOf(TYPES_ARRAY),
+        type: PropTypes.string,
         attributes: PropTypes.object,
         phantomNode: PropTypes.bool
     }).isRequired,

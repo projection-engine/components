@@ -2,8 +2,8 @@ import groupBy from "../../../utils/groupBy";
 import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 import styles from "../styles/Options.module.css";
-import {Button} from "@f-ui/core";
-import {Dropdown, DropdownOption,DropdownOptions} from '../../../../fabric-ui/src/index'
+import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
+
 
 export default function Options(props) {
     const groups = useMemo(() => {

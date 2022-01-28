@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from "./styles/VO.module.css";
-import {Dropdown, DropdownOption, DropdownOptions} from "../../../fabric-ui/src/index";
+import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import Range from "../range/Range";
 
 export default function ViewportOptions(props) {
