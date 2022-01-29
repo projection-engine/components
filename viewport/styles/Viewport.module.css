@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
     padding: 2px;
-
+    user-select: none;
 }
 .viewportWrapper{
     width: 100%;

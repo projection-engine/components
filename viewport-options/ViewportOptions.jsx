@@ -5,7 +5,7 @@ import Range from "../range/Range";
 
 export default function ViewportOptions(props) {
     return (
-        <div className={styles.options}>
+        <div className={styles.options} draggable={false}>
 
             {props.hook.fullscreen ? null :
                 <>
@@ -48,7 +48,10 @@ export default function ViewportOptions(props) {
                                     onFinish={() => {
                                         props.engine.setResolutionMultiplier(props.hook.res / 100)
                                     }}
-                                    handleChange={e => props.hook.setRes(e)}/>
+                                    handleChange={e => {
+                                        if (e => 10 && e <= 200)
+                                            props.hook.setRes(e)
+                                    }}/>
                             </div>
 
                         </DropdownOptions>

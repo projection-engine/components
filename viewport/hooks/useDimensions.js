@@ -8,7 +8,7 @@ export default function useDimensions(id, engine) {
         if (target) {
             const bBox = target.parentNode.getBoundingClientRect()
             const newWidth = bBox.width, newHeight = bBox.height
-            engine?.gpu.viewport(0, 0, newWidth, newHeight)
+            engine.gpu?.viewport(0, 0, window.screen.width, window.screen.height);
             target.width = newWidth
             target.height = newHeight
 
