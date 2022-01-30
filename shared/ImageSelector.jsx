@@ -21,7 +21,11 @@ export default function ImageSelector(props) {
                         props.handleChange(t)
                     }}
                 >
-                    <ImageVisualizer data={t}/>
+                    <ImageVisualizer  data={{
+                        ...t,
+                        blob: t.previewImage ? t.previewImage : t.blob
+                    }}
+                    />
                 </Button>
             </React.Fragment>
         ))
@@ -51,7 +55,10 @@ export default function ImageSelector(props) {
 
                 highlight={open}
                 onClick={() => setOpen(true)}>
-                <ImageVisualizer data={state}/>
+                <ImageVisualizer data={{
+                    ...state,
+                    blob: state.previewImage ? state.previewImage : state.blob
+                }}/>
             </Button>
             <div style={{zIndex: open ? '999' : '-1'}} className={styles.modal} ref={ref}>
                 {content}

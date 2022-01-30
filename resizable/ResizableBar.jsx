@@ -6,6 +6,8 @@ export default function ResizableBar(props) {
     const ref = useRef()
 
     const handleMouseMove = (event) => {
+        if(props.onResize)
+            props.onResize()
 
         const bBox = ref.current?.previousSibling.getBoundingClientRect()
         const prevBbox = ref.current?.nextSibling.getBoundingClientRect()
@@ -24,33 +26,40 @@ export default function ResizableBar(props) {
         }
     }
     const handleMouseUp = () => {
+        if (props.onResizeEnd)
+            props.onResizeEnd()
         ref.current.parentNode.style.userSelect = 'default'
         document.removeEventListener('mousemove', handleMouseMove)
     }
     const handleMouseDown = () => {
-        ref.current.parentNode.style.userSelect = 'none'
-        ref.current.parentNode.style.transition = 'none'
-        document.addEventListener('mousemove', handleMouseMove)
-        document.addEventListener('mouseup', handleMouseUp, {once: true})
-    }
-    useEffect(() => {
-        if(!props.disabled)
-        ref.current?.addEventListener('mousedown', handleMouseDown)
-        return () => {
-            ref.current?.removeEventListener('mousedown', handleMouseDown)
+        if(!props.disabled) {
+            if (props.onResizeStart)
+                props.onResizeStart()
+            ref.current.parentNode.style.userSelect = 'none'
+            ref.current.parentNode.style.transition = 'none'
+            document.addEventListener('mousemove', handleMouseMove)
+            document.addEventListener('mouseup', handleMouseUp, {once: true})
         }
-    }, [props.disabled])
+    }
+
     return (
-        <div style={{
+        <div
+            onMouseDown={handleMouseDown}
+            style={{
             background: props.color,
             height: props.type === 'height' ? '3px' : '100%',
             width: props.type === 'width' ? '3px' : '100%',
             cursor: props.type === 'width' ? 'ew-resize' : 'ns-resize'
-        }} data-disabled={`${props.disabled}`} className={styles.wrapper} ref={ref}/>
+        }}
+             data-disabled={`${props.disabled}`}
+             className={styles.wrapper} ref={ref}/>
     )
 }
 
 ResizableBar.propTypes = {
+    onResize: PropTypes.func,
+    onResizeEnd: PropTypes.func,
+    onResizeStart: PropTypes.func,
     type: PropTypes.oneOf(['width', 'height']).isRequired,
     disabled: PropTypes.bool,
     color: PropTypes.string
