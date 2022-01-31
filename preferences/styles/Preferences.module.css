@@ -1,0 +1,12 @@
+.wrapper{
+    width: 50%;
+    height: 75%;
+    background: var(--fabric-background-primary);
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+
+}
