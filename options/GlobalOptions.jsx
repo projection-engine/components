@@ -33,6 +33,7 @@ export default function GlobalOptions(props) {
                     }}/>
 
                     <DropdownOption option={{
+
                         label: 'Preferences',
                         icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>settings</span>,
                         shortcut: 'Ctrl + alt + S',
@@ -46,7 +47,7 @@ export default function GlobalOptions(props) {
                     <DropdownOption option={{
                         label: 'Show scene options',
                         icon: props.settings.visibility.scene ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
-
+                        keepAlive: true,
                         onClick: () => props.settings.setVisibility(prev => {
                             return  {...prev, scene: !prev.scene}
                         })
@@ -54,6 +55,7 @@ export default function GlobalOptions(props) {
 
                     <DropdownOption option={{
                         label: 'Show files',
+                        keepAlive: true,
                         icon: props.settings.visibility.files ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
                         onClick: () => props.settings.setVisibility(prev => {
                             return  {...prev, files: !prev.files}
@@ -62,6 +64,7 @@ export default function GlobalOptions(props) {
 
                     <DropdownOption option={{
                         label: 'Show viewport options',
+                        keepAlive: true,
                         icon: props.settings.visibility.viewportOptions ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
                         onClick: () => props.settings.setVisibility(prev => {
                             return  {...prev, viewportOptions: !prev.viewportOptions}
