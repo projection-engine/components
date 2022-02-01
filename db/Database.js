@@ -142,6 +142,9 @@ export default class Database extends Dexie {
     }
 
     async postFileWithBlob(fileData, blob) {
+        try{
+            delete fileData.blob
+        }catch (e){}
         await this.table('file').add(fileData)
         await this.postBlob(fileData.id, blob)
     }

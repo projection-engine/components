@@ -29,14 +29,14 @@ export default function GlobalOptions(props) {
                     <DropdownOption option={{
                         label: 'Export project',
                         icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>save_alt</span>,
-                        onClick: () => null // TODO
+                        onClick: () => props.downloadProject()
                     }}/>
 
                     <DropdownOption option={{
                         label: 'Preferences',
                         icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>settings</span>,
                         shortcut: 'Ctrl + alt + S',
-                        onClick: () => props.viewportHook.setViewPreferences(true)
+                        onClick: () => props.settings.setViewPreferences(true)
                     }}/>
                 </DropdownOptions>
             </Dropdown>
@@ -45,22 +45,27 @@ export default function GlobalOptions(props) {
                 <DropdownOptions>
                     <DropdownOption option={{
                         label: 'Show scene options',
-                        icon: props.viewportHook.showScene ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
+                        icon: props.settings.visibility.scene ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
 
-                        onClick: () => null// TODO
+                        onClick: () => props.settings.setVisibility(prev => {
+                            return  {...prev, scene: !prev.scene}
+                        })
                     }}/>
 
                     <DropdownOption option={{
                         label: 'Show files',
-                        icon: props.viewportHook.showFiles ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
-                        onClick: () => null // TODO
+                        icon: props.settings.visibility.files ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
+                        onClick: () => props.settings.setVisibility(prev => {
+                            return  {...prev, files: !prev.files}
+                        })
                     }}/>
 
                     <DropdownOption option={{
                         label: 'Show viewport options',
-                        icon: props.viewportHook.showViewportOptions ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
-
-                        onClick: () => null// TODO
+                        icon: props.settings.visibility.viewportOptions ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
+                        onClick: () => props.settings.setVisibility(prev => {
+                            return  {...prev, viewportOptions: !prev.viewportOptions}
+                        })
                     }}/>
                 </DropdownOptions>
             </Dropdown>
@@ -71,7 +76,8 @@ export default function GlobalOptions(props) {
     )
 }
 GlobalOptions.propTypes = {
+    downloadProject: PropTypes.func.isRequired,
     save: PropTypes.func.isRequired,
     redirect: PropTypes.func.isRequired,
-    viewportHook: PropTypes.object.isRequired
+    settings: PropTypes.object.isRequired
 }
