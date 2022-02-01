@@ -7,3 +7,4 @@
 [submodule "scripting"]
 	path = scripting
 	url = https://github.com/projection-engine/visual-scripting.git
+ 
