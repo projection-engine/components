@@ -1,4 +1,4 @@
-import groupBy from "../../../utils/groupBy";
+import groupBy from "../../../utils/misc/groupBy";
 import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 import styles from "../styles/Options.module.css";

@@ -2,11 +2,11 @@ import PropTypes from "prop-types";
 import styles from './styles/Mesh.module.css'
 import useEngine from "../../core/useEngine";
 import {useEffect, useLayoutEffect, useState} from "react";
-import randomID from "../../utils/randomID";
+import randomID from "../../utils/misc/randomID";
 import Viewport from "../viewport/Viewport";
 import Controls from "./components/Controls";
 
-import importMesh from "../../utils/importMesh";
+import importMesh from "../../utils/parsers/importMesh";
 
 export default function MeshVisualizer(props) {
     const [id, setId] = useState()

@@ -1,5 +1,5 @@
 import styles from "./styles/Loader.module.css";
-import randomInRange from "../../utils/randomInRange";
+import randomInRange from "../../utils/misc/randomInRange";
 import {Modal} from "@f-ui/core";
 import PropTypes from "prop-types";
 

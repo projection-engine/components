@@ -1,5 +1,5 @@
 import Dexie from "dexie";
-import randomID from "../../utils/randomID";
+import randomID from "../../utils/misc/randomID";
 import splitData from "./utils/splitData";
 import sortBlobs from "./utils/sortBlobs";
 

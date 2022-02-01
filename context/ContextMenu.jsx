@@ -36,7 +36,7 @@ export default function ContextMenu(props) {
             setSelected(undefined)
 
 
-        contextRef.current.style.zIndex = '10'
+        contextRef.current.style.zIndex = '999'
         contextRef.current.style.left = event.clientX + 'px'
         contextRef.current.style.top = event.clientY + 'px'
     }
