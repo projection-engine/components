@@ -9,7 +9,7 @@ export default function ViewportOptions(props) {
 
             {props.hook.fullscreen ? null :
                 <>
-                    <Dropdown className={styles.optionWrapper} variant={'outlined'} justify={'start'} align={'bottom'}>
+                    <Dropdown className={styles.optionWrapper} justify={'start'} align={'bottom'}>
                         <span className={'material-icons-round'}>more_vert</span>
                         <DropdownOptions>
                             <DropdownOption option={{
@@ -56,8 +56,11 @@ export default function ViewportOptions(props) {
 
                         </DropdownOptions>
                     </Dropdown>
-                    <Dropdown className={styles.optionWrapper} styles={{width: '125px'}} variant={'outlined'}
-                              justify={'start'} align={'bottom'}>
+                    <Dropdown
+                        className={styles.optionWrapper}
+
+                        styles={{width: '125px'}}
+                        justify={'start'} align={'bottom'}>
                         <div className={styles.summary}>
                             <span
                                 className={'material-icons-round'}>{!props.engine.cameraType === 'free' ? '360' : 'videocam'}</span>

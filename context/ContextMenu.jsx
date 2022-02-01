@@ -11,18 +11,17 @@ export default function ContextMenu(props) {
     let targets
     const handleContext = (event) => {
         targets = document.elementsFromPoint(event.clientX, event.clientY)
-
-            targets = targets.filter(t => {
-                let hasAttribute = false
-                Array.from(t.attributes).forEach(attr => {
-                    const has = props.triggers.find(f => attr.nodeName === f)
-                    if (has)
-                        hasAttribute = hasAttribute || has
-                })
-
-                if (hasAttribute)
-                    return t
+        targets = targets.filter(t => {
+            let hasAttribute = false
+            Array.from(t.attributes).forEach(attr => {
+                const has = props.triggers.find(f => attr.nodeName === f)
+                if (has)
+                    hasAttribute = hasAttribute || has
             })
+
+            if (hasAttribute)
+                return t
+        })
         event.preventDefault()
 
         if (targets.length > 0) {
@@ -37,8 +36,16 @@ export default function ContextMenu(props) {
 
 
         contextRef.current.style.zIndex = '999'
-        contextRef.current.style.left = event.clientX + 'px'
-        contextRef.current.style.top = event.clientY + 'px'
+        const bBox = contextRef.current?.getBoundingClientRect()
+        if (event.clientX + bBox.width > document.body.offsetWidth)
+            contextRef.current.style.left = (event.clientX - bBox.width) + 'px'
+        else
+            contextRef.current.style.left = event.clientX + 'px'
+
+        if ((event.clientY + bBox.height ) > document.body.offsetHeight)
+            contextRef.current.style.top = (event.clientY) + 'px'
+        else
+            contextRef.current.style.top = (event.clientY + bBox.height) + 'px'
     }
     const handleMouseDown = (event) => {
         if (!document.elementsFromPoint(event.clientX, event.clientY).includes(contextRef.current)) {
@@ -58,7 +65,7 @@ export default function ContextMenu(props) {
             document.removeEventListener('mousedown', handleMouseDown)
             ref.current?.parentNode.removeEventListener('contextmenu', handleContext)
         }
-    }, [selected])
+    }, [selected, props.options])
 
 
     const options = useMemo(() => {
@@ -75,7 +82,7 @@ export default function ContextMenu(props) {
                             onClick={() => {
                                 el.onClick(selected)
                                 contextRef.current.style.zIndex = '-1'
-                                if(selected)
+                                if (selected)
                                     selected.style.outline = 'transparent 2px solid'
                                 setSelected(undefined)
                             }}>

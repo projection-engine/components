@@ -5,13 +5,15 @@
     top: 50%;
     left: 0;
     z-index: -1;
-    width: 250px;
+    width: 200px;
     height: fit-content;
     border-radius: 3px;
-    box-shadow: rgba(0, 0, 0, .2) 2px 2px 2px 1px;
-    background-color: var(--background-1);
+    box-shadow: rgba(0, 0, 0, .2) 3px 3px 10px 5px;
+    background-color: var(--background-3);
     display: grid;
     align-items: flex-start;
+
+
 }
 
 .basicButton {

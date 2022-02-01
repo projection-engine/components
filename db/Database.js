@@ -201,6 +201,22 @@ export default class Database extends Dexie {
     }
 
     async deleteEntity(id) {
-        return this.table('entity').delete(id)
+        let promises = []
+
+        const related = await this.table('entity').where({linkedTo: id}).toArray()
+        related.forEach(f => promises.push(
+            new Promise(r => {
+                this.deleteEntity(f.id)
+                    .then(() => r())
+                    .catch(() => r())
+            })
+        ))
+        promises.push(new Promise(r => {
+            this.table('entity').delete(id)
+                .then(() => r())
+                .catch(() => r())
+        }))
+
+        return Promise.all(promises)
     }
 }

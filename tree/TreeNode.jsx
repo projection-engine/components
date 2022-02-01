@@ -11,18 +11,17 @@ export default function TreeNode(props) {
 
     useEffect(() => {
         setCurrentLabel(props.node.label)
-    }, [props.node])
-    useEffect(() => {
+        console.log(props.node)
         if(props.node.attributes){
             Object.keys(props.node.attributes).forEach((attr) => {
                 ref.current?.setAttribute(attr, `${props.node.attributes[attr]}`)
             })
         }
-
         if(!props.node.phantomNode)
             ref.current?.setAttribute('data-node', `${props.node.id}`)
 
-    }, [props.node.attributes])
+    }, [props.node])
+
 
     return (
         <>
