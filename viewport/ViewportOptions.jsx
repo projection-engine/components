@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import styles from "./styles/VO.module.css";
+import styles from "./styles/ViewportOptions.module.css";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import Range from "../range/Range";
 
