@@ -16,6 +16,7 @@ export default function Loader(props){
                         <div data-index={`${i}`} className={styles.loaderBar} style={{background: props.dark ? '#111111' : ' #ced4da',}}>
                             <div className={styles.loading} style={{
                                 animationDelay: `${i * 100}ms`,
+                                background: props.accentColor ? props.accentColor : '#0095ff',
                                 '--animationSpeed': randomInRange(2, 1) + 's'}}/>
                         </div>
                     </div>
@@ -26,5 +27,6 @@ export default function Loader(props){
 }
 Loader.propTypes={
     events: PropTypes.object,
-    dark: PropTypes.bool
+    dark: PropTypes.bool,
+    accentColor: PropTypes.string
 }

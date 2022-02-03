@@ -1,22 +1,24 @@
 import PropTypes from "prop-types";
-import styles from './styles/Image.module.css'
+import styles from './styles/SelectorItem.module.css'
+import useVisualizer from "../mesh_visualizer/hook/useVisualizer";
 
-export default function ImageVisualizer(props) {
+export default function SelectorItem(props) {
+
 
     return (
         <div className={styles.wrapper}>
-            {props.data.blob ? <img src={props.data.blob} alt={props.data.name} className={styles.image}/>
+            {props.data.blob ?
+                <img src={props.data.blob} alt={props.data.name} className={styles.image}/>
             :
                 <div className={styles.image} style={{backgroundColor: '#e0e0e0'}}/>
             }
             <label className={styles.label} title={props.data.name}>
                 {props.data.name}
             </label>
-            {/*<ToolTip justify={"middle"} align={"middle"} content={props.data.name}/>*/}
         </div>
     )
 }
-ImageVisualizer.propTypes = {
+SelectorItem.propTypes = {
     data: PropTypes.shape({
         name: PropTypes.string,
         id: PropTypes.string,

@@ -2,16 +2,26 @@
     display: flex;
     height: 100%;
     width: 100%;
-    gap: 4px;
-    padding: 4px;
+
+    padding: 3px 0 0 0;
 
 
 }
-.controlsWrapper{
+
+.controlsWrapper {
     width: 35%;
     background-color: var(--background-1);
     height: 100%;
 
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+    gap: 4px;
+
     border-radius: 5px;
 
+}
+
+.summary {
+    background-color: var(--background-2) !important;
 }

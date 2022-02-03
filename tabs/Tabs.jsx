@@ -9,7 +9,7 @@ export default function Tabs(props) {
     const [options, setOptions] = useState([])
 
     const tabs = useMemo(() => {
-        if(props.tab === 0)
+        if (props.tab === 0)
             setOptions([])
         return props.tabs.filter(t => t.open)
     }, [props.tabs])
@@ -33,23 +33,26 @@ export default function Tabs(props) {
                                     highlight={props.tab === i}
                                     onClick={() => {
                                         if (props.tab !== i) {
-
+                                            if (props.onBeforeSwitch)
+                                                props.onBeforeSwitch(i)
                                             props.setTab(i)
                                         }
                                     }}
                                 >
                                     {tab.icon}
-
-                                        {tab.label}
-
+                                    {tab.label}
                                 </Button>
                                 {tab.canClose ?
                                     <Button
                                         color={"secondary"}
                                         className={styles.closeButton}
                                         onClick={() => {
-                                            if (props.tab === i)
+
+                                            if (props.tab === i) {
                                                 props.setTab(i - 1)
+                                                if (i - 1 === 0 && props.onBeforeSwitch)
+                                                    props.onBeforeSwitch(0)
+                                            }
                                             tab.handleClose()
 
                                         }}
@@ -97,5 +100,6 @@ Tabs.propTypes = {
         keepAlive: PropTypes.bool
     })).isRequired,
     tab: PropTypes.number,
-    setTab: PropTypes.func
+    setTab: PropTypes.func,
+    onBeforeSwitch: PropTypes.func
 }

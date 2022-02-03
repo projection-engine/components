@@ -47,7 +47,7 @@
 
 
 .hovered{
-    outline: #0095ff 1px dashed !important;
+    outline: var(--fabric-accent-color) 1px dashed !important;
 }
 .hovered > * {
     opacity: .5;

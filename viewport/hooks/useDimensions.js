@@ -24,13 +24,13 @@ export default function useDimensions(id, engine) {
     }
     useEffect(() => {
         const target = document.getElementById(id + '-canvas')
-        if (target && engine.gpu && engine.ready) {
+        if (target && engine.gpu ) {
             if (!resizeObs)
                 resizeObs = new ResizeObserver(callback)
             resizeObs.observe(target.parentNode)
             resizeObs.observe(document.body)
             callback(true)
         }
-    }, [id, engine.gpu, engine.ready])
+    }, [id, engine.gpu])
 
 }
