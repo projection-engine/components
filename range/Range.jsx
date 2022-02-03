@@ -7,19 +7,10 @@ export default function Range(props) {
 
     let currentValue = props.value
     let locked = false
-    let lastPosition
+
     const handleMouseMove = (e) => {
         let multiplier = e.movementX
-        if (!lastPosition)
-            lastPosition = e.movementX
 
-
-        if(Math.abs(e.movementX - lastPosition) > 10) {
-            lastPosition = 1
-            multiplier = 1
-        }
-        else
-            lastPosition = e.movementX
         const increment = Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * multiplier)
         if (!locked) {
             locked = true
@@ -41,7 +32,7 @@ export default function Range(props) {
 
             document.addEventListener('mousemove', handleMouseMove)
             document.addEventListener('mouseup', () => {
-                lastPosition = undefined
+
                 locked = false
                 document.exitPointerLock()
                 document.removeEventListener('mousemove', handleMouseMove)
