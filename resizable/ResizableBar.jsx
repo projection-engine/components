@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from './styles/Resizable.module.css'
-import {useEffect, useRef} from "react";
+import {useRef} from "react";
 
 export default function ResizableBar(props) {
     const ref = useRef()

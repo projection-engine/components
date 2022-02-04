@@ -1,6 +1,6 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import styles from "./styles/Selector.module.css";
-import {Button, Dropdown, DropdownOption, DropdownOptions, Modal} from "@f-ui/core";
+import {Button, Dropdown, DropdownOptions} from "@f-ui/core";
 import SelectorItem from "./SelectorItem";
 import PropTypes from "prop-types";
 import Search from "../search/Search";

@@ -1,7 +1,8 @@
 import Dexie from "dexie";
-import randomID from "../../utils/misc/randomID";
+
 import splitData from "./utils/splitData";
 import sortBlobs from "./utils/sortBlobs";
+import randomID from "../../views/editor/utils/misc/randomID";
 
 export default class Database extends Dexie {
     _ready = false

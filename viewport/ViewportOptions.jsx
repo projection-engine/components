@@ -63,7 +63,7 @@ export default function ViewportOptions(props) {
                         justify={'start'} align={'bottom'}>
                         <div className={styles.summary}>
                             <span
-                                className={'material-icons-round'}>{!props.engine.cameraType === 'free' ? '360' : 'videocam'}</span>
+                                className={'material-icons-round'}>{props.engine.cameraType !== 'free' ? '360' : 'videocam'}</span>
                             <div className={styles.overflow}>
                                 {props.engine.cameraType === 'free' ? 'Free camera' : 'Spherical camera'}
                             </div>

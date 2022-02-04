@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import styles from './styles/SelectorItem.module.css'
-import useVisualizer from "../mesh_visualizer/hook/useVisualizer";
 
 export default function SelectorItem(props) {
 

@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import styles from './styles/Preferences.module.css'
-import {Button, Modal, Tab, ThemeContext, VerticalTabs} from "@f-ui/core";
+import {Button, Modal, Tab, VerticalTabs} from "@f-ui/core";
 import {useContext, useState} from "react";
-import ThemeProvider from "../../hook/GlobalProvider";
+import ThemeProvider from "../../views/editor/hook/ThemeProvider";
+
 
 export default function Preferences(props) {
     const [openTab, setOpenTab] = useState(0)

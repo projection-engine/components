@@ -1,8 +1,9 @@
 import {useContext, useEffect, useState} from "react";
 import DatabaseProvider from "./DatabaseProvider";
-import {FILE_TYPES} from "../files/hooks/useDB";
-import LoadProvider from "../../hook/LoadProvider";
-import EVENTS from "../../utils/misc/EVENTS";
+import EVENTS from "../../views/editor/utils/misc/EVENTS";
+import LoadProvider from "../../views/editor/hook/LoadProvider";
+import {FILE_TYPES} from "../../views/files/hooks/useDB";
+
 
 export default function useQuickAccess(projectID) {
     const database = useContext(DatabaseProvider)
