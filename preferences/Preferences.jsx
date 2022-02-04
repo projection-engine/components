@@ -24,7 +24,7 @@ export default function Preferences(props) {
                         className={styles.button}
                         variant={"outlined"}
                     >
-                        <span className={'material-icons-round'}>{theme.dark ? 'light_mode' : 'nightlight'}</span>
+                        <span className={'material-icons-round'}>{theme.dark ? 'dark_mode' : 'light_mode'}</span>
                         {theme.dark ? 'Dark theme' : 'Light theme'}
                     </Button>
                 </Tab>

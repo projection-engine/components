@@ -5,13 +5,13 @@ import sortBlobs from "./utils/sortBlobs";
 import randomID from "../../views/editor/utils/misc/randomID";
 
 export default class Database extends Dexie {
-    _ready = false
+
 
     constructor(name, options) {
         super(name, options);
 
         this.version(1).stores({
-            project: 'id, settings',
+            project: 'id, meta, settings',
             entity: 'id, linkedTo, project, blob',
 
             file: 'id, project, name, creationDate, parent, instanceOf, type, size, previewImage',
@@ -19,12 +19,9 @@ export default class Database extends Dexie {
         });
 
         this.open()
-            .then(() => this._ready = true)
+
     }
 
-    get ready() {
-        return this._ready
-    }
 
     // BLOB
     async getBlob(fileID) {
