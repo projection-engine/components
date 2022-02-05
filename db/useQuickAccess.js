@@ -5,9 +5,8 @@ import LoadProvider from "../../views/editor/hook/LoadProvider";
 import {FILE_TYPES} from "../../views/files/hooks/useDB";
 
 
-export default function useQuickAccess(projectID) {
+export default function useQuickAccess(projectID, load) {
     const database = useContext(DatabaseProvider)
-    const load = useContext(LoadProvider)
     const [images, setImages] = useState([])
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
@@ -25,18 +24,7 @@ export default function useQuickAccess(projectID) {
         promises.push(
             new Promise((r) => {
                 database
-                    .listFilesWithFilter((file) => {
-                        if (file.project === projectID && file.instanceOf === FILE_TYPES.FILE)
-                            switch (file.type) {
-                                case  'jpg':
-                                case  'jpeg':
-                                case  'hdr':
-                                case 'png':
-                                    return file
-                                default:
-                                    return
-                            }
-                    })
+                    .listFiles({project: projectID, type: 'image', instanceOf: FILE_TYPES.FILE})
                     .then(res => r(res))
             })
         )

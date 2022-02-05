@@ -40,7 +40,9 @@ export default function Tabs(props) {
                                     }}
                                 >
                                     {tab.icon}
-                                    {tab.label}
+                                 <div className={styles.overflow}>
+                                     {tab.label}
+                                 </div>
                                 </Button>
                                 {tab.canClose ?
                                     <Button

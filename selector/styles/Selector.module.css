@@ -34,8 +34,20 @@
     height: fit-content;
     background-color: var(--fabric-background-primary) !important;
     z-index: 999;
-}
 
+    display: flex;
+    padding: 0 2px;
+
+}
+.refreshButton{
+    padding: 0  !important;
+    height: 25px;
+    width: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .nothing{
     user-select: none;

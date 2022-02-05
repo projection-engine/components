@@ -1,9 +1,8 @@
 import styles from "./styles/Projects.module.css";
 import EVENTS from "../../views/editor/utils/misc/EVENTS";
 import PropTypes from 'prop-types'
-import {useState} from "react";
+import React, {useState} from "react";
 import Card from "./components/Card";
-import React from 'react'
 import {Button} from "@f-ui/core";
 
 export default function Projects(props) {
@@ -34,6 +33,9 @@ export default function Projects(props) {
                         onClick={() => props.redirect('/project?id=' + p.id)}
                         variant={variant}
                         data={p} index={i}
+                        onRename={newName  => {
+                            props.database.updateProject(p.id, {settings: JSON.stringify({...p.settings, projectName: newName})})
+                        }}
                         onDelete={() => {
                             props.load.pushEvent(EVENTS.PROJECT_DELETE)
                             props.database.deleteProject(p.id)
