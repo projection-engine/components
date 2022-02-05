@@ -57,6 +57,6 @@ export default function Preferences(props) {
 }
 Preferences.propTypes = {
 
-    serializer: PropTypes.object.isRequired,
-    settings: PropTypes.object.isRequired
+    serializer: PropTypes.object,
+    settings: PropTypes.object
 }

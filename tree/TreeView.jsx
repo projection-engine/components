@@ -79,7 +79,7 @@ export default function TreeView(props) {
 TreeView.propTypes = {
     selected: PropTypes.string,
     nodes: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
+        id: PropTypes.any.isRequired,
         label: PropTypes.string,
         onClick: PropTypes.func,
         children: PropTypes.array,

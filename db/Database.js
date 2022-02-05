@@ -26,16 +26,21 @@ export default class Database extends Dexie {
     // BLOB
     async getBlob(fileID) {
         let response = ''
-        let data = await this.table('blob')
-            .where({parentFile: fileID})
-            .toArray()
+        return new Promise(resolve => {
+            this.table('blob')
+                .where({parentFile: fileID})
+                .toArray()
+                .then(data => {
+                    data.sort(sortBlobs)
+                    data.forEach(d => {
+                        response += d.data
+                    })
 
-        data.sort(sortBlobs)
-        data.forEach(d => {
-            response += d.data
+                    resolve(response)
+                })
         })
 
-        return response
+
     }
 
     async postBlob(parentFile, data) {
@@ -64,6 +69,7 @@ export default class Database extends Dexie {
             .where({parentFile: fileID})
             .toArray()
         let promises = []
+
         existing.forEach(e => {
             promises.push(new Promise(resolve => {
                 this.table('blob')
@@ -140,9 +146,10 @@ export default class Database extends Dexie {
     }
 
     async postFileWithBlob(fileData, blob) {
-        try{
+        try {
             delete fileData.blob
-        }catch (e){}
+        } catch (e) {
+        }
         await this.table('file').add(fileData)
         await this.postBlob(fileData.id, blob)
     }

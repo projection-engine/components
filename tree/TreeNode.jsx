@@ -11,7 +11,7 @@ export default function TreeNode(props) {
 
     useEffect(() => {
         setCurrentLabel(props.node.label)
-        console.log(props.node)
+
         if(props.node.attributes){
             Object.keys(props.node.attributes).forEach((attr) => {
                 ref.current?.setAttribute(attr, `${props.node.attributes[attr]}`)
@@ -125,7 +125,7 @@ TreeNode.propTypes = {
     selected: PropTypes.string,
     handleRename: PropTypes.func.isRequired,
     node: PropTypes.shape({
-        id: PropTypes.string.isRequired,
+        id: PropTypes.any.isRequired,
         label: PropTypes.string,
         onClick: PropTypes.func,
         children: PropTypes.array,
