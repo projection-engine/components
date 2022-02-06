@@ -5,8 +5,7 @@ import LoadProvider from "../../views/editor/hook/LoadProvider";
 import {FILE_TYPES} from "../../views/files/hooks/useDB";
 
 
-export default function useQuickAccess(projectID, load) {
-    const database = useContext(DatabaseProvider)
+export default function useQuickAccess(projectID, load, database) {
     const [images, setImages] = useState([])
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])

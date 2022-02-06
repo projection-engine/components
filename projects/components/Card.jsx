@@ -83,7 +83,7 @@ export default function Card(props) {
                     })}>
                         <span className={'material-icons-round'}>delete</span>
                         <Modal
-                            blurIntensity={0}
+
                             className={styles.onDelete} variant={'fit'}
                             handleClose={() => setOpen({})} open={open.delete}>
                             Are you sure ?

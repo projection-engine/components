@@ -60,9 +60,9 @@ Projects.propTypes = {
     onLoad: PropTypes.func,
     onNew: PropTypes.func,
     refresh: PropTypes.func,
-    database: PropTypes.object.isRequired,
-    load: PropTypes.object.isRequired,
-    redirect: PropTypes.func.isRequired,
-    projects: PropTypes.array.isRequired,
-    setProjects: PropTypes.func.isRequired
+    database: PropTypes.object,
+    load: PropTypes.object,
+    redirect: PropTypes.func,
+    projects: PropTypes.array,
+    setProjects: PropTypes.func
 }

@@ -26,7 +26,7 @@ export default function Viewport(props) {
                 ref.current?.classList.remove(styles.hovered)
             }}
             onDrop={e => {
-                console.log(e.dataTransfer)
+
                 if (props.allowDrop) {
                     e.preventDefault()
                     ref.current?.classList.remove(styles.hovered)

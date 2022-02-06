@@ -1,10 +1,12 @@
 import styles from './styles/GlobalOptions.module.css'
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import PropTypes from "prop-types";
+import {useContext} from "react";
+import SettingsProvider from "../../views/editor/hook/SettingsProvider";
 
 
 export default function GlobalOptions(props) {
-
+    const settingsContext = useContext(SettingsProvider)
     return (
         <div className={styles.wrapper}>
             <Button
@@ -38,7 +40,7 @@ export default function GlobalOptions(props) {
                         label: 'Preferences',
                         icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>settings</span>,
                         shortcut: 'Ctrl + alt + S',
-                        onClick: () => props.settings.setViewPreferences(true)
+                        onClick: () => settingsContext.preferencesVisibility = true
                     }}/>
                 </DropdownOptions>
             </Dropdown>
@@ -47,29 +49,23 @@ export default function GlobalOptions(props) {
                 <DropdownOptions>
                     <DropdownOption option={{
                         label: 'Show scene options',
-                        icon: props.settings.visibility.scene ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
+                        icon: settingsContext.sceneVisibility ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
                         keepAlive: true,
-                        onClick: () => props.settings.setVisibility(prev => {
-                            return  {...prev, scene: !prev.scene}
-                        })
+                        onClick: () => settingsContext.sceneVisibility = ! settingsContext.sceneVisibility
                     }}/>
 
                     <DropdownOption option={{
                         label: 'Show files',
                         keepAlive: true,
-                        icon: props.settings.visibility.files ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
-                        onClick: () => props.settings.setVisibility(prev => {
-                            return  {...prev, files: !prev.files}
-                        })
+                        icon: settingsContext.filesVisibility ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
+                        onClick: () => settingsContext.filesVisibility = ! settingsContext.filesVisibility
                     }}/>
 
                     <DropdownOption option={{
                         label: 'Show viewport options',
                         keepAlive: true,
-                        icon: props.settings.visibility.viewportOptions ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
-                        onClick: () => props.settings.setVisibility(prev => {
-                            return  {...prev, viewportOptions: !prev.viewportOptions}
-                        })
+                        icon: settingsContext.viewportOptionsVisibility ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
+                        onClick: () => settingsContext.viewportOptionsVisibility = ! settingsContext.viewportOptionsVisibility
                     }}/>
                 </DropdownOptions>
             </Dropdown>
@@ -82,6 +78,5 @@ export default function GlobalOptions(props) {
 GlobalOptions.propTypes = {
     downloadProject: PropTypes.func.isRequired,
     save: PropTypes.func.isRequired,
-    redirect: PropTypes.func.isRequired,
-    settings: PropTypes.object.isRequired
+    redirect: PropTypes.func.isRequired
 }

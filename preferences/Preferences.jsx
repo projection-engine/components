@@ -3,15 +3,17 @@ import styles from './styles/Preferences.module.css'
 import {Button, Modal, Tab, VerticalTabs} from "@f-ui/core";
 import {useContext, useState} from "react";
 import ThemeProvider from "../../views/editor/hook/ThemeProvider";
+import SettingsProvider from "../../views/editor/hook/SettingsProvider";
 
 
 export default function Preferences(props) {
     const [openTab, setOpenTab] = useState(0)
     const theme = useContext(ThemeProvider)
-
+    const settingsContext = useContext(SettingsProvider)
     const [changed, setChanged] = useState(false)
+
     return (
-        <Modal open={props.settings.viewPreferences} handleClose={() => props.settings.setViewPreferences(false)}
+        <Modal blurIntensity={'5px'} open={settingsContext.preferencesVisibility} handleClose={() => settingsContext.preferencesVisibility=false}
                className={styles.wrapper}>
 
             <VerticalTabs open={openTab} setOpen={setOpenTab} className={styles.tabs}>
@@ -30,25 +32,16 @@ export default function Preferences(props) {
                 </Tab>
             </VerticalTabs>
             <div className={styles.submitWrapper}>
-                <Button
-                    disabled={!changed}
-                    onClick={() => {
-                        setChanged(false)
-                        props.serializer.saveSettings()
-                        props.settings.setViewPreferences(false)
-                    }}
-                    variant={'filled'} className={styles.submitButton}>
-                    Ok
-                </Button>
+
 
                 <Button
                     className={styles.submitButton}
-                    variant={"outlined"}
+                    variant={"filled"}
                     onClick={() => {
-                        props.settings.setViewPreferences(false)
+                        settingsContext.preferencesVisibility = false
                     }}
                 >
-                    Cancel
+                    Ok
                 </Button>
             </div>
 
@@ -58,5 +51,5 @@ export default function Preferences(props) {
 Preferences.propTypes = {
 
     serializer: PropTypes.object,
-    settings: PropTypes.object
+
 }

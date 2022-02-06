@@ -44,8 +44,9 @@ export default class Database extends Dexie {
     }
 
     async postBlob(parentFile, data) {
-        const parts = splitData(data)
 
+        const parts = splitData(data)
+        console.trace(parts)
         let promises = []
         parts.forEach((p, i) => {
             promises.push(new Promise(resolve => {
@@ -150,7 +151,9 @@ export default class Database extends Dexie {
             delete fileData.blob
         } catch (e) {
         }
+
         await this.table('file').add(fileData)
+
         await this.postBlob(fileData.id, blob)
     }
 

@@ -16,14 +16,17 @@ export default function Range(props) {
             locked = true
             ref.current?.requestPointerLock()
         }
-        if (e.movementX < 0) {
+        if (e.movementX < 0 && (currentValue <= props.maxValue || !props.maxValue)) {
             currentValue = parseFloat(currentValue) + increment
             props.handleChange(currentValue.toFixed(1))
-        } else {
+        } else if (currentValue >= props.minValue || !props.minValue) {
             currentValue = parseFloat(currentValue) - increment
             props.handleChange(currentValue.toFixed(1))
         }
-
+        if (currentValue > props.maxValue && props.maxValue !== undefined)
+            currentValue = props.maxValue
+        else if (currentValue < props.minValue && props.minValue !== undefined)
+            currentValue = props.minValue
 
     }
     const ref = useRef()
@@ -92,6 +95,10 @@ export default function Range(props) {
 }
 
 Range.propTypes = {
+
+    maxValue: PropTypes.number,
+    minValue: PropTypes.number,
+
     onFinish: PropTypes.func,
     accentColor: PropTypes.string,
     disabled: PropTypes.bool,
