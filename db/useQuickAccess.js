@@ -1,37 +1,40 @@
 import {useContext, useEffect, useState} from "react";
-import DatabaseProvider from "./DatabaseProvider";
+
 import EVENTS from "../../views/editor/utils/misc/EVENTS";
 import LoadProvider from "../../views/editor/hook/LoadProvider";
 import {FILE_TYPES} from "../../views/files/hooks/useDB";
+import FileSystem from "./FileSystem";
 
 
-export default function useQuickAccess(projectID, load, database) {
+export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
+    const fileSystem = new FileSystem()
+
 
     const refresh = () => {
         let promises = []
         load.pushEvent(EVENTS.REFRESHING)
         promises.push(
             new Promise((r) => {
-                database
-                    .listFiles({project: projectID, type: 'mesh', instanceOf: FILE_TYPES.FILE})
+                fileSystem
+                    .listFiles({project: projectID, type: 'mesh'})
                     .then(res => r(res))
             })
         )
         promises.push(
             new Promise((r) => {
-                database
-                    .listFiles({project: projectID, type: 'image', instanceOf: FILE_TYPES.FILE})
+                fileSystem
+                    .listFiles({project: projectID, type: 'image'})
                     .then(res => r(res))
             })
         )
 
         promises.push(
             new Promise((r) => {
-                database
-                    .listFiles({project: projectID, type: 'material', instanceOf: FILE_TYPES.FILE})
+                fileSystem
+                    .listFiles({project: projectID, type: 'material'})
                     .then(res => r(res))
             })
         )
@@ -46,12 +49,8 @@ export default function useQuickAccess(projectID, load, database) {
         })
     }
 
-    useEffect(() => {
-        if (projectID && database)
-            refresh()
-    }, [projectID, database])
-
     return {
+        fileSystem,
         images,
         meshes,
         materials,
