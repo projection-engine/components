@@ -2,7 +2,7 @@ import styles from '../styles/Card.module.css'
 import PropTypes from "prop-types";
 import {Button, Modal, TextField, ToolTip} from "@f-ui/core";
 import {useState} from "react";
-
+import logo from '../../../static/LOGO.png'
 export default function Card(props) {
     const [open, setOpen] = useState({
         delete: false,
@@ -18,7 +18,7 @@ export default function Card(props) {
 
                         <img
                             alt={'Preview'}
-                            src={props.data.meta?.preview ? props.data.meta?.preview : './LOGO.png'}
+                            src={props.data.meta?.preview ? props.data.meta?.preview : logo}
                             className={styles.image}
 
                             draggable={false}
@@ -47,7 +47,7 @@ export default function Card(props) {
                 <img
 
                     alt={'Preview'}
-                    src={props.data.meta?.preview ? props.data.meta?.preview : './LOGO.png'}
+                    src={props.data.meta?.preview ? props.data.meta?.preview : logo}
                     className={styles.image}
                     draggable={false}/>
             </Button>

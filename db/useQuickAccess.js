@@ -47,9 +47,9 @@ export default function useQuickAccess(projectID, load, database) {
     }
 
     useEffect(() => {
-        if (projectID)
+        if (projectID && database)
             refresh()
-    }, [projectID])
+    }, [projectID, database])
 
     return {
         images,
