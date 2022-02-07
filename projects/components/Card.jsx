@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import {Button, Modal, TextField, ToolTip} from "@f-ui/core";
 import {useState} from "react";
 import logo from '../../../static/LOGO.png'
+
 export default function Card(props) {
     const [open, setOpen] = useState({
         delete: false,
         edit: false,
         image: false
     })
-    const [name, setName] = useState(props.data.settings.projectName)
+    const [name, setName] = useState(props.data.meta.name)
 
     return (
         <div className={styles.wrapper} data-card={props.data.id} style={{animationDelay: props.index * 100 + 'ms'}}>
@@ -113,25 +114,6 @@ export default function Card(props) {
                          style={{fontWeight: 'normal'}}>{props.data.meta?.creationDate}</div>
                 </div>
 
-                <div className={styles.dividerWrapper}>
-                    Project info <div className={styles.divider}/>
-
-                </div>
-                <div className={styles.data}>
-                    Entities:
-                    <div className={styles.overflow}
-                         style={{fontWeight: 'normal'}}>{props.data.meta?.entities}</div>
-                </div>
-                <div className={styles.data}>
-                    Meshes:
-                    <div className={styles.overflow}
-                         style={{fontWeight: 'normal'}}>{props.data.meta?.meshes}</div>
-                </div>
-                <div className={styles.data}>
-                    Materials:
-                    <div className={styles.overflow}
-                         style={{fontWeight: 'normal'}}>{props.data.meta?.materials}</div>
-                </div>
 
             </ToolTip>
         </div>

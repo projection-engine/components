@@ -1,212 +1,145 @@
-import Dexie from "dexie";
+import FileBlob from "../../services/workers/FileBlob";
+import MeshParser from "../../services/engine/utils/MeshParser";
+import randomID from "../../views/editor/utils/misc/randomID";
 
 const fs = window.require('fs')
 const path = window.require('path')
-const {app} = window.require('@electron/remote')
 
-export default class FileSystem extends Dexie {
-    constructor() {
-        super('FS');
-
-
-        this._path = app.getAppPath() + '/projects'
-        this.version(1).stores({
-            file: 'id, relativePath, creationDate, lastUpdate, name, type, size, previewImage',
-        });
-
-        this.open()
+export default class FileSystem {
+    constructor(projectID) {
+        this._path = 'projects/' + projectID
     }
 
+    get path() {
+        return this._path
+    }
 
-    // BLOB
-    async getBlob(fileID) {
-
+    async readFile(pathName, type) {
         return new Promise(resolve => {
-            this.table('file')
-                .get(fileID)
-                .then(data => {
-                    if (data)
-                        fs.readFile(
-                            FileSystem.getFileName(this._path, data),
-                            data?.type === 'image' ? 'base64' : 'utf8',
-                            (err, data) => {
-                                resolve(data)
-                            })
-                    else
-                        resolve(null)
-                })
+            switch (type) {
+                case 'json':
+                    fs.readFile(pathName, (e, res) => {
+                        try {
+                            resolve(res.toJSON())
+                        } catch (e) {
+                            resolve(null)
+                        }
+                    })
+                    break
+                case 'base64':
+                    fs.readFile(pathName, 'base64', (e, res)=> {
+                        resolve(res.toString())
+                    })
+                    break
+                default:
+                    fs.readFile(pathName, (e, res) => {
+                        resolve(res.toString())
+                    })
+                    break
+            }
         })
     }
 
-
-    async updateBlob(fileID, newData) {
-        return new Promise(resolve => {
-            this.table('file')
-                .get(fileID)
-                .then(data => {
-                    if (data)
+    async updateFile(pathName, blob, asBinaryBuffer) {
+        return new Promise((resolve, discard) => {
+            this.deleteFile(pathName)
+                .then(() => {
+                    if (asBinaryBuffer) {
+                        let data = blob.replace(/^data:image\/\w+;base64,/, "");
+                        let buf = Buffer.from(data, 'base64');
                         fs.writeFile(
-                            FileSystem.getFileName(this._path, data),
-                            newData,
-                            data?.type === 'image' ? 'base64' : 'utf8',
+                            pathName,
+                            buf,
                             () => {
-                                resolve(true)
-                            });
-                    else
-                        resolve(false)
+                                resolve()
+                            })
+                    } else
+                        fs.writeFile(
+                            pathName,
+                            blob,
+                            () => {
+                                resolve()
+                            })
                 })
+                .catch(() => discard())
         })
     }
 
-    // FILE
-    async listFiles(filters = {}) {
-        // return this.table('file')
-        //     .where({...filters})
-        //     .toArray();
+    async deleteFile(pathName) {
+        return new Promise(resolve => {
+            fs.unlink(this._path + pathName, () => {
+                resolve()
+            })
+        })
     }
 
-
-    async deleteFile(fileID) {
+    static async importFile(file, projectID) {
         return new Promise(resolve => {
-            this.table('file')
-                .get(fileID)
-                .then(data => {
-                    if (data)
-                        fs.unlink(FileSystem.getFileName(this._path, data), () => {
-                            this.table('file')
-                                .delete(data.id)
-                                .then(() => resolve(true))
-                                .catch(() => resolve(false))
+            switch (file.name.type.split('/')[1]) {
+                case 'png':
+                case 'jpg':
+                case 'jpeg': {
+                    FileBlob
+                        .loadAsString(file, false, true)
+                        .then(res => {
+                            fs.writeFile(
+                                `projects/${projectID}/assets/${file.name.split('.')[0]}.pimg`,
+                                res,
+                                () => {
+                                    resolve()
+                                });
                         })
-                    else
-                        resolve(false)
-                })
-        })
-    }
-
-    async updateFile(fileID, data) {
-        // return this.table('file').update(fileID, data)
-    }
-
-    async getFile(fileID) {
-        // return this.table('file').get(fileID)
-    }
-
-    async getFileWithBlob(fileID) {
-        return new Promise(resolve => {
-            this.table('file')
-                .get(fileID)
-                .then(data => {
-                    if (data)
-                        fs.readFile(
-                            FileSystem.getFileName(this._path, data),
-                            data?.type === 'image' ? 'base64' : 'utf8',
-                            (d) => {
-                                resolve({
-                                    ...data,
-                                    blob: d
+                    break
+                }
+                case 'obj':
+                    FileBlob
+                        .loadAsString(file, false, true)
+                        .then(res => {
+                            const data = MeshParser
+                                .parseObj(res)
+                            fs.writeFile(
+                                `projects/${projectID}/assets/${file.name}`,
+                                JSON.stringify(data),
+                                () => {
+                                    resolve()
+                                });
+                        })
+                    break
+                case 'gltf':
+                    FileBlob
+                        .loadAsString(file, false, true)
+                        .then(res => {
+                            MeshParser
+                                .parseGLTF(res)
+                                .then(data => {
+                                    fs.writeFile(
+                                        `projects/${projectID}/assets/${file.name}`,
+                                        JSON.stringify(data),
+                                        () => {
+                                            resolve()
+                                        });
                                 })
-                            });
-                    else
-                        resolve(null)
-                })
+                        })
+                    break
+            }
         })
     }
 
-    async postFile(fileData) {
-        // return this.table('file').add(fileData)
+    readProjectData() {
+        const assets = this.fromDirectory(this._path + '/assets')
+        const logic = this.fromDirectory(this._path + '/logic')
+        const settings = fs.readFileSync(this._path + '/data/.settings')
+        const meta = fs.readFileSync(this._path + '/data/.meta')
+
+        return {
+            assets,
+            logic,
+            settings,
+            meta
+        }
     }
 
-    async postFileWithBlob(fileData, blob) {
-        // try {
-        //     delete fileData.blob
-        // } catch (e) {
-        // }
-
-        // await this.table('file').add(fileData)
-        //
-        // await this.postBlob(fileData.id, blob)
-    }
-
-    // PROJECT
-    async getProject(projectID) {
-        // return this.table('project').get(projectID)
-    }
-
-    async postProject(projectData) {
-        // return this.table('project').add(projectData)
-    }
-
-    async deleteProject(projectID) {
-        // let promises = []
-
-        // const files = await this.listFiles({project: projectID})
-        // files.forEach(f => promises.push(
-        //     new Promise(r => {
-        //         this.deleteFile(f.id)
-        //             .then(() => r())
-        //             .catch(() => r())
-        //     })
-        // ))
-        // promises.push(new Promise(r => {
-        //     this.table('project')
-        //         .delete(projectID)
-        //         .then(() => r())
-        //         .catch(() => r())
-        // }))
-        //
-        // return Promise.all(promises)
-    }
-
-    async updateProject(projectID, data) {
-        // return this.table('project').update(projectID, data)
-    }
-
-    async listProject() {
-
-        return new Promise(resolve => {
-            resolve(FileSystem.fromDirectory(this._path, '.projection'))
-        })
-    }
-
-    // ENTITIES
-    async listEntities(projectID) {
-        // return this.table('entity').where({project: projectID}).toArray()
-    }
-
-    async postEntity(data) {
-        // return this.table('entity').add(data)
-    }
-
-    async updateEntity(id, data) {
-        // return this.table('entity').update(id, data)
-    }
-
-    async deleteEntity(id) {
-        // let promises = []
-        //
-        // const related = await this.table('entity').where({linkedTo: id}).toArray()
-        // related.forEach(f => promises.push(
-        //     new Promise(r => {
-        //         this.deleteEntity(f.id)
-        //             .then(() => r())
-        //             .catch(() => r())
-        //     })
-        // ))
-        // promises.push(new Promise(r => {
-        //     this.table('entity').delete(id)
-        //         .then(() => r())
-        //         .catch(() => r())
-        // }))
-        //
-        // return Promise.all(promises)
-    }
-
-    static getFileName(basePath, file) {
-        return path + file?.relativePath + file?.name + '.' + file?.type
-    }
-
-    static fromDirectory(startPath, extension) {
+    fromDirectory(startPath, extension) {
 
         if (!fs.existsSync(startPath)) {
             return []
@@ -217,11 +150,42 @@ export default class FileSystem extends Dexie {
             let filename = path.join(startPath, files[i]);
             let stat = fs.lstatSync(filename);
             if (stat.isDirectory())
-                res.push(...FileSystem.fromDirectory(filename, extension))
+                res.push(...this.fromDirectory(filename, extension))
             else if (filename.indexOf(extension) >= 0)
                 res.push(files[i])
         }
 
         return res
+    }
+    foldersFromDirectory(startPath) {
+
+        if (!fs.existsSync(startPath)) {
+            return []
+        }
+        let res = []
+        let files = fs.readdirSync(startPath);
+        for (let i = 0; i < files.length; i++) {
+            let filename = path.join(startPath, files[i]);
+            let stat = fs.lstatSync(filename);
+            if (stat.isDirectory())
+                res.push(filename)
+        }
+
+        return res
+    }
+    static async createProject(name){
+        return new Promise(resolve => {
+            const projectID = randomID(), projectPath = 'projects/' + projectID
+            fs.mkdir(projectPath, () => {
+                fs.writeFile(projectPath + '/.meta', JSON.stringify({
+                    id: projectID,
+                    name: name,
+                    creationDate: new Date().toDateString()
+                }), () => {
+                    resolve(projectID)
+                })
+            })
+        })
+
     }
 }

@@ -1,5 +1,4 @@
 import styles from "./styles/Projects.module.css";
-import EVENTS from "../../views/editor/utils/misc/EVENTS";
 import PropTypes from 'prop-types'
 import React, {useState} from "react";
 import Card from "./components/Card";
@@ -34,19 +33,10 @@ export default function Projects(props) {
                         variant={variant}
                         data={p} index={i}
                         onRename={newName  => {
-                            props.database.updateProject(p.id, {settings: JSON.stringify({...p.settings, projectName: newName})})
+                            props.renameProject(newName)
                         }}
                         onDelete={() => {
-                            props.load.pushEvent(EVENTS.PROJECT_DELETE)
-                            props.database.deleteProject(p.id)
-                                .then(() => {
-                                    props.load.finishEvent(EVENTS.PROJECT_DELETE)
-                                    props.refresh()
-                                })
-                                .catch(() => {
-                                    props.load.finishEvent(EVENTS.PROJECT_DELETE)
-                                })
-
+                            props.deleteProject(p.id)
                         }}/>
                 </React.Fragment>
                 ))}
@@ -57,10 +47,11 @@ export default function Projects(props) {
 }
 
 Projects.propTypes = {
+    deleteProject: PropTypes.func.isRequired,
     onLoad: PropTypes.func,
     onNew: PropTypes.func,
     refresh: PropTypes.func,
-    database: PropTypes.object,
+    renameProject: PropTypes.func.isRequired,
     load: PropTypes.object,
     redirect: PropTypes.func,
     projects: PropTypes.array,
