@@ -7,6 +7,7 @@ export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
+
     const fileSystem = new FileSystem(projectID)
 
 

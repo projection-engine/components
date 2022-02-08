@@ -7,6 +7,7 @@ const path = window.require('path')
 
 export default class FileSystem {
     constructor(projectID) {
+
         this._path = 'projects/' + projectID
     }
 
@@ -27,13 +28,19 @@ export default class FileSystem {
                     })
                     break
                 case 'base64':
-                    fs.readFile(pathName, 'base64', (e, res)=> {
-                        resolve(res.toString())
+                    fs.readFile(pathName, 'base64', (e, res) => {
+                        if(!e)
+                            resolve(res.toString())
+                        else
+                            resolve(null)
                     })
                     break
                 default:
                     fs.readFile(pathName, (e, res) => {
-                        resolve(res.toString())
+                        if(!e)
+                            resolve(res.toString())
+                        else
+                            resolve(null)
                     })
                     break
             }
@@ -67,7 +74,7 @@ export default class FileSystem {
 
     async deleteFile(pathName) {
         return new Promise(resolve => {
-            fs.unlink(this._path + pathName, () => {
+            fs.rm(this._path + pathName, () => {
                 resolve()
             })
         })
@@ -125,19 +132,85 @@ export default class FileSystem {
         })
     }
 
-    readProjectData() {
-        const assets = this.fromDirectory(this._path + '/assets')
-        const logic = this.fromDirectory(this._path + '/logic')
-        const settings = fs.readFileSync(this._path + '/data/.settings')
-        const meta = fs.readFileSync(this._path + '/data/.meta')
+    async writeAsset(path, fileData, previewImage) {
+        return new Promise(resolve => {
+            fs.writeFile(this.path + '/assets/' + path, fileData, () => {
+                if (!previewImage)
+                    resolve()
+                else {
+                    if (!fs.existsSync(this.path + '/previews'))
+                        fs.mkdir(this.path + '/previews', () => null)
+                    fs.writeFile(this.path + '/previews/' + path + '.preview', previewImage, () => {
+                        resolve()
+                    })
+                }
 
-        return {
-            assets,
-            logic,
-            settings,
-            meta
-        }
+            })
+        })
     }
+
+    async updateAsset(path, fileData, previewImage) {
+        return new Promise(resolve => {
+            Promise
+                .all([
+                    this.deleteFile('/assets/' + path),
+                    this.deleteFile('/previews/' + path + '.preview')
+                ])
+                .then(() => {
+                    if (!fs.existsSync(this.path + '/assets'))
+                        fs.mkdir(this.path + '/assets', () => null)
+                    if (!fs.existsSync(this.path + '/preview'))
+                        fs.mkdir(this.path + '/preview', () => null)
+                    this.writeAsset(path, fileData, previewImage)
+                        .then(() => resolve())
+                })
+
+        })
+    }
+
+    async updateEntity(entity) {
+        return new Promise(resolve => {
+            this.deleteFile('/logic/' + entity.id + '.entity')
+                .then(() => {
+                    if (!fs.existsSync(this.path + '/logic'))
+                        fs.mkdir(this.path + '/logic', () => null)
+                    fs.writeFile(this.path + '/logic/' + entity.id + '.entity', JSON.stringify(entity), (e) => {
+
+                        resolve()
+                    })
+                })
+        })
+    }
+
+    async updateProject(meta, settings) {
+        return Promise.all([
+            new Promise(resolve => {
+                if(meta)
+                this.deleteFile(this.path + '/.meta')
+                    .then(() => {
+                        fs.writeFile(this.path + '/.meta', JSON.stringify(meta), () => {
+                            resolve()
+                        })
+                    })
+            else
+                resolve()
+            }),
+
+            new Promise(resolve => {
+                if(settings)
+                    this.deleteFile(this.path + '/.settings')
+                        .then(() => {
+                            fs.writeFile(this.path + '/.settings', JSON.stringify(settings), () => {
+                                resolve()
+                            })
+                        })
+                else
+                    resolve()
+            })
+        ])
+    }
+
+
 
     fromDirectory(startPath, extension) {
 
@@ -157,6 +230,7 @@ export default class FileSystem {
 
         return res
     }
+
     foldersFromDirectory(startPath) {
 
         if (!fs.existsSync(startPath)) {
@@ -173,7 +247,8 @@ export default class FileSystem {
 
         return res
     }
-    static async createProject(name){
+
+    static async createProject(name) {
         return new Promise(resolve => {
             const projectID = randomID(), projectPath = 'projects/' + projectID
             fs.mkdir(projectPath, () => {

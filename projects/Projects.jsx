@@ -29,7 +29,7 @@ export default function Projects(props) {
                 {props.projects.map((p, i)=> (
                 <React.Fragment key={p.id}>
                     <Card
-                        onClick={() => props.redirect('/project?id=' + p.id)}
+                        onClick={() => props.redirect( p.id)}
                         variant={variant}
                         data={p} index={i}
                         onRename={newName  => {
