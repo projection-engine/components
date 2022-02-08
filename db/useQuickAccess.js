@@ -1,8 +1,8 @@
 import {useState} from "react";
-import EVENTS from "../../views/editor/utils/misc/EVENTS";
 import FileSystem from "./FileSystem";
+import EVENTS from "../../pages/project/utils/misc/EVENTS";
 
-
+const fs = window.require('fs')
 export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])
     const [meshes, setMeshes] = useState([])
@@ -20,7 +20,15 @@ export default function useQuickAccess(projectID, load) {
                     .fromDirectory(fileSystem.path + '/assets', 'mesh')
 
                 data = data.map(u => {
-                    return fileSystem.readFile(u, 'json')
+                    return new Promise((resolve) => {
+                        fs.readFile(fileSystem.path + '/previews/' + u + '.preview', (e, res) => {
+                            resolve({
+                                name: u,
+                                id: u,
+                                preview: res
+                            })
+                        })
+                    })
                 })
                 Promise.all(data)
                     .then(res => {
@@ -29,7 +37,6 @@ export default function useQuickAccess(projectID, load) {
                             data: res
                         })
                     })
-
             })
         )
         promises.push(
@@ -38,7 +45,15 @@ export default function useQuickAccess(projectID, load) {
                     .fromDirectory(fileSystem.path + '/assets', 'pimg')
 
                 data = data.map(u => {
-                    return fileSystem.readFile(u)
+                    return new Promise((resolve) => {
+                        fs.readFile(fileSystem.path + '/previews/' + u + '.preview', (e, res) => {
+                            resolve({
+                                name: u,
+                                id: u,
+                                preview: res
+                            })
+                        })
+                    })
                 })
                 Promise.all(data)
                     .then(res => {
@@ -55,7 +70,15 @@ export default function useQuickAccess(projectID, load) {
                 let data = fileSystem
                     .fromDirectory(fileSystem.path + '/assets', 'material')
                 data = data.map(u => {
-                    return fileSystem.readFile(u)
+                    return new Promise((resolve) => {
+                        fs.readFile(fileSystem.path + '/previews/' + u + '.preview', (e, res) => {
+                            resolve({
+                                name: u,
+                                id: u,
+                                preview: res
+                            })
+                        })
+                    })
                 })
                 Promise.all(data)
                     .then(res => {

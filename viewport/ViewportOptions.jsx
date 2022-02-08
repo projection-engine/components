@@ -3,8 +3,9 @@ import styles from "./styles/ViewportOptions.module.css";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import Range from "../range/Range";
 import {useContext, useState} from "react";
-import SettingsProvider from "../../views/editor/hook/SettingsProvider";
-import {SHADING_MODELS} from "../../views/editor/hook/useSettings";
+import SettingsProvider from "../../pages/project/hook/SettingsProvider";
+import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
+
 
 export default function ViewportOptions(props) {
     const settingsContext = useContext(SettingsProvider)

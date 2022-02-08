@@ -1,6 +1,6 @@
 import FileBlob from "../../services/workers/FileBlob";
 import MeshParser from "../../services/engine/utils/MeshParser";
-import randomID from "../../views/editor/utils/misc/randomID";
+import randomID from "../../pages/project/utils/misc/randomID";
 
 const fs = window.require('fs')
 const path = window.require('path')
@@ -29,7 +29,7 @@ export default class FileSystem {
                     break
                 case 'base64':
                     fs.readFile(pathName, 'base64', (e, res) => {
-                        if(!e)
+                        if (!e)
                             resolve(res.toString())
                         else
                             resolve(null)
@@ -37,7 +37,7 @@ export default class FileSystem {
                     break
                 default:
                     fs.readFile(pathName, (e, res) => {
-                        if(!e)
+                        if (!e)
                             resolve(res.toString())
                         else
                             resolve(null)
@@ -80,9 +80,11 @@ export default class FileSystem {
         })
     }
 
-    static async importFile(file, projectID) {
+    async importFile(file) {
+        // TODO - GENERATE PREVIEW
+
         return new Promise(resolve => {
-            switch (file.name.type.split('/')[1]) {
+            switch (file.name.split(/\.([a-zA-Z0-9]+)$/)[1]) {
                 case 'png':
                 case 'jpg':
                 case 'jpeg': {
@@ -90,7 +92,7 @@ export default class FileSystem {
                         .loadAsString(file, false, true)
                         .then(res => {
                             fs.writeFile(
-                                `projects/${projectID}/assets/${file.name.split('.')[0]}.pimg`,
+                                this.path + `/assets/${file.name.split('.')[0]}.pimg`,
                                 res,
                                 () => {
                                     resolve()
@@ -100,12 +102,12 @@ export default class FileSystem {
                 }
                 case 'obj':
                     FileBlob
-                        .loadAsString(file, false, true)
+                        .loadAsString(file)
                         .then(res => {
                             const data = MeshParser
                                 .parseObj(res)
                             fs.writeFile(
-                                `projects/${projectID}/assets/${file.name}`,
+                                this.path + `/assets/${file.name.split('.')[0]}.mesh`,
                                 JSON.stringify(data),
                                 () => {
                                     resolve()
@@ -114,17 +116,26 @@ export default class FileSystem {
                     break
                 case 'gltf':
                     FileBlob
-                        .loadAsString(file, false, true)
+                        .loadAsString(file)
                         .then(res => {
                             MeshParser
                                 .parseGLTF(res)
                                 .then(data => {
-                                    fs.writeFile(
-                                        `projects/${projectID}/assets/${file.name}`,
-                                        JSON.stringify(data),
-                                        () => {
+                                    const promises = data.map(d => {
+                                        return new Promise(rsolv => {
+                                            fs.writeFile(
+                                                this.path + `/assets/${d.name}.mesh`,
+                                                d.data,
+                                                () => {
+                                                    rsolv()
+                                                });
+                                        })
+                                    })
+
+                                    Promise.all(promises)
+                                        .then(() => {
                                             resolve()
-                                        });
+                                        })
                                 })
                         })
                     break
@@ -185,19 +196,19 @@ export default class FileSystem {
     async updateProject(meta, settings) {
         return Promise.all([
             new Promise(resolve => {
-                if(meta)
-                this.deleteFile(this.path + '/.meta')
-                    .then(() => {
-                        fs.writeFile(this.path + '/.meta', JSON.stringify(meta), () => {
-                            resolve()
+                if (meta)
+                    this.deleteFile(this.path + '/.meta')
+                        .then(() => {
+                            fs.writeFile(this.path + '/.meta', JSON.stringify(meta), () => {
+                                resolve()
+                            })
                         })
-                    })
-            else
-                resolve()
+                else
+                    resolve()
             }),
 
             new Promise(resolve => {
-                if(settings)
+                if (settings)
                     this.deleteFile(this.path + '/.settings')
                         .then(() => {
                             fs.writeFile(this.path + '/.settings', JSON.stringify(settings), () => {
@@ -211,6 +222,33 @@ export default class FileSystem {
     }
 
 
+    dirStructure(dir, done) {
+        let results = [];
+        if (fs.existsSync(dir))
+            fs.readdir(dir, (err, list) => {
+                if (err) return done([]);
+                let pending = list.length;
+                if (!pending) return done(results);
+                list.forEach((file) => {
+                    file = path.resolve(dir, file);
+                    fs.stat(file, (err, stat) => {
+                        if (stat && stat.isDirectory()) {
+                            this.dirStructure(file, (err, res) => {
+                                console.trace(res)
+                                results = results.concat(res);
+                                if (!--pending) done(results);
+                            })
+                        } else {
+                            results.push(file);
+                            if (!--pending) done(results);
+                        }
+                    })
+                })
+            })
+        else
+            done([])
+
+    }
 
     fromDirectory(startPath, extension) {
 

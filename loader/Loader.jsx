@@ -1,6 +1,6 @@
 import styles from "./styles/Loader.module.css";
 import PropTypes from "prop-types";
-import randomInRange from "../../views/editor/utils/misc/randomInRange";
+import randomInRange from "../../pages/project/utils/misc/randomInRange";
 
 export default function Loader(props){
     return(
