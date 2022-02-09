@@ -1,5 +1,5 @@
 import styles from './styles/Color.module.css'
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import PropTypes from "prop-types";
 import {Button, Modal, ToolTip} from "@f-ui/core";
 import {RgbColorPicker} from "react-colorful";
@@ -15,6 +15,8 @@ export default function ColorPicker(props) {
             setValue({r: r, g: g, b: b, a: a})
         }
     }, [props.value])
+
+
     return (
         <div className={styles.wrapper}>
             <Modal blurIntensity={0} variant={'fit'} open={open} handleClose={() => null}
