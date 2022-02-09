@@ -72,9 +72,9 @@ export default class FileSystem {
         })
     }
 
-    async deleteFile(pathName) {
+    async deleteFile(pathName, absolute) {
         return new Promise(resolve => {
-            fs.rm(this._path + pathName, () => {
+            fs.rm(absolute ? pathName : (this._path + pathName), () => {
                 resolve()
             })
         })
@@ -192,6 +192,7 @@ export default class FileSystem {
     }
 
     async updateEntity(entity) {
+
         return new Promise(resolve => {
             this.deleteFile('/logic/' + entity.id + '.entity')
                 .then(() => {
@@ -223,7 +224,11 @@ export default class FileSystem {
                 if (settings)
                     this.deleteFile(this.path + '/.settings')
                         .then(() => {
-                            fs.writeFile(this.path + '/.settings', JSON.stringify(settings), () => {
+                            let sett = {...settings}
+                            delete sett.type
+                            delete sett.data
+
+                            fs.writeFile(this.path + '/.settings', JSON.stringify(sett), () => {
                                 resolve()
                             })
                         })
