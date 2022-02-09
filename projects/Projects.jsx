@@ -33,7 +33,7 @@ export default function Projects(props) {
                         variant={variant}
                         data={p} index={i}
                         onRename={newName  => {
-                            props.renameProject(newName)
+                            props.renameProject(newName, p.id)
                         }}
                         onDelete={() => {
                             props.deleteProject(p.id)

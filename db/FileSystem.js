@@ -21,7 +21,7 @@ export default class FileSystem {
                 case 'json':
                     fs.readFile(pathName, (e, res) => {
                         try {
-                            resolve(res.toJSON())
+                            resolve(JSON.parse(res.toString()))
                         } catch (e) {
                             resolve(null)
                         }
@@ -80,19 +80,22 @@ export default class FileSystem {
         })
     }
 
-    async importFile(file) {
+    async importFile(file, path) {
         // TODO - GENERATE PREVIEW
 
         return new Promise(resolve => {
+            const newRoot = path + '/' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
+            console.log(newRoot)
             switch (file.name.split(/\.([a-zA-Z0-9]+)$/)[1]) {
                 case 'png':
                 case 'jpg':
                 case 'jpeg': {
+
                     FileBlob
                         .loadAsString(file, false, true)
                         .then(res => {
                             fs.writeFile(
-                                this.path + `/assets/${file.name.split('.')[0]}.pimg`,
+                                newRoot+ `.pimg`,
                                 res,
                                 () => {
                                     resolve()
@@ -107,7 +110,7 @@ export default class FileSystem {
                             const data = MeshParser
                                 .parseObj(res)
                             fs.writeFile(
-                                this.path + `/assets/${file.name.split('.')[0]}.mesh`,
+                                newRoot +  `.mesh`,
                                 JSON.stringify(data),
                                 () => {
                                     resolve()
@@ -115,29 +118,38 @@ export default class FileSystem {
                         })
                     break
                 case 'gltf':
-                    FileBlob
-                        .loadAsString(file)
-                        .then(res => {
-                            MeshParser
-                                .parseGLTF(res)
-                                .then(data => {
-                                    const promises = data.map(d => {
-                                        return new Promise(rsolv => {
-                                            fs.writeFile(
-                                                this.path + `/assets/${d.name}.mesh`,
-                                                d.data,
-                                                () => {
-                                                    rsolv()
-                                                });
-                                        })
-                                    })
+                    fs.mkdir(newRoot, (err) => {
+                        if(!err)
+                            FileBlob
+                                .loadAsString(file)
+                                .then(res => {
+                                    MeshParser
+                                        .parseGLTF(res)
+                                        .then(data => {
+                                            if (data) {
+                                                const promises = data.map(d => {
 
-                                    Promise.all(promises)
-                                        .then(() => {
-                                            resolve()
+                                                    return new Promise(rs => {
+                                                        fs.writeFile(
+                                                            newRoot + `/${d.name}.mesh`,
+                                                            JSON.stringify(d.data),
+                                                            () => {
+                                                                rs()
+                                                            });
+                                                    })
+                                                })
+
+                                                Promise.all(promises)
+                                                    .then(() => {
+                                                        resolve()
+                                                    })
+                                            }
                                         })
                                 })
-                        })
+                        else
+                            resolve(err)
+                    })
+
                     break
             }
         })
@@ -232,16 +244,13 @@ export default class FileSystem {
                 list.forEach((file) => {
                     file = path.resolve(dir, file);
                     fs.stat(file, (err, stat) => {
+                        results.push(file);
                         if (stat && stat.isDirectory()) {
-                            this.dirStructure(file, (err, res) => {
-                                console.trace(res)
-                                results = results.concat(res);
-                                if (!--pending) done(results);
+                            this.dirStructure(file, (res) => {
+                                results = results.concat(res)
+                                if (!--pending) done(results)
                             })
-                        } else {
-                            results.push(file);
-                            if (!--pending) done(results);
-                        }
+                        } else if (!--pending) done(results)
                     })
                 })
             })
@@ -284,6 +293,54 @@ export default class FileSystem {
         }
 
         return res
+    }
+
+    rename(from, to) {
+
+        return new Promise(rootResolve => {
+            fs.lstat(from, (er, stat) => {
+                if (stat !== undefined && stat.isDirectory())
+                    fs.mkdir(to, () => {
+                        fs.readdir(from, (error, res) => {
+                            if (res) {
+                                let promises = []
+                                res.forEach(file => {
+                                    const oldPath = from + `/${file}`
+                                    const newPath = to + `/${file}`;
+
+                                    if (fs.lstatSync(oldPath).isDirectory())
+                                        promises.push(this.rename(oldPath, newPath))
+                                    else
+                                        promises.push(new Promise(resolve => {
+                                            fs.rename(
+                                                oldPath,
+                                                newPath,
+                                                (err) => {
+
+                                                    resolve(err)
+                                                }
+                                            )
+                                        }))
+                                })
+
+                                Promise.all(promises)
+                                    .then((errors) => {
+                                        fs.rm(from, { recursive: true, force: true }, (e) => {
+                                            rootResolve(errors)
+                                        })
+
+                                    })
+                            } else
+                                rootResolve(error)
+                        })
+                    })
+                else if(stat !== undefined)
+                    fs.rename(from, to, (error) => rootResolve(error))
+                else
+                    rootResolve(er)
+            })
+        })
+
     }
 
     static async createProject(name) {
