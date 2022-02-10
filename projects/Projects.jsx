@@ -1,44 +1,126 @@
 import styles from "./styles/Projects.module.css";
 import PropTypes from 'prop-types'
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Card from "./components/Card";
-import {Button} from "@f-ui/core";
+import {Button, Dropdown, DropdownOption, DropdownOptions, Modal} from "@f-ui/core";
+import randomID from "../../pages/project/utils/misc/randomID";
 
 export default function Projects(props) {
-    const [variant, setVariant] = useState('cell')
+    const ref = useRef()
+    const [pathLinkModal, setPathLinkModal] = useState(false)
+    useEffect(() => {
+
+        if (localStorage.getItem('basePath') === null) {
+            setPathLinkModal(true)
+
+        }
+    }, [])
+
     return (
         <div className={styles.wrapper}>
+            <Modal open={pathLinkModal} handleClose={() => {
+                if (localStorage.getItem('basePath') !== null)
+                    setPathLinkModal(false)
+            }} className={styles.modal}>
+                <div className={styles.button} style={{gap: '8px'}}>
+                    <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>info</span>
+                    Link a projects source folder
+                </div>
+
+                <Button className={styles.button} styles={{gap: '4px'}} variant={'filled'}
+                        onClick={() => ref.current?.click()}>
+                    <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>snippet_folder</span>
+                    Link folder
+                </Button>
+                <div>
+
+                    <div className={styles.button} style={{gap: '8px'}}>
+                        Can't link you directory ?
+                    </div>
+                    <div style={{fontWeight: 'normal'}}>
+                        Please make sure to place the project identifier on the desired folder
+                    </div>
+                </div>
+                <Button className={styles.button} styles={{gap: '4px'}}
+                        variant={"outlined"}
+                        onClick={() => {
+                            const id = randomID()
+                            const url = window.URL.createObjectURL(new Blob([id], {type: 'plain/text'}));
+                            const a = document.createElement('a');
+                            a.style.display = 'none';
+                            a.href = url
+
+                            a.download = 'identifier.projection';
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        }}>
+                    <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>download</span>
+                    Get identifier
+                </Button>
+            </Modal>
+            <input
+                ref={ref}
+                type="file"
+                onChange={(e) => {
+                    let path = e.target.files[0].path.replace(e.target.files[0].name, '')
+                    localStorage.setItem('basePath', path)
+                    e.target.value = ''
+                    setPathLinkModal(false)
+                }}
+                webkitdirectory={''}
+                directory={''}
+                style={{display: 'none'}}
+            />
             <div className={styles.title}>
                 Your projects
-              <div style={{display: 'flex', gap: '4px'}}>
-                  <Button
-                      className={styles.button}
-                      variant={'outlined'}
-                      onClick={() => props.onLoad()}>
-                      Load project
-                  </Button>
-                  <Button
-                      className={styles.button}
-                      variant={'filled'}
-                      onClick={() => props.onNew()}>
-                      New project
-                  </Button>
-              </div>
+                <div style={{display: 'flex', gap: '4px'}}>
+                    <Dropdown
+                        className={styles.button}
+                        variant={'outlined'}
+                        styles={{backgroundColor: 'var(--fabric-background-primary)', padding: '2px 5px 0px 10px'}}
+                    >
+                        <div style={{display: 'flex', gap: '4px', alignItems: 'center', width: '100%'}}>
+                            Load project
+                            <span className={'material-icons-round'}>arrow_drop_down</span>
+                        </div>
+
+                        <DropdownOptions>
+                            <DropdownOption option={{
+                                label: 'Import from package.',
+                                icon: <span className={'material-icons-round'}>folder_zip</span>,
+                                onClick: () => props.onLoad()
+                            }}/>
+                            <DropdownOption option={{
+                                label: 'Link source directory',
+                                icon: <span className={'material-icons-round'}>snippet_folder</span>,
+                                onClick: () => ref.current?.click()
+                            }}/>
+
+                        </DropdownOptions>
+                    </Dropdown>
+                    <Button
+                        className={styles.button}
+                        variant={'filled'}
+                        onClick={() => props.onNew()}>
+                        New project
+                    </Button>
+                </div>
             </div>
             <div className={styles.content}>
-                {props.projects.map((p, i)=> (
-                <React.Fragment key={p.id}>
-                    <Card
-                        onClick={() => props.redirect( p.id)}
-                        variant={variant}
-                        data={p} index={i}
-                        onRename={newName  => {
-                            props.renameProject(newName, p.id)
-                        }}
-                        onDelete={() => {
-                            props.deleteProject(p.id)
-                        }}/>
-                </React.Fragment>
+                {props.projects.map((p, i) => (
+                    <React.Fragment key={p.id}>
+                        <Card
+                            onClick={() => props.redirect(p.id)}
+
+                            data={p} index={i}
+                            onRename={newName => {
+                                props.renameProject(newName, p.id)
+                            }}
+                            onDelete={() => {
+                                props.deleteProject(p.id)
+                            }}/>
+                    </React.Fragment>
                 ))}
             </div>
         </div>

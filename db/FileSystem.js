@@ -1,6 +1,7 @@
 import FileBlob from "../../services/workers/FileBlob";
 import MeshParser from "../../services/engine/utils/MeshParser";
 import randomID from "../../pages/project/utils/misc/randomID";
+import ImageProcessor from "../../services/workers/ImageProcessor";
 
 const fs = window.require('fs')
 const path = window.require('path')
@@ -8,7 +9,7 @@ const path = window.require('path')
 export default class FileSystem {
     constructor(projectID) {
 
-        this._path = 'projects/' + projectID
+        this._path = (localStorage.getItem('basePath') + '\\projects\\' + projectID).replace(/\\\\/g, '\\')
     }
 
     get path() {
@@ -84,22 +85,52 @@ export default class FileSystem {
         // TODO - GENERATE PREVIEW
 
         return new Promise(resolve => {
-            const newRoot = path + '/' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
-            console.log(newRoot)
+            const newRoot = path + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
+            const fileID = randomID()
             switch (file.name.split(/\.([a-zA-Z0-9]+)$/)[1]) {
                 case 'png':
                 case 'jpg':
                 case 'jpeg': {
-
                     FileBlob
                         .loadAsString(file, false, true)
                         .then(res => {
-                            fs.writeFile(
-                                newRoot+ `.pimg`,
-                                res,
-                                () => {
+
+                            const promises = [
+                                new Promise(r => {
+                                    fs.writeFile(
+                                        newRoot + `.pimg`,
+                                        res,
+                                        () => {
+                                            r()
+                                        })
+                                }),
+                                new Promise(r => {
+                                    ImageProcessor.reduceImage(res).then(reduced => {
+                                        fs.writeFile(
+                                            this.path + '\\previews\\' + fileID + `.preview`,
+                                            reduced,
+                                            () => {
+                                                r()
+                                            })
+                                    })
+                                }),
+                                new Promise(r => {
+                                    fs.writeFile(
+                                        this.path + '\\assetsRegistry\\' + fileID + `.reg`,
+                                        JSON.stringify({
+                                            id: fileID,
+                                            path: newRoot.replace(this.path + '\\assets\\', '') + `.pimg`
+                                        }),
+                                        () => {
+                                            r()
+                                        })
+                                })
+                            ]
+
+                            Promise.all(promises)
+                                .then(() => {
                                     resolve()
-                                });
+                                })
                         })
                     break
                 }
@@ -109,17 +140,38 @@ export default class FileSystem {
                         .then(res => {
                             const data = MeshParser
                                 .parseObj(res)
-                            fs.writeFile(
-                                newRoot +  `.mesh`,
-                                JSON.stringify(data),
-                                () => {
+
+                            const promises = [
+                                new Promise(r => {
+                                    fs.writeFile(
+                                        newRoot + `.mesh`,
+                                        JSON.stringify(data),
+                                        () => {
+                                            r()
+                                        })
+                                }),
+                                new Promise(r => {
+                                    fs.writeFile(
+                                        this.path + '\\assetsRegistry\\' + fileID + `.reg`,
+                                        JSON.stringify({
+                                            id: fileID,
+                                            path: newRoot.replace(this.path + '\\assets\\', '') + `.mesh`
+                                        }),
+                                        () => {
+                                            r()
+                                        })
+                                })
+                            ]
+
+                            Promise.all(promises)
+                                .then(() => {
                                     resolve()
-                                });
+                                })
                         })
                     break
                 case 'gltf':
                     fs.mkdir(newRoot, (err) => {
-                        if(!err)
+                        if (!err)
                             FileBlob
                                 .loadAsString(file)
                                 .then(res => {
@@ -128,15 +180,27 @@ export default class FileSystem {
                                         .then(data => {
                                             if (data) {
                                                 const promises = data.map(d => {
-
-                                                    return new Promise(rs => {
-                                                        fs.writeFile(
-                                                            newRoot + `/${d.name}.mesh`,
-                                                            JSON.stringify(d.data),
-                                                            () => {
-                                                                rs()
-                                                            });
-                                                    })
+                                                    return [
+                                                        new Promise(r => {
+                                                            fs.writeFile(
+                                                                newRoot + `\\${d.name}.mesh`,
+                                                                JSON.stringify(d.data),
+                                                                () => {
+                                                                    r()
+                                                                });
+                                                        }),
+                                                        new Promise(r => {
+                                                            const fID = randomID()
+                                                            fs.writeFile(
+                                                                this.path + '\\assetsRegistry\\' + fID + `.reg`,
+                                                                JSON.stringify({
+                                                                    id: fID,
+                                                                    path: newRoot.replace(this.path + '\\assets\\', '') + `\\${d.name}.mesh`
+                                                                }),
+                                                                () => {
+                                                                    r()
+                                                                })
+                                                        })]
                                                 })
 
                                                 Promise.all(promises)
@@ -300,7 +364,40 @@ export default class FileSystem {
         return res
     }
 
-    rename(from, to) {
+    readRegistry() {
+        return new Promise(resolve => {
+            fs.readdir(this.path + '\\assetsRegistry\\', (e, res) => {
+                if (!e) {
+                    let promises = res.map(f => {
+                        return new Promise(resolve1 => {
+                            const registryPath = this.path + '\\assetsRegistry\\' + f
+                            fs.readFile(registryPath, (e, registryFile) => {
+                                if (!e)
+                                    resolve1({
+                                        ...JSON.parse(registryFile.toString()),
+                                        registryPath
+                                    })
+                                else
+                                    resolve1()
+                            })
+                        })
+                    })
+
+                    Promise.all(promises).then(registryFiles => {
+                        resolve(registryFiles
+                            .filter(f => f !== undefined))
+                    })
+                } else
+                    resolve([])
+            })
+        })
+    }
+
+    async rename(from, to, registry) {
+        let newRegistry = registry
+        if (!registry)
+            newRegistry = await this.readRegistry()
+        console.log(newRegistry)
 
         return new Promise(rootResolve => {
             fs.lstat(from, (er, stat) => {
@@ -314,23 +411,42 @@ export default class FileSystem {
                                     const newPath = to + `/${file}`;
 
                                     if (fs.lstatSync(oldPath).isDirectory())
-                                        promises.push(this.rename(oldPath, newPath))
+                                        promises.push(this.rename(oldPath, newPath, newRegistry))
                                     else
-                                        promises.push(new Promise(resolve => {
-                                            fs.rename(
-                                                oldPath,
-                                                newPath,
-                                                (err) => {
+                                        promises
+                                            .push(
+                                                new Promise(resolve => {
+                                                    fs.rename(
+                                                        oldPath,
+                                                        newPath,
+                                                        (err) => {
+                                                            resolve(err)
+                                                        }
+                                                    )
+                                                }),
 
-                                                    resolve(err)
-                                                }
+                                                // UPDATE REGISTRY
+                                                new Promise(resolve => {
+                                                    const regData = newRegistry.find(reg => {
+                                                        return reg.path.replaceAll(/\\\\/g, '\\') === oldPath.replace(this.path + '\\assets\\', '').replaceAll('/', '\\')
+                                                    })
+
+                                                    if (regData) {
+                                                        fs.writeFile(regData.registryPath, JSON.stringify({
+                                                            id: regData.id,
+                                                            path: newPath.replace(this.path + '\\assets\\', '').replaceAll('/', '\\')
+                                                        }), (error) => {
+                                                            resolve()
+                                                        })
+                                                    } else
+                                                        resolve()
+                                                })
                                             )
-                                        }))
                                 })
 
                                 Promise.all(promises)
                                     .then((errors) => {
-                                        fs.rm(from, { recursive: true, force: true }, (e) => {
+                                        fs.rm(from, {recursive: true, force: true}, (e) => {
                                             rootResolve(errors)
                                         })
 
@@ -339,7 +455,7 @@ export default class FileSystem {
                                 rootResolve(error)
                         })
                     })
-                else if(stat !== undefined)
+                else if (stat !== undefined)
                     fs.rename(from, to, (error) => rootResolve(error))
                 else
                     rootResolve(er)
@@ -350,7 +466,10 @@ export default class FileSystem {
 
     static async createProject(name) {
         return new Promise(resolve => {
-            const projectID = randomID(), projectPath = 'projects/' + projectID
+            const projectID = randomID(), projectPath = localStorage.getItem('basePath') + 'projects\\' + projectID
+            if (!fs.existsSync(localStorage.getItem('basePath') + 'projects'))
+                fs.mkdirSync(localStorage.getItem('basePath') + 'projects')
+
             fs.mkdir(projectPath, () => {
                 fs.writeFile(projectPath + '/.meta', JSON.stringify({
                     id: projectID,

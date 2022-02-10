@@ -1,4 +1,4 @@
-import {useEffect, useReducer, useRef} from "react";
+import {useEffect, useLayoutEffect, useReducer, useRef} from "react";
 import ReactDOM from 'react-dom'
 import Loader from "./Loader";
 
@@ -16,21 +16,27 @@ function reducer(state, action) {
 }
 
 
-export default function useLoading(dark,accentColor) {
+export default function useLoading(dark, accentColor) {
     const [events, dispatchEvents] = useReducer(reducer, {})
     const renderTarget = useRef()
+    useLayoutEffect(() => {
+        renderTarget.current = document.createElement('div')
+        document.body.appendChild(renderTarget.current)
 
-    useEffect(() => {
-        if (!renderTarget.current) {
-            renderTarget.current = document.createElement('div')
-            document.body.appendChild(renderTarget.current)
+        return () => {
+            document.body.removeChild(renderTarget.current)
         }
-        if (Object.keys(events).length > 0)
-            ReactDOM.render(<Loader accentColor={accentColor} events={events} dark={dark}/>, renderTarget.current)
-        else
-            ReactDOM.unmountComponentAtNode(renderTarget.current)
-
-    }, [events,dark])
+    }, [])
+    useEffect(() => {
+        if (renderTarget.current !== undefined) {
+            if (Object.keys(events).length > 0)
+                ReactDOM.render(<Loader accentColor={accentColor} events={events} dark={dark}/>, renderTarget.current)
+            else {
+                ReactDOM.render(<div/>, renderTarget.current) // TODO - FIX BUG CANT REMOVE NODE
+                ReactDOM.unmountComponentAtNode(renderTarget.current)
+            }
+        }
+    }, [events, dark])
 
     const pushEvent = (key) => {
         dispatchEvents({type: 'ADD', payload: key})

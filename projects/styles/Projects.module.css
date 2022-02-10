@@ -64,13 +64,33 @@
 }
 
 .button {
-    height: fit-content;
-    padding: 4px 16px !important;
+
+
+    height: 30px;
     border-radius: 5px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
 
     font-weight: 550;
 
-    background-color: var(--fabric-background-primary) !important;
+
+}
+
+.modal {
+    width: fit-content;
+    height: fit-content;
+    color: var(--fabric-color-tertiary);
+    background: var(--fabric-background-primary);
+    border-radius: 5px;
+    padding: 8px;
+    display: grid;
+    gap: 16px;
+    font-size: .9rem;
+    font-weight: 550;
+
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

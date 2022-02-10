@@ -1,7 +1,7 @@
 .wrapper {
     opacity: 0;
     animation: pop 350ms linear forwards;
-    width: calc(15% - 4px);
+    width: calc(20% - 4px);
     border-radius: 5px;
     overflow: hidden;
     display: flex;
@@ -60,7 +60,7 @@
 .image {
     width: 100%;
     object-fit: cover;
-
+    max-height: 200px;
     transition: 150ms linear;
 }
 
