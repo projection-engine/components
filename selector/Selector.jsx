@@ -4,21 +4,23 @@ import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core";
 import SelectorItem from "./SelectorItem";
 import PropTypes from "prop-types";
 import Search from "../search/Search";
-import QuickAccessProvider from "../db/QuickAccessProvider";
+import QuickAccessProvider from "../../pages/project/hook/QuickAccessProvider";
 
 export default function Selector(props) {
     const [state, setState] = useState({})
     const [searchString, setSearchString] = useState('')
     const quickAccess = useContext(QuickAccessProvider)
+
     const content = useMemo(() => {
         const filtered = (props.type === 'image' ? quickAccess.images : quickAccess.meshes).filter(e => e.name.toLowerCase().includes(searchString))
+
         if (filtered.length > 0)
             return filtered.map((t, i) => (
                 <React.Fragment key={'texture-' + t.name + '-' + i}>
                     <Button
                         className={styles.button}
-                        variant={state.id === t.id ? 'minimal-horizontal' : undefined}
-                        highlight={state.id === t.id}
+                        variant={state.id === t.registryID ? 'minimal-horizontal' : undefined}
+                        highlight={state.id === t.registryID}
                         onClick={() => {
                             setState(t)
                             props.handleChange(t)
@@ -26,7 +28,7 @@ export default function Selector(props) {
                     >
                         <SelectorItem data={{
                             ...t,
-                            blob: t.previewImage ? t.previewImage : t.blob
+                            blob: t.preview
                         }}
                         />
                     </Button>
@@ -53,7 +55,7 @@ export default function Selector(props) {
             <SelectorItem
                 data={{
                     ...state,
-                    blob: state.previewImage ? state.previewImage : state.blob
+                    blob: state.preview
                 }}
             />
             <DropdownOptions>

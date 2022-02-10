@@ -48,42 +48,48 @@ export default class FileSystem {
         })
     }
 
-    async updateFile(pathName, blob, asBinaryBuffer) {
-        return new Promise((resolve, discard) => {
-            this.deleteFile(pathName)
-                .then(() => {
-                    if (asBinaryBuffer) {
-                        let data = blob.replace(/^data:image\/\w+;base64,/, "");
-                        let buf = Buffer.from(data, 'base64');
-                        fs.writeFile(
-                            pathName,
-                            buf,
-                            () => {
-                                resolve()
+    async findRegistry(p) {
+        return new Promise(resolve => {
+            fs.readdir(this.path + '\\assetsRegistry', (e, res) => {
+                if (res) {
+                    Promise
+                        .all(
+                            res.map(data => {
+                                return this.readRegistryFile(data.replace('.reg', ''))
                             })
-                    } else
-                        fs.writeFile(
-                            pathName,
-                            blob,
-                            () => {
-                                resolve()
-                            })
-                })
-                .catch(() => discard())
+                        )
+                        .then(registryData => {
+                            const parsedPath = path.resolve(p)
+
+                            resolve(registryData.filter(f => f !== undefined).find(f => {
+                                return parsedPath.includes(f.path)
+                            }))
+                        })
+                } else resolve()
+            })
         })
     }
 
     async deleteFile(pathName, absolute) {
+        const currentPath = absolute ? pathName : (this._path + pathName)
         return new Promise(resolve => {
-            fs.rm(absolute ? pathName : (this._path + pathName), () => {
-                resolve()
+            fs.rm(currentPath, () => {
+                this.findRegistry(currentPath)
+                    .then(rs => {
+                        console.trace(rs)
+                        if (rs) {
+                            fs.rm(this.path + '\\assetsRegistry\\' + rs.id + '.reg', () => {
+                                resolve()
+                            })
+                        } else resolve()
+                    })
+
+
             })
         })
     }
 
     async importFile(file, path) {
-        // TODO - GENERATE PREVIEW
-
         return new Promise(resolve => {
             const newRoot = path + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
             const fileID = randomID()
@@ -105,11 +111,14 @@ export default class FileSystem {
                                         })
                                 }),
                                 new Promise(r => {
+                                    if (!fs.existsSync(this.path + '\\previews\\'))
+                                        fs.mkdirSync(this.path + '\\previews\\')
                                     ImageProcessor.reduceImage(res).then(reduced => {
                                         fs.writeFile(
                                             this.path + '\\previews\\' + fileID + `.preview`,
                                             reduced,
-                                            () => {
+                                            (error) => {
+                                                console.trace(error)
                                                 r()
                                             })
                                     })
@@ -121,7 +130,8 @@ export default class FileSystem {
                                             id: fileID,
                                             path: newRoot.replace(this.path + '\\assets\\', '') + `.pimg`
                                         }),
-                                        () => {
+                                        (error) => {
+
                                             r()
                                         })
                                 })
@@ -219,54 +229,84 @@ export default class FileSystem {
         })
     }
 
-    async writeAsset(path, fileData, previewImage) {
+    async readRegistryFile(id) {
         return new Promise(resolve => {
-            fs.writeFile(this.path + '/assets/' + path, fileData, () => {
-                if (!previewImage)
-                    resolve()
-                else {
-                    if (!fs.existsSync(this.path + '/previews'))
-                        fs.mkdir(this.path + '/previews', () => null)
-                    fs.writeFile(this.path + '/previews/' + path + '.preview', previewImage, () => {
+            fs.readFile(this.path + '\\assetsRegistry\\' + id + '.reg', (e, res) => {
+                if (!e) {
+                    try {
+                        resolve(JSON.parse(res.toString()))
+                    } catch (e) {
                         resolve()
-                    })
-                }
+                    }
+                } else
+                    resolve()
 
             })
         })
     }
 
-    async updateAsset(path, fileData, previewImage) {
+    assetExists(path) {
+        return fs.existsSync(this.path + '\\assets\\' + path)
+    }
+
+    async writeAsset(path, fileData, previewImage) {
+        const fileID = randomID()
         return new Promise(resolve => {
-            Promise
-                .all([
-                    this.deleteFile('/assets/' + path),
-                    this.deleteFile('/previews/' + path + '.preview')
-                ])
+            const promises = [
+                new Promise(resolve1 => {
+                    fs.writeFile(this.path + '\\assets\\' + path, fileData, (err) => {
+                        if (!previewImage)
+                            resolve1()
+                        else {
+                            if (!fs.existsSync(this.path + '\\previews'))
+                                fs.mkdirSync(this.path + '\\previews')
+                            fs.writeFile(this.path + '\\previews\\' + path + '.preview', previewImage, () => {
+                                resolve1()
+                            })
+                        }
+
+                    })
+                }),
+
+                new Promise(resolve1 => {
+
+                    fs.writeFile(this.path + '\\assetsRegistry\\' + fileID + '.reg', JSON.stringify({
+                        id: fileID,
+                        path: path
+                    }), (err) => {
+
+                        resolve1()
+                    })
+                })
+            ]
+
+            Promise.all(promises)
                 .then(() => {
-                    if (!fs.existsSync(this.path + '/assets'))
-                        fs.mkdir(this.path + '/assets', () => null)
-                    if (!fs.existsSync(this.path + '/preview'))
-                        fs.mkdir(this.path + '/preview', () => null)
-                    this.writeAsset(path, fileData, previewImage)
-                        .then(() => resolve())
+                    resolve()
                 })
 
+        })
+    }
+
+    async updateAsset(path, fileData, previewImage) {
+        return new Promise(resolve => {
+            if (!fs.existsSync(this.path + '/assets'))
+                fs.mkdir(this.path + '/assets', () => null)
+            if (!fs.existsSync(this.path + '/preview'))
+                fs.mkdir(this.path + '/preview', () => null)
+            this.writeAsset(path, fileData, previewImage)
+                .then(() => resolve())
         })
     }
 
     async updateEntity(entity) {
 
         return new Promise(resolve => {
-            this.deleteFile('/logic/' + entity.id + '.entity')
-                .then(() => {
-                    if (!fs.existsSync(this.path + '/logic'))
-                        fs.mkdir(this.path + '/logic', () => null)
-                    fs.writeFile(this.path + '/logic/' + entity.id + '.entity', JSON.stringify(entity), (e) => {
-
-                        resolve()
-                    })
-                })
+            if (!fs.existsSync(this.path + '\\logic'))
+                fs.mkdir(this.path + '\\logic', () => null)
+            fs.writeFile(this.path + '\\logic\\' + entity.id + '.entity', JSON.stringify(entity), (e) => {
+                resolve()
+            })
         })
     }
 
@@ -274,29 +314,25 @@ export default class FileSystem {
         return Promise.all([
             new Promise(resolve => {
                 if (meta)
-                    this.deleteFile(this.path + '/.meta')
-                        .then(() => {
-                            fs.writeFile(this.path + '/.meta', JSON.stringify(meta), () => {
-                                resolve()
-                            })
-                        })
+
+                    fs.writeFile(this.path + '/.meta', JSON.stringify(meta), () => {
+                        resolve()
+                    })
+
                 else
                     resolve()
             }),
 
             new Promise(resolve => {
-                if (settings)
-                    this.deleteFile(this.path + '/.settings')
-                        .then(() => {
-                            let sett = {...settings}
-                            delete sett.type
-                            delete sett.data
+                if (settings) {
+                    let sett = {...settings}
+                    delete sett.type
+                    delete sett.data
 
-                            fs.writeFile(this.path + '/.settings', JSON.stringify(sett), () => {
-                                resolve()
-                            })
-                        })
-                else
+                    fs.writeFile(this.path + '/.settings', JSON.stringify(sett), () => {
+                        resolve()
+                    })
+                } else
                     resolve()
             })
         ])
@@ -397,7 +433,7 @@ export default class FileSystem {
         let newRegistry = registry
         if (!registry)
             newRegistry = await this.readRegistry()
-        console.log(newRegistry)
+
 
         return new Promise(rootResolve => {
             fs.lstat(from, (er, stat) => {
@@ -436,7 +472,8 @@ export default class FileSystem {
                                                             id: regData.id,
                                                             path: newPath.replace(this.path + '\\assets\\', '').replaceAll('/', '\\')
                                                         }), (error) => {
-                                                            resolve()
+                                                            console.trace(error)
+                                                            resolve(regData.registryPath, regData)
                                                         })
                                                     } else
                                                         resolve()
@@ -455,9 +492,44 @@ export default class FileSystem {
                                 rootResolve(error)
                         })
                     })
-                else if (stat !== undefined)
-                    fs.rename(from, to, (error) => rootResolve(error))
-                else
+                else if (stat !== undefined) {
+                    // RENAME SINGLE FILE
+                    let promises = [
+                        new Promise(resolve => {
+                            fs.rename(
+                                from,
+                                to,
+                                (err) => {
+                                    resolve(err)
+                                }
+                            )
+                        }),
+
+                        // UPDATE REGISTRY
+                        new Promise(resolve => {
+                            const regData = newRegistry.find(reg => {
+                                return reg.path.replaceAll(/\\\\/g, '\\') === from.replace(this.path + '\\assets\\', '').replaceAll('/', '\\')
+                            })
+
+                            if (regData) {
+                                fs.writeFile(regData.registryPath, JSON.stringify({
+                                    id: regData.id,
+                                    path: to.replace(this.path + '\\assets\\', '').replaceAll('/', '\\')
+                                }), (error) => {
+                                    resolve(regData.registryPath, regData)
+                                })
+                            } else
+                                resolve()
+                        })
+                    ]
+
+
+                    Promise.all(promises)
+                        .then((errors) => {
+                            console.trace(errors)
+                            rootResolve()
+                        })
+                } else
                     rootResolve(er)
             })
         })

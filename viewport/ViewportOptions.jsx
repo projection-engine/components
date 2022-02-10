@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styles from "./styles/ViewportOptions.module.css";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import Range from "../range/Range";
-import {useContext, useState} from "react";
+import {useContext, useMemo, useState} from "react";
 import SettingsProvider from "../../pages/project/hook/SettingsProvider";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 
@@ -12,6 +12,54 @@ export default function ViewportOptions(props) {
     const [res, setRes] = useState(settingsContext.resolutionMultiplier * 100)
     const [fov, setFov] = useState(settingsContext.fov * 180 / 3.1415)
 
+    const renderingType = useMemo(() => {
+        switch (settingsContext.shadingModel) {
+            case SHADING_MODELS.FLAT: {
+                return (
+                    <>
+                        <div
+                            style={{fontSize: '1.2rem'}}
+                            className={'material-icons-round'}
+                        >
+                            dehaze
+                        </div>
+                        <div className={styles.overflow}>
+                            Flat
+                        </div>
+                    </>
+                )
+            }
+            case SHADING_MODELS.DETAIL: {
+                return (
+                    <>
+                        <div
+                            style={{fontSize: '1.2rem'}}
+                            className={'material-icons-round'}
+                        >
+                            auto_awesome
+                        </div>
+                        <div className={styles.overflow}>
+                            Details
+                        </div>
+                    </>
+                )
+            }
+            default:
+                return (
+                    <>
+                        <div
+                            style={{fontSize: '1.2rem'}}
+                            className={'material-icons-round'}
+                        >
+                            details
+                        </div>
+                        <div className={styles.overflow}>
+                            Wireframe
+                        </div>
+                    </>
+                )
+        }
+    }, [settingsContext.shadingModel])
     return (
         <div className={styles.options} draggable={false}>
             <Dropdown className={styles.optionWrapper} justify={'start'} align={'bottom'}>
@@ -107,12 +155,7 @@ export default function ViewportOptions(props) {
 
                 justify={'start'} align={'bottom'}>
                 <div className={styles.summary}>
-                    <span
-                        style={{fontSize: '1.2rem'}}
-                        className={'material-icons-round'}>{settingsContext.shadingModel !== SHADING_MODELS.FLAT ? 'auto_awesome' : 'dehaze'}</span>
-                    <div className={styles.overflow}>
-                        {settingsContext.shadingModel === SHADING_MODELS.FLAT ? 'Flat' : 'Details'}
-                    </div>
+                    {renderingType}
                 </div>
                 <DropdownOptions>
                     <DropdownOption
@@ -127,10 +170,19 @@ export default function ViewportOptions(props) {
 
                     <DropdownOption option={{
                         label: 'Detail',
-                        icon: settingsContext.shadingModel !== SHADING_MODELS.FLAT ? <span style={{fontSize: '1.2rem'}}
-                                                                                           className={'material-icons-round'}>check</span> : undefined,
+                        icon: settingsContext.shadingModel === SHADING_MODELS.DETAIL ?
+                            <span style={{fontSize: '1.2rem'}}
+                                  className={'material-icons-round'}>check</span> : undefined,
                         onClick: () => settingsContext.shadingModel = SHADING_MODELS.DETAIL,
                         disabled: settingsContext.shadingModel === SHADING_MODELS.DETAIL
+                    }}/>
+                    <DropdownOption option={{
+                        label: 'Wireframe',
+                        icon: settingsContext.shadingModel === SHADING_MODELS.WIREFRAME ?
+                            <span style={{fontSize: '1.2rem'}}
+                                  className={'material-icons-round'}>check</span> : undefined,
+                        onClick: () => settingsContext.shadingModel = SHADING_MODELS.WIREFRAME,
+                        disabled: true // settingsContext.shadingModel === SHADING_MODELS.WIREFRAME
                     }}/>
                 </DropdownOptions>
             </Dropdown>
