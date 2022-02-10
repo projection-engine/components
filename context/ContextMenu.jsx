@@ -57,6 +57,12 @@ export default function ContextMenu(props) {
     }
 
     useEffect(() => {
+
+        if(props.attributes){
+            Object.keys(props.attributes).forEach((attr) => {
+                ref.current?.setAttribute(attr, `${props.attributes[attr]}`)
+            })
+        }
         if (props.options.length > 0) {
             document.addEventListener('mousedown', handleMouseDown)
             ref.current?.parentNode.addEventListener('contextmenu', handleContext)
@@ -65,7 +71,7 @@ export default function ContextMenu(props) {
             document.removeEventListener('mousedown', handleMouseDown)
             ref.current?.parentNode.removeEventListener('contextmenu', handleContext)
         }
-    }, [selected, props.options])
+    }, [selected, props.options, props.attributes])
 
 
     const options = useMemo(() => {
@@ -113,7 +119,7 @@ ContextMenu.propTypes = {
         icon: PropTypes.node,
         requiredTrigger: PropTypes.string
     })),
-
+    attributes: PropTypes.object,
 
     children: PropTypes.node,
     styles: PropTypes.object,
