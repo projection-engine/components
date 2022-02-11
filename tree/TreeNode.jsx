@@ -43,13 +43,14 @@ export default function TreeNode(props) {
 
                 onClick={() => {
                     props.setFocusedNode(props.node.id)
-                    if(!props.node.phantomNode)
+                    if(props.node.onClick)
                         props.node.onClick()
                 }}
             >
 
                 {props.node.children?.length > 0 ? (
                     <Button
+
                         onClick={() => {
                             if(!props.node.phantomNode)
                                 props.node.onClick()
@@ -128,6 +129,7 @@ TreeNode.propTypes = {
         id: PropTypes.any.isRequired,
         label: PropTypes.string,
         onClick: PropTypes.func,
+
         children: PropTypes.array,
         icon: PropTypes.node,
         type: PropTypes.string,

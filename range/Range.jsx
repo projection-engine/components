@@ -45,50 +45,49 @@ export default function Range(props) {
     }
 
     return (
-        <div className={styles.wrapper} style={{'--accentColor': props.accentColor}} title={props.label}>
-            <div className={styles.content}>
-                {focused ?
-                    <input
-                        disabled={props.disabled}
-                        ref={ref}
-                        value={props.value}
-                        onMouseDown={handleMouseDown}
 
-                        onChange={(e) => {
-                            if (isNaN(parseFloat(e.target.value)))
-                                props.handleChange(0.0)
-                            else
-                                props.handleChange(parseFloat(e.target.value))
-                        }} type={'number'}
-                        style={{cursor: 'text', background: 'var(--background-3)'}}
-                        onBlur={() => {
-                            setFocused(false)
-                            if (props.onFinish)
-                                props.onFinish()
-                        }}
-                        className={styles.draggable}
-                    />
-                    :
-                    <div
-                        ref={ref}
-                        onMouseDown={handleMouseDown}
-                        onMouseUp={() => {
-                            if (props.onFinish)
-                                props.onFinish()
-                        }}
-                        style={{
-                            color: props.disabled ? 'var(--fabric-color-quaternary)' : undefined,
-                            cursor: props.disabled ? 'default' : undefined,
-                            background: props.disabled ? 'var(--background-0)' : undefined
-                        }}
-                        onDoubleClick={() => setFocused(true)}
-                        className={styles.draggable}
-                    >
-                        {parseFloat(props.value).toFixed(1)}
-                    </div>
-                }
-            </div>
+        <div className={[styles.content, styles.wrapper].join(' ')} style={{'--accentColor': props.accentColor}}
+             title={props.label}>
+            {focused ?
+                <input
+                    disabled={props.disabled}
+                    ref={ref}
+                    value={props.value}
+                    onMouseDown={handleMouseDown}
 
+                    onChange={(e) => {
+                        if (isNaN(parseFloat(e.target.value)))
+                            props.handleChange(0.0)
+                        else
+                            props.handleChange(parseFloat(e.target.value))
+                    }} type={'number'}
+                    style={{cursor: 'text', background: 'var(--background-3)'}}
+                    onBlur={() => {
+                        setFocused(false)
+                        if (props.onFinish)
+                            props.onFinish()
+                    }}
+                    className={styles.draggable}
+                />
+                :
+                <div
+                    ref={ref}
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={() => {
+                        if (props.onFinish)
+                            props.onFinish()
+                    }}
+                    style={{
+                        color: props.disabled ? 'var(--fabric-color-quaternary)' : undefined,
+                        cursor: props.disabled ? 'default' : undefined,
+                        background: props.disabled ? 'var(--background-0)' : undefined
+                    }}
+                    onDoubleClick={() => setFocused(true)}
+                    className={styles.draggable}
+                >
+                    {parseFloat(props.value).toFixed(1)}
+                </div>
+            }
         </div>
     )
 
