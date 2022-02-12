@@ -1,16 +1,16 @@
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo} from "react";
 import PropTypes from "prop-types";
 import styles from "../styles/Options.module.css";
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import groupBy from "../../../pages/project/utils/misc/groupBy";
 
 export default function Options(props) {
-    const groups = useMemo(() => {
 
-        if (props.options.length === 0) {
-            return groupBy(props.fallbackOptions, 'group')
-        } else
+    const groups = useMemo(() => {
+        if (props.options)
             return groupBy(props.options, 'group')
+        else
+            return []
     }, [props.options])
 
     return (
@@ -33,8 +33,8 @@ export default function Options(props) {
                                             {option.label}
                                             <DropdownOptions>
                                                 {option.options.map((o, index) => (
-                                                    <React.Fragment key={index + '-option-'+o.label}>
-                                                        <DropdownOption option={o} />
+                                                    <React.Fragment key={index + '-option-' + o.label}>
+                                                        <DropdownOption option={o}/>
                                                     </React.Fragment>
                                                 ))}
                                             </DropdownOptions>
@@ -58,7 +58,6 @@ export default function Options(props) {
     )
 }
 Options.propTypes = {
-    options: PropTypes.array,
-    fallbackOptions: PropTypes.array,
+    options: PropTypes.array
 
 }

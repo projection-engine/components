@@ -76,7 +76,7 @@ export default class FileSystem {
             fs.rm(currentPath, () => {
                 this.findRegistry(currentPath)
                     .then(rs => {
-                        console.trace(rs)
+
                         if (rs) {
                             fs.rm(this.path + '\\assetsRegistry\\' + rs.id + '.reg', () => {
                                 resolve()
@@ -118,7 +118,7 @@ export default class FileSystem {
                                             this.path + '\\previews\\' + fileID + `.preview`,
                                             reduced,
                                             (error) => {
-                                                console.trace(error)
+
                                                 r()
                                             })
                                     })
@@ -249,8 +249,8 @@ export default class FileSystem {
         return fs.existsSync(this.path + '\\assets\\' + path)
     }
 
-    async writeAsset(path, fileData, previewImage) {
-        const fileID = randomID()
+    async writeAsset(path, fileData, previewImage, registryID) {
+        const fileID = registryID !== undefined ? registryID : randomID()
         return new Promise(resolve => {
             const promises = [
                 new Promise(resolve1 => {
@@ -288,14 +288,18 @@ export default class FileSystem {
         })
     }
 
-    async updateAsset(path, fileData, previewImage) {
+    async updateAsset(registryID, fileData, previewImage) {
         return new Promise(resolve => {
-            if (!fs.existsSync(this.path + '/assets'))
-                fs.mkdir(this.path + '/assets', () => null)
-            if (!fs.existsSync(this.path + '/preview'))
-                fs.mkdir(this.path + '/preview', () => null)
-            this.writeAsset(path, fileData, previewImage)
-                .then(() => resolve())
+            if (!fs.existsSync(this.path + '\\assets'))
+                fs.mkdir(this.path + '\\assets', () => null)
+            if (!fs.existsSync(this.path + '\\preview'))
+                fs.mkdir(this.path + '\\preview', () => null)
+            this.readRegistryFile(registryID)
+                .then(res => {
+                    this.writeAsset(res.path, fileData, previewImage, registryID)
+                        .then(() => resolve())
+                })
+
         })
     }
 
@@ -430,20 +434,21 @@ export default class FileSystem {
     }
 
     async rename(from, to, registry) {
+        const fromResolved = path.resolve(from)
+
         let newRegistry = registry
         if (!registry)
             newRegistry = await this.readRegistry()
 
-
         return new Promise(rootResolve => {
-            fs.lstat(from, (er, stat) => {
+            fs.lstat(fromResolved, (er, stat) => {
                 if (stat !== undefined && stat.isDirectory())
                     fs.mkdir(to, () => {
-                        fs.readdir(from, (error, res) => {
+                        fs.readdir(fromResolved, (error, res) => {
                             if (res) {
                                 let promises = []
                                 res.forEach(file => {
-                                    const oldPath = from + `/${file}`
+                                    const oldPath = fromResolved + `/${file}`
                                     const newPath = to + `/${file}`;
 
                                     if (fs.lstatSync(oldPath).isDirectory())
@@ -460,30 +465,12 @@ export default class FileSystem {
                                                         }
                                                     )
                                                 }),
-
-                                                // UPDATE REGISTRY
-                                                new Promise(resolve => {
-                                                    const regData = newRegistry.find(reg => {
-                                                        return reg.path.replaceAll(/\\\\/g, '\\') === oldPath.replace(this.path + '\\assets\\', '').replaceAll('/', '\\')
-                                                    })
-
-                                                    if (regData) {
-                                                        fs.writeFile(regData.registryPath, JSON.stringify({
-                                                            id: regData.id,
-                                                            path: newPath.replace(this.path + '\\assets\\', '').replaceAll('/', '\\')
-                                                        }), (error) => {
-                                                            console.trace(error)
-                                                            resolve(regData.registryPath, regData)
-                                                        })
-                                                    } else
-                                                        resolve()
-                                                })
+                                                this.updateRegistry(from, to, newRegistry)
                                             )
                                 })
-
                                 Promise.all(promises)
                                     .then((errors) => {
-                                        fs.rm(from, {recursive: true, force: true}, (e) => {
+                                        fs.rm(fromResolved, {recursive: true, force: true}, (e) => {
                                             rootResolve(errors)
                                         })
 
@@ -493,40 +480,21 @@ export default class FileSystem {
                         })
                     })
                 else if (stat !== undefined) {
-                    // RENAME SINGLE FILE
                     let promises = [
                         new Promise(resolve => {
                             fs.rename(
-                                from,
+                                fromResolved,
                                 to,
                                 (err) => {
                                     resolve(err)
                                 }
                             )
                         }),
-
-                        // UPDATE REGISTRY
-                        new Promise(resolve => {
-                            const regData = newRegistry.find(reg => {
-                                return reg.path.replaceAll(/\\\\/g, '\\') === from.replace(this.path + '\\assets\\', '').replaceAll('/', '\\')
-                            })
-
-                            if (regData) {
-                                fs.writeFile(regData.registryPath, JSON.stringify({
-                                    id: regData.id,
-                                    path: to.replace(this.path + '\\assets\\', '').replaceAll('/', '\\')
-                                }), (error) => {
-                                    resolve(regData.registryPath, regData)
-                                })
-                            } else
-                                resolve()
-                        })
+                        this.updateRegistry(from, to, newRegistry)
                     ]
-
-
                     Promise.all(promises)
                         .then((errors) => {
-                            console.trace(errors)
+
                             rootResolve()
                         })
                 } else
@@ -534,6 +502,28 @@ export default class FileSystem {
             })
         })
 
+    }
+
+    async updateRegistry(from, to, registryData) {
+        const fromResolved = path.resolve(from)
+        const toResolved = path.resolve(to)
+        const assetsResolved = path.resolve(this.path + '\\assets\\')
+
+
+        return new Promise(resolve => {
+            const registryFound = registryData.find(reg => {
+                return reg.path === fromResolved.replace(assetsResolved, '')
+            })
+            if (registryFound) {
+                fs.writeFile(registryFound.registryPath, JSON.stringify({
+                    id: registryFound.id,
+                    path: toResolved.replace(assetsResolved, '')
+                }), () => {
+                    resolve(registryFound.registryPath, registryFound)
+                })
+            } else
+                resolve()
+        })
     }
 
     static async createProject(name) {

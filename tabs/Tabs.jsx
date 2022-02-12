@@ -1,30 +1,33 @@
 import PropTypes from "prop-types";
-import React, {useMemo, useState} from "react";
+import React, {useState} from "react";
 import styles from './styles/Tabs.module.css'
 import {Button} from "@f-ui/core";
 import ControlProvider from "./components/ControlProvider";
 import Options from "./components/Options";
 
 export default function Tabs(props) {
-    const [options, setOptions] = useState([])
 
-    const tabs = useMemo(() => {
-        if (props.tab === 0)
-            setOptions([])
-        return props.tabs.filter(t => t.open)
-    }, [props.tabs])
+    const [tabAttributes, setTabAttributes] = useState([{}])
+    const childrenTabs = React.Children.toArray(props.children)
 
 
     return (
         <ControlProvider.Provider value={{
-            setOptions: (e) => {
-                setOptions(e)
-            }
+            setTabAttributes: (options, label, icon, onBeforeSwitch, canClose, tab) => {
+                setTabAttributes(prev => {
+                    const copy = [...prev]
+                    copy[tab] = {
+                        options, label, icon, onBeforeSwitch, canClose
+                    }
+                    return copy
+                })
+            },
+            tab: props.tab
         }}>
             <div className={styles.wrapper}>
                 <div className={styles.contentWrapper}>
                     <div className={styles.tabs}>
-                        {tabs.map((tab, i) => (
+                        {childrenTabs.map((tab, i) => (
                             <div key={'tab-' + i}
                                  className={[styles.tabButtonWrapper, props.tab === i ? styles.currentTabButton : ''].join(' ')}>
                                 <Button
@@ -33,29 +36,33 @@ export default function Tabs(props) {
                                     highlight={props.tab === i}
                                     onClick={() => {
                                         if (props.tab !== i) {
-                                            if (props.onBeforeSwitch)
-                                                props.onBeforeSwitch(i)
                                             props.setTab(i)
+                                            tabAttributes.forEach(t => {
+                                                if (t.onBeforeSwitch)
+                                                    t.onBeforeSwitch(i)
+                                            })
                                         }
                                     }}
                                 >
-                                    {tab.icon}
-                                 <div className={styles.overflow}>
-                                     {tab.label}
-                                 </div>
+                                    {tabAttributes[i]?.icon}
+                                    <div className={styles.overflow}>
+                                        {tabAttributes[i]?.label}
+                                    </div>
                                 </Button>
-                                {tab.canClose ?
+                                {tabAttributes[i]?.canClose ?
                                     <Button
                                         color={"secondary"}
                                         className={styles.closeButton}
                                         onClick={() => {
-
-                                            if (props.tab === i) {
+                                            if (i === props.tab) {
                                                 props.setTab(i - 1)
-                                                if (i - 1 === 0 && props.onBeforeSwitch)
-                                                    props.onBeforeSwitch(0)
+                                                tabAttributes.forEach(t => {
+                                                    if (t.onBeforeSwitch)
+                                                        t.onBeforeSwitch(i - 1)
+                                                })
                                             }
-                                            tab.handleClose()
+
+                                            props.handleTabClose(i)
 
                                         }}
                                     >
@@ -67,12 +74,12 @@ export default function Tabs(props) {
                             </div>
                         ))}
                     </div>
-                    <Options fallbackOptions={props.fallbackOptions} options={options}/>
+                    <Options options={tabAttributes[props.tab]?.options}/>
                 </div>
-                {tabs.map((tab, i) => (
+                {childrenTabs.map((tab, i) => (
                     <div key={'tab-child-' + i} className={styles.content}
                          style={{display: props.tab !== i ? 'none' : undefined}}>
-                        {tab.children}
+                        {tab}
                     </div>
                 ))}
             </div>
@@ -80,28 +87,8 @@ export default function Tabs(props) {
     )
 }
 Tabs.propTypes = {
-    fallbackOptions: PropTypes.arrayOf(PropTypes.shape({
-        onClick: PropTypes.func,
-        icon: PropTypes.node,
-        label: PropTypes.string,
-        group: PropTypes.string,
-        type: PropTypes.oneOf(['dropdown', 'default']),
-        options: PropTypes.arrayOf(PropTypes.object),
-        shortcut: PropTypes.string,
-        keepAlive: PropTypes.bool
-    })),
-
-    tabs: PropTypes.arrayOf(PropTypes.shape({
-        icon: PropTypes.node,
-        label: PropTypes.string,
-        children: PropTypes.node,
-        open: PropTypes.bool,
-        canClose: PropTypes.bool,
-        handleClose: PropTypes.func,
-        shortcut: PropTypes.string,
-        keepAlive: PropTypes.bool
-    })).isRequired,
     tab: PropTypes.number,
     setTab: PropTypes.func,
-    onBeforeSwitch: PropTypes.func
+    children: PropTypes.node.isRequired,
+    handleTabClose: PropTypes.func.isRequired
 }

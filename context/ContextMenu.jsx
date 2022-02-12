@@ -8,46 +8,52 @@ export default function ContextMenu(props) {
     const contextRef = useRef()
     const [selected, setSelected] = useState()
 
-    let targets
+    let targets, startPosition = {}
     const handleContext = (event) => {
-        targets = document.elementsFromPoint(event.clientX, event.clientY)
-        targets = targets.filter(t => {
-            let hasAttribute = false
-            Array.from(t.attributes).forEach(attr => {
-                const has = props.triggers.find(f => attr.nodeName === f)
-                if (has)
-                    hasAttribute = hasAttribute || has
+        if (Math.abs(startPosition.x - event.clientX) < 10 && Math.abs(startPosition.y - event.clientY) < 10) {
+
+
+            targets = document.elementsFromPoint(event.clientX, event.clientY)
+            targets = targets.filter(t => {
+                let hasAttribute = false
+                Array.from(t.attributes).forEach(attr => {
+                    const has = props.triggers.find(f => attr.nodeName === f)
+                    if (has)
+                        hasAttribute = hasAttribute || has
+                })
+
+                if (hasAttribute)
+                    return t
             })
+            event.preventDefault()
 
-            if (hasAttribute)
-                return t
-        })
-        event.preventDefault()
+            if (targets.length > 0) {
 
-        if (targets.length > 0) {
+                const currentTarget = targets[0]
 
-            const currentTarget = targets[0]
-
-            setSelected(currentTarget)
-            if (props.onContext !== undefined)
-                props.onContext(currentTarget)
-        } else
-            setSelected(undefined)
+                setSelected(currentTarget)
+                if (props.onContext !== undefined)
+                    props.onContext(currentTarget)
+            } else
+                setSelected(undefined)
 
 
-        contextRef.current.style.zIndex = '999'
-        const bBox = contextRef.current?.getBoundingClientRect()
-        if (event.clientX + bBox.width > document.body.offsetWidth)
-            contextRef.current.style.left = (event.clientX - bBox.width) + 'px'
-        else
-            contextRef.current.style.left = event.clientX + 'px'
+            contextRef.current.style.zIndex = '999'
+            const bBox = contextRef.current?.getBoundingClientRect()
+            if (event.clientX + bBox.width > document.body.offsetWidth)
+                contextRef.current.style.left = (event.clientX - bBox.width) + 'px'
+            else
+                contextRef.current.style.left = event.clientX + 'px'
 
-        if ((event.clientY + bBox.height ) > document.body.offsetHeight)
-            contextRef.current.style.top = (event.clientY) + 'px'
-        else
-            contextRef.current.style.top = (event.clientY + bBox.height) + 'px'
+            if ((event.clientY + bBox.height) > document.body.offsetHeight)
+                contextRef.current.style.top = (event.clientY) + 'px'
+            else
+                contextRef.current.style.top = (event.clientY + bBox.height) + 'px'
+        }
+        startPosition = {x: 0, y: 0}
     }
     const handleMouseDown = (event) => {
+        startPosition = {x: event.clientX, y: event.clientY}
         if (!document.elementsFromPoint(event.clientX, event.clientY).includes(contextRef.current)) {
             if (props.onContextOut !== undefined)
                 props.onContextOut(selected)
@@ -57,8 +63,7 @@ export default function ContextMenu(props) {
     }
 
     useEffect(() => {
-
-        if(props.attributes){
+        if (props.attributes) {
             Object.keys(props.attributes).forEach((attr) => {
                 ref.current?.setAttribute(attr, `${props.attributes[attr]}`)
             })
@@ -85,8 +90,8 @@ export default function ContextMenu(props) {
                         <Button
                             className={styles.basicButton}
                             color={'secondary'}
-                            onClick={() => {
-                                el.onClick(selected)
+                            onClick={e => {
+                                el.onClick(selected, e)
                                 contextRef.current.style.zIndex = '-1'
                                 if (selected)
                                     selected.style.outline = 'transparent 2px solid'
