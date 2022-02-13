@@ -21,7 +21,13 @@ export default function TreeNode(props) {
             ref.current?.setAttribute('data-node', `${props.node.id}`)
 
     }, [props.node])
+    useEffect(() => {
+        if(props.selected === props.node.id) {
+            setOpen(true)
+            props.triggerHierarchy()
+        }
 
+    }, [props.selected])
 
     return (
         <>
@@ -29,8 +35,7 @@ export default function TreeNode(props) {
                 ref={ref}
 
                 id={props.node.id}
-
-                style={{paddingLeft: (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'}}
+                style={{ paddingLeft: (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'}}
                 data-highlight={`${props.focusedNode === props.node.id}`}
                 data-selected={`${props.selected === props.node.id}`}
                 className={styles.row}
@@ -102,8 +107,9 @@ export default function TreeNode(props) {
                     </div>
                 }
             </div>
-            {open ?
-                props.node.children?.map((child, index) => (
+
+            <div style={{display: open ? undefined : 'none'}}>
+                {props.node.children?.map((child, index) => (
                     <React.Fragment key={props.index + '-tree-node-' + index}>
                         <TreeNode
                             {...props}
@@ -113,16 +119,22 @@ export default function TreeNode(props) {
                             index={props.index + 1}
                             focusedNode={props.focusedNode}
                             setFocusedNode={props.setFocusedNode}
+
+                            triggerHierarchy={() => {
+                                setOpen(true)
+                                props.triggerHierarchy()
+                            }}
                         />
                     </React.Fragment>
-                ))
-                :
-                null}
+                ))}
+
+            </div>
         </>
     )
 }
 
 TreeNode.propTypes = {
+
     selected: PropTypes.string,
     handleRename: PropTypes.func.isRequired,
     node: PropTypes.shape({
@@ -145,4 +157,5 @@ TreeNode.propTypes = {
     onDragOver: PropTypes.func,
     onDragLeave: PropTypes.func,
     onDragStart: PropTypes.func,
+    triggerHierarchy: PropTypes.func.isRequired
 }

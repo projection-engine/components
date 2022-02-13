@@ -6,7 +6,7 @@ export default function ResizableBar(props) {
     const ref = useRef()
 
     const handleMouseMove = (event) => {
-        if(props.onResize)
+        if (props.onResize)
             props.onResize()
 
         const bBox = ref.current?.previousSibling.getBoundingClientRect()
@@ -16,13 +16,12 @@ export default function ResizableBar(props) {
             const newW = (event.clientX - bBox.left)
             const offset = newW - bBox.width
             ref.current.previousSibling.style.width = (event.clientX - bBox.left) + 'px'
-            ref.current.nextSibling.style.width =  (prevBbox.width - offset) + 'px'
-        }
-        else {
+            ref.current.nextSibling.style.width = (prevBbox.width - offset) + 'px'
+        } else {
             const newH = (event.clientY - bBox.top)
             const offset = newH - bBox.height
             ref.current.previousSibling.style.height = (event.clientY - bBox.top) + 'px'
-            ref.current.nextSibling.style.height =  (prevBbox.height - offset) + 'px'
+            ref.current.nextSibling.style.height = (prevBbox.height - offset) + 'px'
         }
     }
     const handleMouseUp = () => {
@@ -32,7 +31,7 @@ export default function ResizableBar(props) {
         document.removeEventListener('mousemove', handleMouseMove)
     }
     const handleMouseDown = () => {
-        if(!props.disabled) {
+        if (!props.disabled) {
             if (props.onResizeStart)
                 props.onResizeStart()
             ref.current.parentNode.style.userSelect = 'none'
@@ -46,13 +45,15 @@ export default function ResizableBar(props) {
         <div
             onMouseDown={handleMouseDown}
             style={{
-            background: props.color,
-            height: props.type === 'height' ? '3px' : '100%',
-            width: props.type === 'width' ? '3px' : '100%',
-            cursor: props.type === 'width' ? 'ew-resize' : 'ns-resize'
-        }}
-             data-disabled={`${props.disabled}`}
-             className={styles.wrapper} ref={ref}/>
+                background: props.color,
+                minHeight: props.type === 'height' ? '3px' : '100%',
+                maxHeight: props.type === 'height' ? '3px' : '100%',
+                minWidth: props.type === 'width' ? '3px' : '100%',
+                maxWidth: props.type === 'width' ? '3px' : '100%',
+                cursor: props.type === 'width' ? 'ew-resize' : 'ns-resize'
+            }}
+            data-disabled={`${props.disabled}`}
+            className={styles.wrapper} ref={ref}/>
     )
 }
 

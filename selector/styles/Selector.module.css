@@ -23,6 +23,7 @@
 
 
 .modal {
+    top: -100px;
     transform: translate(1px, -1px) !important; /*REMOVE BLUR CHROME*/
 
     /*max-width: 100% !important;*/
@@ -37,6 +38,7 @@
 .searchWrapper {
     position: sticky;
     top: 0;
+
     height: fit-content;
     background-color: var(--fabric-background-primary) !important;
     z-index: 999;

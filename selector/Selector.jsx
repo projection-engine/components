@@ -11,8 +11,20 @@ export default function Selector(props) {
     const [searchString, setSearchString] = useState('')
     const quickAccess = useContext(QuickAccessProvider)
 
+    const getType = () => {
+        switch (props.type) {
+            case 'image':
+                return quickAccess.images
+            case 'material':
+                return quickAccess.materials
+            case 'mesh':
+                return quickAccess.meshes
+            default:
+                return []
+        }
+    }
     const content = useMemo(() => {
-        const filtered = (props.type === 'image' ? quickAccess.images : quickAccess.meshes).filter(e => e.name.toLowerCase().includes(searchString))
+        const filtered = getType().filter(e => e.name.toLowerCase().includes(searchString))
 
         if (filtered.length > 0)
             return filtered.map((t, i) => (

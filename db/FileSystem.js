@@ -89,9 +89,9 @@ export default class FileSystem {
         })
     }
 
-    async importFile(file, path) {
+    async importFile(file, filePath) {
         return new Promise(resolve => {
-            const newRoot = path + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
+            const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
             const fileID = randomID()
             switch (file.name.split(/\.([a-zA-Z0-9]+)$/)[1]) {
                 case 'png':
@@ -139,6 +139,7 @@ export default class FileSystem {
 
                             Promise.all(promises)
                                 .then(() => {
+
                                     resolve()
                                 })
                         })
@@ -223,9 +224,12 @@ export default class FileSystem {
                         else
                             resolve(err)
                     })
-
+                    break
+                default:
+                    resolve()
                     break
             }
+
         })
     }
 
@@ -465,7 +469,7 @@ export default class FileSystem {
                                                         }
                                                     )
                                                 }),
-                                                this.updateRegistry(from, to, newRegistry)
+                                                this.updateRegistry(oldPath, newPath, newRegistry)
                                             )
                                 })
                                 Promise.all(promises)

@@ -20,6 +20,7 @@ export default function TreeView(props) {
         props.nodes.map((child, index) => (
                 <React.Fragment key={'tree-' + index}>
                     <TreeNode
+                        open={true}
                         onDragOver={(e) => {
                             if(props.draggable) {
                                 e.preventDefault()
@@ -50,6 +51,7 @@ export default function TreeView(props) {
                         draggable={props.draggable}
 
                         handleRename={props.handleRename}
+                        triggerHierarchy={() => null}
                         node={child} index={0}
                         selected={props.selected}
                         focusedNode={focusedNode}
