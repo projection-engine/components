@@ -8,6 +8,11 @@ export default function ContextMenu(props) {
     const contextRef = useRef()
     const [selected, setSelected] = useState()
 
+    const options = useMemo(() => {
+        return props.options.filter(o => Array.from(selected ? selected.attributes : []).find(attr => attr.nodeName === o.requiredTrigger))
+    }, [selected])
+
+
     let targets, startPosition = {}
     const handleContext = (event) => {
         if (Math.abs(startPosition.x - event.clientX) < 10 && Math.abs(startPosition.y - event.clientY) < 10) {
@@ -58,7 +63,8 @@ export default function ContextMenu(props) {
             if (props.onContextOut !== undefined)
                 props.onContextOut(selected)
             setSelected(undefined)
-            contextRef.current.style.zIndex = '-1'
+            if (contextRef.current)
+                contextRef.current.style.zIndex = '-1'
         }
     }
 
@@ -79,32 +85,33 @@ export default function ContextMenu(props) {
     }, [selected, props.options, props.attributes])
 
 
-    const options = useMemo(() => {
-        return props.options.filter(o => Array.from(selected ? selected.attributes : []).find(attr => attr.nodeName === o.requiredTrigger))
-    }, [selected])
     return (
         <>
-            <div className={styles.wrapper} ref={contextRef}>
-                {options.map((el, i) => (
-                    <React.Fragment key={'options-' + i}>
-                        <Button
-                            className={styles.basicButton}
-                            color={'secondary'}
-                            onClick={e => {
-                                el.onClick(selected, e)
-                                contextRef.current.style.zIndex = '-1'
-                                if (selected)
-                                    selected.style.outline = 'transparent 2px solid'
-                                setSelected(undefined)
-                            }}>
-                            <div className={styles.basicIconWrapper}>
-                                {el.icon}
-                            </div>
-                            {el.label}
-                        </Button>
-                    </React.Fragment>
-                ))}
-            </div>
+            {options.length > 0 ?
+                <div className={styles.wrapper} ref={contextRef}>
+                    {options.map((el, i) => (
+                        <React.Fragment key={'options-' + i}>
+                            <Button
+                                className={styles.basicButton}
+                                color={'secondary'}
+                                onClick={e => {
+                                    el.onClick(selected, e)
+                                    if (contextRef.current)
+                                        contextRef.current.style.zIndex = '-1'
+                                    if (selected)
+                                        selected.style.outline = 'transparent 2px solid'
+                                    setSelected(undefined)
+                                }}>
+                                <div className={styles.basicIconWrapper}>
+                                    {el.icon}
+                                </div>
+                                {el.label}
+                            </Button>
+                        </React.Fragment>
+                    ))}
+                </div>
+                :
+                null}
             <div className={props.className} data-self={'true'} style={props.styles} ref={ref}>
                 {props.children}
             </div>
