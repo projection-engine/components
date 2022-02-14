@@ -2,7 +2,7 @@ import styles from './styles/GlobalOptions.module.css'
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import PropTypes from "prop-types";
 import {useContext} from "react";
-import SettingsProvider from "../../pages/project/hook/SettingsProvider";
+import SettingsProvider from "../../services/hooks/SettingsProvider";
 
 export default function GlobalOptions(props) {
     const settingsContext = useContext(SettingsProvider)

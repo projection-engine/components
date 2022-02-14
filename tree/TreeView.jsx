@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, {useEffect, useRef, useState} from "react";
 import styles from './styles/Tree.module.css'
 import TreeNode from "./TreeNode";
-import ContextMenu from "../context/ContextMenu";
+import {ContextMenu} from "@f-ui/core";
 
 export default function TreeView(props) {
     const [focusedNode, setFocusedNode] = useState()

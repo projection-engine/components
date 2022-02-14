@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from "react";
+import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 import styles from "../styles/Options.module.css";
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";

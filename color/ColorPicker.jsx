@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Button, Fabric, Modal, ToolTip} from "@f-ui/core";
 import {RgbColorPicker} from "react-colorful";
-import ThemeProvider from "../../pages/project/hook/ThemeProvider";
+import ThemeProvider from "../../services/hooks/ThemeProvider";
 import Range from "../range/Range";
 
 

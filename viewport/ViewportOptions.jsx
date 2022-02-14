@@ -3,7 +3,7 @@ import styles from "./styles/ViewportOptions.module.css";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import Range from "../range/Range";
 import {useContext, useMemo, useState} from "react";
-import SettingsProvider from "../../pages/project/hook/SettingsProvider";
+import SettingsProvider from "../../services/hooks/SettingsProvider";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 
 

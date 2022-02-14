@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import styles from './styles/Preferences.module.css'
 import {Button, Modal, Tab, VerticalTabs} from "@f-ui/core";
 import {useContext, useState} from "react";
-import SettingsProvider from "../../pages/project/hook/SettingsProvider";
-import ThemeProvider from "../../pages/project/hook/ThemeProvider";
+import SettingsProvider from "../../services/hooks/SettingsProvider";
+import ThemeProvider from "../../services/hooks/ThemeProvider";
 import ColorPicker from "../color/ColorPicker";
 
 
