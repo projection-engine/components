@@ -1,5 +1,5 @@
 import FileBlob from "../../services/workers/FileBlob";
-import MeshParser from "../../services/engine/utils/MeshParser";
+import MeshParser from "../../services/workers/MeshParser";
 import randomID from "../../pages/project/utils/misc/randomID";
 import ImageProcessor from "../../services/workers/ImageProcessor";
 
@@ -89,7 +89,7 @@ export default class FileSystem {
         })
     }
 
-    async importFile(file, filePath) {
+    async importFile(file, filePath, additionalFiles=[]) {
         return new Promise(resolve => {
             const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
             const fileID = randomID()
@@ -187,7 +187,7 @@ export default class FileSystem {
                                 .loadAsString(file)
                                 .then(res => {
                                     MeshParser
-                                        .parseGLTF(res)
+                                        .parseGLTF(res, additionalFiles)
                                         .then(data => {
                                             if (data) {
                                                 const promises = data.map(d => {
@@ -437,13 +437,11 @@ export default class FileSystem {
         })
     }
 
-    async rename(from, to, registry) {
+    async rename(from, to) {
         const fromResolved = path.resolve(from)
 
-        let newRegistry = registry
-        if (!registry)
-            newRegistry = await this.readRegistry()
-
+        let newRegistry = await this.readRegistry()
+        console.log(fromResolved, to)
         return new Promise(rootResolve => {
             fs.lstat(fromResolved, (er, stat) => {
                 if (stat !== undefined && stat.isDirectory())
@@ -456,7 +454,7 @@ export default class FileSystem {
                                     const newPath = to + `/${file}`;
 
                                     if (fs.lstatSync(oldPath).isDirectory())
-                                        promises.push(this.rename(oldPath, newPath, newRegistry))
+                                        promises.push(this.rename(oldPath, newPath))
                                     else
                                         promises
                                             .push(
@@ -509,14 +507,14 @@ export default class FileSystem {
     }
 
     async updateRegistry(from, to, registryData) {
-        const fromResolved = path.resolve(from)
-        const toResolved = path.resolve(to)
         const assetsResolved = path.resolve(this.path + '\\assets\\')
-
+        const fromResolved = path.resolve(from).replace(assetsResolved, '')
+        const toResolved = path.resolve(to)
 
         return new Promise(resolve => {
             const registryFound = registryData.find(reg => {
-                return reg.path === fromResolved.replace(assetsResolved, '')
+                const regResolved = path.resolve(this.path + '\\assets\\' + reg.path).replace(assetsResolved, '')
+                return regResolved=== fromResolved
             })
             if (registryFound) {
                 fs.writeFile(registryFound.registryPath, JSON.stringify({

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from "./styles/ViewportOptions.module.css";
-import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
+import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import Range from "../range/Range";
 import {useContext, useMemo, useState} from "react";
 import SettingsProvider from "../../services/hooks/SettingsProvider";
@@ -60,8 +60,31 @@ export default function ViewportOptions(props) {
                 )
         }
     }, [settingsContext.shadingModel])
+    const [fullscreen, setFullscreen] = useState(false)
     return (
         <div className={styles.options} draggable={false}>
+            <Button className={styles.optionWrapper} onClick={() => {
+                const el = document.getElementById(props.fullscreenID)
+                if(el) {
+                    if (!fullscreen) {
+                        el.requestFullscreen()
+                            .then(r => {
+                                setFullscreen(true)
+                                el.addEventListener('fullscreenchange', () => {
+                                    if(! document.fullscreenElement)
+                                        setFullscreen(false)
+                                }, {once: true})
+                            })
+                    } else {
+                        document.exitFullscreen()
+                            .then(() => setFullscreen(false))
+
+                    }
+                }
+            }}>
+                <span style={{fontSize: '1.2rem'}}
+                      className={'material-icons-round'}>fullscreen</span>
+            </Button>
             <Dropdown className={styles.optionWrapper} justify={'start'} align={'bottom'}>
                 <span style={{fontSize: '1.2rem'}} className={'material-icons-round'}>more_vert</span>
                 <DropdownOptions>
@@ -71,14 +94,6 @@ export default function ViewportOptions(props) {
                                                                     className={'material-icons-round'}>check</span> : undefined,
                         onClick: () => settingsContext.fpsVisibility = !settingsContext.fpsVisibility,
                         shortcut: 'ctrl + shift + h'
-                    }}/>
-
-                    <DropdownOption option={{
-                        label: 'Fullscreen',
-                        icon: settingsContext.fullscreen ? <span style={{fontSize: '1.2rem'}}
-                                                                 className={'material-icons-round'}>check</span> : undefined,
-                        onClick: () => settingsContext.fullscreen = true,
-                        shortcut: 'F'
                     }}/>
 
                     <div className={styles.dividerWrapper}>
@@ -201,6 +216,7 @@ export default function ViewportOptions(props) {
     )
 }
 ViewportOptions.propTypes = {
+    fullscreenID: PropTypes.string,
     engine: PropTypes.object,
     id: PropTypes.string
 }
