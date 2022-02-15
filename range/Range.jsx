@@ -46,7 +46,7 @@ export default function Range(props) {
 
     return (
 
-        <div className={[styles.content, styles.wrapper].join(' ')} style={{'--accentColor': props.accentColor}}
+        <div className={styles.wrapper} style={{'--accentColor': props.accentColor}}
              title={props.label}>
             {focused ?
                 <input
@@ -88,12 +88,20 @@ export default function Range(props) {
                     {parseFloat(props.value).toFixed(1)}
                 </div>
             }
+            {props.metric ?
+                <div className={styles.metricWrapper}>
+                    {props.metric === 'angle' ? 'θ' : props.metric}
+                </div>
+                :
+                null
+            }
         </div>
     )
 
 }
 
 Range.propTypes = {
+    metric: PropTypes.oneOf(['angle', 'cm', 'm', 'un']),
 
     maxValue: PropTypes.number,
     minValue: PropTypes.number,

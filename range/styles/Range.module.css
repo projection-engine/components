@@ -4,35 +4,25 @@
     width: 100%;
     align-items: center;
     gap: 4px;
-    position: relative;
+
     --accentColor: transparent;
 
     overflow: hidden;
     max-width: 100%;
     user-select: none !important;
-}
 
-.wrapper::before{
-    content: '';
-    background-color: var(--accentColor);
-    height: 70%;
-    width: 2px;
-    position: absolute;
-    top: 50%;
-    left: 2px;
-    transform: translate(-50%, -50%);
-}
+    border-left: var(--accentColor) 2px solid;
 
-.content{
-    max-width: 100%;
-    display: flex;
-    align-items: center;
-    height: 30px;
+
+    height: 25px;
+    font-size: .75rem;
+
     background-color:var(--background-input);
-    border-radius: 5px;
-    width: 100%;
-    overflow: hidden;
+    border-radius: 0 3px 3px 0;
+
     min-width: unset;
+
+    position: relative;
 }
 
 .button{
@@ -60,7 +50,7 @@
     outline: none;
     border: none;
     color: var(--fabric-color-secondary);
-font-size: inherit;
+    font-size: inherit;
     text-align: center;
 
 
@@ -77,4 +67,11 @@ font-size: inherit;
 /* Firefox */
 .draggable[type=number] {
     -moz-appearance: textfield;
+}
+
+.metricWrapper{
+    position: absolute;
+    bottom: 0px;
+    right: 2px;
+    font-size: .6rem;
 }

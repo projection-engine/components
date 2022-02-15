@@ -18,6 +18,9 @@
     overflow: hidden;
     display: grid;
     justify-content: flex-start;
+    align-items: center;
+    outline: transparent 2px dashed;
+    transition: 150ms linear;
 
 }
 
@@ -68,4 +71,9 @@
     padding: 8px;
     font-size: .7rem;
     font-weight: 550;
+}
+
+.hovered{
+    outline: var(--fabric-accent-color) 1px dashed;
+    opacity: .5;
 }

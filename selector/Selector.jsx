@@ -60,28 +60,46 @@ export default function Selector(props) {
             name: 'Empty texture'
         })
     }, [props.selected])
-
+    const [className, setClassName] = useState('')
     return (
+        <div
+            onDragOver={e => {
+                e.preventDefault()
+                setClassName(styles.hovered)
+            }}
 
-        <Dropdown wrapperClassname={styles.modal} className={styles.button}>
-            <SelectorItem
-                data={{
-                    ...state,
-                    blob: state.preview
-                }}
-            />
-            <DropdownOptions>
-                <div className={styles.searchWrapper}>
-                    <Search searchString={searchString} setSearchString={setSearchString} width={'100%'}/>
-                    <Button onClick={() => quickAccess.refresh()} className={styles.refreshButton}>
-                        <span className={'material-icons-round'} style={{fontSize: '1rem'}}>refresh</span>
+            onDrop={e => {
+                e.preventDefault()
+                const filtered = getType().find(f => f.registryID === e.dataTransfer.getData('text'))
+                if (filtered)
+                    props.handleChange(filtered)
+                setClassName('')
+            }}
+            onDragLeave={e => {
+                setClassName('')
+            }}>
+            <Dropdown
+                wrapperClassname={styles.modal}
+                className={[styles.button, className].join(' ')}>
+                <SelectorItem
+                    data={{
+                        ...state,
+                        blob: state.preview
+                    }}
+                />
+                <DropdownOptions>
+                    <div className={styles.searchWrapper}>
+                        <Search searchString={searchString} setSearchString={setSearchString} width={'100%'}/>
+                        <Button onClick={() => quickAccess.refresh()} className={styles.refreshButton}>
+                            <span className={'material-icons-round'} style={{fontSize: '1rem'}}>refresh</span>
 
-                        <ToolTip content={'Refresh files'}/>
-                    </Button>
-                </div>
-                {content}
-            </DropdownOptions>
-        </Dropdown>
+                            <ToolTip content={'Refresh files'}/>
+                        </Button>
+                    </div>
+                    {content}
+                </DropdownOptions>
+            </Dropdown>
+        </div>
     )
 }
 
