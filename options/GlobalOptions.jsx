@@ -66,6 +66,12 @@ export default function GlobalOptions(props) {
                         icon: settingsContext.viewportOptionsVisibility ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
                         onClick: () => settingsContext.viewportOptionsVisibility = ! settingsContext.viewportOptionsVisibility
                     }}/>
+                    <DropdownOption option={{
+                        label: 'Show camera coordinates',
+                        keepAlive: true,
+                        icon: settingsContext.cameraCoordsVisibility ? <span className={'material-icons-round'} style={{fontSize: '1rem'}}>check</span> : undefined,
+                        onClick: () => settingsContext.cameraCoordsVisibility = ! settingsContext.cameraCoordsVisibility
+                    }}/>
                 </DropdownOptions>
             </Dropdown>
             <Dropdown disabled={true} className={styles.dropdownLabel}>

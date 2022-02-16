@@ -8,6 +8,7 @@
     background-color: var(--background-2);
     border-radius: 5px;
     transition: 150ms linear;
+    position: relative;
 
 }
 .viewport:active{
@@ -33,4 +34,21 @@
 }
 .hovered > * {
     opacity: .5;
+}
+.position{
+    color: var(--fabric-color-primary);
+    font-size: .75rem;
+
+    position: absolute;
+    z-index: 10;
+    backdrop-filter: blur(20px);
+    width: fit-content;
+    height: fit-content;
+
+    display: grid;
+    gap: 4px;
+
+    bottom: 8px;
+    left: 8px;
+    transform: translateY(-50%);
 }

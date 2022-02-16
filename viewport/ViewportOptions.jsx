@@ -5,6 +5,7 @@ import Range from "../range/Range";
 import {useContext, useEffect, useMemo, useState} from "react";
 import SettingsProvider from "../../services/hooks/SettingsProvider";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
+import CAMERA_TYPES from "../../services/engine/utils/CAMERA_TYPES";
 
 
 export default function ViewportOptions(props) {
@@ -76,8 +77,8 @@ export default function ViewportOptions(props) {
     }, [settingsContext.shadingModel])
     const cameraIcon = useMemo(() => {
         switch (settingsContext.cameraType) {
-            case 'spherical':
-            case 'free':
+            case CAMERA_TYPES.SPHERICAL:
+            case CAMERA_TYPES.FREE:
                 return (
                     <>
 
@@ -88,7 +89,7 @@ export default function ViewportOptions(props) {
                             className={'material-icons-round'}>grid_on</span>
                         </div>
                         <div className={styles.overflow} style={{textTransform: 'capitalize'}}>
-                            {settingsContext.cameraType === 'spherical' ? 'Spherical' : 'Free camera'}
+                            {settingsContext.cameraType === CAMERA_TYPES.SPHERICAL ? 'Spherical' : 'Free camera'}
                         </div>
                     </>
 
@@ -194,18 +195,18 @@ export default function ViewportOptions(props) {
                         <DropdownOption
                             option={{
                                 label: 'Free',
-                                icon: settingsContext.cameraType === 'free' ? <span style={{fontSize: '1.2rem'}}
+                                icon: settingsContext.cameraType === CAMERA_TYPES.FREE ? <span style={{fontSize: '1.2rem'}}
                                                                                     className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => settingsContext.cameraType = 'free',
-                                disabled: settingsContext.cameraType === 'free'
+                                onClick: () => settingsContext.cameraType = CAMERA_TYPES.FREE,
+                                disabled: settingsContext.cameraType === CAMERA_TYPES.FREE
                             }}/>
 
                         <DropdownOption option={{
                             label: 'Spherical',
-                            icon: settingsContext.cameraType === 'spherical' ? <span style={{fontSize: '1.2rem'}}
+                            icon: settingsContext.cameraType === CAMERA_TYPES.SPHERICAL ? <span style={{fontSize: '1.2rem'}}
                                                                                      className={'material-icons-round'}>check</span> : undefined,
-                            onClick: () => settingsContext.cameraType = 'spherical',
-                            disabled: settingsContext.cameraType === 'spherical'
+                            onClick: () => settingsContext.cameraType = CAMERA_TYPES.SPHERICAL,
+                            disabled: settingsContext.cameraType === CAMERA_TYPES.SPHERICAL
                         }}/>
 
                         <div className={styles.dividerWrapper}>
@@ -214,31 +215,46 @@ export default function ViewportOptions(props) {
                         </div>
                         <DropdownOption option={{
                             label: 'Top',
-                            icon: settingsContext.cameraType === 'ortho-top' ? <span style={{fontSize: '1.2rem'}}
+                            icon: settingsContext.cameraType === CAMERA_TYPES.TOP ? <span style={{fontSize: '1.2rem'}}
                                                                                      className={'material-icons-round'}>check</span> : undefined,
-                            onClick: () => settingsContext.cameraType = 'ortho-top',
-                            disabled: settingsContext.cameraType === 'ortho-top'
+                            onClick: () => settingsContext.cameraType = CAMERA_TYPES.TOP,
+                            disabled: settingsContext.cameraType === CAMERA_TYPES.TOP
                         }}/>
                         <DropdownOption option={{
                             label: 'Bottom',
-                            icon: settingsContext.cameraType === 'ortho-bottom' ? <span style={{fontSize: '1.2rem'}}
+                            icon: settingsContext.cameraType === CAMERA_TYPES.BOTTOM ? <span style={{fontSize: '1.2rem'}}
                                                                                         className={'material-icons-round'}>check</span> : undefined,
-                            onClick: () => settingsContext.cameraType = 'ortho-bottom',
-                            disabled: settingsContext.cameraType === 'ortho-bottom'
+                            onClick: () => settingsContext.cameraType = CAMERA_TYPES.BOTTOM,
+                            disabled: settingsContext.cameraType === CAMERA_TYPES.BOTTOM
                         }}/>
                         <DropdownOption option={{
                             label: 'Left',
-                            icon: settingsContext.cameraType === 'ortho-left' ? <span style={{fontSize: '1.2rem'}}
+                            icon: settingsContext.cameraType === CAMERA_TYPES.LEFT ? <span style={{fontSize: '1.2rem'}}
                                                                                       className={'material-icons-round'}>check</span> : undefined,
-                            onClick: () => settingsContext.cameraType = 'ortho-left',
-                            disabled: settingsContext.cameraType === 'ortho-left'
+                            onClick: () => settingsContext.cameraType = CAMERA_TYPES.LEFT,
+                            disabled: settingsContext.cameraType === CAMERA_TYPES.LEFT
                         }}/>
                         <DropdownOption option={{
                             label: 'Right',
-                            icon: settingsContext.cameraType === 'ortho-right' ? <span style={{fontSize: '1.2rem'}}
+                            icon: settingsContext.cameraType === CAMERA_TYPES.RIGHT ? <span style={{fontSize: '1.2rem'}}
                                                                                        className={'material-icons-round'}>check</span> : undefined,
-                            onClick: () => settingsContext.cameraType = 'ortho-right',
-                            disabled: settingsContext.cameraType === 'ortho-right'
+                            onClick: () => settingsContext.cameraType = CAMERA_TYPES.RIGHT,
+                            disabled: settingsContext.cameraType === CAMERA_TYPES.RIGHT
+                        }}/>
+
+                        <DropdownOption option={{
+                            label: 'Front',
+                            icon: settingsContext.cameraType === CAMERA_TYPES.FRONT ? <span style={{fontSize: '1.2rem'}}
+                                                                                           className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => settingsContext.cameraType = CAMERA_TYPES.FRONT,
+                            disabled: settingsContext.cameraType === CAMERA_TYPES.FRONT
+                        }}/>
+                        <DropdownOption option={{
+                            label: 'Back',
+                            icon: settingsContext.cameraType === CAMERA_TYPES.BACK ? <span style={{fontSize: '1.2rem'}}
+                                                                                            className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => settingsContext.cameraType = CAMERA_TYPES.BACK,
+                            disabled: settingsContext.cameraType === CAMERA_TYPES.BACK
                         }}/>
                     </DropdownOptions>
                 </Dropdown>
