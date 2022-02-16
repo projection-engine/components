@@ -34,6 +34,7 @@ export default function Viewport(props) {
                 }
             }}>
             <canvas
+                style={{background: 'transparent'}}
                 onContextMenu={e => e.preventDefault()}
                 id={props.id + '-canvas'}
             />

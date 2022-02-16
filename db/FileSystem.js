@@ -149,9 +149,14 @@ export default class FileSystem {
                     FileBlob
                         .loadAsString(file)
                         .then(res => {
-                            const data = MeshParser
+                            let data = MeshParser
                                 .parseObj(res)
-
+                            data = {...data,
+                                name: file.name.split(/\.([a-zA-Z0-9]+)$/)[0],
+                                scaling: [1, 1, 1],
+                                rotation: [0, 0, 0],
+                                translation: [0, 0, 0],
+                            }
                             const promises = [
                                 new Promise(r => {
                                     fs.writeFile(

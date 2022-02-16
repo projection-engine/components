@@ -98,7 +98,7 @@ export default function ViewportOptions(props) {
                 return (
                     <>
                         <span
-                            style={{fontSize: '1.2rem'}}
+                            style={{fontSize: '1rem'}}
                             className={'material-icons-round'}>grid_on
                         </span>
                         <div className={styles.overflow}>
@@ -116,10 +116,11 @@ export default function ViewportOptions(props) {
                 <Dropdown
                     className={styles.optionWrapper} variant={'outlined'}
                     justify={'start'} align={'bottom'}>
-                    <span style={{fontSize: '1.2rem'}} className={'material-icons-round'}>more_vert</span>
+                    <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>more_vert</span>
                     <DropdownOptions>
                         <DropdownOption option={{
                             label: 'Show FPS',
+                            keepAlive: true,
                             icon: settingsContext.fpsVisibility ? <span style={{fontSize: '1.2rem'}}
                                                                         className={'material-icons-round'}>check</span> : undefined,
                             onClick: () => settingsContext.fpsVisibility = !settingsContext.fpsVisibility,
@@ -174,7 +175,7 @@ export default function ViewportOptions(props) {
                         }
                     }
                 }}>
-                <span style={{fontSize: '1.2rem'}}
+                <span style={{fontSize: '1.1rem'}}
                       className={'material-icons-round'}>fullscreen</span>
                 </Button>
                 <Dropdown
@@ -184,7 +185,6 @@ export default function ViewportOptions(props) {
                     justify={'start'} align={'bottom'}>
                     <div className={styles.summary}>
                         {cameraIcon}
-
                     </div>
                     <DropdownOptions>
 
@@ -195,16 +195,18 @@ export default function ViewportOptions(props) {
                         <DropdownOption
                             option={{
                                 label: 'Free',
-                                icon: settingsContext.cameraType === CAMERA_TYPES.FREE ? <span style={{fontSize: '1.2rem'}}
-                                                                                    className={'material-icons-round'}>check</span> : undefined,
+                                icon: settingsContext.cameraType === CAMERA_TYPES.FREE ?
+                                    <span style={{fontSize: '1.2rem'}}
+                                          className={'material-icons-round'}>check</span> : undefined,
                                 onClick: () => settingsContext.cameraType = CAMERA_TYPES.FREE,
                                 disabled: settingsContext.cameraType === CAMERA_TYPES.FREE
                             }}/>
 
                         <DropdownOption option={{
                             label: 'Spherical',
-                            icon: settingsContext.cameraType === CAMERA_TYPES.SPHERICAL ? <span style={{fontSize: '1.2rem'}}
-                                                                                     className={'material-icons-round'}>check</span> : undefined,
+                            icon: settingsContext.cameraType === CAMERA_TYPES.SPHERICAL ?
+                                <span style={{fontSize: '1.2rem'}}
+                                      className={'material-icons-round'}>check</span> : undefined,
                             onClick: () => settingsContext.cameraType = CAMERA_TYPES.SPHERICAL,
                             disabled: settingsContext.cameraType === CAMERA_TYPES.SPHERICAL
                         }}/>
@@ -216,28 +218,29 @@ export default function ViewportOptions(props) {
                         <DropdownOption option={{
                             label: 'Top',
                             icon: settingsContext.cameraType === CAMERA_TYPES.TOP ? <span style={{fontSize: '1.2rem'}}
-                                                                                     className={'material-icons-round'}>check</span> : undefined,
+                                                                                          className={'material-icons-round'}>check</span> : undefined,
                             onClick: () => settingsContext.cameraType = CAMERA_TYPES.TOP,
                             disabled: settingsContext.cameraType === CAMERA_TYPES.TOP
                         }}/>
                         <DropdownOption option={{
                             label: 'Bottom',
-                            icon: settingsContext.cameraType === CAMERA_TYPES.BOTTOM ? <span style={{fontSize: '1.2rem'}}
-                                                                                        className={'material-icons-round'}>check</span> : undefined,
+                            icon: settingsContext.cameraType === CAMERA_TYPES.BOTTOM ?
+                                <span style={{fontSize: '1.2rem'}}
+                                      className={'material-icons-round'}>check</span> : undefined,
                             onClick: () => settingsContext.cameraType = CAMERA_TYPES.BOTTOM,
                             disabled: settingsContext.cameraType === CAMERA_TYPES.BOTTOM
                         }}/>
                         <DropdownOption option={{
                             label: 'Left',
                             icon: settingsContext.cameraType === CAMERA_TYPES.LEFT ? <span style={{fontSize: '1.2rem'}}
-                                                                                      className={'material-icons-round'}>check</span> : undefined,
+                                                                                           className={'material-icons-round'}>check</span> : undefined,
                             onClick: () => settingsContext.cameraType = CAMERA_TYPES.LEFT,
                             disabled: settingsContext.cameraType === CAMERA_TYPES.LEFT
                         }}/>
                         <DropdownOption option={{
                             label: 'Right',
                             icon: settingsContext.cameraType === CAMERA_TYPES.RIGHT ? <span style={{fontSize: '1.2rem'}}
-                                                                                       className={'material-icons-round'}>check</span> : undefined,
+                                                                                            className={'material-icons-round'}>check</span> : undefined,
                             onClick: () => settingsContext.cameraType = CAMERA_TYPES.RIGHT,
                             disabled: settingsContext.cameraType === CAMERA_TYPES.RIGHT
                         }}/>
@@ -245,21 +248,54 @@ export default function ViewportOptions(props) {
                         <DropdownOption option={{
                             label: 'Front',
                             icon: settingsContext.cameraType === CAMERA_TYPES.FRONT ? <span style={{fontSize: '1.2rem'}}
-                                                                                           className={'material-icons-round'}>check</span> : undefined,
+                                                                                            className={'material-icons-round'}>check</span> : undefined,
                             onClick: () => settingsContext.cameraType = CAMERA_TYPES.FRONT,
                             disabled: settingsContext.cameraType === CAMERA_TYPES.FRONT
                         }}/>
                         <DropdownOption option={{
                             label: 'Back',
                             icon: settingsContext.cameraType === CAMERA_TYPES.BACK ? <span style={{fontSize: '1.2rem'}}
-                                                                                            className={'material-icons-round'}>check</span> : undefined,
+                                                                                           className={'material-icons-round'}>check</span> : undefined,
                             onClick: () => settingsContext.cameraType = CAMERA_TYPES.BACK,
                             disabled: settingsContext.cameraType === CAMERA_TYPES.BACK
                         }}/>
                     </DropdownOptions>
                 </Dropdown>
 
-
+                <Dropdown
+                    className={styles.optionWrapper}
+                    justify={'start'} align={'bottom'}>
+                    <div className={styles.summary}>
+                          <span style={{fontSize: '1.1rem'}}
+                                className={'material-icons-round'}>visibility</span>
+                        <div className={styles.overflow}>
+                            View
+                        </div>
+                    </div>
+                    <DropdownOptions>
+                        <DropdownOption option={{
+                            label: 'FXAA',
+                            keepAlive: true,
+                            icon: settingsContext.fxaa ? <span style={{fontSize: '1.2rem'}}
+                                                               className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => settingsContext.fxaa = !settingsContext.fxaa,
+                        }}/>
+                        <DropdownOption option={{
+                            label: 'Grid',
+                            keepAlive: true,
+                            icon: settingsContext.gridVisibility ? <span style={{fontSize: '1.2rem'}}
+                                                                         className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => settingsContext.gridVisibility = !settingsContext.gridVisibility,
+                        }}/>
+                        <DropdownOption option={{
+                            label: 'Icons',
+                            keepAlive: true,
+                            icon: settingsContext.iconsVisibility ? <span style={{fontSize: '1.2rem'}}
+                                                                          className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => settingsContext.iconsVisibility = !settingsContext.iconsVisibility
+                        }}/>
+                    </DropdownOptions>
+                </Dropdown>
             </div>
             <div className={styles.alignEnd}>
                 <div className={styles.buttonGroup}>
@@ -270,7 +306,7 @@ export default function ViewportOptions(props) {
                         onClick={() => {
                             settingsContext.shadingModel = SHADING_MODELS.DETAIL
                         }}
-                      styles={{borderRadius: '5px 0 0 5px'}}>
+                        styles={{borderRadius: '5px 0 0 5px'}}>
                         <div className={styles.shadedIcon}/>
                         <ToolTip>
                             <div style={{textAlign: 'left'}}>
