@@ -21,7 +21,7 @@
 .logoWrapper{
     width: fit-content;
 
-    background: var(--background-1) !important;
+    background: var(--fabric-background-primary) !important;
     display: flex;
     align-items: center;
     justify-content: center;

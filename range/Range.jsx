@@ -61,7 +61,7 @@ export default function Range(props) {
                         else
                             props.handleChange(parseFloat(e.target.value))
                     }} type={'number'}
-                    style={{cursor: 'text', background: 'var(--background-3)'}}
+                    style={{cursor: 'text', background: 'var(--fabric-background-quaternary)'}}
                     onBlur={() => {
                         setFocused(false)
                         if (props.onFinish)

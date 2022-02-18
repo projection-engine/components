@@ -80,7 +80,7 @@
     border: var(--fabric-border-primary) 1px solid;
     outline: none;
     border-radius: 5px;
-    background-color: var(--background-3);
+    background-color: var(--fabric-background-quaternary);
     color: var(--fabric-color-tertiary);
 
 }
@@ -115,4 +115,19 @@
     outline: var(--fabric-accent-color) 1px dashed;
 
 
+}
+.children{
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+    --position-left: 0px;
+}
+.children::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(var(--position-left) + .8rem);
+    width: 1px;
+    height: 100%;
+    border-left: var(--fabric-border-secondary) 1px dashed;
 }

@@ -56,7 +56,7 @@
 
 }
 .draggable:active{
-    background-color: var(--background-3);
+    background-color: var(--fabric-background-quaternary);
 }
 .draggable::-webkit-inner-spin-button {
     -webkit-appearance: none;

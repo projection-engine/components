@@ -108,7 +108,7 @@ export default function TreeNode(props) {
                 }
             </div>
 
-            <div style={{display: open ? undefined : 'none'}}>
+            <div style={{display: open ? undefined : 'none', '--position-left':  (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'}} className={styles.children}>
                 {props.node.children?.map((child, index) => (
                     <React.Fragment key={props.index + '-tree-node-' + index}>
                         <TreeNode

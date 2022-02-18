@@ -46,7 +46,10 @@ export default function TreeView(props) {
                                 props.onDrop(e, e.currentTarget.id)
                         }}
                         onDragStart={(e) => {
-                            e.dataTransfer.setData('text', e.currentTarget.id)
+                            if(!props.onDragStart)
+                                e.dataTransfer.setData('text', e.currentTarget.id)
+                            else
+                                props.onDragStart(e, e.currentTarget.id)
                         }}
                         draggable={props.draggable}
 
@@ -96,6 +99,7 @@ TreeView.propTypes = {
     onDrop: PropTypes.func,
     onDragOver: PropTypes.func,
     onDragLeave: PropTypes.func,
+    onDragStart: PropTypes.func,
 
     options: PropTypes.arrayOf(PropTypes.shape({
         onClick: PropTypes.func,

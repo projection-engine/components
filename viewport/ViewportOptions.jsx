@@ -27,54 +27,6 @@ export default function ViewportOptions(props) {
         }
     }, [fullscreen])
 
-    const renderingType = useMemo(() => {
-        switch (settingsContext.shadingModel) {
-            case SHADING_MODELS.FLAT: {
-                return (
-                    <>
-                        <div
-                            style={{fontSize: '1.2rem'}}
-                            className={'material-icons-round'}
-                        >
-                            dehaze
-                        </div>
-                        <div className={styles.overflow}>
-                            Flat
-                        </div>
-                    </>
-                )
-            }
-            case SHADING_MODELS.DETAIL: {
-                return (
-                    <>
-                        <div
-                            style={{fontSize: '1.2rem'}}
-                            className={'material-icons-round'}
-                        >
-                            auto_awesome
-                        </div>
-                        <div className={styles.overflow}>
-                            Details
-                        </div>
-                    </>
-                )
-            }
-            default:
-                return (
-                    <>
-                        <div
-                            style={{fontSize: '1.2rem'}}
-                            className={'material-icons-round'}
-                        >
-                            details
-                        </div>
-                        <div className={styles.overflow}>
-                            Wireframe
-                        </div>
-                    </>
-                )
-        }
-    }, [settingsContext.shadingModel])
     const cameraIcon = useMemo(() => {
         switch (settingsContext.cameraType) {
             case CAMERA_TYPES.SPHERICAL:

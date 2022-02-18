@@ -5,12 +5,14 @@
     padding: 3px;
     height: fit-content;
     user-select: none;
-
+    align-items: center;
+    align-content: center;
 }
 
 .alignEnd {
     display: flex;
-
+    align-items: center;
+    align-content: center;
 
     justify-content: flex-end;
     gap: 8px;
@@ -21,13 +23,15 @@
     width: 100%;
 
     display: flex;
+    align-items: center;
+    align-content: center;
     justify-content: flex-start;
     gap: 8px;
 }
 
 .optionWrapper {
     border-radius: 5px;
-    background: var(--background-2a);
+    background: var(--fabric-background-tertiary);
 
 
     width: fit-content;
@@ -44,7 +48,8 @@
 
     padding: 4px !important;
     position: relative !important;
-    color: white !important;
+    color: var(--fabric-color-secondary) !important;
+    border: var(--fabric-border-primary) 1px solid;
     overflow: hidden;
     font-family: "Roboto" !important;
 
@@ -163,7 +168,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--background-2a) !important;
+    background: var(--fabric-background-tertiary) !important;
 
     height: 25px;
     width: 25px;

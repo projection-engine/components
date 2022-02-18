@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
 
-    background: var(--background-3);
+    background: var(--fabric-background-quaternary);
     height: 100%;
     width: 100%;
     border-radius: 5px;
