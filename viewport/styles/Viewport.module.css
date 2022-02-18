@@ -41,14 +41,17 @@
 
     position: absolute;
     z-index: 10;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px) brightness(70%);
+    padding: 8px;
     width: fit-content;
     height: fit-content;
 
     display: grid;
     gap: 4px;
 
-    bottom: 8px;
-    left: 8px;
-    transform: translateY(-50%);
+    bottom: 4px;
+    left: 4px;
+    border-radius: 5px;
+  
+
 }

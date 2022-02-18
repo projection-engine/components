@@ -90,11 +90,6 @@ export default function Selector(props) {
                 <DropdownOptions>
                     <div className={styles.searchWrapper}>
                         <Search searchString={searchString} setSearchString={setSearchString} width={'100%'}/>
-                        <Button onClick={() => quickAccess.refresh()} className={styles.refreshButton}>
-                            <span className={'material-icons-round'} style={{fontSize: '1rem'}}>refresh</span>
-
-                            <ToolTip content={'Refresh files'}/>
-                        </Button>
                     </div>
                     {content}
                 </DropdownOptions>

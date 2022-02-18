@@ -194,6 +194,7 @@ export default class FileSystem {
                                     MeshParser
                                         .parseGLTF(res, additionalFiles)
                                         .then(data => {
+                                            console.log(data)
                                             if (data) {
                                                 const promises = data.map(d => {
                                                     return [

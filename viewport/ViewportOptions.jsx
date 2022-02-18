@@ -120,10 +120,9 @@ export default function ViewportOptions(props) {
                     <DropdownOptions>
                         <DropdownOption option={{
                             label: 'Show FPS',
-                            keepAlive: true,
-                            icon: settingsContext.fpsVisibility ? <span style={{fontSize: '1.2rem'}}
+                            icon: settingsContext.performanceMetrics ? <span style={{fontSize: '1.2rem'}}
                                                                         className={'material-icons-round'}>check</span> : undefined,
-                            onClick: () => settingsContext.fpsVisibility = !settingsContext.fpsVisibility,
+                            onClick: () => settingsContext.performanceMetrics = !settingsContext.performanceMetrics,
                             shortcut: 'ctrl + shift + h'
                         }}/>
 
@@ -274,7 +273,7 @@ export default function ViewportOptions(props) {
                     </div>
                     <DropdownOptions>
                         <DropdownOption option={{
-                            label: 'FXAA',
+                            label: 'Anti-aliasing',
                             keepAlive: true,
                             icon: settingsContext.fxaa ? <span style={{fontSize: '1.2rem'}}
                                                                className={'material-icons-round'}>check</span> : undefined,
@@ -357,18 +356,6 @@ export default function ViewportOptions(props) {
                         </ToolTip>
                     </Button>
                 </div>
-
-                <div
-                    className={styles.optionWrapper}
-                    style={{
-                        justifyContent: 'center',
-                        display: !settingsContext.fpsVisibility ? 'none' : undefined,
-                        fontSize: '.75rem',
-                        fontWeight: 550
-                    }}
-                    title={'Frames per second'}
-                    id={props.id + '-frames'}
-                />
             </div>
 
             {/*TODO*/}

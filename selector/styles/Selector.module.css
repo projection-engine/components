@@ -26,10 +26,7 @@
 
 
 .modal {
-    top: -100px;
-    transform: translate(1px, -1px) !important; /*REMOVE BLUR CHROME*/
 
-    /*max-width: 100% !important;*/
     width: 250px !important;
     position: relative;
     background-color: var(--fabric-background-secondary) !important;
