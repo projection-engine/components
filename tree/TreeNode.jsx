@@ -1,6 +1,6 @@
 import styles from './styles/Tree.module.css'
 import PropTypes from "prop-types";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {Button} from "@f-ui/core";
 
 export default function TreeNode(props) {
@@ -11,23 +11,28 @@ export default function TreeNode(props) {
 
     useEffect(() => {
         setCurrentLabel(props.node.label)
-
-        if(props.node.attributes){
+        if (props.node.attributes)
             Object.keys(props.node.attributes).forEach((attr) => {
                 ref.current?.setAttribute(attr, `${props.node.attributes[attr]}`)
             })
-        }
-        if(!props.node.phantomNode)
+        if (!props.node.phantomNode)
             ref.current?.setAttribute('data-node', `${props.node.id}`)
-
     }, [props.node])
+
+
+    const selected = useMemo(() => {
+        if (typeof props.selected === 'string')
+            return props.selected === props.node.id
+        else
+            return props.selected.includes(props.node.id)
+    }, [props.selected])
+
     useEffect(() => {
-        if(props.selected === props.node.id) {
+        if (selected) {
             setOpen(true)
             props.triggerHierarchy()
         }
-
-    }, [props.selected])
+    }, [selected])
 
     return (
         <>
@@ -35,9 +40,9 @@ export default function TreeNode(props) {
                 ref={ref}
 
                 id={props.node.id}
-                style={{ paddingLeft: (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'}}
+                style={{paddingLeft: (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'}}
                 data-highlight={`${props.focusedNode === props.node.id}`}
-                data-selected={`${props.selected === props.node.id}`}
+                data-selected={`${selected}`}
                 className={styles.row}
 
                 draggable={!props.node.phantomNode && props.draggable && !onEdit}
@@ -46,10 +51,10 @@ export default function TreeNode(props) {
                 onDragLeave={props.onDragLeave}
                 onDragStart={props.onDragStart}
 
-                onClick={() => {
+                onClick={e => {
                     props.setFocusedNode(props.node.id)
-                    if(props.node.onClick)
-                        props.node.onClick()
+                    if (props.node.onClick)
+                        props.node.onClick(e)
                 }}
             >
 
@@ -57,7 +62,7 @@ export default function TreeNode(props) {
                     <Button
 
                         onClick={() => {
-                            if(!props.node.phantomNode)
+                            if (!props.node.phantomNode)
                                 props.node.onClick()
                             setOpen(!open)
                         }}
@@ -108,7 +113,10 @@ export default function TreeNode(props) {
                 }
             </div>
 
-            <div style={{display: open ? undefined : 'none', '--position-left':  (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'}} className={styles.children}>
+            <div style={{
+                display: open ? undefined : 'none',
+                '--position-left': (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'
+            }} className={styles.children}>
                 {props.node.children?.map((child, index) => (
                     <React.Fragment key={props.index + '-tree-node-' + index}>
                         <TreeNode
@@ -135,7 +143,7 @@ export default function TreeNode(props) {
 
 TreeNode.propTypes = {
 
-    selected: PropTypes.string,
+    selected: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     handleRename: PropTypes.func.isRequired,
     node: PropTypes.shape({
         id: PropTypes.any.isRequired,
