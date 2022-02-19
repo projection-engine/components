@@ -2,6 +2,7 @@ import FileBlob from "../../services/workers/FileBlob";
 import MeshParser from "../../services/workers/MeshParser";
 import randomID from "../../pages/project/utils/misc/randomID";
 import ImageProcessor from "../../services/workers/ImageProcessor";
+import emptyMaterial from '../../services/utils/emptyMaterial.json'
 
 const fs = window.require('fs')
 const path = window.require('path')
@@ -88,8 +89,34 @@ export default class FileSystem {
             })
         })
     }
-
-    async importFile(file, filePath, additionalFiles=[]) {
+    importImage(newRoot, res, fileID){
+        if(res)
+            return [
+                new Promise(r => {
+                    fs.writeFile(
+                        newRoot + `.pimg`,
+                        res,
+                        () => {
+                            r()
+                        })
+                }),
+                new Promise(r => {
+                    if (!fs.existsSync(this.path + '\\previews\\'))
+                        fs.mkdirSync(this.path + '\\previews\\')
+                    ImageProcessor.reduceImage(res).then(reduced => {
+                        fs.writeFile(
+                            this.path + '\\previews\\' + fileID + `.preview`,
+                            reduced,
+                            (error) => {
+                                r()
+                            })
+                    })
+                }),
+                this.createRegistryEntry(fileID, newRoot.replace(this.path + '\\assets\\', '') + `.pimg`)
+            ]
+        else return  []
+    }
+    async importFile(file, filePath) {
         return new Promise(resolve => {
             const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
             const fileID = randomID()
@@ -100,46 +127,8 @@ export default class FileSystem {
                     FileBlob
                         .loadAsString(file, false, true)
                         .then(res => {
-
-                            const promises = [
-                                new Promise(r => {
-                                    fs.writeFile(
-                                        newRoot + `.pimg`,
-                                        res,
-                                        () => {
-                                            r()
-                                        })
-                                }),
-                                new Promise(r => {
-                                    if (!fs.existsSync(this.path + '\\previews\\'))
-                                        fs.mkdirSync(this.path + '\\previews\\')
-                                    ImageProcessor.reduceImage(res).then(reduced => {
-                                        fs.writeFile(
-                                            this.path + '\\previews\\' + fileID + `.preview`,
-                                            reduced,
-                                            (error) => {
-
-                                                r()
-                                            })
-                                    })
-                                }),
-                                new Promise(r => {
-                                    fs.writeFile(
-                                        this.path + '\\assetsRegistry\\' + fileID + `.reg`,
-                                        JSON.stringify({
-                                            id: fileID,
-                                            path: newRoot.replace(this.path + '\\assets\\', '') + `.pimg`
-                                        }),
-                                        (error) => {
-
-                                            r()
-                                        })
-                                })
-                            ]
-
-                            Promise.all(promises)
+                            Promise.all(this.importImage(newRoot, res, fileID))
                                 .then(() => {
-
                                     resolve()
                                 })
                         })
@@ -151,7 +140,8 @@ export default class FileSystem {
                         .then(res => {
                             let data = MeshParser
                                 .parseObj(res)
-                            data = {...data,
+                            data = {
+                                ...data,
                                 name: file.name.split(/\.([a-zA-Z0-9]+)$/)[0],
                                 scaling: [1, 1, 1],
                                 rotation: [0, 0, 0],
@@ -166,17 +156,7 @@ export default class FileSystem {
                                             r()
                                         })
                                 }),
-                                new Promise(r => {
-                                    fs.writeFile(
-                                        this.path + '\\assetsRegistry\\' + fileID + `.reg`,
-                                        JSON.stringify({
-                                            id: fileID,
-                                            path: newRoot.replace(this.path + '\\assets\\', '') + `.mesh`
-                                        }),
-                                        () => {
-                                            r()
-                                        })
-                                })
+                                this.createRegistryEntry(undefined, newRoot.replace(this.path + '\\assets\\', '') + `\\${d.name}.mesh`)
                             ]
 
                             Promise.all(promises)
@@ -192,11 +172,11 @@ export default class FileSystem {
                                 .loadAsString(file)
                                 .then(res => {
                                     MeshParser
-                                        .parseGLTF(res, additionalFiles)
-                                        .then(data => {
-                                            console.log(data)
-                                            if (data) {
-                                                const promises = data.map(d => {
+                                        .parseGLTF(res, file.path.replace(file.name, ''))
+                                        .then(({nodes, materials}) => {
+                                            let promises = []
+                                            if (nodes) {
+                                                promises.push(...nodes.map(d => {
                                                     return [
                                                         new Promise(r => {
                                                             fs.writeFile(
@@ -206,25 +186,76 @@ export default class FileSystem {
                                                                     r()
                                                                 });
                                                         }),
+                                                        this.createRegistryEntry(undefined, newRoot.replace(this.path + '\\assets\\', '') + `\\${d.name}.mesh`)
+                                                    ]
+                                                }))
+                                            }
+
+                                            if (materials)
+                                                promises.push(...materials.map(d => {
+
+                                                    let parsedData = {...emptyMaterial}
+                                                    const keysOnRes = Object.keys(d.response)
+                                                    parsedData.nodes = parsedData.nodes.filter(n => {
+                                                        const willContinue  = keysOnRes.includes(n.id) || n.id === 'material'
+                                                        parsedData.links= parsedData.links.filter(l => {
+                                                            return keysOnRes.includes(l.source.id)  && (keysOnRes.includes(l.target.id) || l.target.id === 'material')
+                                                        })
+                                                        return willContinue
+                                                    }).map(n => {
+                                                        const newID = randomID()
+                                                        parsedData.links = parsedData.links .map(l => {
+                                                            if( l.source.id === n.id || l.target.id === n.id) {
+                                                                const newLink = {...l}
+                                                                if (l.target.id === n.id)
+                                                                    newLink.target.id = newID
+                                                                else
+                                                                    newLink.source.id = newID
+                                                                return newLink
+                                                            }
+                                                            else
+                                                                return  l
+                                                        })
+                                                        const newNode = {...n}
+                                                        newNode.id = newID
+                                                        newNode.sample = {
+                                                            type: n.id,
+                                                            registryID: randomID()
+                                                        }
+                                                        return newNode
+                                                    })
+
+
+                                                    console.log(parsedData.links)
+                                                    parsedData.response = {
+                                                        ...d.response,
+                                                        name: d.name
+                                                    }
+
+                                                    let localPromises = [
                                                         new Promise(r => {
-                                                            const fID = randomID()
                                                             fs.writeFile(
-                                                                this.path + '\\assetsRegistry\\' + fID + `.reg`,
-                                                                JSON.stringify({
-                                                                    id: fID,
-                                                                    path: newRoot.replace(this.path + '\\assets\\', '') + `\\${d.name}.mesh`
-                                                                }),
+                                                                newRoot  + `\\${d.name}.material`,
+                                                                JSON.stringify(parsedData),
                                                                 () => {
                                                                     r()
-                                                                })
-                                                        })]
-                                                })
+                                                                });
+                                                        }),
+                                                        this.createRegistryEntry(d.id, newRoot.replace(this.path + '\\assets\\', '') + `\\${d.name}.material`)
+                                                    ]
 
-                                                Promise.all(promises)
-                                                    .then(() => {
-                                                        resolve()
+                                                    parsedData.nodes.forEach((n, i) => {
+                                                        const imgPromises = this.importImage(newRoot + '\\' + n.name, d.response[n.sample.type], n.sample.registryID)
+                                                        localPromises.push(...imgPromises)
                                                     })
-                                            }
+
+                                                    return localPromises
+                                                }))
+
+                                            Promise.all(promises)
+                                                .then(() => {
+                                                    resolve()
+                                                })
                                         })
                                 })
                         else
@@ -236,6 +267,20 @@ export default class FileSystem {
                     break
             }
 
+        })
+    }
+
+    createRegistryEntry(fID = randomID(), path) {
+        return new Promise(r => {
+            fs.writeFile(
+                this.path + '\\assetsRegistry\\' + fID + `.reg`,
+                JSON.stringify({
+                    id: fID,
+                    path: path
+                }),
+                () => {
+                    r()
+                })
         })
     }
 
@@ -520,7 +565,7 @@ export default class FileSystem {
         return new Promise(resolve => {
             const registryFound = registryData.find(reg => {
                 const regResolved = path.resolve(this.path + '\\assets\\' + reg.path).replace(assetsResolved, '')
-                return regResolved=== fromResolved
+                return regResolved === fromResolved
             })
             if (registryFound) {
                 fs.writeFile(registryFound.registryPath, JSON.stringify({
