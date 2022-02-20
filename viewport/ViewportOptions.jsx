@@ -53,7 +53,7 @@ export default function ViewportOptions(props) {
                             style={{fontSize: '1rem'}}
                             className={'material-icons-round'}>grid_on
                         </span>
-                        <div className={styles.overflow}>
+                        <div className={styles.overflow} style={{textTransform: 'capitalize'}}>
                             {settingsContext.cameraType.replace('ortho-', '')}
                         </div>
                     </>

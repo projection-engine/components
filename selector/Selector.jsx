@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useMemo, useState} from "react";
 import styles from "./styles/Selector.module.css";
-import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core";
+import {Button, Dropdown, DropdownOptions} from "@f-ui/core";
 import SelectorItem from "./SelectorItem";
 import PropTypes from "prop-types";
 import Search from "../search/Search";
@@ -99,7 +99,7 @@ export default function Selector(props) {
 }
 
 Selector.propTypes = {
-    type: PropTypes.oneOf(['image', 'mesh']),
+    type: PropTypes.oneOf(['image', 'mesh', 'material']),
     handleChange: PropTypes.func,
     selected: PropTypes.object
 }
