@@ -23,8 +23,10 @@ export default function TreeNode(props) {
     const selected = useMemo(() => {
         if (typeof props.selected === 'string')
             return props.selected === props.node.id
-        else
+        else if (Array.isArray(props.selected))
             return props.selected.includes(props.node.id)
+        else
+            return false
     }, [props.selected])
 
     useEffect(() => {
