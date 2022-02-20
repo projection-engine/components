@@ -46,13 +46,13 @@ export default function TreeView(props) {
                                 props.onDrop(e, e.currentTarget.id)
                         }}
                         onDragStart={(e) => {
+
                             if(!props.onDragStart)
                                 e.dataTransfer.setData('text', e.currentTarget.id)
                             else
                                 props.onDragStart(e, e.currentTarget.id)
                         }}
                         draggable={props.draggable}
-
                         handleRename={props.handleRename}
                         triggerHierarchy={() => null}
                         node={child} index={0}
@@ -91,7 +91,11 @@ TreeView.propTypes = {
         icon: PropTypes.node,
         type: PropTypes.string,
         attributes: PropTypes.object,
-        phantomNode: PropTypes.bool
+        phantomNode: PropTypes.bool,
+        controlOption: PropTypes.shape({
+            icon: PropTypes.node,
+            onClick: PropTypes.func
+        })
     })).isRequired,
     handleRename: PropTypes.func.isRequired,
 

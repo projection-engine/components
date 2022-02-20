@@ -35,89 +35,97 @@ export default function TreeNode(props) {
             props.triggerHierarchy()
         }
     }, [selected])
+    const padding = useMemo(() => {
+        return (parseInt(props.index) * (props.node.children.length === 0 ? 30 : 25))
+    }, [props.index, props.node.children])
 
     return (
         <>
-            <div
-                ref={ref}
-
-                id={props.node.id}
-                style={{paddingLeft: (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'}}
-                data-highlight={`${props.focusedNode === props.node.id}`}
-                data-selected={`${selected}`}
-                className={styles.row}
-
-                draggable={!props.node.phantomNode && props.draggable && !onEdit}
-                onDrop={props.onDrop}
-                onDragOver={props.onDragOver}
-                onDragLeave={props.onDragLeave}
-                onDragStart={props.onDragStart}
-
-                onClick={e => {
-                    props.setFocusedNode(props.node.id)
-                    if (props.node.onClick)
-                        props.node.onClick(e)
-                }}
-            >
-
-                {props.node.children?.length > 0 ? (
-                    <Button
-
-                        onClick={() => {
-                            if (!props.node.phantomNode)
-                                props.node.onClick()
-                            setOpen(!open)
-                        }}
-                        className={styles.hideButton}>
-                        <div style={{width: '24px', overflow: 'hidden', fontSize: '1.2rem'}}
-                             className={'material-icons-round'}>{open ? 'expand_more' : 'chevron_right'}</div>
-                    </Button>
-                ) : null}
-
-                {onEdit ?
-                    <input
-                        onKeyPress={key => {
-                            if (key.code === 'Enter' && currentLabel !== props.node.label) {
-                                setOnEdit(false)
-                                props.handleRename(props.node, currentLabel)
-                            }
-                        }}
-                        className={styles.input}
-                        onBlur={() => {
-                            setOnEdit(false)
-                            if (currentLabel !== props.node.label)
-                                props.handleRename(props.node, currentLabel)
-                        }}
-                        value={currentLabel}
-                        onChange={e => setCurrentLabel(e.target.value)}
-                    />
+            <div className={styles.container}>
+                {props.node.controlOption ?
+                    <button className={styles.button} onClick={props.node.controlOption.onClick}>
+                        {props.node.controlOption.icon}
+                    </button>
                     :
-                    <div className={styles.rowContentWrapper}>
-                        <div
-                            id={props.node.id + '-node'}
-                            className={styles.rowContent}
-                            style={{fontWeight: '600'}}
-                            onDoubleClick={() => {
-                                setOnEdit(true)
-                            }}
-                        >
+                    null}
+                <div
+                    ref={ref}
 
-                            {props.node.icon}
-                            <div className={styles.overflow}>
-                                {currentLabel}
+                    id={props.node.id}
+                    style={{paddingLeft: padding + 'px'}}
+                    data-highlight={`${props.focusedNode === props.node.id}`}
+                    data-selected={`${selected}`}
+                    className={styles.row}
+
+                    draggable={!props.node.phantomNode && props.draggable && !onEdit}
+                    onDrop={props.onDrop}
+                    onDragOver={props.onDragOver}
+                    onDragLeave={props.onDragLeave}
+                    onDragStart={props.onDragStart}
+
+                    onClick={e => {
+                        props.setFocusedNode(props.node.id)
+                        if (props.node.onClick)
+                            props.node.onClick(e)
+                    }}
+                >
+
+                    {props.node.children?.length > 0 ? (
+                        <button className={styles.button}
+                                onClick={() => {
+                                    if (!props.node.phantomNode)
+                                        props.node.onClick()
+                                    setOpen(!open)
+                                }}
+                        >
+                        <span style={{width: '24px', overflow: 'hidden', fontSize: '1.2rem'}}
+                              className={'material-icons-round'}>{open ? 'expand_more' : 'chevron_right'}</span>
+                        </button>
+                    ) : null}
+
+                    {onEdit ?
+                        <input
+                            onKeyPress={key => {
+                                if (key.code === 'Enter' && currentLabel !== props.node.label) {
+                                    setOnEdit(false)
+                                    props.handleRename(props.node, currentLabel)
+                                }
+                            }}
+                            className={styles.input}
+                            onBlur={() => {
+                                setOnEdit(false)
+                                if (currentLabel !== props.node.label)
+                                    props.handleRename(props.node, currentLabel)
+                            }}
+                            value={currentLabel}
+                            onChange={e => setCurrentLabel(e.target.value)}
+                        />
+                        :
+                        <div className={styles.rowContentWrapper}>
+                            <div
+                                id={props.node.id + '-node'}
+                                className={styles.rowContent}
+                                style={{fontWeight: '600'}}
+                                onDoubleClick={() => {
+                                    setOnEdit(true)
+                                }}
+                            >
+                                {props.node.icon}
+                                <div className={styles.overflow}>
+                                    {currentLabel}
+                                </div>
+                            </div>
+
+                            <div className={[styles.rowContent, styles.rowType, styles.overflow].join(' ')}>
+                                {props.node.type}
                             </div>
                         </div>
-
-                        <div className={[styles.rowContent, styles.rowType, styles.overflow].join(' ')}>
-                            {props.node.type}
-                        </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-
             <div style={{
                 display: open ? undefined : 'none',
-                '--position-left': (parseInt(props.index) * (props.node.children.length === 0 ? 32 : 24) + 2) + 'px'
+                '--position-left': (padding + props.node.controlOption ? 19 : 0) + 'px'
             }} className={styles.children}>
                 {props.node.children?.map((child, index) => (
                     <React.Fragment key={props.index + '-tree-node-' + index}>
@@ -137,7 +145,6 @@ export default function TreeNode(props) {
                         />
                     </React.Fragment>
                 ))}
-
             </div>
         </>
     )
@@ -156,7 +163,11 @@ TreeNode.propTypes = {
         icon: PropTypes.node,
         type: PropTypes.string,
         attributes: PropTypes.object,
-        phantomNode: PropTypes.bool
+        phantomNode: PropTypes.bool,
+        controlOption: PropTypes.shape({
+            icon: PropTypes.node,
+            onClick: PropTypes.func
+        })
     }).isRequired,
     index: PropTypes.number,
     focusedNode: PropTypes.string,

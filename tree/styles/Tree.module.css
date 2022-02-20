@@ -1,16 +1,27 @@
+.container{
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+}
+
 .wrapper {
     display: grid;
     align-items: flex-start;
 
     width: 100%;
+
     transition: 150ms linear;
     overflow-x: hidden;
     overflow-y: visible;
     height: fit-content;
 
+
 }
 
 .row {
+    width: 100%;
+
     outline: transparent 1px dashed;
     transition: 150ms linear;
 
@@ -41,18 +52,34 @@
     background-color: rgba(0, 149, 255, .5);
 }
 
-.hideButton {
-    width: 24px !important;
-    padding: 0 !important;
+.button{
+    width: 20px;
+    min-width: 20px;
+    height: 25px;
+    min-height: 25px;
+
+    cursor: pointer;
+    padding: 0;
     display: flex;
-    align-content: center;
     align-items: center;
     justify-content: center;
+
+
+    outline: none;
+    border: none;
+    color: var(--fabric-color-primary);
+    background: none;
+
+    transition: 150ms linear;
 }
-
-
+.button:hover{
+    color: var(--fabric-accent-color);
+}
+.button:active{
+    color: var(--fabric-accent-color);
+    opacity: .5;
+}
 .rowContentWrapper {
-    cursor: pointer;
 
     width: 100%;
     display: flex;
