@@ -28,10 +28,16 @@
 }
 
 .label {
+
     color: var(--fabric-color-secondary);
     font-family: "Roboto";
     font-weight: 550;
     font-size: .75rem;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .modal {

@@ -10,7 +10,6 @@ import Range from "../range/Range";
 export default function ColorPicker(props) {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState({r: 0, g: 0, b: 0})
-    const theme = useContext(ThemeProvider)
     useEffect(() => {
 
         if (typeof props.value === 'string') {
@@ -23,20 +22,20 @@ export default function ColorPicker(props) {
 
 
     return (
-        <Fabric className={styles.wrapper} accentColor={theme.accentColor} theme={theme.dark ? 'dark' : 'light'}>
 
+        <div className={styles.wrapper}>
             <Modal
                 blurIntensity={0}
                 variant={'fit'}
                 open={open}
                 handleClose={() => null}
 
-                className={[styles.modal, theme.themeClass].join(' ')}
+                className={styles.modal}
             >
                 <RgbColorPicker color={value} onChange={e => setValue(e)}/>
                 <div className={styles.inputs}>
                     <div className={styles.inputLabel}>
-                      R
+                        R
                         <Range
                             maxValue={255}
                             minValue={0}
@@ -103,12 +102,13 @@ export default function ColorPicker(props) {
                 </div>
             </Modal>
 
-            <div className={styles.label}>{props.label}</div>
+            {props.label ? <div className={styles.label}>{props.label}</div> : null}
             <Button className={styles.placeholder} styles={{background: `rgb(${value.r},${value.g},${value.b})`}}
                     onClick={() => setOpen(true)}>
                 <ToolTip content={`rgb(${value.r},${value.g},${value.b})`}/>
             </Button>
-        </Fabric>
+
+        </div>
     )
 }
 

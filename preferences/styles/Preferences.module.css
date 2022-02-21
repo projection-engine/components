@@ -21,6 +21,7 @@
     height: 100%;
     /*width: fit-content;*/
     display: flex;
+
 }
 
 .tab{
@@ -28,6 +29,10 @@
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
+
+    display: grid;
+    align-content: flex-start;
+    gap: 16px;
 }
 .button{
     width: 100%;
@@ -47,11 +52,12 @@
 }
 
 .submitWrapper {
+
     display: flex;
     justify-content: flex-end;
     gap: 16px;
     padding: 4px;
     height: 35px;
 
-    background-color: var(--fabric-background-secondary);
+
 }

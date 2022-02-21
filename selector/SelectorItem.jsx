@@ -9,7 +9,7 @@ export default function SelectorItem(props) {
             {props.data.blob ?
                 <img src={props.data.blob} alt={props.data.name} className={styles.image}/>
             :
-                <div className={styles.image} style={{backgroundColor: '#e0e0e0'}}/>
+                <span className={'material-icons-round'} style={{fontSize: '2rem'}}>{props.asTexture ? 'texture' : 'image'}</span>
             }
             <label className={styles.label} title={props.data.name}>
                 {props.data.name}
@@ -18,6 +18,7 @@ export default function SelectorItem(props) {
     )
 }
 SelectorItem.propTypes = {
+    asTexture: PropTypes.bool,
     data: PropTypes.shape({
         name: PropTypes.string,
         id: PropTypes.string,

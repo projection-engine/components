@@ -38,7 +38,7 @@ export default function Selector(props) {
                             props.handleChange(t)
                         }}
                     >
-                        <SelectorItem data={{
+                        <SelectorItem asTexture={props.type === 'material'} data={{
                             ...t,
                             blob: t.preview
                         }}
@@ -70,9 +70,15 @@ export default function Selector(props) {
 
             onDrop={e => {
                 e.preventDefault()
-                const filtered = getType().find(f => f.registryID === e.dataTransfer.getData('text'))
-                if (filtered)
-                    props.handleChange(filtered)
+
+                try{
+                    const transfer =JSON.parse( e.dataTransfer.getData('text'))[0]
+                    const filtered = getType().find(f => f.registryID === transfer)
+                    if (filtered) {
+                        props.handleChange(filtered)
+                        setState(filtered)
+                    }
+                }catch(e){}
                 setClassName('')
             }}
             onDragLeave={e => {
@@ -82,6 +88,7 @@ export default function Selector(props) {
                 wrapperClassname={styles.modal}
                 className={[styles.button, className].join(' ')}>
                 <SelectorItem
+                    asTexture={props.type === 'material'}
                     data={{
                         ...state,
                         blob: state.preview
