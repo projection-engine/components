@@ -2,9 +2,16 @@
     display: flex;
     align-items: center;
     width: 100%;
-
+    border-left: transparent 2px solid;
 }
 
+.container[data-selected = 'true'] {
+    border-left-color: var(--fabric-accent-color);
+}
+
+.container:active {
+    border-left-color: var(--fabric-accent-color);
+}
 .wrapper {
     display: grid;
     align-items: flex-start;
@@ -33,20 +40,13 @@
     height: 25px !important;
 
     color: var(--fabric-color-secondary);
-    border-left: transparent 2px solid;
+
     overflow: hidden;
 }
 .row:hover{
     color: var(--fabric-accent-color);
 }
 
-.row[data-selected = 'true'] {
-    border-left-color: var(--fabric-accent-color);
-}
-
-.row:active {
-    border-left-color: var(--fabric-accent-color);
-}
 
 .row[data-highlight='true'] {
     background-color: rgba(0, 149, 255, .5);

@@ -41,7 +41,7 @@ export default function TreeNode(props) {
 
     return (
         <>
-            <div className={styles.container}>
+            <div className={styles.container} data-selected={`${selected}`}>
                 {props.node.controlOption ?
                     <button className={styles.button} onClick={props.node.controlOption.onClick}>
                         {props.node.controlOption.icon}
@@ -54,7 +54,7 @@ export default function TreeNode(props) {
                     id={props.node.id}
                     style={{paddingLeft: padding + 'px'}}
                     data-highlight={`${props.focusedNode === props.node.id}`}
-                    data-selected={`${selected}`}
+
                     className={styles.row}
 
                     draggable={!props.node.phantomNode && props.draggable && !onEdit}
