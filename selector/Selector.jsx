@@ -38,7 +38,7 @@ export default function Selector(props) {
                             props.handleChange(t)
                         }}
                     >
-                        <SelectorItem asTexture={props.type === 'material'} data={{
+                        <SelectorItem type={props.type} data={{
                             ...t,
                             blob: t.preview
                         }}
@@ -86,9 +86,10 @@ export default function Selector(props) {
             }}>
             <Dropdown
                 wrapperClassname={styles.modal}
+                variant={'outlined'}
                 className={[styles.button, className].join(' ')}>
                 <SelectorItem
-                    asTexture={props.type === 'material'}
+                    type={props.type}
                     data={{
                         ...state,
                         blob: state.preview

@@ -1,9 +1,8 @@
 import styles from './styles/Color.module.css'
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import {Button, Fabric, Modal, ToolTip} from "@f-ui/core";
+import {Button, Modal, ToolTip} from "@f-ui/core";
 import {RgbColorPicker} from "react-colorful";
-import ThemeProvider from "../../services/hooks/ThemeProvider";
 import Range from "../range/Range";
 
 

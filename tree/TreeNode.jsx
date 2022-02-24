@@ -1,7 +1,6 @@
 import styles from './styles/Tree.module.css'
 import PropTypes from "prop-types";
 import React, {useEffect, useMemo, useRef, useState} from "react";
-import {Button} from "@f-ui/core";
 
 export default function TreeNode(props) {
     const [open, setOpen] = useState(props.index === 0)
