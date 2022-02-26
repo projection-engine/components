@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from './styles/Range.module.css'
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 export default function Range(props) {
     const [focused, setFocused] = useState(false)
@@ -43,29 +43,44 @@ export default function Range(props) {
         } else if (!document.elementsFromPoint(e.clientX, e.clientY).includes(ref.current))
             setFocused(false)
     }
+    const [inputCache, setInputCache] = useState(props.value)
+    useEffect(() => {
+        setInputCache(props.value)
+    }, [focused])
 
     return (
-
         <div className={styles.wrapper} style={{'--accentColor': props.accentColor}}
              title={props.label}>
             {focused ?
                 <input
                     disabled={props.disabled}
                     ref={ref}
-                    value={props.value}
+                    value={inputCache}
                     onMouseDown={handleMouseDown}
 
                     onChange={(e) => {
-                        if (isNaN(parseFloat(e.target.value)))
-                            props.handleChange(0.0)
-                        else
-                            props.handleChange(parseFloat(e.target.value))
+                        setInputCache(e.target.value)
+                        // if (isNaN(parseFloat(e.target.value)))
+                        //     props.handleChange(0.0)
+                        // else
+                        //     props.handleChange(parseFloat(e.target.value))
                     }} type={'number'}
                     style={{cursor: 'text', background: 'var(--fabric-background-quaternary)'}}
                     onBlur={() => {
-                        setFocused(false)
+                        let finalValue = parseFloat(inputCache)
+                        if (!isNaN(finalValue)) {
+                            if (props.maxValue !== undefined && finalValue > props.maxValue)
+                                finalValue = props.maxValue
+                            if (props.minValue !== undefined && finalValue < props.minValue)
+                                finalValue = props.minValue
+
+                            props.handleChange(finalValue)
+                        }
+
                         if (props.onFinish)
                             props.onFinish()
+
+                        setFocused(false)
                     }}
                     className={styles.draggable}
                 />
