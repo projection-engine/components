@@ -5,7 +5,7 @@ import Range from "../range/Range";
 import {useContext, useEffect, useMemo, useState} from "react";
 import SettingsProvider from "../../services/hooks/SettingsProvider";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
-import CAMERA_TYPES from "../../services/engine/utils/misc/CAMERA_TYPES";
+import CAMERA_TYPES from "../../services/engine/utils/camera/CAMERA_TYPES";
 
 
 export default function ViewportOptions(props) {
