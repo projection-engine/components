@@ -51,12 +51,14 @@ export default function SelectBox(props) {
 
     }
     const handleMouseDown = (event) => {
-
+        const ctrl = event.ctrlKey
         if (event.button === 0 && !document.elementsFromPoint(event.clientX, event.clientY).find(n => ids.indexOf(n.id) > -1)) {
-            props.setSelected([])
+            if(!ctrl)
+                props.setSelected([])
             startingPosition = {x: event.clientX, y: event.clientY}
             document.addEventListener('mousemove', handleMouseMove)
-            document.addEventListener('mouseup', () => {
+            document.addEventListener('mouseup', ev => {
+                console.log(ev, ctrl)
                 initiated = false
                 startingPosition = {x: 0, y: 0}
                 if(ref.current) {
@@ -78,9 +80,10 @@ export default function SelectBox(props) {
                             toSelect.push(node.id)
                         }
                     }
-
-                    props.setSelected(toSelect)
-
+                    if(!ctrl)
+                        props.setSelected(toSelect)
+                    else
+                        props.setSelected([...props.selected, ...toSelect])
                     ref.current.style.height = '0px'
                     ref.current.style.width = '0px'
                     ref.current.style.zIndex = -1
@@ -96,7 +99,7 @@ export default function SelectBox(props) {
         return () => {
             ref.current?.parentNode.removeEventListener('mousedown', handleMouseDown)
         }
-    }, [props.nodes, ids])
+    }, [props.nodes, ids, props.selected])
 
 
     return (
@@ -106,5 +109,5 @@ export default function SelectBox(props) {
 SelectBox.propTypes = {
     setSelected: PropTypes.func.isRequired,
     selected: PropTypes.arrayOf(PropTypes.string).isRequired,
-    nodes: PropTypes.arrayOf(PropTypes.object).isRequired
+    nodes: PropTypes.arrayOf(PropTypes.shape({id: PropTypes.any})).isRequired
 }

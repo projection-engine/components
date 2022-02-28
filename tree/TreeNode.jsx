@@ -30,7 +30,7 @@ export default function TreeNode(props) {
 
     useEffect(() => {
         if (selected) {
-            setOpen(true)
+            // setOpen(true)
             props.triggerHierarchy()
         }
     }, [selected])
@@ -42,25 +42,19 @@ export default function TreeNode(props) {
         <>
             <div className={styles.container} data-selected={`${selected}`}  data-highlight={`${props.focusedNode === props.node.id}`}
             >
-                {props.node.controlOption ?
-                    <button className={styles.button} onClick={props.node.controlOption.onClick}>
-                        {props.node.controlOption.icon}
+                {props.node.canBeHidden?
+                    <button className={styles.button} onClick={props.node.onHide}>
+                        <span className={'material-icons-round'}
+                              style={{fontSize: '1rem'}}>{!props.node.hidden ? 'visibility' : 'visibility_off'}</span>
                     </button>
                     :
                     null}
                 <div
                     ref={ref}
 
-                    id={props.node.id}
                     style={{paddingLeft: padding + 'px'}}
 
                     className={styles.row}
-
-                    draggable={!props.node.phantomNode && props.draggable && !onEdit}
-                    onDrop={props.onDrop}
-                    onDragOver={props.onDragOver}
-                    onDragLeave={props.onDragLeave}
-                    onDragStart={props.onDragStart}
                 >
 
                     {props.node.children?.length > 0 ? (
@@ -94,15 +88,26 @@ export default function TreeNode(props) {
                             onChange={e => setCurrentLabel(e.target.value)}
                         />
                         :
-                        <div className={styles.rowContentWrapper}  onClick={e => {
+                        <div
+                            className={styles.rowContentWrapper}
+
+                             onClick={e => {
                             props.setFocusedNode(props.node.id)
                             if (props.node.onClick)
                                 props.node.onClick(e)
                         }}>
                             <div
-                                id={props.node.id + '-node'}
+                                id={props.node.id }
                                 className={styles.rowContent}
-                                style={{fontWeight: '600'}}
+                                style={{fontWeight: '550'}}
+
+                                draggable={!props.node.phantomNode && props.draggable}
+
+                                onDrop={props.onDrop}
+                                onDragOver={props.onDragOver}
+                                onDragLeave={props.onDragLeave}
+                                onDragStart={props.onDragStart}
+
                                 onDoubleClick={() => {
                                     setOnEdit(true)
                                 }}
@@ -122,7 +127,7 @@ export default function TreeNode(props) {
             </div>
             <div style={{
                 display: open ? undefined : 'none',
-                '--position-left': (padding + props.node.controlOption ? 19 : 0) + 'px'
+                '--position-left': (padding + props.node.canBeHidden ? 19 : 0) + 'px'
             }} className={styles.children}>
                 {props.node.children?.map((child, index) => (
                     <React.Fragment key={props.index + '-tree-node-' + index}>
@@ -161,10 +166,10 @@ TreeNode.propTypes = {
         type: PropTypes.string,
         attributes: PropTypes.object,
         phantomNode: PropTypes.bool,
-        controlOption: PropTypes.shape({
-            icon: PropTypes.node,
-            onClick: PropTypes.func
-        })
+
+        hidden: PropTypes.bool,
+        onHide: PropTypes.func,
+        canBeHidden: PropTypes.bool
     }).isRequired,
     index: PropTypes.number,
     focusedNode: PropTypes.string,

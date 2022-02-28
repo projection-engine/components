@@ -7,12 +7,11 @@ import ThemeProvider from "../../services/hooks/ThemeProvider";
 import ColorPicker from "../color/ColorPicker";
 
 
-export default function Preferences(props) {
+export default function Preferences() {
     const [openTab, setOpenTab] = useState(0)
-
     const settingsContext = useContext(SettingsProvider)
-    const [changed, setChanged] = useState(false)
     const theme = useContext(ThemeProvider)
+
     return (
         <Modal
             blurIntensity={'5px'}
@@ -25,10 +24,7 @@ export default function Preferences(props) {
                     <VerticalTabs open={openTab} setOpen={setOpenTab} className={styles.tabs}>
                         <Tab label={'Theme'} className={styles.tab}>
                             <Button
-                                onClick={() => {
-                                    setChanged(true)
-                                    theme.setDark(!theme.dark)
-                                }}
+                                onClick={() => theme.setDark(!theme.dark)}
                                 className={styles.button}
                                 variant={"outlined"}
                             >
@@ -52,8 +48,6 @@ export default function Preferences(props) {
                         </Tab>
                     </VerticalTabs>
                     <div className={styles.submitWrapper}>
-
-
                         <Button
                             className={styles.submitButton}
                             variant={"filled"}
@@ -68,9 +62,4 @@ export default function Preferences(props) {
 
         </Modal>
     )
-}
-Preferences.propTypes = {
-
-    serializer: PropTypes.object,
-
 }

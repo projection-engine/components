@@ -1,11 +1,14 @@
 import PropTypes from "prop-types";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import styles from './styles/Tree.module.css'
 import TreeNode from "./TreeNode";
 import {ContextMenu} from "@f-ui/core";
+import Search from "../search/Search";
+import SelectBox from "../selectbox/SelectBox";
 
 export default function TreeView(props) {
     const [focusedNode, setFocusedNode] = useState()
+    const [searchString, setSearchString] = useState('')
     const ref = useRef()
     const handleMouseDown = (ev) => {
         if (focusedNode && !document.elementsFromPoint(ev.clientX, ev.clientY).includes(ref.current)) {
@@ -16,10 +19,12 @@ export default function TreeView(props) {
         document.addEventListener('mousedown', handleMouseDown)
         return () => document.removeEventListener('mousedown', handleMouseDown)
     }, [focusedNode])
-    const content = (
-        props.nodes.map((child, index) => (
+    const content = useMemo(() => {
+        return (
+            (searchString.length > 0 ? props.nodes.filter(n => n.label.toLowerCase().includes(searchString.toLowerCase())) : props.nodes).map((child, index) => (
                 <React.Fragment key={'tree-' + index}>
                     <TreeNode
+
                         open={true}
                         onDragOver={(e) => {
                             if(props.draggable) {
@@ -63,15 +68,18 @@ export default function TreeView(props) {
                     />
                 </React.Fragment>
             ))
-    )
+        )
+    }, [searchString, props])
+
     return (
-        <div className={styles.wrapper}>
+        <div data-self={'self'} className={[styles.wrapper, styles.backgroundStripes].join(' ')}>
+            {props.searchable ? <Search width={'100%'} size={'default'} searchString={searchString} setSearchString={setSearchString}/> : undefined}
+
+            {props.onMultiSelect && Array.isArray(props.selected)? <SelectBox setSelected={props.onMultiSelect} selected={props.selected} nodes={props.ids} />: null}
             {props.options && props.options.length > 0 ?
                 <ContextMenu
                     options={props.options}
-                    triggers={[
-                        'data-node'
-                    ]}>
+                    triggers={props.contextTriggers}>
                     {content}
                 </ContextMenu>
                 :
@@ -82,7 +90,14 @@ export default function TreeView(props) {
 }
 
 TreeView.propTypes = {
+    onMultiSelect: PropTypes.func,
+    multiSelect: PropTypes.bool,
+
+    contextTriggers: PropTypes.array,
+    searchable: PropTypes.bool,
     selected: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+
+    ids: PropTypes.array,
     nodes: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.any.isRequired,
         label: PropTypes.string,
@@ -92,10 +107,10 @@ TreeView.propTypes = {
         type: PropTypes.string,
         attributes: PropTypes.object,
         phantomNode: PropTypes.bool,
-        controlOption: PropTypes.shape({
-            icon: PropTypes.node,
-            onClick: PropTypes.func
-        })
+
+        hidden: PropTypes.bool,
+        onHide: PropTypes.func,
+        canBeHidden: PropTypes.bool
     })).isRequired,
     handleRename: PropTypes.func.isRequired,
 

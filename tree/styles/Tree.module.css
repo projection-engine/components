@@ -27,16 +27,17 @@ transition: 150ms ease;
 /*}*/
 
 .wrapper {
+    position: relative;
     display: grid;
-    align-items: flex-start;
+    align-content: flex-start;
 
     width: 100%;
 
     transition: 150ms linear;
     overflow-x: hidden;
     overflow-y: visible;
-    height: fit-content;
 
+    height: 100%;
 
 }
 
@@ -89,7 +90,7 @@ transition: 150ms ease;
     opacity: .5;
 }
 .rowContentWrapper {
-cursor: pointer;
+
     width: 100%;
     display: flex;
     align-items: center;
@@ -97,6 +98,7 @@ cursor: pointer;
     align-content: center;
     justify-content: space-between;
     overflow: hidden;
+
 }
 
 .rowContent {
@@ -109,6 +111,7 @@ cursor: pointer;
     overflow: hidden;
 
 
+    cursor: pointer;
 }
 
 .input {
@@ -126,7 +129,7 @@ cursor: pointer;
     text-align: right;
     padding-right: 8px;
     color: var(--fabric-color-quaternary);
-
+    cursor: default;
 }
 
 .overflow {
@@ -166,4 +169,15 @@ cursor: pointer;
     width: 1px;
     height: 100%;
     border-left: var(--fabric-border-secondary) 1px dashed;
+}
+
+.backgroundStripes{
+    background: linear-gradient(
+            to bottom,
+            var(--fabric-background-secondary),
+            var(--fabric-background-secondary) 50%,
+            var(--fabric-background-tertiary) 50%,
+            var(--fabric-background-tertiary)
+    );
+    background-size: 100% 50px;
 }

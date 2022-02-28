@@ -6,6 +6,18 @@ import {useContext, useEffect, useMemo, useState} from "react";
 import SettingsProvider from "../../services/hooks/SettingsProvider";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import CAMERA_TYPES from "../../services/engine/utils/camera/CAMERA_TYPES";
+import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
+import MeshInstance from "../../services/engine/elements/instances/MeshInstance";
+import Entity from "../../services/engine/ecs/basic/Entity";
+import TransformComponent from "../../services/engine/ecs/components/TransformComponent";
+import MeshComponent from "../../services/engine/ecs/components/MeshComponent";
+import PickComponent from "../../services/engine/ecs/components/PickComponent";
+import importMesh from "./utils";
+import PointLightComponent from "../../services/engine/ecs/components/PointLightComponent";
+import DirectionalLightComponent from "../../services/engine/ecs/components/DirectionalLightComponent";
+import SkyboxComponent from "../../services/engine/ecs/components/SkyboxComponent";
+import CubeMapComponent from "../../services/engine/ecs/components/CubeMapComponent";
+import TerrainComponent from "../../services/engine/ecs/components/TerrainComponent";
 
 
 export default function ViewportOptions(props) {
@@ -73,7 +85,7 @@ export default function ViewportOptions(props) {
                         <DropdownOption option={{
                             label: 'Show FPS',
                             icon: settingsContext.performanceMetrics ? <span style={{fontSize: '1.2rem'}}
-                                                                        className={'material-icons-round'}>check</span> : undefined,
+                                                                             className={'material-icons-round'}>check</span> : undefined,
                             onClick: () => settingsContext.performanceMetrics = !settingsContext.performanceMetrics,
                             shortcut: 'ctrl + shift + h'
                         }}/>
@@ -244,6 +256,94 @@ export default function ViewportOptions(props) {
                             icon: settingsContext.iconsVisibility ? <span style={{fontSize: '1.2rem'}}
                                                                           className={'material-icons-round'}>check</span> : undefined,
                             onClick: () => settingsContext.iconsVisibility = !settingsContext.iconsVisibility
+                        }}/>
+                    </DropdownOptions>
+                </Dropdown>
+                <Dropdown
+                    className={styles.optionWrapper}
+                    justify={'start'} align={'bottom'}>
+                    Add
+
+                    <DropdownOptions>
+                        <div className={styles.dividerWrapper}>
+                            Meshes
+                            <div className={styles.divider}/>
+                        </div>
+                        <DropdownOption option={{
+                            label: 'Cube',
+                            onClick: () => importMesh(0, props.engine)
+                        }}/>
+                        <DropdownOption option={{
+                            label: 'Sphere',
+
+                            onClick: () => importMesh(1, props.engine)
+                        }}/>
+                        <DropdownOption option={{
+                            label: 'Plane',
+                            onClick: () => importMesh(2, props.engine)
+                        }}/>
+
+                        <div className={styles.dividerWrapper}>
+                            Misc
+                            <div className={styles.divider}/>
+                        </div>
+                        <DropdownOption option={{
+
+                            label: 'Point light',
+                            icon: <span className={'material-icons-round'}
+                                        style={{fontSize: '1.2rem'}}>lightbulb</span>,
+                            onClick: () => {
+                                const actor = new Entity(undefined, 'Point light')
+                                actor.components.PointLightComponent = new PointLightComponent()
+                                props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                            }
+                        }}/>
+                        <DropdownOption option={{
+                            disabled: true,
+                            label: 'Spot light',
+                            icon: <span className={'material-icons-round'}
+                                        style={{fontSize: '1.2rem'}}>flashlight_on</span>,
+                            onClick: () => {
+                                const actor = new Entity(undefined, 'Point light')
+                                actor.components.DirectionalLightComponent = new PointLightComponent()
+                                props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                            }
+                        }}/>
+                        <DropdownOption option={{
+
+                            label: 'Directional light',
+                            icon: <span className={'material-icons-round'}
+                                        style={{fontSize: '1.1rem'}}>light_mode</span>,
+                            onClick: () => {
+
+                                const actor = new Entity(undefined, 'Directional light')
+                                actor.components.DirectionalLightComponent = new DirectionalLightComponent()
+                                props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                            }
+                        }}/>
+                        <DropdownOption option={{
+
+                            label: 'Skybox',
+                            icon: <span className={'material-icons-round'}
+                                        style={{fontSize: '1.1rem'}}>cloud</span>,
+                            onClick: () => {
+                                const actor = new Entity(undefined, 'Skybox')
+                                actor.components.SkyboxComponent = new SkyboxComponent(undefined, props.engine.gpu)
+                                props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                            }
+                        }}/>
+                        <DropdownOption option={{
+                            disabled: true,
+
+                            label: 'CubeMap',
+                            icon: <span className={'material-icons-round'}
+                                        style={{fontSize: '1.1rem'}}>panorama_photosphere</span>,
+                            onClick: () => {
+
+                                const actor = new Entity(undefined, 'Cubemap')
+                                actor.components.CubeMapComponent = new CubeMapComponent()
+                                props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                            }
                         }}/>
                     </DropdownOptions>
                 </Dropdown>
