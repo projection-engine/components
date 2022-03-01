@@ -7,17 +7,12 @@ import SettingsProvider from "../../services/hooks/SettingsProvider";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import CAMERA_TYPES from "../../services/engine/utils/camera/CAMERA_TYPES";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
-import MeshInstance from "../../services/engine/elements/instances/MeshInstance";
 import Entity from "../../services/engine/ecs/basic/Entity";
-import TransformComponent from "../../services/engine/ecs/components/TransformComponent";
-import MeshComponent from "../../services/engine/ecs/components/MeshComponent";
-import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import importMesh from "./utils";
 import PointLightComponent from "../../services/engine/ecs/components/PointLightComponent";
 import DirectionalLightComponent from "../../services/engine/ecs/components/DirectionalLightComponent";
 import SkyboxComponent from "../../services/engine/ecs/components/SkyboxComponent";
 import CubeMapComponent from "../../services/engine/ecs/components/CubeMapComponent";
-import TerrainComponent from "../../services/engine/ecs/components/TerrainComponent";
 
 
 export default function ViewportOptions(props) {

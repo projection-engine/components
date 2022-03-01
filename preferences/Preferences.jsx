@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import styles from './styles/Preferences.module.css'
 import {Accordion, AccordionSummary, Button, Modal, Tab, VerticalTabs} from "@f-ui/core";
 import {useContext, useState} from "react";

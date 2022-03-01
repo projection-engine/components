@@ -58,7 +58,6 @@ export default function SelectBox(props) {
             startingPosition = {x: event.clientX, y: event.clientY}
             document.addEventListener('mousemove', handleMouseMove)
             document.addEventListener('mouseup', ev => {
-                console.log(ev, ctrl)
                 initiated = false
                 startingPosition = {x: 0, y: 0}
                 if(ref.current) {
