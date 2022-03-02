@@ -13,6 +13,7 @@ import PointLightComponent from "../../services/engine/ecs/components/PointLight
 import DirectionalLightComponent from "../../services/engine/ecs/components/DirectionalLightComponent";
 import SkyboxComponent from "../../services/engine/ecs/components/SkyboxComponent";
 import CubeMapComponent from "../../services/engine/ecs/components/CubeMapComponent";
+import ROTATION_TYPES from "../../services/engine/utils/misc/ROTATION_TYPES";
 
 
 export default function ViewportOptions(props) {
@@ -40,7 +41,6 @@ export default function ViewportOptions(props) {
             case CAMERA_TYPES.FREE:
                 return (
                     <>
-
                         <div
                             style={{width: '20px', height: '20px', perspective: '40px', transformStyle: 'preserve-3d'}}>
                         <span
@@ -339,6 +339,33 @@ export default function ViewportOptions(props) {
                                 actor.components.CubeMapComponent = new CubeMapComponent()
                                 props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                             }
+                        }}/>
+                    </DropdownOptions>
+                </Dropdown>
+
+                <Dropdown
+                    className={styles.optionWrapper}
+                    justify={'start'} align={'bottom'}>
+                    <div className={styles.summary}>
+                          <span style={{fontSize: '1.1rem'}}
+                                className={'material-icons-round'}>360</span>
+                        <div className={styles.overflow}>
+                            Rotation
+                        </div>
+                    </div>
+                    <DropdownOptions>
+                        <DropdownOption option={{
+                            label: 'Relative',
+
+                            icon: settingsContext.rotationType === ROTATION_TYPES.RELATIVE ? <span style={{fontSize: '1.2rem'}}
+                                                                                                 className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => settingsContext.rotationType = ROTATION_TYPES.RELATIVE
+                        }}/>
+                        <DropdownOption option={{
+                            label: 'Global',
+                            icon: settingsContext.rotationType === ROTATION_TYPES.GLOBAL ? <span style={{fontSize: '1.2rem'}}
+                                                                         className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => settingsContext.rotationType = ROTATION_TYPES.GLOBAL
                         }}/>
                     </DropdownOptions>
                 </Dropdown>

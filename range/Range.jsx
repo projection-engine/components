@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import styles from './styles/Range.module.css'
 import {useEffect, useRef, useState} from "react";
+import {KEYS} from "../../services/hooks/useHotKeys";
 
 export default function Range(props) {
     const [focused, setFocused] = useState(false)
@@ -66,8 +67,22 @@ export default function Range(props) {
                         //     props.handleChange(parseFloat(e.target.value))
                     }} type={'number'}
                     style={{cursor: 'text', background: 'var(--fabric-background-quaternary)'}}
+                    onKeyDown={k => {
+
+                        if(k.key === KEYS.Enter){
+                            let finalValue = parseFloat(inputCache)
+                            if(!isNaN(finalValue))
+                                props.handleChange(finalValue)
+
+                            if (props.onFinish)
+                                props.onFinish()
+
+                            setFocused(false)
+                        }
+                    }}
                     onBlur={() => {
                         let finalValue = parseFloat(inputCache)
+                        console.log(finalValue, !isNaN(finalValue))
                         if (!isNaN(finalValue)) {
                             if (props.maxValue !== undefined && finalValue > props.maxValue)
                                 finalValue = props.maxValue
