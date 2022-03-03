@@ -17,6 +17,8 @@ export default function ColorPicker(props) {
 
             setValue({r: r, g: g, b: b})
         }
+        else if(typeof props.value === "object")
+            setValue(props.value)
     }, [props.value, open])
 
 
