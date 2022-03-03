@@ -14,6 +14,7 @@ import DirectionalLightComponent from "../../services/engine/ecs/components/Dire
 import SkyboxComponent from "../../services/engine/ecs/components/SkyboxComponent";
 import CubeMapComponent from "../../services/engine/ecs/components/CubeMapComponent";
 import ROTATION_TYPES from "../../services/engine/utils/misc/ROTATION_TYPES";
+import SkylightComponent from "../../services/engine/ecs/components/SkyLightComponent";
 
 
 export default function ViewportOptions(props) {
@@ -279,7 +280,7 @@ export default function ViewportOptions(props) {
                         }}/>
 
                         <div className={styles.dividerWrapper}>
-                            Misc
+                            Lights
                             <div className={styles.divider}/>
                         </div>
                         <DropdownOption option={{
@@ -316,6 +317,22 @@ export default function ViewportOptions(props) {
                                 props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                             }
                         }}/>
+                        <DropdownOption option={{
+
+                            label: 'Skylight',
+                            icon: <span className={'material-icons-round'}
+                                        style={{fontSize: '1.1rem'}}>sky</span>,
+                            onClick: () => {
+                                const actor = new Entity(undefined, 'Skylight')
+                                actor.components.SkylightComponent = new SkylightComponent()
+                                props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                            }
+                        }}/>
+
+                        <div className={styles.dividerWrapper}>
+                            Misc
+                            <div className={styles.divider}/>
+                        </div>
                         <DropdownOption option={{
 
                             label: 'Skybox',

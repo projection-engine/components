@@ -61,28 +61,29 @@ export default function Range(props) {
 
                     onChange={(e) => {
                         setInputCache(e.target.value)
-                        // if (isNaN(parseFloat(e.target.value)))
-                        //     props.handleChange(0.0)
-                        // else
-                        //     props.handleChange(parseFloat(e.target.value))
                     }} type={'number'}
                     style={{cursor: 'text', background: 'var(--fabric-background-quaternary)'}}
                     onKeyDown={k => {
 
                         if(k.key === KEYS.Enter){
                             let finalValue = parseFloat(inputCache)
+
+
+                            if (props.onFinish !== undefined)
+                                props.onFinish()
+
                             if(!isNaN(finalValue))
                                 props.handleChange(finalValue)
-
-                            if (props.onFinish)
-                                props.onFinish()
 
                             setFocused(false)
                         }
                     }}
                     onBlur={() => {
                         let finalValue = parseFloat(inputCache)
-                        console.log(finalValue, !isNaN(finalValue))
+
+                        if (props.onFinish !== undefined)
+                            props.onFinish()
+
                         if (!isNaN(finalValue)) {
                             if (props.maxValue !== undefined && finalValue > props.maxValue)
                                 finalValue = props.maxValue
@@ -92,8 +93,6 @@ export default function Range(props) {
                             props.handleChange(finalValue)
                         }
 
-                        if (props.onFinish)
-                            props.onFinish()
 
                         setFocused(false)
                     }}
@@ -104,7 +103,8 @@ export default function Range(props) {
                     ref={ref}
                     onMouseDown={handleMouseDown}
                     onMouseUp={() => {
-                        if (props.onFinish)
+
+                        if (props.onFinish !== undefined)
                             props.onFinish()
                     }}
                     style={{
