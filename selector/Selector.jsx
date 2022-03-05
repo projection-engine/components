@@ -63,6 +63,7 @@ export default function Selector(props) {
     const [className, setClassName] = useState('')
     return (
         <div
+            className={styles.content}
             onDragOver={e => {
                 e.preventDefault()
                 setClassName(styles.hovered)
@@ -86,7 +87,7 @@ export default function Selector(props) {
             }}>
             <Dropdown
                 wrapperClassname={styles.modal}
-                variant={'outlined'}
+                variant={'outlined'} styles={{overflow: 'hidden', display: 'flex', maxWidth: '100%'}}
                 className={[styles.button, className].join(' ')}>
                 <SelectorItem
                     type={props.type}

@@ -2,8 +2,10 @@
     display: flex;
     align-items: center;
     width: 100%;
+    overflow: hidden;
+    max-width: 100%;
     border-left: transparent 2px solid;
-transition: 150ms ease;
+    transition: 150ms ease;
 }
 
 .container[data-selected = 'true'] {
@@ -98,6 +100,7 @@ transition: 150ms ease;
     align-content: center;
     justify-content: space-between;
     overflow: hidden;
+    max-width: 100%;
 
 }
 
@@ -180,4 +183,9 @@ transition: 150ms ease;
             var(--fabric-background-tertiary)
     );
     background-size: 100% 50px;
+}
+
+.content{
+    overflow: hidden;
+    max-width: 100%;
 }

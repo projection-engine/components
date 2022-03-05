@@ -17,9 +17,7 @@
     height: 45px;
     max-width: 100%;
     overflow: hidden;
-    display: grid;
-    justify-content: flex-start;
-    align-items: center;
+
     outline: transparent 2px dashed;
     transition: 150ms linear;
 
@@ -33,6 +31,7 @@
     background-color: var(--fabric-background-secondary) !important;
 
     box-shadow: rgba(0, 0, 0, .3) 2px 3px 10px 2px !important;
+
 
 }
 
@@ -74,4 +73,8 @@
 .hovered{
     outline: var(--fabric-accent-color) 1px dashed;
     opacity: .5;
+}
+.content{
+    max-width: 100%;
+    overflow: hidden;
 }

@@ -12,7 +12,7 @@ export default function Range(props) {
     const handleMouseMove = (e) => {
         let multiplier = e.movementX
 
-        const increment = Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * multiplier)
+        const increment =props.integer ? 1 : Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * multiplier)
         if (!locked) {
             locked = true
             ref.current?.requestPointerLock()
@@ -24,6 +24,8 @@ export default function Range(props) {
             currentValue = parseFloat(currentValue) - increment
             props.handleChange(currentValue.toFixed(1))
         }
+        if(props.integer)
+            currentValue = parseInt(Math.round(currentValue))
         if (currentValue > props.maxValue && props.maxValue !== undefined)
             currentValue = props.maxValue
         else if (currentValue < props.minValue && props.minValue !== undefined)
@@ -67,13 +69,11 @@ export default function Range(props) {
 
                         if(k.key === KEYS.Enter){
                             let finalValue = parseFloat(inputCache)
-
-
                             if (props.onFinish !== undefined)
                                 props.onFinish()
 
                             if(!isNaN(finalValue))
-                                props.handleChange(finalValue)
+                                props.handleChange(props.integer ? parseInt(finalValue) : finalValue)
 
                             setFocused(false)
                         }
@@ -90,7 +90,7 @@ export default function Range(props) {
                             if (props.minValue !== undefined && finalValue < props.minValue)
                                 finalValue = props.minValue
 
-                            props.handleChange(finalValue)
+                            props.handleChange(props.integer ? parseInt(finalValue) : finalValue)
                         }
 
 
