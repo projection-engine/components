@@ -87,7 +87,7 @@ export default function Selector(props) {
             }}>
             <Dropdown
                 wrapperClassname={styles.modal}
-                variant={'outlined'} styles={{overflow: 'hidden', display: 'flex', maxWidth: '100%'}}
+                variant={'outlined'}
                 className={[styles.button, className].join(' ')}>
                 <SelectorItem
                     type={props.type}
