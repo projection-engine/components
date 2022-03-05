@@ -34,6 +34,7 @@ SelectorItem.propTypes = {
         name: PropTypes.string,
         id: PropTypes.string,
         blob: PropTypes.string,
-        creationDate: PropTypes.string
+        creationDate: PropTypes.string,
+        fallback: PropTypes.bool
     })
 }

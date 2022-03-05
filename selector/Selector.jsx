@@ -24,8 +24,14 @@ export default function Selector(props) {
         }
     }
     const content = useMemo(() => {
-        const filtered = getType().filter(e => e.name.toLowerCase().includes(searchString))
-
+        let filtered = getType().filter(e => e.name.toLowerCase().includes(searchString))
+        if(props.type === 'material'){
+            filtered = [{
+fallback: true,
+                type: 'fallback',
+                name: 'Default material'
+            }].concat(filtered)
+        }
         if (filtered.length > 0)
             return filtered.map((t, i) => (
                 <React.Fragment key={'texture-' + t.name + '-' + i}>
@@ -38,7 +44,9 @@ export default function Selector(props) {
                             props.handleChange(t)
                         }}
                     >
-                        <SelectorItem type={props.type} data={{
+                        <SelectorItem
+                            type={props.type}
+                            data={{
                             ...t,
                             blob: t.preview
                         }}
