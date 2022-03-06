@@ -8,7 +8,6 @@ import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import CAMERA_TYPES from "../../services/engine/utils/camera/CAMERA_TYPES";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
-import importMesh from "./utils";
 import PointLightComponent from "../../services/engine/ecs/components/PointLightComponent";
 import DirectionalLightComponent from "../../services/engine/ecs/components/DirectionalLightComponent";
 import SkyboxComponent from "../../services/engine/ecs/components/SkyboxComponent";
