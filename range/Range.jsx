@@ -19,10 +19,10 @@ export default function Range(props) {
         }
         if (e.movementX < 0 && (currentValue <= props.maxValue || !props.maxValue)) {
             currentValue = parseFloat(currentValue) + increment
-            props.handleChange(currentValue.toFixed(1))
+            props.handleChange(currentValue.toFixed(props.precision ? props.precision : 1))
         } else if (currentValue >= props.minValue || !props.minValue) {
             currentValue = parseFloat(currentValue) - increment
-            props.handleChange(currentValue.toFixed(1))
+            props.handleChange(currentValue.toFixed(props.precision ? props.precision : 1))
         }
         if(props.integer)
             currentValue = parseInt(Math.round(currentValue))
@@ -115,7 +115,7 @@ export default function Range(props) {
                     onDoubleClick={() => setFocused(true)}
                     className={styles.draggable}
                 >
-                    {parseFloat(props.value).toFixed(1)}
+                    {parseFloat(props.value).toFixed(props.precision ? props.precision : 1)}
                 </div>
             }
             {props.metric ?
@@ -132,7 +132,7 @@ export default function Range(props) {
 
 Range.propTypes = {
     metric: PropTypes.oneOf(['angle', 'cm', 'm', 'un']),
-
+    precision: PropTypes.number,
     maxValue: PropTypes.number,
     minValue: PropTypes.number,
 
