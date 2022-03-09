@@ -1,4 +1,4 @@
-import MeshInstance from "../../services/engine/elements/instances/MeshInstance";
+import MeshInstance from "../../services/engine/instances/MeshInstance";
 import Entity from "../../services/engine/ecs/basic/Entity";
 import TransformComponent from "../../services/engine/ecs/components/TransformComponent";
 import MeshComponent from "../../services/engine/ecs/components/MeshComponent";
