@@ -62,8 +62,10 @@ export default function Selector(props) {
     }, [currentSort, quickAccess.images, quickAccess.meshes, state, searchString, props.selected])
 
     useEffect(() => {
+        let name = 'Empty'
+
         setState((typeof props.selected === 'object' && Object.keys(props.selected).length > 0) ? props.selected : {
-            name: 'Empty texture'
+            name
         })
     }, [props.selected])
     const [className, setClassName] = useState('')

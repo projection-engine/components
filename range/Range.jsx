@@ -140,7 +140,7 @@ Range.propTypes = {
     accentColor: PropTypes.string,
     disabled: PropTypes.bool,
     incrementPercentage: PropTypes.number,
-    increment: PropTypes.number,
+
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     handleChange: PropTypes.func
 }

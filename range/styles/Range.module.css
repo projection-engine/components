@@ -1,6 +1,8 @@
 .wrapper{
     display: flex;
     color: var(--fabric-color-secondary);
+    border: var(--fabric-border-primary) 1px solid;
+
     width: 100%;
     align-items: center;
     gap: 4px;

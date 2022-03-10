@@ -52,7 +52,7 @@ export default function SelectBox(props) {
     }
     const handleMouseDown = (event) => {
         const ctrl = event.ctrlKey
-        if (event.button === 0 && !document.elementsFromPoint(event.clientX, event.clientY).find(n => ids.indexOf(n.id) > -1)) {
+        if (event.button === 0 && !document.elementsFromPoint(event.clientX, event.clientY).find(n => (ids.indexOf(n.id) > -1) || n.tagName === 'INPUT'||n.tagName === 'BUTTON')) {
             if(!ctrl)
                 props.setSelected([])
             startingPosition = {x: event.clientX, y: event.clientY}

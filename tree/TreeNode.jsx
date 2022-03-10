@@ -172,7 +172,7 @@ TreeNode.propTypes = {
         canBeHidden: PropTypes.bool
     }).isRequired,
     index: PropTypes.number,
-    focusedNode: PropTypes.string,
+    focusedNode: PropTypes.any,
     setFocusedNode: PropTypes.func,
 
     draggable: PropTypes.bool,

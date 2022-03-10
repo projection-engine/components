@@ -64,7 +64,6 @@ export default function TreeView(props) {
                         selected={props.selected}
                         focusedNode={focusedNode}
                         setFocusedNode={setFocusedNode}
-
                     />
                 </React.Fragment>
             ))
