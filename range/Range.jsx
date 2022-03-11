@@ -5,14 +5,15 @@ import {KEYS} from "../../services/hooks/useHotKeys";
 
 export default function Range(props) {
     const [focused, setFocused] = useState(false)
-
+    const [inputCache, setInputCache] = useState(props.value)
+    const [dragged, setDragged] = useState(false)
     let currentValue = props.value
     let locked = false
 
     const handleMouseMove = (e) => {
         let multiplier = e.movementX
-
-        const increment =props.integer ? 1 : Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * multiplier)
+        setDragged(true)
+        const increment = props.integer ? 1 : Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * multiplier)
         if (!locked) {
             locked = true
             ref.current?.requestPointerLock()
@@ -24,7 +25,7 @@ export default function Range(props) {
             currentValue = parseFloat(currentValue) - increment
             props.handleChange(currentValue.toFixed(props.precision ? props.precision : 1))
         }
-        if(props.integer)
+        if (props.integer)
             currentValue = parseInt(Math.round(currentValue))
         if (currentValue > props.maxValue && props.maxValue !== undefined)
             currentValue = props.maxValue
@@ -38,7 +39,6 @@ export default function Range(props) {
 
             document.addEventListener('mousemove', handleMouseMove)
             document.addEventListener('mouseup', () => {
-
                 locked = false
                 document.exitPointerLock()
                 document.removeEventListener('mousemove', handleMouseMove)
@@ -46,7 +46,7 @@ export default function Range(props) {
         } else if (!document.elementsFromPoint(e.clientX, e.clientY).includes(ref.current))
             setFocused(false)
     }
-    const [inputCache, setInputCache] = useState(props.value)
+
     useEffect(() => {
         setInputCache(props.value)
     }, [focused])
@@ -60,19 +60,19 @@ export default function Range(props) {
                     ref={ref}
                     value={inputCache}
                     onMouseDown={handleMouseDown}
-
+                    autoFocus={true}
                     onChange={(e) => {
                         setInputCache(e.target.value)
                     }} type={'number'}
                     style={{cursor: 'text', background: 'var(--fabric-background-quaternary)'}}
                     onKeyDown={k => {
 
-                        if(k.key === KEYS.Enter){
+                        if (k.key === KEYS.Enter) {
                             let finalValue = parseFloat(inputCache)
                             if (props.onFinish !== undefined)
                                 props.onFinish()
 
-                            if(!isNaN(finalValue))
+                            if (!isNaN(finalValue))
                                 props.handleChange(props.integer ? parseInt(finalValue) : finalValue)
 
                             setFocused(false)
@@ -112,7 +112,12 @@ export default function Range(props) {
                         cursor: props.disabled ? 'default' : undefined,
                         background: props.disabled ? 'var(--background-0)' : undefined
                     }}
-                    onDoubleClick={() => setFocused(true)}
+                    onClick={() => {
+                        if (!dragged)
+                            setFocused(true)
+                        else
+                            setDragged(false)
+                    }}
                     className={styles.draggable}
                 >
                     {parseFloat(props.value).toFixed(props.precision ? props.precision : 1)}
