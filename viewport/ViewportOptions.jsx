@@ -14,6 +14,8 @@ import SkyboxComponent from "../../services/engine/ecs/components/SkyboxComponen
 import CubeMapComponent from "../../services/engine/ecs/components/CubeMapComponent";
 import ROTATION_TYPES from "../../services/engine/utils/misc/ROTATION_TYPES";
 import SkylightComponent from "../../services/engine/ecs/components/SkyLightComponent";
+import SphericalCamera from "../../services/engine/utils/camera/prespective/SphericalCamera";
+import {handleGrab} from "./utils";
 
 
 export default function ViewportOptions(props) {
@@ -385,6 +387,9 @@ export default function ViewportOptions(props) {
                         }}/>
                     </DropdownOptions>
                 </Dropdown>
+                <div style={{display: props.engine.renderer?.camera instanceof SphericalCamera ? undefined : 'none'}} className={styles.dragInput} onMouseDown={e => handleGrab(e,props.engine.renderer)}>
+                    <span className={'material-icons-round'}>back_hand</span>
+                </div>
             </div>
             <div className={styles.alignEnd}>
                 <div className={styles.buttonGroup}>

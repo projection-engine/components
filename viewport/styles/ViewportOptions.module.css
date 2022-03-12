@@ -175,6 +175,7 @@
 
     padding: 0 !important;
     border-radius: 0;
+    border: var(--fabric-border-primary) 1px solid;
 }
 .groupItem:hover{
     --colorToApply: var(--fabric-accent-color);
@@ -204,4 +205,29 @@
     background: var(--colorToApply);
 
 
+}
+
+.dragInput{
+    border: var(--fabric-border-primary) 1px solid;
+    border-radius: 5px;
+
+    color: var(--fabric-color-primary);
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--fabric-background-tertiary) !important;
+
+    transition: 150ms linear;
+}
+.dragInput:active{
+    color: var(--fabric-accent-color);
+    transform: scale(1.1);
+
+}
+.dragInput > *{
+    font-size: 1.1rem !important;
 }
