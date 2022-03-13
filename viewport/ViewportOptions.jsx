@@ -260,26 +260,7 @@ export default function ViewportOptions(props) {
                     className={styles.optionWrapper}
                     justify={'start'} align={'bottom'}>
                     Add
-
                     <DropdownOptions>
-                        {/*<div className={styles.dividerWrapper}>*/}
-                        {/*    Meshes*/}
-                        {/*    <div className={styles.divider}/>*/}
-                        {/*</div>*/}
-                        {/*<DropdownOption option={{*/}
-                        {/*    label: 'Cube',*/}
-                        {/*    onClick: () => importMesh(0, props.engine)*/}
-                        {/*}}/>*/}
-                        {/*<DropdownOption option={{*/}
-                        {/*    label: 'Sphere',*/}
-
-                        {/*    onClick: () => importMesh(1, props.engine)*/}
-                        {/*}}/>*/}
-                        {/*<DropdownOption option={{*/}
-                        {/*    label: 'Plane',*/}
-                        {/*    onClick: () => importMesh(2, props.engine)*/}
-                        {/*}}/>*/}
-
                         <div className={styles.dividerWrapper}>
                             Lights
                             <div className={styles.divider}/>
@@ -346,8 +327,6 @@ export default function ViewportOptions(props) {
                             }
                         }}/>
                         <DropdownOption option={{
-                            disabled: true,
-
                             label: 'CubeMap',
                             icon: <span className={'material-icons-round'}
                                         style={{fontSize: '1.1rem'}}>panorama_photosphere</span>,
