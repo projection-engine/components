@@ -52,8 +52,11 @@ export default function Range(props) {
     }, [focused])
 
     return (
-        <div className={styles.wrapper} style={{'--accentColor': props.accentColor}}
-             title={props.label}>
+        <div
+            data-disabled={`${props.disabled}`}
+            className={styles.wrapper}
+            style={{'--accentColor': props.accentColor}}
+            title={props.label}>
             {focused ?
                 <input
                     disabled={props.disabled}
@@ -108,16 +111,19 @@ export default function Range(props) {
                             props.onFinish()
                     }}
                     style={{
-                        color: props.disabled ? 'var(--fabric-color-quaternary)' : undefined,
+                        color: props.disabled ? '#999999' : undefined,
                         cursor: props.disabled ? 'default' : undefined,
                         background: props.disabled ? 'var(--background-0)' : undefined
                     }}
                     onClick={() => {
-                        if (!dragged)
-                            setFocused(true)
-                        else
-                            setDragged(false)
+                        if (!props.disabled) {
+                            if (!dragged)
+                                setFocused(true)
+                            else
+                                setDragged(false)
+                        }
                     }}
+
                     className={styles.draggable}
                 >
                     {parseFloat(props.value).toFixed(props.precision ? props.precision : 1)}
@@ -136,7 +142,7 @@ export default function Range(props) {
 }
 
 Range.propTypes = {
-    metric: PropTypes.oneOf(['angle', 'cm', 'm', 'un']),
+    metric: PropTypes.string,
     precision: PropTypes.number,
     maxValue: PropTypes.number,
     minValue: PropTypes.number,
