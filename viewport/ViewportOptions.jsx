@@ -16,6 +16,7 @@ import ROTATION_TYPES from "../../services/engine/utils/misc/ROTATION_TYPES";
 import SkylightComponent from "../../services/engine/ecs/components/SkyLightComponent";
 import SphericalCamera from "../../services/engine/utils/camera/prespective/SphericalCamera";
 import {handleGrab} from "./utils";
+import CubeMapInstance from "../../services/engine/instances/CubeMapInstance";
 
 
 export default function ViewportOptions(props) {
@@ -334,6 +335,7 @@ export default function ViewportOptions(props) {
 
                                 const actor = new Entity(undefined, 'Cubemap')
                                 actor.components.CubeMapComponent = new CubeMapComponent()
+                                actor.components.CubeMapComponent.cubeMap = new CubeMapInstance(props.engine.gpu, actor.components.CubeMapComponent.resolution)
                                 props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                             }
                         }}/>
