@@ -39,13 +39,18 @@
     position: sticky;
     top: 0;
 
-    height: fit-content;
+
     background-color: var(--fabric-background-primary) !important;
     z-index: 999;
+    height: 25px;
+
 
     border-bottom: var(--fabric-border-primary) 1px solid;
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
     align-items: center;
+    align-content: center;
+    justify-content: space-between;
     padding: 0 2px;
 
 }
@@ -81,11 +86,11 @@
     overflow: hidden;
 }
 .resetButton{
-    width: fit-content;
-    height: fit-content;
+    height: 20px !important;
+    width: 20px !important;
+    padding: 0 !important;
 
     text-align: left;
-    padding: 2px !important;
 
     display: flex;
     align-items: center;
@@ -95,5 +100,5 @@
     color: var(--fabric-accent-color) !important;
 }
 .resetButton > *{
-    font-size: 1.1rem !important;
+    font-size: 1rem !important;
 }

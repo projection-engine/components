@@ -56,11 +56,14 @@
 }
 
 
+
 .rangeWrapper {
     user-select: none;
     display: flex;
+
     align-items: center;
-    padding: 0 8px;
+    padding: 4px;
+    gap: 4px;
 
 }
 
@@ -206,22 +209,8 @@
 
 
 }
-
 .dragInput{
-    border: var(--fabric-border-primary) 1px solid;
-    border-radius: 5px;
-
-    color: var(--fabric-color-primary);
-    width: 25px;
-    height: 25px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: var(--fabric-background-tertiary) !important;
-
-    transition: 150ms linear;
+    cursor: move;
 }
 .dragInput:active{
     color: var(--fabric-accent-color);
@@ -230,4 +219,34 @@
 }
 .dragInput > *{
     font-size: 1.1rem !important;
+}
+
+.floatingOption{
+    border-radius: 50%;
+    backdrop-filter: blur(20px) brightness(.65);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 25px;
+    width: 25px;
+
+    padding: 0 !important;
+    color: var(--fabric-color-secondary) !important;
+
+
+    transition: 150ms linear;
+}
+
+.floating{
+    position: absolute;
+    right: 4px;
+    top: 35px;
+    z-index: 999;
+    display: grid;
+    align-content: flex-start;
+    gap: 4px;
+    height: fit-content;
+
 }

@@ -15,7 +15,7 @@ export default function useDimensions(id, engine) {
             if(isDocument)
                 target.parentNode.parentNode.style.width = '100%'
             const bBox = target.parentNode.getBoundingClientRect()
-            const newWidth = bBox.width, newHeight = bBox.height
+            const newWidth = bBox.width , newHeight = bBox.height
             engine.gpu?.viewport(0, 0, window.screen.width, window.screen.height);
             target.width = newWidth
             target.height = newHeight

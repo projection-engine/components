@@ -5,6 +5,7 @@ import MeshComponent from "../../services/engine/ecs/components/MeshComponent";
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import {linearAlgebraMath, Vector} from "pj-math";
+import conf from "../../services/engine/assets/config.json";
 
 export default function importMesh(type, engine) {
     let promise, name
@@ -56,24 +57,28 @@ export default function importMesh(type, engine) {
                 payload: entity
             })
         })
-
     }
 }
 
 
-export function handleGrab(event, engine){
+export function handleGrab(event, engine) {
     let requested = false
     const handleMouseMove = (e) => {
-        if(!requested){
+        if (!requested) {
             e.target.requestPointerLock()
             requested = true
         }
-        const incrementX =  ((0.1) * e.movementX)
-        const incrementY =  ((0.1) * e.movementY)
+        const incrementX = ((0.1) * e.movementX),
+            incrementY = ((0.1) * e.movementY),
+            c = [...engine.camera.centerOn]
+        let newPosition = linearAlgebraMath.multiplyMatrixVec(linearAlgebraMath.rotationMatrix('y', engine.camera.yaw), new Vector(incrementX, 0, 0))
+        newPosition = newPosition.matrix
 
-        engine.camera.centerOn[0] -= incrementX
-        engine.camera.centerOn[1]-= incrementY
+        c[0] += newPosition[0]
+        c[1] -= incrementY
+        c[2] += newPosition[2]
 
+        engine.camera.centerOn = c
         engine.camera.updateViewMatrix()
     }
     const handleMouseUp = () => {
