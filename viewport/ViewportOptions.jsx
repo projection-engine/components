@@ -1,3 +1,4 @@
+import React from 'react'
 import PropTypes from "prop-types";
 import styles from "./styles/ViewportOptions.module.css";
 import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core";
@@ -89,12 +90,10 @@ export default function ViewportOptions(props) {
     return (
         <>
             <div className={styles.options} style={{display: fullscreen ? 'none' : undefined}} draggable={false}>
-
-                <div className={styles.alignStart}>
+                <div className={styles.align}>
                     <Dropdown
                         hideArrow={true}
-                        className={styles.optionWrapper} variant={'outlined'}
-                        justify={'start'} align={'bottom'}>
+                        className={[styles.optionWrapper, styles.highlighted].join(' ')}>
                         <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>more_vert</span>
                         <DropdownOptions>
                             <DropdownOption option={{
@@ -194,10 +193,10 @@ export default function ViewportOptions(props) {
                             }}/>
                         </DropdownOptions>
                     </Dropdown>
-                    <Dropdown
-                        className={styles.optionWrapper}
-                        justify={'start'} align={'bottom'}>
-                        Add
+                    <Dropdown className={styles.optionWrapper}  hideArrow={true}>
+                        <div className={styles.align}>
+                            <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>add</span> Create
+                        </div>
                         <DropdownOptions>
                             <div className={styles.dividerWrapper}>
                                 Lights
@@ -278,14 +277,17 @@ export default function ViewportOptions(props) {
                         </DropdownOptions>
                     </Dropdown>
 
+
+
+                </div>
+                <div className={styles.align}>
                     <Dropdown
-                        className={styles.optionWrapper}
-                        justify={'start'} align={'bottom'}>
+                        className={[styles.optionWrapper, styles.highlighted].join(' ')}>
                         <div className={styles.summary}>
                           <span style={{fontSize: '1.1rem'}}
                                 className={'material-icons-round'}>360</span>
                             <div className={styles.overflow}>
-                                Rotation
+                                {settingsContext.rotationType === ROTATION_TYPES.RELATIVE  ? 'Local' : 'Global'}
                             </div>
                         </div>
                         <DropdownOptions>
@@ -295,20 +297,25 @@ export default function ViewportOptions(props) {
                                 icon: settingsContext.rotationType === ROTATION_TYPES.RELATIVE ?
                                     <span style={{fontSize: '1.2rem'}}
                                           className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => settingsContext.rotationType = ROTATION_TYPES.RELATIVE
+                                onClick: () => {
+                                    settingsContext.rotationType = ROTATION_TYPES.RELATIVE
+                                    props.engine.dispatchEntities({type: ENTITY_ACTIONS.UPDATE_TRANSFORM})
+                                }
                             }}/>
                             <DropdownOption option={{
                                 label: 'Global',
                                 icon: settingsContext.rotationType === ROTATION_TYPES.GLOBAL ?
                                     <span style={{fontSize: '1.2rem'}}
                                           className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => settingsContext.rotationType = ROTATION_TYPES.GLOBAL
+                                onClick: () => {
+                                    settingsContext.rotationType = ROTATION_TYPES.GLOBAL
+                                    props.engine.dispatchEntities({type: ENTITY_ACTIONS.UPDATE_TRANSFORM})
+                                }
                             }}/>
                         </DropdownOptions>
                     </Dropdown>
-
                 </div>
-                <div className={styles.alignEnd}>
+                <div className={styles.align}>
                     <div className={styles.buttonGroup}>
                         <Button
                             className={styles.groupItem}
@@ -370,7 +377,6 @@ export default function ViewportOptions(props) {
                         </Button>
                     </div>
                 </div>
-
                 {/*TODO*/}
                 {/*<div className={styles.cameraView}>*/}
                 {/*    <div className={styles.cube}>*/}
@@ -389,9 +395,11 @@ export default function ViewportOptions(props) {
                     <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>videocam</span>
 
                     <DropdownOptions>
-                        {cameraOptions.map(c => (
-                            <DropdownOption
-                                option={c}/>
+                        {cameraOptions.map((c, i) => (
+                            <React.Fragment key={i + '-options-vp'}>
+                                <DropdownOption
+                                    option={c}/>
+                            </React.Fragment>
                         ))}
                     </DropdownOptions>
                 </Dropdown>

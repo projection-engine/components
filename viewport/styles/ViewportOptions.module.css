@@ -1,37 +1,29 @@
 
 .options {
     display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+
     width: 100%;
     padding: 3px;
     height: fit-content;
     user-select: none;
-    align-items: center;
-    align-content: center;
+
 }
 
-.alignEnd {
-    display: flex;
-    align-items: center;
-    align-content: center;
 
-    justify-content: flex-end;
-    gap: 8px;
-    width: 100%;
-}
 
-.alignStart {
-    width: 100%;
+.align {
 
     display: flex;
     align-items: center;
     align-content: center;
-    justify-content: flex-start;
-    gap: 8px;
+    gap: 4px;
 }
 
 .optionWrapper {
     border-radius: 5px;
-    background: var(--fabric-background-tertiary);
 
 
     width: fit-content;
@@ -49,13 +41,17 @@
     padding: 4px !important;
     position: relative !important;
     color: var(--fabric-color-secondary) !important;
-    border: var(--fabric-border-primary) 1px solid;
+
     overflow: hidden;
     font-family: "Roboto" !important;
-
 }
-
-
+.highlighted{
+    background: var(--fabric-background-tertiary);
+    border: var(--fabric-border-primary) 1px solid;
+}
+.highlighted:active, .highlighted:hover{
+    border-color: var(--fabric-accent-color);
+}
 
 .rangeWrapper {
     user-select: none;
