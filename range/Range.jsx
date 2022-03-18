@@ -8,16 +8,12 @@ export default function Range(props) {
     const [inputCache, setInputCache] = useState(props.value)
     const [dragged, setDragged] = useState(false)
     let currentValue = props.value
-    let locked = false
 
     const handleMouseMove = (e) => {
         let multiplier = e.movementX
         setDragged(true)
         const increment = props.integer ? 1 : Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * multiplier)
-        if (!locked) {
-            locked = true
-            ref.current?.requestPointerLock()
-        }
+
         if (e.movementX < 0 && (currentValue <= props.maxValue || !props.maxValue)) {
             currentValue = parseFloat(currentValue) + increment
             props.handleChange(currentValue.toFixed(props.precision ? props.precision : 1))
@@ -34,18 +30,6 @@ export default function Range(props) {
 
     }
     const ref = useRef()
-    const handleMouseDown = (e) => {
-        if (!focused && !props.disabled) {
-
-            document.addEventListener('mousemove', handleMouseMove)
-            document.addEventListener('mouseup', () => {
-                locked = false
-                document.exitPointerLock()
-                document.removeEventListener('mousemove', handleMouseMove)
-            }, {once: true})
-        } else if (!document.elementsFromPoint(e.clientX, e.clientY).includes(ref.current))
-            setFocused(false)
-    }
 
     useEffect(() => {
         setInputCache(props.value)
@@ -62,7 +46,7 @@ export default function Range(props) {
                     disabled={props.disabled}
                     ref={ref}
                     value={inputCache}
-                    onMouseDown={handleMouseDown}
+
                     autoFocus={true}
                     onChange={(e) => {
                         setInputCache(e.target.value)
@@ -104,24 +88,29 @@ export default function Range(props) {
                 :
                 <div
                     ref={ref}
-                    onMouseDown={handleMouseDown}
+                    onMouseDown={() => {
+                        if (!focused && !props.disabled)
+                            ref.current?.requestPointerLock()
+                    }}
+                    onMouseMove={(e) => {
+                        if (document.pointerLockElement)
+                            handleMouseMove(e)
+                    }}
                     onMouseUp={() => {
-
+                        document.exitPointerLock()
                         if (props.onFinish !== undefined)
                             props.onFinish()
-                    }}
-                    style={{
-                        color: props.disabled ? '#999999' : undefined,
-                        cursor: props.disabled ? 'default' : undefined,
-                        background: props.disabled ? 'var(--background-0)' : undefined
-                    }}
-                    onClick={() => {
                         if (!props.disabled) {
                             if (!dragged)
                                 setFocused(true)
                             else
                                 setDragged(false)
                         }
+                    }}
+                    style={{
+                        color: props.disabled ? '#999999' : undefined,
+                        cursor: props.disabled ? 'default' : undefined,
+                        background: props.disabled ? 'var(--background-0)' : undefined
                     }}
 
                     className={styles.draggable}

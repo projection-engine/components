@@ -285,14 +285,14 @@ export default function ViewportOptions(props) {
                         className={[styles.optionWrapper, styles.highlighted].join(' ')}>
                         <div className={styles.summary}>
                           <span style={{fontSize: '1.1rem'}}
-                                className={'material-icons-round'}>360</span>
+                                className={'material-icons-round'}>transform</span>
                             <div className={styles.overflow}>
                                 {settingsContext.rotationType === ROTATION_TYPES.RELATIVE  ? 'Local' : 'Global'}
                             </div>
                         </div>
                         <DropdownOptions>
                             <DropdownOption option={{
-                                label: 'Relative',
+                                label: 'Local',
 
                                 icon: settingsContext.rotationType === ROTATION_TYPES.RELATIVE ?
                                     <span style={{fontSize: '1.2rem'}}
