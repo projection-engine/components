@@ -193,7 +193,7 @@ export default function ViewportOptions(props) {
                             }}/>
                         </DropdownOptions>
                     </Dropdown>
-                    <Dropdown className={styles.optionWrapper}  hideArrow={true}>
+                    <Dropdown className={styles.optionWrapper} hideArrow={true}>
                         <div className={styles.align}>
                             <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>add</span> Create
                         </div>
@@ -278,7 +278,6 @@ export default function ViewportOptions(props) {
                     </Dropdown>
 
 
-
                 </div>
                 <div className={styles.align}>
                     <Dropdown
@@ -287,7 +286,7 @@ export default function ViewportOptions(props) {
                           <span style={{fontSize: '1.1rem'}}
                                 className={'material-icons-round'}>transform</span>
                             <div className={styles.overflow}>
-                                {settingsContext.rotationType === ROTATION_TYPES.RELATIVE  ? 'Local' : 'Global'}
+                                {settingsContext.rotationType === ROTATION_TYPES.RELATIVE ? 'Local' : 'Global'}
                             </div>
                         </div>
                         <DropdownOptions>
@@ -377,19 +376,101 @@ export default function ViewportOptions(props) {
                         </Button>
                     </div>
                 </div>
-                {/*TODO*/}
-                {/*<div className={styles.cameraView}>*/}
-                {/*    <div className={styles.cube}>*/}
-                {/*        <div className={[styles.cubeFace, styles.cubeFaceFront].join(' ')}>front</div>*/}
-                {/*        <div className={[styles.cubeFace, styles.cubeFaceBack].join(' ')}>back</div>*/}
-                {/*        <div className={[styles.cubeFace, styles.cubeFaceRight].join(' ')}>right</div>*/}
-                {/*        <div className={[styles.cubeFace, styles.cubeFaceLeft].join(' ')}>left</div>*/}
-                {/*        <div className={[styles.cubeFace, styles.cubeFaceTop].join(' ')}>top</div>*/}
-                {/*        <div className={[styles.cubeFace, styles.cubeFaceBottom].join(' ')}>bottom</div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
             </div>
             <div className={styles.floating}>
+                <div className={styles.cameraView}>
+                    <div className={styles.cube} id={props.id + '-camera'}>
+                        <div
+                            className={[styles.face, styles.front].join(' ')}
+                            onClick={() => {
+                                if (!cameraIsOrthographic) {
+                                    lastCamera.perspective = settingsContext.cameraType
+                                    settingsContext.cameraType = CAMERA_TYPES.FRONT
+                                    setCameraIsOrthographic(true)
+                                }
+                                else {
+                                    settingsContext.cameraType = lastCamera.perspective
+                                    setCameraIsOrthographic(false)
+                                    lastCamera.ortho = settingsContext.cameraType
+                                }
+                            }}
+                        >
+                            Front
+                        </div>
+                        <div className={[styles.face, styles.back].join(' ')}
+                             onClick={() => {
+                                 if (!cameraIsOrthographic) {
+                                     lastCamera.perspective = settingsContext.cameraType
+                                     settingsContext.cameraType = CAMERA_TYPES.BACK
+                                     setCameraIsOrthographic(true)
+                                 }
+                                 else {
+                                     settingsContext.cameraType = lastCamera.perspective
+                                     setCameraIsOrthographic(false)
+                                     lastCamera.ortho = settingsContext.cameraType
+                                 }
+                             }}
+                        >
+                            Back</div>
+                        <div className={[styles.face, styles.right].join(' ')}
+                             onClick={() => {
+                                 if (!cameraIsOrthographic) {
+                                     lastCamera.perspective = settingsContext.cameraType
+                                     settingsContext.cameraType = CAMERA_TYPES.RIGHT
+                                     setCameraIsOrthographic(true)
+                                 }
+                                 else {
+                                     settingsContext.cameraType = lastCamera.perspective
+                                     setCameraIsOrthographic(false)
+                                     lastCamera.ortho = settingsContext.cameraType
+                                 }
+                             }}
+                        >Right</div>
+                        <div className={[styles.face, styles.left].join(' ')}
+                             onClick={() => {
+                                 if (!cameraIsOrthographic) {
+                                     lastCamera.perspective = settingsContext.cameraType
+                                     settingsContext.cameraType = CAMERA_TYPES.LEFT
+                                     setCameraIsOrthographic(true)
+                                 }
+                                 else {
+                                     settingsContext.cameraType = lastCamera.perspective
+                                     setCameraIsOrthographic(false)
+                                     lastCamera.ortho = settingsContext.cameraType
+                                 }
+                             }}
+                        >Left</div>
+                        <div className={[styles.face, styles.top].join(' ')}
+                             onClick={() => {
+                            if (!cameraIsOrthographic) {
+                                lastCamera.perspective = settingsContext.cameraType
+                                settingsContext.cameraType = CAMERA_TYPES.BOTTOM
+                                setCameraIsOrthographic(true)
+                            }
+                            else {
+                                settingsContext.cameraType = lastCamera.perspective
+                                setCameraIsOrthographic(false)
+                                lastCamera.ortho = settingsContext.cameraType
+                            }
+                        }}
+                        >Bottom</div>
+                        <div className={[styles.face, styles.bottom].join(' ')}
+                             onClick={() => {
+                            if (!cameraIsOrthographic) {
+                                lastCamera.perspective = settingsContext.cameraType
+                                settingsContext.cameraType = CAMERA_TYPES.TOP
+                                setCameraIsOrthographic(true)
+                            }
+                            else {
+                                settingsContext.cameraType = lastCamera.perspective
+                                setCameraIsOrthographic(false)
+                                lastCamera.ortho = settingsContext.cameraType
+                            }
+                        }}
+                        >Top</div>
+                    </div>
+                </div>
+
                 <Dropdown className={styles.floatingOption} hideArrow={true}>
 
                     <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>videocam</span>

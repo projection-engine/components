@@ -105,58 +105,78 @@
 }
 
 
-/*TODO*/
-/*.cameraView {*/
-/*    --cubeSize: 50px;*/
-/*    width: calc(var(--cubeSize) * 2);*/
-/*    height: calc(var(--cubeSize) * 2);*/
 
-/*    perspective: var(--cubeSize) ;*/
-/*}*/
-/*.cube {*/
-/*    width: var(--cubeSize);*/
-/*    height: var(--cubeSize);*/
-/*    position: relative;*/
-/*    transform-style: preserve-3d;*/
-
-/*    transition: transform 1s;*/
+.cameraView {
+    --cubeSize: 25px;
 
 
-/*    transform:translateZ(calc(var(--cubeSize) * -2));*/
-/*}*/
+    width: calc(var(--cubeSize) * 2);
+    height:calc(var(--cubeSize) * 2);
+    transform: scale3d(1.5, 1.5, 1.5);
 
-/*.cube.show-front  { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY(   0deg); }*/
-/*.cube.show-right  { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY( -90deg); }*/
-/*.cube.show-back   { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY(-180deg); }*/
-/*.cube.show-left   { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY(  90deg); }*/
-/*.cube.show-top    { transform: translateZ(calc(var(--cubeSize) * -1)) rotateX( -90deg); }*/
-/*.cube.show-bottom { transform: translateZ(calc(var(--cubeSize) * -1)) rotateX(  90deg); }*/
+    perspective: calc(var(--cubeSize) * 2);
 
-/*.cubeFace {*/
-/*    position: absolute;*/
-/*    width: calc(var(--cubeSize) * 2);*/
-/*    height: calc(var(--cubeSize) * 2);*/
-/*    border: 2px solid black;*/
-/*    line-height: calc(var(--cubeSize) * 2);*/
-/*    font-size: 20px;*/
-/*    font-weight: bold;*/
-/*    color: white;*/
-/*    text-align: center;*/
-/*}*/
+}
+.cube {
 
-/*.cubeFaceFront  { background: hsla(  0, 100%, 50%, .5); }*/
-/*.cubeFaceRight  { background: hsla( 60, 100%, 50%, .5); }*/
-/*.cubeFaceBack   { background: hsla(120, 100%, 50%, .5); }*/
-/*.cubeFaceLeft   { background: hsla(180, 100%, 50%, .5); }*/
-/*.cubeFaceTop    { background: hsla(240, 100%, 50%, .5); }*/
-/*.cubeFaceBottom { background: hsla(300, 100%, 50%, .5); }*/
+    width: calc(var(--cubeSize) * 2);
+    height:calc(var(--cubeSize) * 2);
+    position: relative;
+    transform-style: preserve-3d;
+    transform: translateZ(calc(var(--cubeSize) * -4));
 
-/*.cubeFaceFront  { transform: rotateY(  0deg) translateZ(var(--cubeSize)); }*/
-/*.cubeFaceRight  { transform: rotateY( 90deg) translateZ(var(--cubeSize)); }*/
-/*.cubeFaceBack   { transform: rotateY(180deg) translateZ(var(--cubeSize)); }*/
-/*.cubeFaceLeft   { transform: rotateY(-90deg) translateZ(var(--cubeSize)); }*/
-/*.cubeFaceTop    { transform: rotateX( 90deg) translateZ(var(--cubeSize)); }*/
-/*.cubeFaceBottom { transform: rotateX(-90deg) translateZ(var(--cubeSize)); }*/
+}
+
+.cube.show-front  { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY(   0deg); }
+.cube.show-right  { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY( -90deg); }
+.cube.show-back   { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY(-180deg); }
+.cube.show-left   { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY(  90deg); }
+.cube.show-bottom    { transform: translateZ(calc(var(--cubeSize) * -1)) rotateX( -90deg); }
+.cube.show-top { transform: translateZ(calc(var(--cubeSize) * -1)) rotateX(  90deg); }
+
+.face {
+
+    position: absolute;
+    width: calc(var(--cubeSize) * 2);
+    height:calc(var(--cubeSize) * 2);
+    border: 1px solid #555555;
+    line-height: calc(var(--cubeSize) * 2);
+    font-size: .75rem;
+    font-weight: bold;
+    color: #333333;
+    text-align: center;
+}
+
+.front  { background: hsl(  205, 100%, 50% ); }
+.right  { background: hsl( 0, 100%, 50% ); }
+.back   { background: hsl(205, 100%, 50%); }
+.left   { background: hsl(0, 100%, 50%); }
+.top    { background: hsl(130, 100%, 50%); }
+.bottom { background: hsl(130, 100%, 50%); }
+
+.front  { transform: rotateY(  0deg) translateZ(var(--cubeSize)); }
+.right  { transform: rotateY( 90deg) translateZ(var(--cubeSize)); }
+.back   { transform: rotateY(180deg) translateZ(var(--cubeSize)); }
+.left   { transform: rotateY(-90deg) translateZ(var(--cubeSize)); }
+.bottom    { transform: rotateX( 90deg) translateZ(var(--cubeSize)); }
+.top { transform: rotateX(-90deg) translateZ(var(--cubeSize)); }
+
+
+.floating{
+
+    position: absolute;
+    right: 4px;
+    top: 35px;
+    z-index: 999;
+    display: grid;
+    align-content: flex-start;
+
+    justify-items: flex-end;
+    gap: 4px;
+    height: fit-content;
+
+
+}
 
 .buttonGroup {
     display: flex;
@@ -233,16 +253,4 @@
 
 
     transition: 150ms linear;
-}
-
-.floating{
-    position: absolute;
-    right: 4px;
-    top: 35px;
-    z-index: 999;
-    display: grid;
-    align-content: flex-start;
-    gap: 4px;
-    height: fit-content;
-
 }
