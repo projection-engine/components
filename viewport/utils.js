@@ -5,7 +5,6 @@ import MeshComponent from "../../services/engine/ecs/components/MeshComponent";
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import {linearAlgebraMath, Vector} from "pj-math";
-import conf from "../../services/engine/assets/config.json";
 
 export default function importMesh(type, engine) {
     let promise, name

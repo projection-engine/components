@@ -1,9 +1,8 @@
-import React from 'react'
+import React, {useContext, useEffect, useMemo, useState} from 'react'
 import PropTypes from "prop-types";
 import styles from "./styles/ViewportOptions.module.css";
 import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core";
 import Range from "../range/Range";
-import {useContext, useEffect, useMemo, useState} from "react";
 import SettingsProvider from "../../services/hooks/SettingsProvider";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import CAMERA_TYPES from "../../services/engine/utils/camera/CAMERA_TYPES";
