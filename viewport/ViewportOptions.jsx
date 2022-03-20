@@ -281,6 +281,7 @@ export default function ViewportOptions(props) {
                 </div>
                 <div className={styles.align}>
                     <Dropdown
+                        disabled={true}
                         className={[styles.optionWrapper, styles.highlighted].join(' ')}>
                         <div className={styles.summary}>
                           <span style={{fontSize: '1.1rem'}}
@@ -298,7 +299,6 @@ export default function ViewportOptions(props) {
                                           className={'material-icons-round'}>check</span> : undefined,
                                 onClick: () => {
                                     settingsContext.rotationType = ROTATION_TYPES.RELATIVE
-                                    props.engine.dispatchEntities({type: ENTITY_ACTIONS.UPDATE_TRANSFORM})
                                 }
                             }}/>
                             <DropdownOption option={{
@@ -308,7 +308,7 @@ export default function ViewportOptions(props) {
                                           className={'material-icons-round'}>check</span> : undefined,
                                 onClick: () => {
                                     settingsContext.rotationType = ROTATION_TYPES.GLOBAL
-                                    props.engine.dispatchEntities({type: ENTITY_ACTIONS.UPDATE_TRANSFORM})
+
                                 }
                             }}/>
                         </DropdownOptions>
@@ -444,20 +444,6 @@ export default function ViewportOptions(props) {
                              onClick={() => {
                             if (!cameraIsOrthographic) {
                                 lastCamera.perspective = settingsContext.cameraType
-                                settingsContext.cameraType = CAMERA_TYPES.BOTTOM
-                                setCameraIsOrthographic(true)
-                            }
-                            else {
-                                settingsContext.cameraType = lastCamera.perspective
-                                setCameraIsOrthographic(false)
-                                lastCamera.ortho = settingsContext.cameraType
-                            }
-                        }}
-                        >Bottom</div>
-                        <div className={[styles.face, styles.bottom].join(' ')}
-                             onClick={() => {
-                            if (!cameraIsOrthographic) {
-                                lastCamera.perspective = settingsContext.cameraType
                                 settingsContext.cameraType = CAMERA_TYPES.TOP
                                 setCameraIsOrthographic(true)
                             }
@@ -468,6 +454,20 @@ export default function ViewportOptions(props) {
                             }
                         }}
                         >Top</div>
+                        <div className={[styles.face, styles.bottom].join(' ')}
+                             onClick={() => {
+                            if (!cameraIsOrthographic) {
+                                lastCamera.perspective = settingsContext.cameraType
+                                settingsContext.cameraType = CAMERA_TYPES.BOTTOM
+                                setCameraIsOrthographic(true)
+                            }
+                            else {
+                                settingsContext.cameraType = lastCamera.perspective
+                                setCameraIsOrthographic(false)
+                                lastCamera.ortho = settingsContext.cameraType
+                            }
+                        }}
+                        >Bottom</div>
                     </div>
                 </div>
 

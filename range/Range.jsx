@@ -5,29 +5,31 @@ import {KEYS} from "../../services/hooks/useHotKeys";
 
 export default function Range(props) {
     const [focused, setFocused] = useState(false)
-    const [inputCache, setInputCache] = useState(props.value)
+    const [inputCache, setInputCache] = useState(parseFloat(props.value))
     const [dragged, setDragged] = useState(false)
-    let currentValue = props.value
+    let currentValue = parseFloat(props.value)
 
     const handleMouseMove = (e) => {
+
         let multiplier = e.movementX
         setDragged(true)
         const increment = props.integer ? 1 : Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * multiplier)
 
-        if (e.movementX < 0 && (currentValue <= props.maxValue || !props.maxValue)) {
-            currentValue = parseFloat(currentValue) + increment
-            props.handleChange(currentValue.toFixed(props.precision ? props.precision : 1))
-        } else if (currentValue >= props.minValue || !props.minValue) {
-            currentValue = parseFloat(currentValue) - increment
-            props.handleChange(currentValue.toFixed(props.precision ? props.precision : 1))
-        }
+        if (e.movementX < 0 && (currentValue <= props.maxValue || !props.maxValue))
+            currentValue = parseFloat((currentValue + increment).toFixed(props.precision ? props.precision : 1))
+        else if (currentValue >= props.minValue || !props.minValue)
+            currentValue = parseFloat((currentValue - increment).toFixed(props.precision ? props.precision : 1))
+
         if (props.integer)
             currentValue = parseInt(Math.round(currentValue))
+
+
         if (currentValue > props.maxValue && props.maxValue !== undefined)
             currentValue = props.maxValue
         else if (currentValue < props.minValue && props.minValue !== undefined)
             currentValue = props.minValue
 
+        props.handleChange(currentValue)
     }
     const ref = useRef()
 
