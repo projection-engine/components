@@ -17,6 +17,7 @@ import SkylightComponent from "../../services/engine/ecs/components/SkyLightComp
 import SphericalCamera from "../../services/engine/utils/camera/prespective/SphericalCamera";
 import {handleGrab} from "./utils";
 import CubeMapInstance from "../../services/engine/instances/CubeMapInstance";
+import GIZMOS from "../../services/engine/utils/misc/GIZMOS";
 
 
 export default function ViewportOptions(props) {
@@ -376,6 +377,39 @@ export default function ViewportOptions(props) {
                     </div>
                 </div>
             </div>
+            <div className={styles.floating} style={{left: '4px', right: 'unset', top: 'calc(50% - 35px)', transform: 'translateY(-50%)'}}>
+                <div className={styles.buttonGroup} style={{display: 'grid'}}>
+                    <Button
+                        className={styles.groupItemVert}
+                        variant={settingsContext.gizmo === GIZMOS.TRANSLATION ? 'filled' : undefined}
+                            styles={{borderRadius: '5px 5px 0  0'}}
+                        highlight={settingsContext.gizmo === GIZMOS.TRANSLATION}
+                            onClick={() => {
+                                settingsContext.gizmo = GIZMOS.TRANSLATION
+                            }}>
+                        <span className={'material-icons-round'}>open_with</span>
+                    </Button>
+                    <Button
+                        className={styles.groupItemVert}
+                        variant={settingsContext.gizmo === GIZMOS.ROTATION ? 'filled' : undefined}
+                        highlight={settingsContext.gizmo === GIZMOS.ROTATION}
+                            onClick={() => {
+                                settingsContext.gizmo = GIZMOS.ROTATION
+                            }}>
+                        <span className={'material-icons-round'}>cached</span>
+                    </Button>
+                    <Button
+                        className={styles.groupItemVert}
+                        variant={settingsContext.gizmo === GIZMOS.SCALE ? 'filled' : undefined}
+                        styles={{borderRadius: '0 0 5px 5px'}}
+                        highlight={settingsContext.gizmo === GIZMOS.SCALE}
+                        onClick={() => {
+                            settingsContext.gizmo = GIZMOS.SCALE
+                        }}>
+                        <span className={'material-icons-round'}>transform</span>
+                    </Button>
+                </div>
+            </div>
             <div className={styles.floating}>
                 <div className={styles.cameraView}>
                     <div className={styles.cube} id={props.id + '-camera'}>
@@ -386,8 +420,7 @@ export default function ViewportOptions(props) {
                                     lastCamera.perspective = settingsContext.cameraType
                                     settingsContext.cameraType = CAMERA_TYPES.FRONT
                                     setCameraIsOrthographic(true)
-                                }
-                                else {
+                                } else {
                                     settingsContext.cameraType = lastCamera.perspective
                                     setCameraIsOrthographic(false)
                                     lastCamera.ortho = settingsContext.cameraType
@@ -402,71 +435,71 @@ export default function ViewportOptions(props) {
                                      lastCamera.perspective = settingsContext.cameraType
                                      settingsContext.cameraType = CAMERA_TYPES.BACK
                                      setCameraIsOrthographic(true)
-                                 }
-                                 else {
+                                 } else {
                                      settingsContext.cameraType = lastCamera.perspective
                                      setCameraIsOrthographic(false)
                                      lastCamera.ortho = settingsContext.cameraType
                                  }
                              }}
                         >
-                            Back</div>
+                            Back
+                        </div>
                         <div className={[styles.face, styles.right].join(' ')}
                              onClick={() => {
                                  if (!cameraIsOrthographic) {
                                      lastCamera.perspective = settingsContext.cameraType
                                      settingsContext.cameraType = CAMERA_TYPES.RIGHT
                                      setCameraIsOrthographic(true)
-                                 }
-                                 else {
+                                 } else {
                                      settingsContext.cameraType = lastCamera.perspective
                                      setCameraIsOrthographic(false)
                                      lastCamera.ortho = settingsContext.cameraType
                                  }
                              }}
-                        >Right</div>
+                        >Right
+                        </div>
                         <div className={[styles.face, styles.left].join(' ')}
                              onClick={() => {
                                  if (!cameraIsOrthographic) {
                                      lastCamera.perspective = settingsContext.cameraType
                                      settingsContext.cameraType = CAMERA_TYPES.LEFT
                                      setCameraIsOrthographic(true)
-                                 }
-                                 else {
+                                 } else {
                                      settingsContext.cameraType = lastCamera.perspective
                                      setCameraIsOrthographic(false)
                                      lastCamera.ortho = settingsContext.cameraType
                                  }
                              }}
-                        >Left</div>
+                        >Left
+                        </div>
                         <div className={[styles.face, styles.top].join(' ')}
                              onClick={() => {
-                            if (!cameraIsOrthographic) {
-                                lastCamera.perspective = settingsContext.cameraType
-                                settingsContext.cameraType = CAMERA_TYPES.TOP
-                                setCameraIsOrthographic(true)
-                            }
-                            else {
-                                settingsContext.cameraType = lastCamera.perspective
-                                setCameraIsOrthographic(false)
-                                lastCamera.ortho = settingsContext.cameraType
-                            }
-                        }}
-                        >Top</div>
+                                 if (!cameraIsOrthographic) {
+                                     lastCamera.perspective = settingsContext.cameraType
+                                     settingsContext.cameraType = CAMERA_TYPES.TOP
+                                     setCameraIsOrthographic(true)
+                                 } else {
+                                     settingsContext.cameraType = lastCamera.perspective
+                                     setCameraIsOrthographic(false)
+                                     lastCamera.ortho = settingsContext.cameraType
+                                 }
+                             }}
+                        >Top
+                        </div>
                         <div className={[styles.face, styles.bottom].join(' ')}
                              onClick={() => {
-                            if (!cameraIsOrthographic) {
-                                lastCamera.perspective = settingsContext.cameraType
-                                settingsContext.cameraType = CAMERA_TYPES.BOTTOM
-                                setCameraIsOrthographic(true)
-                            }
-                            else {
-                                settingsContext.cameraType = lastCamera.perspective
-                                setCameraIsOrthographic(false)
-                                lastCamera.ortho = settingsContext.cameraType
-                            }
-                        }}
-                        >Bottom</div>
+                                 if (!cameraIsOrthographic) {
+                                     lastCamera.perspective = settingsContext.cameraType
+                                     settingsContext.cameraType = CAMERA_TYPES.BOTTOM
+                                     setCameraIsOrthographic(true)
+                                 } else {
+                                     settingsContext.cameraType = lastCamera.perspective
+                                     setCameraIsOrthographic(false)
+                                     lastCamera.ortho = settingsContext.cameraType
+                                 }
+                             }}
+                        >Bottom
+                        </div>
                     </div>
                 </div>
 

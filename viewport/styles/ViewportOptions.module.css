@@ -254,3 +254,24 @@
 
     transition: 150ms linear;
 }
+
+
+.groupItemVert {
+    --colorToApply: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+    backdrop-filter: blur(20px) brightness(.5);
+
+    height: 32px;
+    width: 32px;
+
+    padding: 0 !important;
+    border-radius: 0;
+    border: var(--fabric-border-primary) 1px solid;
+}
+.groupItemVert > *{
+    font-size: 1.1rem !important;
+}
