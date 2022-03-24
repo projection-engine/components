@@ -18,6 +18,7 @@ import SphericalCamera from "../../services/engine/utils/camera/prespective/Sphe
 import {handleGrab} from "./utils";
 import CubeMapInstance from "../../services/engine/instances/CubeMapInstance";
 import GIZMOS from "../../services/engine/utils/misc/GIZMOS";
+import RENDERING_TYPES from "../../services/engine/utils/misc/RENDERING_TYPES";
 
 
 export default function ViewportOptions(props) {
@@ -30,7 +31,7 @@ export default function ViewportOptions(props) {
         ortho: CAMERA_TYPES.FRONT,
         perspective: CAMERA_TYPES.SPHERICAL
     })
-
+    console.log(lastCamera)
     const handleFullscreen = () => {
         if (!document.fullscreenElement)
             setFullscreen(false)
@@ -87,6 +88,7 @@ export default function ViewportOptions(props) {
             })
     }, [settingsContext.cameraType, props.engine, lastCamera, cameraIsOrthographic])
 
+    console.log(settingsContext.typeRendering)
     return (
         <>
             <div className={styles.options} style={{display: fullscreen ? 'none' : undefined}} draggable={false}>
@@ -173,10 +175,25 @@ export default function ViewportOptions(props) {
                             <DropdownOption option={{
                                 label: 'Anti-aliasing',
                                 keepAlive: true,
-                                icon: settingsContext.fxaa ? <span style={{fontSize: '1.2rem'}}
+                                icon: settingsContext.typeRendering === RENDERING_TYPES.FXAA ? <span style={{fontSize: '1.2rem'}}
                                                                    className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => settingsContext.fxaa = !settingsContext.fxaa,
+                                onClick: () => settingsContext.typeRendering = RENDERING_TYPES.FXAA,
                             }}/>
+                            <DropdownOption option={{
+                                label: 'AMD FSR',
+                                keepAlive: true,
+                                icon: settingsContext.typeRendering === RENDERING_TYPES.FSR ? <span style={{fontSize: '1.2rem'}}
+                                                                   className={'material-icons-round'}>check</span> : undefined,
+                                onClick: () => settingsContext.typeRendering = RENDERING_TYPES.FSR,
+                            }}/>
+                            <DropdownOption option={{
+                                label: 'Default',
+                                keepAlive: true,
+                                icon: settingsContext.typeRendering === RENDERING_TYPES.DEFAULT ? <span style={{fontSize: '1.2rem'}}
+                                                                                                    className={'material-icons-round'}>check</span> : undefined,
+                                onClick: () => settingsContext.typeRendering = RENDERING_TYPES.DEFAULT,
+                            }}/>
+                            <div className={styles.divider}/>
                             <DropdownOption option={{
                                 label: 'Grid',
                                 keepAlive: true,
@@ -281,7 +298,7 @@ export default function ViewportOptions(props) {
                 </div>
                 <div className={styles.align}>
                     <Dropdown
-                        disabled={true}
+
                         className={[styles.optionWrapper, styles.highlighted].join(' ')}>
                         <div className={styles.summary}>
                           <span style={{fontSize: '1.1rem'}}
