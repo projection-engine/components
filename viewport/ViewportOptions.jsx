@@ -19,6 +19,8 @@ import {handleGrab} from "./utils";
 import CubeMapInstance from "../../services/engine/instances/CubeMapInstance";
 import GIZMOS from "../../services/engine/utils/misc/GIZMOS";
 import RENDERING_TYPES from "../../services/engine/utils/misc/RENDERING_TYPES";
+import TransformComponent from "../../services/engine/ecs/components/TransformComponent";
+import PickComponent from "../../services/engine/ecs/components/PickComponent";
 
 
 export default function ViewportOptions(props) {
@@ -31,7 +33,6 @@ export default function ViewportOptions(props) {
         ortho: CAMERA_TYPES.FRONT,
         perspective: CAMERA_TYPES.SPHERICAL
     })
-    console.log(lastCamera)
     const handleFullscreen = () => {
         if (!document.fullscreenElement)
             setFullscreen(false)
@@ -88,7 +89,6 @@ export default function ViewportOptions(props) {
             })
     }, [settingsContext.cameraType, props.engine, lastCamera, cameraIsOrthographic])
 
-    console.log(settingsContext.typeRendering)
     return (
         <>
             <div className={styles.options} style={{display: fullscreen ? 'none' : undefined}} draggable={false}>
@@ -226,6 +226,14 @@ export default function ViewportOptions(props) {
                                 onClick: () => {
                                     const actor = new Entity(undefined, 'Point light')
                                     actor.components.PointLightComponent = new PointLightComponent()
+                                    actor.components.TransformComponent = new TransformComponent()
+
+                                    actor.components.TransformComponent.lockedRotation = true
+                                    actor.components.TransformComponent.lockedScaling = true
+
+                                    console.log(actor.components.TransformComponent)
+                                    actor.components.PickComponent = new PickComponent(undefined, props.engine.entities.length)
+
                                     props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                                 }
                             }}/>
@@ -269,7 +277,6 @@ export default function ViewportOptions(props) {
                                 <div className={styles.divider}/>
                             </div>
                             <DropdownOption option={{
-
                                 label: 'Skybox',
                                 icon: <span className={'material-icons-round'}
                                             style={{fontSize: '1.1rem'}}>cloud</span>,
@@ -288,6 +295,13 @@ export default function ViewportOptions(props) {
                                     const actor = new Entity(undefined, 'Cubemap')
                                     actor.components.CubeMapComponent = new CubeMapComponent()
                                     actor.components.CubeMapComponent.cubeMap = new CubeMapInstance(props.engine.gpu, actor.components.CubeMapComponent.resolution)
+
+                                    actor.components.TransformComponent = new TransformComponent()
+                                    actor.components.TransformComponent.lockedRotation = true
+                                    actor.components.TransformComponent.lockedScaling = true
+
+                                    actor.components.PickComponent = new PickComponent(undefined, props.engine.entities.length)
+
                                     props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                                 }
                             }}/>

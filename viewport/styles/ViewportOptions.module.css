@@ -127,13 +127,6 @@
 
 }
 
-.cube.show-front  { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY(   0deg); }
-.cube.show-right  { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY( -90deg); }
-.cube.show-back   { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY(-180deg); }
-.cube.show-left   { transform: translateZ(calc(var(--cubeSize) * -1)) rotateY(  90deg); }
-.cube.show-bottom    { transform: translateZ(calc(var(--cubeSize) * -1)) rotateX( -90deg); }
-.cube.show-top { transform: translateZ(calc(var(--cubeSize) * -1)) rotateX(  90deg); }
-
 .face {
 
     position: absolute;
@@ -208,11 +201,6 @@
     height: 15px;
     border-radius: 50%;
 
-}
-.wireframeIcon{
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
 }
 
 .flatIcon{

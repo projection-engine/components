@@ -144,16 +144,6 @@
     max-width: 100%;
 }
 
-.indicator {
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    background-color: var(--fabric-accent-color);
-    position: absolute;
-    left: 4px;
-
-}
-
 .hoveredNode {
     opacity: .5;
     outline: var(--fabric-accent-color) 1px dashed;
