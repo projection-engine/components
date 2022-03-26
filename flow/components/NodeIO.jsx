@@ -1,7 +1,7 @@
 import styles from "../styles/Node.module.css";
 import PropTypes from "prop-types";
-import {TYPES} from "../../../views/material/templates/TYPES";
-import {useContext, useEffect, useRef} from "react";
+import {TYPES} from "../TYPES";
+import {useContext, useEffect, useMemo, useRef} from "react";
 import OnDragProvider from "../hooks/DragProvider";
 
 export default function NodeIO(props) {
@@ -42,6 +42,8 @@ export default function NodeIO(props) {
                 return 'Texture sample'
             case TYPES.OBJECT:
                 return 'Object'
+            case TYPES.EXECUTION:
+                return 'Execution loop'
         }
     }
     const onDragContext = useContext(OnDragProvider)
@@ -73,7 +75,9 @@ export default function NodeIO(props) {
             }
         }
     }, [onDragContext.dragType])
-
+    const isExecution = useMemo(() => {
+        return (props.data.accept && props.data.accept.includes(TYPES.EXECUTION)) || props.data.type === TYPES.EXECUTION
+    }, [])
     return (
         <>
             <div ref={infoRef} className={styles.infoWrapper}>
@@ -90,7 +94,7 @@ export default function NodeIO(props) {
             <div className={styles.attribute} ref={wrapperRef}
                  style={{justifyContent: props.type === 'input' ? 'flex-start' : 'flex-end'}}>
 
-                {props.type === 'output' ? (
+                {props.type === 'output' && !isExecution? (
                     <div data-disabled={`${props.data.disabled}`} className={styles.overflow}
                          style={{color: props.data.color, fontWeight: 'bold'}}>
                         {props.data.label}
@@ -99,7 +103,7 @@ export default function NodeIO(props) {
                 <div
                     data-disabled={`${props.data.disabled}`}
                     id={props.nodeID + props.data.key}
-                    className={styles.connection}
+                    className={isExecution ? styles.executionConnection : styles.connection}
                     draggable={!props.data.disabled}
                     onDragOver={e => {
                         e.preventDefault()
@@ -138,8 +142,11 @@ export default function NodeIO(props) {
 
                         if (props.type === 'output')
                             onDragContext.setDragType(props.data.type)
-                    }}/>
-                {props.type === 'input' ? (
+                    }}>
+                    {isExecution ?
+                        <span className={'material-icons-round'}>navigate_next</span> : null}
+                </div>
+                {props.type === 'input' && !isExecution ? (
                     <div data-disabled={`${props.data.disabled}`} className={styles.overflow}
                          style={{fontWeight: 'normal'}}>
                         {props.data.label}

@@ -62,6 +62,8 @@ export default function Board(props) {
             })
     }
 
+
+
     return (
         <OnDragProvider.Provider value={{setDragType, dragType}}>
             <ContextMenu
@@ -109,23 +111,6 @@ export default function Board(props) {
                             props.setSelected([])
                     }}
                 >
-                    {props.hook.nodes.map(node => (
-                        <React.Fragment key={node.id}>
-                            <Node
-                                links={links}
-                                setAlert={props.setAlert}
-                                setSelected={(i, multi) => {
-                                    if (multi)
-                                        setSelected(i)
-                                    else
-                                        props.setSelected([i])
-                                }}
-                                selected={props.selected}
-                                node={node}
-                                scale={scale}
-                                handleLink={handleLink}/>
-                        </React.Fragment>
-                    ))}
                     {links.map((l, i) => (
                         <g key={l.target + '-' + l.source} className={styles.link}>
 
@@ -143,6 +128,24 @@ export default function Board(props) {
                                 id={l.target + '-' + l.source + '-supplementary'}/>
                         </g>
                     ))}
+                    {props.hook.nodes.map(node => (
+                        <React.Fragment key={node.id}>
+                            <Node
+                                links={links}
+                                setAlert={props.setAlert}
+                                setSelected={(i, multi) => {
+                                    if (multi)
+                                        setSelected(i)
+                                    else
+                                        props.setSelected([i])
+                                }}
+                                selected={props.selected}
+                                node={node}
+                                scale={scale}
+                                handleLink={handleLink}/>
+                        </React.Fragment>
+                    ))}
+
                 </svg>
             </ContextMenu>
         </OnDragProvider.Provider>

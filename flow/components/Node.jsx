@@ -4,9 +4,8 @@ import React, {useEffect, useMemo} from 'react'
 import useNode from "../hooks/useNode";
 import NodeIO from "./NodeIO";
 import NodeShowcase from "./NodeShowcase";
-import NODE_TYPES from "../../../views/material/templates/NODE_TYPES";
-import {TYPES} from "../../../views/material/templates/TYPES";
-import Material from "../../../views/material/nodes/Material";
+import NODE_TYPES from "../NODE_TYPES";
+import {TYPES} from "../TYPES";
 
 export default function Node(props) {
     const selected = useMemo(() => {
@@ -23,6 +22,7 @@ export default function Node(props) {
         inputLinks
     } = useNode(props, selected)
 
+    console.log(props.node)
     useEffect(() => {
         document.addEventListener('mousedown', handleDragStart)
         return () => {
@@ -58,9 +58,7 @@ export default function Node(props) {
         return null
     }, [props.node])
 
-    const canBeDeleted = useMemo(() => {
-        return !(props.node instanceof Material)
-    }, [props.node])
+
 
     return (
         <g>
@@ -69,7 +67,7 @@ export default function Node(props) {
                 transform={`translate(${props.node.x} ${props.node.y})`}
             >
                 <foreignObject
-                    data-node={canBeDeleted ? props.node.id : undefined}
+                    data-node={props.node.canBeDeleted ? props.node.id : undefined}
                     id={props.node.id}
 
                     className={styles.wrapper}

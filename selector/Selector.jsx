@@ -20,6 +20,8 @@ export default function Selector(props) {
                 return quickAccess.materials
             case 'mesh':
                 return quickAccess.meshes
+            case 'script':
+                return quickAccess.scripts
             default:
                 return []
         }
@@ -138,6 +140,13 @@ export default function Selector(props) {
                                 <ToolTip content={'Default material'}/>
                             </Button>
                             : null}
+                        {props.type === 'script' ?
+                            <Button className={styles.resetButton} variant={"outlined"}
+                                    onClick={() => props.handleChange()}>
+                                <span className={'material-icons-round'}>clear</span>
+                                <ToolTip content={'Remove script'}/>
+                            </Button>
+                            : null}
                     </div>
 
                     {content}
@@ -148,7 +157,7 @@ export default function Selector(props) {
 }
 
 Selector.propTypes = {
-    type: PropTypes.oneOf(['image', 'mesh', 'material']),
+    type: PropTypes.oneOf(['image', 'mesh', 'material', 'script']),
     handleChange: PropTypes.func,
     selected: PropTypes.object
 }

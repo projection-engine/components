@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import {useMemo} from "react";
-import {TYPES} from "../../../views/material/templates/TYPES";
+import {TYPES} from "../TYPES";
 import styles from '../styles/Node.module.css'
 
 export default function NodeShowcase(props) {

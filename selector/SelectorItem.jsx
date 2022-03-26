@@ -4,18 +4,22 @@ import {useMemo} from "react";
 
 export default function SelectorItem(props) {
     const icon = useMemo(() => {
-        switch (props.type){
+        switch (props.type) {
             case 'mesh':
-                return   <span className={'material-icons-round'} style={{fontSize: '2rem'}}>view_in_ar</span>
+                return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>view_in_ar</span>
             case 'image':
-                return           props.data.blob ?
-                        <img src={props.data.blob} alt={props.data.name} className={styles.image}/>
-                        :
-                        <span className={'material-icons-round'} style={{fontSize: '2rem'}}>image</span>
+                return props.data.blob ?
+                    <img src={props.data.blob} alt={props.data.name} className={styles.image}/>
+                    :
+                    <span className={'material-icons-round'} style={{fontSize: '2rem'}}>image</span>
 
             case 'material':
-                return   <span className={'material-icons-round'} style={{fontSize: '2rem'}}>texture</span>
+                return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>texture</span>
 
+            case 'script':
+                return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>functions</span>
+            default:
+                return
         }
     }, [props.type, props.data])
 
@@ -29,7 +33,7 @@ export default function SelectorItem(props) {
     )
 }
 SelectorItem.propTypes = {
-    type: PropTypes.oneOf(['image', 'mesh', 'material']),
+    type: PropTypes.oneOf(['image', 'mesh', 'material', 'script']),
     data: PropTypes.shape({
         name: PropTypes.string,
         id: PropTypes.string,

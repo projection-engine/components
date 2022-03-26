@@ -7,7 +7,8 @@ export default function useNode(props, selected) {
 
     const [height, setHeight] = useState()
     useEffect(() => {
-        setHeight(ref.current.firstChild.scrollHeight)
+        const h = ref.current.firstChild.scrollHeight
+        setHeight(h >= 35 ? h : 55)
     }, [])
 
     const handleLinkDrag = (event) => {

@@ -9,6 +9,8 @@
     cursor: pointer;
     position: relative ;
 
+    min-height: 35px;
+
 
 }
 
@@ -25,6 +27,20 @@
     height: 25px;
 
 }
+.executionConnection{
+    width: 20px;
+    height: 20px;
+    background-color: var(--fabric-background-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--fabric-border-primary) 1px solid;
+    transition: 150ms linear;
+    border-radius: 3px;
+}
+.executionConnection > * {
+    font-size: 1rem !important;
+}
 
 .connection {
     width: 15px;
@@ -35,11 +51,15 @@
     border: var(--fabric-border-secondary) 1px solid;
 }
 
-.connection[data-disabled = 'false']:hover {
+
+.connection:hover, .executionConnection:hover{
     border-color: var(--fabric-accent-color);
 }
 
-.connection[data-disabled = 'true']{
+.connection[data-disabled='false'], .executionConnection[data-disabled = 'false']{
+    border-color: initial;
+}
+.connection[data-disabled = 'true'], .executionConnection[data-disabled = 'true']{
     cursor: default !important;
     background-color: var(--fabric-background-primary);
 }
