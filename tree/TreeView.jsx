@@ -74,7 +74,7 @@ export default function TreeView(props) {
         <div data-self={'self'} className={[styles.wrapper, styles.backgroundStripes].join(' ')}>
             {props.searchable ? <Search width={'100%'} size={'default'} searchString={searchString} setSearchString={setSearchString}/> : undefined}
 
-            {props.onMultiSelect && Array.isArray(props.selected)? <SelectBox setSelected={props.onMultiSelect} selected={props.selected} nodes={props.ids} />: null}
+            {props.onMultiSelect && Array.isArray(props.selected) && props.multiSelect? <SelectBox setSelected={props.onMultiSelect} selected={props.selected} nodes={props.ids} />: null}
             {props.options && props.options.length > 0 ?
                 <ContextMenu
                     className={styles.content}
