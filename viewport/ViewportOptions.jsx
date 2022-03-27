@@ -5,20 +5,20 @@ import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/
 import Range from "../range/Range";
 import SettingsProvider from "../../services/hooks/SettingsProvider";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
-import CAMERA_TYPES from "../../services/engine/utils/camera/CAMERA_TYPES";
+import CAMERA_TYPES from "../../services/engine/templates/CAMERA_TYPES";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
 import PointLightComponent from "../../services/engine/ecs/components/PointLightComponent";
 import DirectionalLightComponent from "../../services/engine/ecs/components/DirectionalLightComponent";
 import SkyboxComponent from "../../services/engine/ecs/components/SkyboxComponent";
 import CubeMapComponent from "../../services/engine/ecs/components/CubeMapComponent";
-import ROTATION_TYPES from "../../services/engine/utils/misc/ROTATION_TYPES";
+import ROTATION_TYPES from "../../services/engine/templates/ROTATION_TYPES";
 import SkylightComponent from "../../services/engine/ecs/components/SkyLightComponent";
 import SphericalCamera from "../../services/engine/utils/camera/prespective/SphericalCamera";
 import {handleGrab} from "./utils";
 import CubeMapInstance from "../../services/engine/instances/CubeMapInstance";
-import GIZMOS from "../../services/engine/utils/misc/GIZMOS";
-import RENDERING_TYPES from "../../services/engine/utils/misc/RENDERING_TYPES";
+import GIZMOS from "../../services/engine/templates/GIZMOS";
+import RENDERING_TYPES from "../../services/engine/templates/RENDERING_TYPES";
 import TransformComponent from "../../services/engine/ecs/components/TransformComponent";
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
 

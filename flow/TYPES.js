@@ -17,4 +17,6 @@ export const TYPES = {
 
 
     EXECUTION: 11,
+    CONSTANT: 12,
+    BOOL: 14
 }

@@ -10,7 +10,6 @@ import {ContextMenu} from "@f-ui/core";
 import getBoardOptions from "../utils/getBoardOptions";
 import OnDragProvider from "../hooks/DragProvider";
 import SelectBox from "../../selectbox/SelectBox";
-import QuaternionToEuler from "../../../views/scripting/nodes/QuaternionToEuler";
 
 
 export default function Board(props) {

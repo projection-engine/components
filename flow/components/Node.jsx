@@ -22,7 +22,7 @@ export default function Node(props) {
         inputLinks
     } = useNode(props, selected)
 
-    console.log(props.node)
+
     useEffect(() => {
         document.addEventListener('mousedown', handleDragStart)
         return () => {
