@@ -1,8 +1,11 @@
 import {useEffect, useMemo, useRef, useState} from "react";
 import getBezierCurve from "../utils/bezierCurve";
+import {TYPES} from "../TYPES";
+import NODE_TYPES from "../NODE_TYPES";
+import TYPES_INFO from "../TYPES_INFO";
 
 
-export default function useBoard(hook, setAlert, parentRef) {
+export default function useBoard(hook) {
 
     const [scale, setScale] = useState(1)
 
@@ -44,11 +47,16 @@ export default function useBoard(hook, setAlert, parentRef) {
     }
     const links = useMemo(() => {
         return hook.links.map(l => {
+            let key = (Object.entries(TYPES).find(([_, value]) => value === l.source.attribute.type))
+            if (key)
+                key = key[0]
+
             return {
                 target: l.target.id + l.target.attribute.key,
                 source: l.source.id + l.source.attribute.key,
                 targetKey: l.target.attribute.key,
-                sourceKey: l.source.attribute.key
+                sourceKey: l.source.attribute.key,
+                color: TYPES_INFO[key]
             }
         })
     }, [hook.links])

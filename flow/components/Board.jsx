@@ -116,7 +116,7 @@ export default function Board(props) {
                             <path
                                 data-link={l.target + '-' + l.source}
                                 fill={'none'}
-                                stroke={'var(--fabric-accent-color)'}
+                                stroke={ l.color}
                                 id={l.target + '-' + l.source}/>
                             <path
                                 data-link={l.target + '-' + l.source}

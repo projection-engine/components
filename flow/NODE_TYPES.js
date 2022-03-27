@@ -4,5 +4,6 @@ export default {
     FUNCTION: 2,
 
     VOID_FUNCTION: 3,
-    TICK: 3
+    TICK: 4,
+    VARIABLE: 5
 }

@@ -12,7 +12,7 @@ export default function NodeIO(props) {
         const data = JSON.parse(e.dataTransfer.getData('text'))
         e.currentTarget.style.background = 'var(--fabric-background-primary)'
 
-        if (data.type === 'output' && props.data.accept.includes(data.attribute.type))
+        if (data.type === 'output' && (props.data.accept.includes(data.attribute.type) ||props.data.accept.includes(TYPES.ANY)))
             props.handleLink(data, {
                 attribute: props.data,
                 id: props.nodeID
@@ -56,7 +56,7 @@ export default function NodeIO(props) {
             infoRef.current.style.display = 'grid'
             infoRef.current.style.top = wrapperRef.current.offsetTop + 'px'
             infoRef.current.style.left = (e.clientX - bBox.x) + 'px'
-            infoRef.current.style.borderLeft = props.data.accept.includes(onDragContext.dragType) ? 'green 2px solid' : 'red 2px solid'
+            infoRef.current.style.borderLeft = props.data.accept.includes(onDragContext.dragType) || props.data.accept.includes(TYPES.ANY) ? 'green 2px solid' : 'red 2px solid'
         } else
             infoRef.current.style.display = 'none'
     }
@@ -78,14 +78,25 @@ export default function NodeIO(props) {
     const isExecution = useMemo(() => {
         return (props.data.accept && props.data.accept.includes(TYPES.EXECUTION)) || props.data.type === TYPES.EXECUTION
     }, [])
+
+    const linkColor = useMemo(() => {
+        if(props.type === 'input'){
+
+            return props.inputLinks.find(o => o.targetKey === props.data.key)?.color
+        }
+        else{
+            return props.outputLinks.find(o => o.sourceKey === props.data.key)?.color
+        }
+    }, [props.inputLinks, props.outputLinks])
+
     return (
         <>
             <div ref={infoRef} className={styles.infoWrapper}>
                 {props.data.accept?.map((a, i) => (
                     <div className={styles.ioKey} key={i + '-key-' + a}>
-                        <div className={styles.iconWrapper} data-valid={`${onDragContext.dragType === a}`}>
+                        <div className={styles.iconWrapper} data-valid={`${onDragContext.dragType === a|| a === TYPES.ANY}`}>
                                 <span style={{fontSize: '.8rem'}}
-                                      className={'material-icons-round'}>{onDragContext.dragType === a ? 'check' : 'close'}</span>
+                                      className={'material-icons-round'}>{onDragContext.dragType === a || a === TYPES.ANY? 'check' : 'close'}</span>
                         </div>
                         {getType(a)}
                     </div>
@@ -107,10 +118,10 @@ export default function NodeIO(props) {
                     draggable={!props.data.disabled}
                     onDragOver={e => {
                         e.preventDefault()
-                        if (!props.links.includes(props.data.key))
+                        if (!props.inputLinks.find(d => d.key === props.data.key))
                             e.currentTarget.style.background = 'var(--fabric-accent-color)'
                     }}
-                    style={{background: props.links.includes(props.data.key) && !props.data.disabled ? 'var(--fabric-accent-color' : undefined}}
+                    style={{'--fabric-accent-color': isExecution ? '#0095ff' : '#999999', background: linkColor && !props.data.disabled ? linkColor : undefined}}
                     onDrop={e => {
                         onDragContext.setDragType(undefined)
                         if (props.type === 'input')
@@ -125,7 +136,7 @@ export default function NodeIO(props) {
                     onDragEnd={props.onDragEnd}
                     onDragLeave={e => {
                         e.preventDefault()
-                        if (!props.links.includes(props.data.key))
+                        if (!props.inputLinks.includes(props.data.key))
                             e.currentTarget.style.background = 'var(--fabric-background-primary)'
                     }}
                     onDrag={props.handleLinkDrag}
@@ -173,5 +184,6 @@ NodeIO.propTypes = {
         accept: PropTypes.arrayOf(PropTypes.number),
         color: PropTypes.string
     }).isRequired,
-    links: PropTypes.arrayOf(PropTypes.string).isRequired
+    inputLinks: PropTypes.arrayOf(PropTypes.string).isRequired,
+    outputLinks: PropTypes.arrayOf(PropTypes.string).isRequired
 }

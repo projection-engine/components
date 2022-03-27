@@ -121,13 +121,14 @@ export default function useNode(props, selected) {
     const outputLinks = useMemo(() => {
         return props.links.filter(l => {
             return l.source.includes(props.node.id)
-        }).map(l => l.sourceKey)
+        })
     }, [props.links])
 
     const inputLinks = useMemo(() => {
+
         return props.links.filter(l => {
             return l.target.includes(props.node.id)
-        }).map(l => l.targetKey)
+        })
     }, [props.links])
 
     return {
