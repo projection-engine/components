@@ -184,6 +184,6 @@ NodeIO.propTypes = {
         accept: PropTypes.arrayOf(PropTypes.number),
         color: PropTypes.string
     }).isRequired,
-    inputLinks: PropTypes.arrayOf(PropTypes.string).isRequired,
-    outputLinks: PropTypes.arrayOf(PropTypes.string).isRequired
+    inputLinks: PropTypes.arrayOf(PropTypes.object).isRequired,
+    outputLinks: PropTypes.arrayOf(PropTypes.object).isRequired
 }

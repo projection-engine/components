@@ -139,6 +139,6 @@ Node.propTypes = {
     node: PropTypes.object.isRequired,
     scale: PropTypes.number,
     handleLink: PropTypes.func,
-    selected: PropTypes.string,
+    selected: PropTypes.array,
     setSelected: PropTypes.func,
 }
