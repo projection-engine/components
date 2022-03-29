@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from './styles/Resizable.module.css'
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 
 export default function ResizableBar(props) {
     const ref = useRef()
@@ -41,6 +41,22 @@ export default function ResizableBar(props) {
         }
     }
 
+    useEffect(() => {
+        const initialW1 = ref.current.previousSibling.style.width,initialW2 = ref.current.nextSibling.style.width,
+            initialH1 = ref.current.previousSibling.style.height,initialH2  =ref.current.nextSibling.style.height
+        const r = new ResizeObserver(() => {
+            if(props.type === 'width') {
+                ref.current.previousSibling.style.width = initialW1
+                ref.current.nextSibling.style.width = initialW2
+            }
+
+            else {
+                ref.current.previousSibling.style.height = initialH1
+                ref.current.nextSibling.style.height = initialH2
+            }
+        })
+        r.observe(document.body)
+    }, [])
     return (
         <div
             onMouseDown={handleMouseDown}

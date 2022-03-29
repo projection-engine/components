@@ -5,6 +5,10 @@ import {useContext, useEffect, useMemo, useRef} from "react";
 import OnDragProvider from "../hooks/DragProvider";
 
 export default function NodeIO(props) {
+    const isExecution = useMemo(() => {
+        return (props.data.accept && props.data.accept.includes(TYPES.EXECUTION)) || props.data.type === TYPES.EXECUTION
+    }, [])
+
     const infoRef = useRef()
     const wrapperRef = useRef()
     const asInput = (e) => {
@@ -16,7 +20,7 @@ export default function NodeIO(props) {
             props.handleLink(data, {
                 attribute: props.data,
                 id: props.nodeID
-            })
+            }, isExecution)
         else if (data.type !== 'output')
             props.setAlert({
                 type: 'error',
@@ -75,19 +79,15 @@ export default function NodeIO(props) {
             }
         }
     }, [onDragContext.dragType])
-    const isExecution = useMemo(() => {
-        return (props.data.accept && props.data.accept.includes(TYPES.EXECUTION)) || props.data.type === TYPES.EXECUTION
-    }, [])
 
     const linkColor = useMemo(() => {
-        if(props.type === 'input'){
-
+        if(props.type === 'input')
             return props.inputLinks.find(o => o.targetKey === props.data.key)?.color
-        }
-        else{
+        else
             return props.outputLinks.find(o => o.sourceKey === props.data.key)?.color
-        }
+
     }, [props.inputLinks, props.outputLinks])
+
 
     return (
         <>
@@ -115,12 +115,8 @@ export default function NodeIO(props) {
                     data-disabled={`${props.data.disabled}`}
                     id={props.nodeID + props.data.key}
                     className={isExecution ? styles.executionConnection : styles.connection}
-                    draggable={!props.data.disabled}
-                    onDragOver={e => {
-                        e.preventDefault()
-                        if (!props.inputLinks.find(d => d.key === props.data.key))
-                            e.currentTarget.style.background = 'var(--fabric-accent-color)'
-                    }}
+                    draggable={!props.data.disabled && props.type !== 'input'}
+
                     style={{'--fabric-accent-color': isExecution ? '#0095ff' : '#999999', background: linkColor && !props.data.disabled ? linkColor : undefined}}
                     onDrop={e => {
                         onDragContext.setDragType(undefined)
@@ -131,28 +127,27 @@ export default function NodeIO(props) {
                                 type: 'error',
                                 message: 'Can\'t link with output.'
                             })
-
                     }}
                     onDragEnd={props.onDragEnd}
-                    onDragLeave={e => {
-                        e.preventDefault()
-                        if (!props.inputLinks.includes(props.data.key))
-                            e.currentTarget.style.background = 'var(--fabric-background-primary)'
-                    }}
+
                     onDrag={props.handleLinkDrag}
                     onDragStart={e => {
-                        e.dataTransfer
-                            .setData(
-                                'text',
-                                JSON.stringify({
-                                    id: props.nodeID,
-                                    type: props.type,
-                                    attribute: props.data
-                                })
-                            )
+                        if (props.type !== 'input') {
+                            e.dataTransfer
+                                .setData(
+                                    'text',
+                                    JSON.stringify({
+                                        id: props.nodeID,
+                                        type: props.type,
+                                        attribute: props.data
+                                    })
+                                )
 
-                        if (props.type === 'output')
+
                             onDragContext.setDragType(props.data.type)
+                        }
+                        else
+                            e.preventDefault()
                     }}>
                     {isExecution ?
                         <span className={'material-icons-round'}>navigate_next</span> : null}

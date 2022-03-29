@@ -5,10 +5,7 @@ import NODE_TYPES from "../NODE_TYPES";
 import TYPES_INFO from "../TYPES_INFO";
 
 
-export default function useBoard(hook) {
-
-    const [scale, setScale] = useState(1)
-
+export default function useBoard(hook, scale, setScale){
     const ref = useRef()
 
     const handleWheel = (e) => {
@@ -28,20 +25,22 @@ export default function useBoard(hook) {
     }, [scale])
 
 
-    const handleLink = (src, target) => {
+    const handleLink = (src, target, isExecution) => {
         hook.setLinks(prev => {
-            const c = [...prev]
-            const existing = c.findIndex(c => c.target.id === target.id && c.target.attribute.key === target.attribute.key)
+            let c = [...prev]
 
-            if (existing > -1)
-                c.splice(existing, 1)
+            const existing = c.filter(c => ( c.target.id === target.id && c.target.attribute.key === target.attribute.key) || (isExecution && c.source.id === src.id && c.source.attribute.key === src.attribute.key))
+
+
+            c =  c.filter(cc => {
+                return !existing.find(e => e === cc)
+            })
+
 
             c.push({
                 source: src,
                 target: target
             })
-
-
             return c
         })
     }
@@ -102,7 +101,7 @@ export default function useBoard(hook) {
         }
     }, [links, scale])
     return {
-        scale,
+
         links,
         ref,
         handleLink

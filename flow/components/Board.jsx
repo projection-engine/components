@@ -10,16 +10,19 @@ import {ContextMenu} from "@f-ui/core";
 import getBoardOptions from "../utils/getBoardOptions";
 import OnDragProvider from "../hooks/DragProvider";
 import SelectBox from "../../selectbox/SelectBox";
-
+import {ContextWrapper} from '@f-ui/core'
+import Context from "./Context";
+import deleteNode, {removeLink} from "../utils/deleteNode";
+import Group from "./Group";
 
 export default function Board(props) {
+    const {scale, setScale} = props
     const {
 
-        scale,
         links,
         ref,
         handleLink
-    } = useBoard(props.hook, props.setAlert, props.parentRef)
+    } = useBoard(props.hook, scale, setScale)
 
     const handleDropNode = (n, e) => {
         const bounding = {
@@ -43,9 +46,8 @@ export default function Board(props) {
     const boardOptions = useMemo(() => {
         return getBoardOptions((n, mouseInfo) => {
             handleDropNode(n, mouseInfo)
-        },props.setSelected,  props.hook, links, props.allNodes)
+        }, props.setSelected, props.hook, links, props.allNodes)
     }, [props.hook.nodes, props.hook.links, links])
-
 
     const [dragType, setDragType] = useState()
     const setSelected = (i) => {
@@ -62,16 +64,33 @@ export default function Board(props) {
     }
 
 
-
     return (
         <OnDragProvider.Provider value={{setDragType, dragType}}>
-            <ContextMenu
+            <ContextWrapper
                 options={boardOptions}
+                wrapperClassName={styles.contextWrapper}
+                content={(s, handleClose) => (
+                    <Context
+                        deleteNode={() => deleteNode(s.getAttribute('data-node'), props.hook, props.setSelected)}
+                        handleClose={handleClose}
+                        scale={scale}
+                        deleteGroup={() => {
+                            const attr = s.getAttribute('data-group')
+                            props.hook.setGroups(prev => prev.filter(pr => pr.id !== attr))
+                        }}
+                        deleteLink={() => removeLink(links.find(l => (l.target + '-' + l.source) === s.getAttribute('data-link')), props.hook)}
+                        availableNodes={props.allNodes}
+                        onSelect={(dataTransfer, mouseInfo) => {
+                            handleDropNode(handleDropBoard(dataTransfer, props.allNodes), mouseInfo)
+                        }}
+                        selected={s}
+                    />
+                )}
                 triggers={[
-
                     'data-node',
                     'data-board',
-                    'data-link'
+                    'data-link',
+                    'data-group'
                 ]}
                 styles={{
                     overflow: 'hidden',
@@ -82,7 +101,7 @@ export default function Board(props) {
                 }}
 
             >
-                <SelectBox nodes={props.hook.nodes} selected={props.selected} setSelected={props.setSelected}/>
+                <SelectBox nodes={[...props.hook.groups,...props.hook.nodes]} selected={props.selected} setSelected={props.setSelected}/>
                 <svg
                     onDragOver={e => e.preventDefault()}
                     style={{
@@ -110,13 +129,35 @@ export default function Board(props) {
                             props.setSelected([])
                     }}
                 >
+                    {props.hook.groups?.map(group => (
+                        <React.Fragment key={group.id}>
+                            <Group
+                                setSelected={(i) => {
+                                    props.setSelected([i])
+                                }}
+                                submitName={newName => {
+                                    props.hook.setGroups(prev => {
+                                        return prev.map(p => {
+                                            if(p.id === group.id)
+                                                p.name = newName
+
+                                            return p
+                                        })
+                                    })
+                                }}
+                                selected={props.selected}
+                                group={group}
+                                scale={scale}
+                            />
+                        </React.Fragment>
+                    ))}
                     {links.map((l, i) => (
                         <g key={l.target + '-' + l.source} className={styles.link}>
 
                             <path
                                 data-link={l.target + '-' + l.source}
                                 fill={'none'}
-                                stroke={ l.color}
+                                stroke={l.color}
                                 id={l.target + '-' + l.source}/>
                             <path
                                 data-link={l.target + '-' + l.source}
@@ -146,7 +187,7 @@ export default function Board(props) {
                     ))}
 
                 </svg>
-            </ContextMenu>
+            </ContextWrapper>
         </OnDragProvider.Provider>
     )
 }

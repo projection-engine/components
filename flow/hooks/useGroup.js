@@ -1,38 +1,9 @@
 import {useEffect, useMemo, useRef, useState} from "react";
 import getBezierCurve from "../utils/bezierCurve";
 
-export default function useNode(props, selected) {
+export default function useGroup(props, selected) {
     const ref = useRef()
     const pathRef = useRef()
-
-    const [height, setHeight] = useState()
-    useEffect(() => {
-        const h = ref.current.firstChild.scrollHeight
-        setHeight(h >= 35 ? h : 55)
-    }, [])
-
-    const handleLinkDrag = (event) => {
-        const parent = ref.current?.parentNode.parentNode
-        const bBox = event.currentTarget.getBoundingClientRect()
-        let parentBBox = parent.getBoundingClientRect()
-        const bounding = {
-            x: parent.scrollLeft - parentBBox.left,
-            y: parent.scrollTop - parentBBox.top
-        }
-
-        const curve = getBezierCurve(
-            {
-                x: (bBox.x + bounding.x + 7.5) / props.scale,
-                y: (bBox.y + bounding.y + 7.5) / props.scale
-            },
-            {
-                x1: (event.clientX + bounding.x + 7.5) / props.scale,
-                y1: (event.clientY + bounding.y + 7.5) / props.scale
-            })
-
-        pathRef.current?.setAttribute('d', curve)
-    }
-
 
     let lastPlacement = {
         x: 0,
@@ -42,13 +13,13 @@ export default function useNode(props, selected) {
         let isFirst, alreadyFound = false
         document.elementsFromPoint(event.clientX, event.clientY)
             .forEach(e => {
-                if (e.id?.includes('-node') && !alreadyFound && e.id === (props.node.id + '-node'))
+                if (e.id?.includes('-node') && !alreadyFound && e.id === (props.group.id + '-node'))
                     isFirst = true
                 else if (e.id?.includes('-node') && !alreadyFound)
                     alreadyFound = true
             })
         if(event.button === 0 && isFirst)
-            props.setSelected(props.node.id, false)
+            props.setSelected(props.group.id, false)
         if (event.button === 0 && ((selected && event.ctrlKey) || isFirst)) {
             const t = ref.current.firstChild
 
@@ -118,27 +89,12 @@ export default function useNode(props, selected) {
 
     }
 
-    const outputLinks = useMemo(() => {
-        return props.links.filter(l => {
-            return l.source.includes(props.node.id)
-        })
-    }, [props.links])
 
-    const inputLinks = useMemo(() => {
-
-        return props.links.filter(l => {
-            return l.target.includes(props.node.id)
-        })
-    }, [props.links])
 
     return {
-        outputLinks,
-        inputLinks,
-
+        selected,
         ref,
-        handleDragStart,
-        handleLinkDrag,
-        height,
-        pathRef
+        pathRef,
+        handleDragStart
     }
 }

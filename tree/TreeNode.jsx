@@ -35,7 +35,7 @@ export default function TreeNode(props) {
         }
     }, [selected])
     const padding = useMemo(() => {
-        return (parseInt(props.index) * (props.node.children.length === 0 ? 30 : 25))
+        return (parseInt(props.index) * (props.node.children?.length === 0 ? 30 : 25))
     }, [props.index, props.node.children])
 
     return (
