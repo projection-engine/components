@@ -8,7 +8,7 @@
     outline: transparent 2px solid;
     cursor: pointer;
     position: relative ;
-    overflow: visible;
+    overflow: hidden;
     min-height: 35px;
 
 

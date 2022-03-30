@@ -36,7 +36,7 @@ export default function createGroupShortcut(hook) {
 
         })
 
-    console.log(biggestX, smallestX, width)
+
     width = 8 + (biggestX - smallestX)
     height = 40 + (biggestY - smallestY)
 
@@ -52,6 +52,7 @@ export default function createGroupShortcut(hook) {
             id: randomID(),
             x: smallestX,
             y: smallestY,
+            color: [150, 150, 150, .5],
             width,
             height
         }]

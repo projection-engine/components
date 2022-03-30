@@ -24,7 +24,7 @@ export default function ColorPicker(props) {
 
     return (
 
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} style={{...{    height: '35px'}, ...props.styles}}>
             <Modal
                 blurIntensity={0}
                 variant={'fit'}
@@ -104,7 +104,8 @@ export default function ColorPicker(props) {
             </Modal>
 
             {props.label ? <div className={styles.label}>{props.label}</div> : null}
-            <Button className={styles.placeholder} styles={{background: `rgb(${value.r},${value.g},${value.b})`}}
+            <Button className={styles.placeholder}
+                    styles={{...{    height: '35px', background: `rgb(${value.r},${value.g},${value.b})`}, ...props.styles}}
                     onClick={() => setOpen(true)}>
                 <ToolTip content={`rgb(${value.r},${value.g},${value.b})`}/>
             </Button>
@@ -116,5 +117,6 @@ export default function ColorPicker(props) {
 ColorPicker.propTypes = {
     label: PropTypes.string,
     submit: PropTypes.func.isRequired,
-    value: PropTypes.string
+    value: PropTypes.string,
+    styles: PropTypes.object
 }

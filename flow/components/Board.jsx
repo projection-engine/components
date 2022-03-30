@@ -6,11 +6,10 @@ import handleDropBoard from "../utils/handleDropBoard";
 
 import handleBoardScroll from "../utils/handleBoardScroll";
 import useBoard from "../hooks/useBoard";
-import {ContextMenu} from "@f-ui/core";
+import {ContextWrapper} from "@f-ui/core";
 import getBoardOptions from "../utils/getBoardOptions";
 import OnDragProvider from "../hooks/DragProvider";
 import SelectBox from "../../selectbox/SelectBox";
-import {ContextWrapper} from '@f-ui/core'
 import Context from "./Context";
 import deleteNode, {removeLink} from "../utils/deleteNode";
 import Group from "./Group";
@@ -92,16 +91,13 @@ export default function Board(props) {
                     'data-link',
                     'data-group'
                 ]}
-                styles={{
-                    overflow: 'hidden',
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: '5px',
-                    position: 'relative'
-                }}
+                className={styles.context}
+
 
             >
-                <SelectBox nodes={[...props.hook.groups,...props.hook.nodes]} selected={props.selected} setSelected={props.setSelected}/>
+
+                <SelectBox nodes={[...props.hook.groups, ...props.hook.nodes]} selected={props.selected}
+                           setSelected={props.setSelected}/>
                 <svg
                     onDragOver={e => e.preventDefault()}
                     style={{
@@ -129,6 +125,7 @@ export default function Board(props) {
                             props.setSelected([])
                     }}
                 >
+
                     {props.hook.groups?.map(group => (
                         <React.Fragment key={group.id}>
                             <Group
@@ -138,7 +135,7 @@ export default function Board(props) {
                                 submitName={newName => {
                                     props.hook.setGroups(prev => {
                                         return prev.map(p => {
-                                            if(p.id === group.id)
+                                            if (p.id === group.id)
                                                 p.name = newName
 
                                             return p

@@ -45,14 +45,14 @@ export default function ResizableBar(props) {
         const initialW1 = ref.current.previousSibling.style.width,initialW2 = ref.current.nextSibling.style.width,
             initialH1 = ref.current.previousSibling.style.height,initialH2  =ref.current.nextSibling.style.height
         const r = new ResizeObserver(() => {
-            if(props.type === 'width') {
-                ref.current.previousSibling.style.width = initialW1
-                ref.current.nextSibling.style.width = initialW2
-            }
-
-            else {
-                ref.current.previousSibling.style.height = initialH1
-                ref.current.nextSibling.style.height = initialH2
+            if(ref.current) {
+                if (props.type === 'width') {
+                    ref.current.previousSibling.style.width = initialW1
+                    ref.current.nextSibling.style.width = initialW2
+                } else {
+                    ref.current.previousSibling.style.height = initialH1
+                    ref.current.nextSibling.style.height = initialH2
+                }
             }
         })
         r.observe(document.body)

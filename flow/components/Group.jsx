@@ -36,8 +36,9 @@ export default function Group(props) {
                     id={props.group.id}
 
                     className={styles.wrapper}
-
+data-seleted={`${selected}`}
                     style={{
+                        background:props.group.color? `rgba(${props.group.color.join(', ')})` : 'rgba(150, 150, 150, .5)',
                         width: props.group.width + 'px',
                         height: props.group.height + 'px'
                     }}>

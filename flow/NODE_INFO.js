@@ -20,14 +20,20 @@ export default {
         LABEL: 'Void Function',
         ICON: 'functions'
     },
-    TICK: {
-        COLOR: '#0095ff',
-        LABEL: 'Input',
-        ICON: 'commit'
-    },
+
     VARIABLE: {
         COLOR: '#62D714',
         LABEL: 'Variable',
         ICON: 'settings'
-    }
+    },
+    START_POINT: {
+        COLOR: 'red',
+        LABEL: 'Starting point',
+        ICON: 'output'
+    },
+    BRANCH:  {
+        COLOR: 'white',
+        LABEL: 'Branch',
+        ICON: 'fork_right'
+    },
 }

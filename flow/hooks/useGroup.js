@@ -1,5 +1,4 @@
-import {useEffect, useMemo, useRef, useState} from "react";
-import getBezierCurve from "../utils/bezierCurve";
+import {useRef} from "react";
 
 export default function useGroup(props, selected) {
     const ref = useRef()

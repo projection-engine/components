@@ -53,16 +53,18 @@ export default function NodeIO(props) {
     const onDragContext = useContext(OnDragProvider)
     const parent = document.getElementById(props.nodeID)
     const handler = (e) => {
-        const bBox = parent.getBoundingClientRect()
+        if(parent) {
+            const bBox = parent.getBoundingClientRect()
 
-        if (e.type === 'dragover' && props.type === 'input' && props.data.accept) {
+            if (e.type === 'dragover' && props.type === 'input' && props.data.accept) {
 
-            infoRef.current.style.display = 'grid'
-            infoRef.current.style.top = wrapperRef.current.offsetTop + 'px'
-            infoRef.current.style.left = (e.clientX - bBox.x) + 'px'
-            infoRef.current.style.borderLeft = props.data.accept.includes(onDragContext.dragType) || props.data.accept.includes(TYPES.ANY) ? 'green 2px solid' : 'red 2px solid'
-        } else
-            infoRef.current.style.display = 'none'
+                infoRef.current.style.display = 'grid'
+                infoRef.current.style.top = wrapperRef.current.offsetTop + 'px'
+                infoRef.current.style.left = (e.clientX - bBox.x) + 'px'
+                infoRef.current.style.borderLeft = props.data.accept.includes(onDragContext.dragType) || props.data.accept.includes(TYPES.ANY) ? 'green 2px solid' : 'red 2px solid'
+            } else
+                infoRef.current.style.display = 'none'
+        }
     }
     useEffect(() => {
         const el = document.getElementById(props.nodeID + props.data.key)

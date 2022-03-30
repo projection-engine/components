@@ -41,7 +41,7 @@ export default function Range(props) {
         <div
             data-disabled={`${props.disabled}`}
             className={styles.wrapper}
-            style={{'--accentColor': props.accentColor}}
+            style={{'--accentColor': props.accentColor, borderRadius: !props.accentColor ? '5px' : undefined}}
             title={props.label}>
             {focused ?
                 <input

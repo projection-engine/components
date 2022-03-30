@@ -7,7 +7,6 @@ import NodeShowcase from "./NodeShowcase";
 import NODE_TYPES from "../NODE_TYPES";
 import {TYPES} from "../TYPES";
 import NODE_INFO from "../NODE_INFO";
-import {ToolTip} from "@f-ui/core";
 
 export default function Node(props) {
     const selected = useMemo(() => {

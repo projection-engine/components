@@ -6,9 +6,11 @@ export function removeLink (link, hook) {
         hook.setNodes(prev => {
             const clone = prev
             const target = clone.findIndex(p => link.target.includes(p.id))
-            const cloneC = cloneClass(clone[target])
-            delete cloneC[t]
-            clone[target] = cloneC
+            if(clone[target]) {
+                const cloneC = cloneClass(clone[target])
+                delete cloneC[t]
+                clone[target] = cloneC
+            }
             return clone
         })
         hook.setLinks(prev => {
@@ -25,8 +27,9 @@ export function removeLink (link, hook) {
 }
 export default function deleteNode(node, hook, setSelected){
     const target = node
-    
-    setSelected([])
+
+    if(setSelected)
+        setSelected([])
 
     let found, n = [...hook.links]
     do {

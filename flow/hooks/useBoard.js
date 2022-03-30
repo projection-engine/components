@@ -1,7 +1,6 @@
 import {useEffect, useMemo, useRef, useState} from "react";
 import getBezierCurve from "../utils/bezierCurve";
 import {TYPES} from "../TYPES";
-import NODE_TYPES from "../NODE_TYPES";
 import TYPES_INFO from "../TYPES_INFO";
 
 
@@ -10,13 +9,47 @@ export default function useBoard(hook, scale, setScale){
 
     const handleWheel = (e) => {
         e.preventDefault()
+
         if (e.wheelDelta > 0 && scale < 3)
             setScale(scale + scale * .1)
         else if (e.wheelDelta < 0 && scale >= .5)
             setScale(scale - scale * .1)
+
     }
+    const [scrolled, setScrolled] = useState(false)
+    useEffect(() => {
+        let resize
+        if(!scrolled && hook.nodes.length > 0) {
+            resize = new ResizeObserver(() => {
+                let biggestX, biggestY
+                hook.nodes.forEach(n => {
+                        const cX = n.x
+                        const cY = n.y
+
+                        if (!biggestX || cX  > biggestX)
+                            biggestX = cX
+                        if (!biggestY || cY  > biggestY)
+                            biggestY = cY
+                    })
 
 
+                if(biggestX)
+                    ref.current.parentNode.scrollLeft = biggestX  -ref.current.parentNode.offsetWidth/2
+
+                if(biggestY)
+                    ref.current.parentNode.scrollTop = biggestY -ref.current.parentNode.offsetHeight/2
+
+
+                setScrolled(true)
+            })
+
+            resize.observe(ref.current.parentNode)
+        }
+        return () => {
+        if(resize)
+            resize.disconnect()
+        }
+    }, [scrolled, hook.nodes])
     useEffect(() => {
         ref.current?.parentNode.addEventListener('wheel', handleWheel, {passive: false})
         return () => {

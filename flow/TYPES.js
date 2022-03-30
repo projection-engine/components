@@ -19,5 +19,6 @@ export const TYPES = {
     EXECUTION: 11,
     CONSTANT: 12,
     ANY: 13,
-    BOOL: 14
+    BOOL: 14,
+
 }

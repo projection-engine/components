@@ -8,7 +8,10 @@
     left: 0;
     top: 0;
     z-index: 0;
+    border-radius: 5px;
+    position: relative;
 
+box-shadow: var(--fabric-boxshadow);
 }
 
 .prototypeWrapperBoard {
@@ -57,4 +60,61 @@
     height: fit-content !important;
     min-height: unset !important;
     max-height: unset !important;
+}
+
+.scaleGroup{
+    position: absolute !important;
+    top: 4px;
+    left: 4px;
+
+    z-index: 99;
+
+    height: fit-content;
+    width: fit-content;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+}
+.scaleGroupInternal{
+    backdrop-filter: blur(10px) brightness(.8);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 5px;
+}
+.button{
+    color: var(--fabric-color-secondary);
+    width: 25px;
+    height: 25px;
+    padding: 2px !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button > * {
+    font-size: 1.1rem !important;
+}
+.button:disabled{
+    color: #999999;
+}
+.context{
+    position: relative;
+    overflow: hidden !important;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+
+    background: var(--fabric-background-tertiary);
+
+
+}
+
+.input{
+    color: var(--fabric-color-secondary);
+    padding: 4px;
+    font-size: .7rem ;
+    font-weight: 550;
 }

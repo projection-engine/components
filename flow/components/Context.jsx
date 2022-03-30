@@ -87,6 +87,7 @@ export default function Context(props) {
                             <span className={'material-icons-round'}>delete</span>
                             {trigger === 1 ? 'Delete Node' : 'Delete comment'}
                         </button>
+
                         <button
                             className={styles.option}
                             style={{border: 'none', display: trigger === 1 || trigger === 3 ? 'none' : undefined}}
