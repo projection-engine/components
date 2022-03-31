@@ -21,6 +21,8 @@ import GIZMOS from "../../services/engine/templates/GIZMOS";
 import RENDERING_TYPES from "../../services/engine/templates/RENDERING_TYPES";
 import TransformComponent from "../../services/engine/ecs/components/TransformComponent";
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
+import COMPONENTS from "../../services/engine/templates/COMPONENTS";
+import CameraComponent from "../../services/engine/ecs/components/CameraComponent";
 
 
 export default function ViewportOptions(props) {
@@ -226,12 +228,12 @@ export default function ViewportOptions(props) {
                                 onClick: () => {
                                     const actor = new Entity(undefined, 'Point light')
                                     actor.components.PointLightComponent = new PointLightComponent()
-                                    actor.components.TransformComponent = new TransformComponent()
+                                    actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
 
-                                    actor.components.TransformComponent.lockedRotation = true
-                                    actor.components.TransformComponent.lockedScaling = true
+                                    actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
+                                    actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
-                                    console.log(actor.components.TransformComponent)
+                                    console.log(actor.components[COMPONENTS.TRANSFORM])
                                     actor.components.PickComponent = new PickComponent(undefined, props.engine.entities.length)
 
                                     props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
@@ -271,7 +273,23 @@ export default function ViewportOptions(props) {
                                     props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                                 }
                             }}/>
+                            <DropdownOption option={{
+                                label: 'Camera',
+                                icon: <span className={'material-icons-round'}
+                                            style={{fontSize: '1.1rem'}}>videocam</span>,
+                                onClick: () => {
+                                    const actor = new Entity(undefined, 'Camera')
+                                    actor.components[COMPONENTS.CAMERA] = new CameraComponent()
 
+                                    actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                                    actor.components[COMPONENTS.TRANSFORM].updateQuatOnEulerChange = false
+                                    actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
+
+                                    actor.components[COMPONENTS.PICK] = new PickComponent(undefined, props.engine.entities.length)
+
+                                    props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                                }
+                            }}/>
                             <div className={styles.dividerWrapper}>
                                 Misc
                                 <div className={styles.divider}/>
@@ -296,9 +314,9 @@ export default function ViewportOptions(props) {
                                     actor.components.CubeMapComponent = new CubeMapComponent()
                                     actor.components.CubeMapComponent.cubeMap = new CubeMapInstance(props.engine.gpu, actor.components.CubeMapComponent.resolution)
 
-                                    actor.components.TransformComponent = new TransformComponent()
-                                    actor.components.TransformComponent.lockedRotation = true
-                                    actor.components.TransformComponent.lockedScaling = true
+                                    actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                                    actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
+                                    actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
                                     actor.components.PickComponent = new PickComponent(undefined, props.engine.entities.length)
 
