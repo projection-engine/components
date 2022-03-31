@@ -71,7 +71,7 @@ export default function TreeView(props) {
     }, [searchString, props])
 
     return (
-        <div data-self={'self'} className={[styles.wrapper, styles.backgroundStripes].join(' ')}>
+        <div data-self={'self'} className={[styles.wrapper, styles.backgroundStripes, props.className].join(' ')} style={props.styles}>
             {props.searchable ? <Search width={'100%'} size={'default'} searchString={searchString} setSearchString={setSearchString}/> : undefined}
 
             {props.onMultiSelect && Array.isArray(props.selected) && props.multiSelect? <SelectBox setSelected={props.onMultiSelect} selected={props.selected} nodes={props.ids} />: null}
@@ -90,6 +90,8 @@ export default function TreeView(props) {
 }
 
 TreeView.propTypes = {
+    styles: PropTypes.object,
+    className: PropTypes.string,
     onMultiSelect: PropTypes.func,
     multiSelect: PropTypes.bool,
 

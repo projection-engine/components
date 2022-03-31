@@ -1,4 +1,3 @@
-
 export default {
     NUMBER: "#62D714",
     TEXTURE: '#62D714',
@@ -10,7 +9,6 @@ export default {
     ATLAS: "purple",
 
 
-
     VEC4: "yellow",
     VEC3: "yellow",
     VEC2: "yellow",
@@ -19,5 +17,6 @@ export default {
     EXECUTION: "#0095ff",
     CONSTANT: "purple",
     ANY: "#999999",
-    BOOL: "red"
+    BOOL: "red",
+    ENTITY: "#0095ff",
 }

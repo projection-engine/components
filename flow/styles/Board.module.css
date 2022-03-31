@@ -19,7 +19,7 @@ box-shadow: var(--fabric-boxshadow);
     width: 100%;
     overflow: hidden;
     display: flex;
-    flex-flow: column;
+    flex-direction: column;
     gap: 4px;
 
 }

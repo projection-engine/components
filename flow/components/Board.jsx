@@ -66,6 +66,7 @@ export default function Board(props) {
     return (
         <OnDragProvider.Provider value={{setDragType, dragType}}>
             <ContextWrapper
+                styles={{display: props.hide ? 'none' : undefined}}
                 options={boardOptions}
                 wrapperClassName={styles.contextWrapper}
                 content={(s, handleClose) => (
@@ -110,9 +111,14 @@ export default function Board(props) {
                     onContextMenu={e => e.preventDefault()}
                     onDrop={e => {
                         e.preventDefault()
-                        const n = handleDropBoard(e.dataTransfer.getData('text'), props.allNodes)
-                        if (n) {
-                            handleDropNode(n, e)
+                        let allow = true, newEntity
+                        if(props.onDrop){
+                            [allow, newEntity] = props.onDrop(e)
+                        }
+                        if(allow) {
+                            const n = newEntity ? newEntity : handleDropBoard(e.dataTransfer.getData('text'), props.allNodes)
+                            if (n)
+                                handleDropNode(n, e)
                         }
                     }}
                     ref={ref}
@@ -189,6 +195,7 @@ export default function Board(props) {
     )
 }
 Board.propTypes = {
+    onDrop: PropTypes.func,
     allNodes: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.any,
         dataTransfer: PropTypes.string,
@@ -201,4 +208,5 @@ Board.propTypes = {
     hook: PropTypes.object,
     selected: PropTypes.arrayOf(PropTypes.string).isRequired,
     setSelected: PropTypes.func,
+    hide: PropTypes.bool
 }
