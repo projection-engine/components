@@ -21,7 +21,7 @@ export default function Node(props) {
         pathRef,
         outputLinks,
         inputLinks
-    } = useNode(props, selected)
+    } = useNode(props, selected, props. hidden)
 
 
     useEffect(() => {
@@ -140,4 +140,5 @@ Node.propTypes = {
     handleLink: PropTypes.func,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
+    hidden: PropTypes.bool
 }

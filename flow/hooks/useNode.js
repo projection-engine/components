@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useRef, useState} from "react";
 import getBezierCurve from "../utils/bezierCurve";
 
-export default function useNode(props, selected) {
+export default function useNode(props, selected, hidden) {
     const ref = useRef()
     const pathRef = useRef()
 
@@ -9,7 +9,7 @@ export default function useNode(props, selected) {
     useEffect(() => {
         const h = ref.current.firstChild.scrollHeight
         setHeight(h >= 35 ? h : 55)
-    }, [])
+    }, [ hidden])
 
     const handleLinkDrag = (event) => {
         const parent = ref.current?.parentNode.parentNode
@@ -50,8 +50,6 @@ export default function useNode(props, selected) {
         if(event.button === 0 && isFirst)
             props.setSelected(props.node.id, false)
         if (event.button === 0 && ((selected && event.ctrlKey) || isFirst)) {
-            const t = ref.current.firstChild
-
             const parent = ref.current?.parentNode.parentNode
             let parentBBox = parent.getBoundingClientRect()
             let bounding = {

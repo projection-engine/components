@@ -176,6 +176,7 @@ export default function Board(props) {
                             <Node
                                 links={links}
                                 setAlert={props.setAlert}
+                                hidden={props.hide}
                                 setSelected={(i, multi) => {
                                     if (multi)
                                         setSelected(i)

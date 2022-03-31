@@ -51,9 +51,7 @@ export default function TreeNode(props) {
                     null}
                 <div
                     ref={ref}
-
                     style={{paddingLeft: padding + 'px'}}
-
                     className={styles.row}
                 >
 
@@ -101,7 +99,7 @@ export default function TreeNode(props) {
                                 className={styles.rowContent}
                                 style={{fontWeight: '550'}}
 
-                                draggable={!props.node.phantomNode && props.draggable}
+                                draggable={!props.node.phantomNode && props.draggable && props.node.draggable}
 
                                 onDrop={props.onDrop}
                                 onDragOver={props.onDragOver}
