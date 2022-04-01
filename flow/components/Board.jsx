@@ -177,6 +177,15 @@ export default function Board(props) {
                                 links={links}
                                 setAlert={props.setAlert}
                                 hidden={props.hide}
+                                submitBundledVariable={(key, value) => {
+                                    props.hook.setNodes(prev => {
+                                        return prev.map(p => {
+                                            if(p.id === node.id)
+                                                p[key] = value
+                                            return p
+                                        })
+                                    })
+                                }}
                                 setSelected={(i, multi) => {
                                     if (multi)
                                         setSelected(i)

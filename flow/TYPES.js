@@ -20,5 +20,6 @@ export const TYPES = {
     CONSTANT: 12,
     ANY: 13,
     BOOL: 14,
-    ENTITY: 15
+    ENTITY: 15,
+    KEY: 16
 }

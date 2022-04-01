@@ -81,12 +81,14 @@ export default function Node(props) {
                     </div>
                     <div className={styles.content}>
                         <div className={styles.column}>
-                            {props.node.inputs.filter(a => Array.isArray(a.accept)).map((a, i) => (
+                            {props.node.inputs.filter(a => Array.isArray(a.accept) || a.bundled).map((a, i) => (
                                 <React.Fragment key={a.key + '-input-' + i}>
                                     <NodeIO
+                                        submitBundledVariable={data => props.submitBundledVariable(a.key, data)}
                                         handleLink={props.handleLink}
                                         setAlert={props.setAlert}
                                         nodeID={props.node.id}
+                                        node={props.node}
                                         onDragEnd={() => {
                                             pathRef.current.setAttribute('d', undefined)
                                         }}

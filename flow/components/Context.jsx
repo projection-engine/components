@@ -5,11 +5,7 @@ import Search from "../../search/Search";
 
 export default function Context(props) {
     const [searchString, setSearchString] = useState('')
-    const [isGroup, setIsGroup] = useState(false)
-    useEffect(() => {
-        if (!props.selected)
-            setIsGroup(false)
-    }, [props.selected])
+
     const trigger = useMemo(() => {
         let type = -1
         if (props.selected) {
@@ -47,6 +43,7 @@ export default function Context(props) {
     useEffect(() => {
         props.handleClose()
     }, [props.scale])
+    console.log(props)
     return (
         <div className={styles.wrapper} style={{height: trigger === 0 ? '650px' : undefined}}>
             {trigger >= 0 ?
