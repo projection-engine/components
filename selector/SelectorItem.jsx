@@ -17,7 +17,7 @@ export default function SelectorItem(props) {
                 return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>texture</span>
 
             case 'script':
-                return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>functions</span>
+                return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>engineering</span>
             default:
                 return
         }

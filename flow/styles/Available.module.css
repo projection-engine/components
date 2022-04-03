@@ -46,10 +46,9 @@
     font-size: .7rem;
     font-weight: 550;
 
-
-    border-top: var(--fabric-border-primary) 1px solid;
     background-color: var(--fabric-background-primary);
 
+    border: transparent 1px dashed;
     color: var(--fabric-color-secondary);
 }
 
@@ -59,9 +58,8 @@
 
 .option:active {
     cursor: grabbing;
-    border-style: dashed;
-
     border-color: var(--fabric-accent-color);
+
 }
 
 .summary {

@@ -24,7 +24,9 @@ export default function Group(props) {
         }
     }, [props.group, props.selected, selected, props.scale])
 
-
+    const rgb = useMemo(() => {
+        return props.group.color.slice(0, 3).join(', ')
+    }, [props.group.color])
     return (
         <g>
             <g
@@ -36,14 +38,15 @@ export default function Group(props) {
                     id={props.group.id}
 
                     className={styles.wrapper}
-data-seleted={`${selected}`}
+                    data-seleted={`${selected}`}
                     style={{
-                        background:props.group.color? `rgba(${props.group.color.join(', ')})` : 'rgba(150, 150, 150, .5)',
+                        background: props.group.color ? `rgba(${rgb}, .5)` : 'rgba(150, 150, 150, .5)',
                         width: props.group.width + 'px',
                         height: props.group.height + 'px'
                     }}>
                     {onEdit ?
                         <input
+                            style={{background: `rgb(${rgb})`}}
                             value={nameCache}
                             onChange={v => setNameCache(v.target.value)}
                             className={styles.input}
@@ -52,7 +55,7 @@ data-seleted={`${selected}`}
                                 setOnEdit(false)
                             }}
                             onKeyDown={(e) => {
-                                if(e.key === KEYS.Enter) {
+                                if (e.key === KEYS.Enter) {
                                     props.submitName(nameCache)
                                     setOnEdit(false)
                                 }
@@ -61,6 +64,7 @@ data-seleted={`${selected}`}
                         :
                         <div
                             className={styles.header}
+                            style={{background: `rgb(${rgb})`}}
                             id={props.group.id + '-node'}
                             onDoubleClick={() => setOnEdit(true)}
                         >

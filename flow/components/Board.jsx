@@ -113,10 +113,10 @@ export default function Board(props) {
                     onDrop={e => {
                         e.preventDefault()
                         let allow = true, newEntity
-                        if(props.onDrop){
+                        if (props.onDrop) {
                             [allow, newEntity] = props.onDrop(e)
                         }
-                        if(allow) {
+                        if (allow) {
                             const n = newEntity ? newEntity : handleDropBoard(e.dataTransfer.getData('text'), props.allNodes)
                             if (n)
                                 handleDropNode(n, e)
@@ -128,8 +128,12 @@ export default function Board(props) {
                         if (e.button === 2)
                             handleBoardScroll(ref.current.parentNode, e)
 
-                        if (e.target === ref.current)
+                        if (e.target === ref.current) {
                             props.setSelected([])
+                            if (props.onEmptyClick)
+                                props.onEmptyClick()
+                        }
+
                     }}
                 >
 
@@ -181,7 +185,7 @@ export default function Board(props) {
                                 submitBundledVariable={(key, value) => {
                                     props.hook.setNodes(prev => {
                                         return prev.map(p => {
-                                            if(p.id === node.id)
+                                            if (p.id === node.id)
                                                 p[key] = value
                                             return p
                                         })
@@ -215,6 +219,7 @@ Board.propTypes = {
         icon: PropTypes.node,
         getNewInstance: PropTypes.func
     })).isRequired,
+    onEmptyClick: PropTypes.func,
     setAlert: PropTypes.func.isRequired,
     parentRef: PropTypes.object,
     hook: PropTypes.object,

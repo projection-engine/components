@@ -6,11 +6,10 @@
 }
 
 .wrapper[data-seleted = 'true'] {
-    outline-color: var(--fabric-accent-color);
+    outline-color: yellow;
 }
 
 .header {
-    border-bottom: var(--fabric-border-primary) 1px solid;
     width: 100%;
 
     height: 35px;
@@ -35,7 +34,7 @@
     background: none;
     border: none;
     outline: none;
-    border-bottom: var(--fabric-accent-color) 1px solid;
+
 
     color: var(--fabric-color-secondary);
 

@@ -21,7 +21,7 @@ export default function Node(props) {
         pathRef,
         outputLinks,
         inputLinks
-    } = useNode(props, selected, props. hidden)
+    } = useNode(props, selected, props.hidden)
 
 
     useEffect(() => {
@@ -63,7 +63,7 @@ export default function Node(props) {
                     style={{
                         width: '250px',
                         height: height + 'px',
-                        outline: selected ? nodeInfo.COLOR + ' 2px solid' : undefined
+                        outline: selected ? 'yellow 2px solid' : undefined
                     }}>
                     <div
                         className={styles.label}
