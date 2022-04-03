@@ -68,6 +68,7 @@ export default function Board(props) {
             <ContextWrapper
                 styles={{display: props.hide ? 'none' : undefined}}
                 options={boardOptions}
+                // attributes={{id: props.id + '-board'}}
                 wrapperClassName={styles.contextWrapper}
                 content={(s, handleClose) => (
                     <Context
@@ -205,6 +206,7 @@ export default function Board(props) {
     )
 }
 Board.propTypes = {
+    id: PropTypes.any,
     onDrop: PropTypes.func,
     allNodes: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.any,

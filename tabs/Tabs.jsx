@@ -36,6 +36,8 @@ export default function Tabs(props) {
                                     highlight={props.tab === i}
                                     onClick={() => {
                                         if (props.tab !== i) {
+                                            if (props.onTabSwitch)
+                                                props.onTabSwitch(i, props.tab)
                                             props.setTab(i)
                                             tabAttributes.forEach(t => {
                                                 if (t.onBeforeSwitch)
@@ -62,7 +64,7 @@ export default function Tabs(props) {
                                                 })
                                             }
 
-                                            props.handleTabClose(i)
+                                            props.handleTabClose(i - 1, i)
 
                                         }}
                                     >
@@ -90,5 +92,6 @@ Tabs.propTypes = {
     tab: PropTypes.number,
     setTab: PropTypes.func,
     children: PropTypes.node.isRequired,
-    handleTabClose: PropTypes.func.isRequired
+    handleTabClose: PropTypes.func.isRequired,
+    onTabSwitch: PropTypes.func
 }

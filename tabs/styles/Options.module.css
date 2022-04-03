@@ -13,6 +13,8 @@
 .divider {
     height: 75%;
     width: 1px;
+    margin-left: 4px;
+    margin-right: 4px;
     background-color: var(--fabric-background-quaternary);
 }
 
@@ -37,11 +39,13 @@
     color: var(--fabric-color-tertiary) ;
 
 }
-
+.option:active{
+    background: var(--fabric-background-secondary);
+}
 
 .group {
     display: flex;
     align-items: center;
     height: 35px;
-    padding-right: 64px;
+
 }

@@ -592,7 +592,11 @@ export default function ViewportOptions(props) {
                 <div
                     style={{display: props.engine.renderer?.camera instanceof SphericalCamera ? undefined : 'none'}}
                     className={[styles.floatingOption, styles.dragInput].join(' ')}
-                    onMouseDown={e => handleGrab(e, props.engine.renderer)}>
+                    onMouseDown={e => handleGrab(e, props.engine.renderer)}
+                    onDoubleClick={() => {
+                        props.engine.renderer.camera.centerOn = [0,0,0]
+                        props.engine.renderer.camera.updateViewMatrix()
+                    }}>
                     <span className={'material-icons-round'} style={{fontSize: '1rem'}}>back_hand</span>
                 </div>
             </div>
