@@ -23,6 +23,7 @@ import TransformComponent from "../../services/engine/ecs/components/TransformCo
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import COMPONENTS from "../../services/engine/templates/COMPONENTS";
 import CameraComponent from "../../services/engine/ecs/components/CameraComponent";
+import {HISTORY_ACTIONS} from "../../services/utils/historyReducer";
 
 
 export default function ViewportOptions(props) {
@@ -90,6 +91,14 @@ export default function ViewportOptions(props) {
                 }
             })
     }, [settingsContext.cameraType, props.engine, lastCamera, cameraIsOrthographic])
+
+    const dispatchEntity = (entity) => {
+        props.engine.dispatchChanges({
+            type: HISTORY_ACTIONS.PUSHING_DATA,
+            payload: [entity]
+        })
+        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
+    }
 
     return (
         <>
@@ -231,16 +240,12 @@ export default function ViewportOptions(props) {
                                                 style={{fontSize: '1.2rem'}}>lightbulb</span>,
                                     onClick: () => {
                                         const actor = new Entity(undefined, 'Point light')
-                                        actor.components.PointLightComponent = new PointLightComponent()
+                                        actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
                                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-
                                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
                                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
-
-                                        console.log(actor.components[COMPONENTS.TRANSFORM])
-                                        actor.components.PickComponent = new PickComponent(undefined, props.engine.entities.length)
-
-                                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                                        actor.components[COMPONENTS.PICK] = new PickComponent(undefined, props.engine.entities.length)
+                                        dispatchEntity(actor)
                                     }
                                 }}/>
                                 <DropdownOption option={{
@@ -250,8 +255,8 @@ export default function ViewportOptions(props) {
                                                 style={{fontSize: '1.2rem'}}>flashlight_on</span>,
                                     onClick: () => {
                                         const actor = new Entity(undefined, 'Point light')
-                                        actor.components.DirectionalLightComponent = new PointLightComponent()
-                                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                                        actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new PointLightComponent()
+                                        dispatchEntity(actor)
                                     }
                                 }}/>
                                 <DropdownOption option={{
@@ -262,8 +267,8 @@ export default function ViewportOptions(props) {
                                     onClick: () => {
 
                                         const actor = new Entity(undefined, 'Directional light')
-                                        actor.components.DirectionalLightComponent = new DirectionalLightComponent()
-                                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                                        actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent()
+                                        dispatchEntity(actor)
                                     }
                                 }}/>
                                 <DropdownOption option={{
@@ -273,8 +278,8 @@ export default function ViewportOptions(props) {
                                                 style={{fontSize: '1.1rem'}}>sky</span>,
                                     onClick: () => {
                                         const actor = new Entity(undefined, 'Skylight')
-                                        actor.components.SkylightComponent = new SkylightComponent()
-                                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                                        actor.components[COMPONENTS.SKYLIGHT] = new SkylightComponent()
+                                        dispatchEntity(actor)
                                     }
                                 }}/>
                                 <DropdownOption option={{
@@ -284,14 +289,11 @@ export default function ViewportOptions(props) {
                                     onClick: () => {
                                         const actor = new Entity(undefined, 'Camera')
                                         actor.components[COMPONENTS.CAMERA] = new CameraComponent()
-
                                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
                                         actor.components[COMPONENTS.TRANSFORM].updateQuatOnEulerChange = false
                                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
-
                                         actor.components[COMPONENTS.PICK] = new PickComponent(undefined, props.engine.entities.length)
-
-                                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                                        dispatchEntity(actor)
                                     }
                                 }}/>
                                 <div className={styles.dividerWrapper}>
@@ -305,7 +307,7 @@ export default function ViewportOptions(props) {
                                     onClick: () => {
                                         const actor = new Entity(undefined, 'Skybox')
                                         actor.components.SkyboxComponent = new SkyboxComponent(undefined, props.engine.gpu)
-                                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                                        dispatchEntity(actor)
                                     }
                                 }}/>
                                 <DropdownOption option={{
@@ -315,16 +317,13 @@ export default function ViewportOptions(props) {
                                     onClick: () => {
 
                                         const actor = new Entity(undefined, 'Cubemap')
-                                        actor.components.CubeMapComponent = new CubeMapComponent()
-                                        actor.components.CubeMapComponent.cubeMap = new CubeMapInstance(props.engine.gpu, actor.components.CubeMapComponent.resolution)
-
+                                        actor.components[COMPONENTS.CUBE_MAP] = new CubeMapComponent()
+                                        actor.components[COMPONENTS.CUBE_MAP].cubeMap = new CubeMapInstance(props.engine.gpu, actor.components[COMPONENTS.CUBE_MAP].resolution)
                                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
                                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
                                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
-
-                                        actor.components.PickComponent = new PickComponent(undefined, props.engine.entities.length)
-
-                                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                                        actor.components[COMPONENTS.PICK] = new PickComponent(undefined, props.engine.entities.length)
+                                        dispatchEntity(actor)
                                     }
                                 }}/>
                             </DropdownOptions>
