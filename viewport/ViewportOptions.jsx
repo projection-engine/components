@@ -289,9 +289,13 @@ export default function ViewportOptions(props) {
                                     onClick: () => {
                                         const actor = new Entity(undefined, 'Camera')
                                         actor.components[COMPONENTS.CAMERA] = new CameraComponent()
+
                                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                                        actor.components[COMPONENTS.TRANSFORM].updateQuatOnEulerChange = false
+                                        actor.components[COMPONENTS.TRANSFORM].rotation = [0,0, 1.57]
+                                        actor.components[COMPONENTS.TRANSFORM].scaling = [.5, .5, .5]
                                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
+
+
                                         actor.components[COMPONENTS.PICK] = new PickComponent(undefined, props.engine.entities.length)
                                         dispatchEntity(actor)
                                     }

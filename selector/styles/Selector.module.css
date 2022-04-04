@@ -32,6 +32,8 @@
 
     box-shadow: rgba(0, 0, 0, .5) 0 0 10px 5px !important;
 
+    display: flex;
+    flex-direction: column;
 
 }
 
@@ -67,15 +69,17 @@
     font-weight: 550;
 }
 
-.hovered{
+.hovered {
     outline: var(--fabric-accent-color) 1px dashed;
     opacity: .5;
 }
-.content{
+
+.content {
     max-width: 100%;
     overflow: hidden;
 }
-.resetButton{
+
+.resetButton {
     height: 20px !important;
     width: 20px !important;
     padding: 0 !important;
@@ -86,9 +90,11 @@
     align-items: center;
     justify-content: center;
 }
-.resetButton:hover{
+
+.resetButton:hover {
     color: var(--fabric-accent-color) !important;
 }
-.resetButton > *{
+
+.resetButton > * {
     font-size: 1rem !important;
 }
