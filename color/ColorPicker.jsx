@@ -117,6 +117,6 @@ export default function ColorPicker(props) {
 ColorPicker.propTypes = {
     label: PropTypes.string,
     submit: PropTypes.func.isRequired,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     styles: PropTypes.object
 }

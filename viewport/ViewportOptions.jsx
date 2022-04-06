@@ -104,10 +104,11 @@ export default function ViewportOptions(props) {
         <>
             {props.minimal ? null :
                 <div className={styles.options} style={{display: fullscreen ? 'none' : undefined}} draggable={false}>
-                    <div className={styles.align}>
+                    <div style={{justifyContent: 'flex-start'}}  className={styles.align}>
                         <Dropdown
                             hideArrow={true}
-                            className={[styles.optionWrapper, styles.highlighted].join(' ')}>
+                            variant={'outlined'}
+                            className={styles.optionWrapper}>
                             <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>more_vert</span>
                             <DropdownOptions>
                                 <DropdownOption option={{
@@ -175,7 +176,9 @@ export default function ViewportOptions(props) {
 
                         <Dropdown
                             className={styles.optionWrapper}
-                            justify={'start'} align={'bottom'}>
+                            variant={'outlined'}
+
+                        >
                             <div className={styles.summary}>
                           <span style={{fontSize: '1.1rem'}}
                                 className={'material-icons-round'}>visibility</span>
@@ -225,7 +228,7 @@ export default function ViewportOptions(props) {
                                 }}/>
                             </DropdownOptions>
                         </Dropdown>
-                        <Dropdown className={styles.optionWrapper} hideArrow={true}>
+                        <Dropdown className={styles.optionWrapper} hideArrow={true} variant={'outlined'}>
                             <div className={styles.align}>
                                 <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>add</span> Create
                             </div>
@@ -291,8 +294,8 @@ export default function ViewportOptions(props) {
                                         actor.components[COMPONENTS.CAMERA] = new CameraComponent()
 
                                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                                        actor.components[COMPONENTS.TRANSFORM].rotation = [0,0, 1.57]
-                                        actor.components[COMPONENTS.TRANSFORM].scaling = [.5, .5, .5]
+                                        actor.components[COMPONENTS.TRANSFORM].rotation = [0, 0, 0]
+                                        actor.components[COMPONENTS.TRANSFORM].scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
                                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
 
@@ -335,7 +338,7 @@ export default function ViewportOptions(props) {
 
 
                     </div>
-                    <div className={styles.align}>
+                    <div style={{justifyContent: 'center'}}  className={styles.align}>
                         <Dropdown
 
                             className={[styles.optionWrapper, styles.highlighted].join(' ')}>
@@ -370,7 +373,7 @@ export default function ViewportOptions(props) {
                             </DropdownOptions>
                         </Dropdown>
                     </div>
-                    <div className={styles.align}>
+                    <div style={{justifyContent: 'flex-end'}} className={styles.align}>
                         <div className={styles.buttonGroup}>
                             <Button
                                 className={styles.groupItem}
@@ -597,7 +600,7 @@ export default function ViewportOptions(props) {
                     className={[styles.floatingOption, styles.dragInput].join(' ')}
                     onMouseDown={e => handleGrab(e, props.engine.renderer)}
                     onDoubleClick={() => {
-                        props.engine.renderer.camera.centerOn = [0,0,0]
+                        props.engine.renderer.camera.centerOn = [0, 0, 0]
                         props.engine.renderer.camera.updateViewMatrix()
                     }}>
                     <span className={'material-icons-round'} style={{fontSize: '1rem'}}>back_hand</span>
