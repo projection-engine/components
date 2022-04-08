@@ -36,7 +36,23 @@ export default function Range(props) {
     useEffect(() => {
         setInputCache(props.value)
     }, [focused])
+const submit = () => {
+    let finalValue = parseFloat(inputCache)
 
+    if (props.onFinish !== undefined)
+        props.onFinish()
+
+    if (!isNaN(finalValue)) {
+        if (props.maxValue !== undefined && finalValue > props.maxValue)
+            finalValue = props.maxValue
+        if (props.minValue !== undefined && finalValue < props.minValue)
+            finalValue = props.minValue
+
+        props.handleChange(props.integer ? parseInt(finalValue) : finalValue)
+    }
+
+    setFocused(false)
+}
     return (
         <div
             data-disabled={`${props.disabled}`}
@@ -55,36 +71,10 @@ export default function Range(props) {
                     }} type={'number'}
                     style={{cursor: 'text', background: 'var(--fabric-background-quaternary)'}}
                     onKeyDown={k => {
-
-                        if (k.key === KEYS.Enter) {
-                            let finalValue = parseFloat(inputCache)
-                            if (props.onFinish !== undefined)
-                                props.onFinish()
-
-                            if (!isNaN(finalValue))
-                                props.handleChange(props.integer ? parseInt(finalValue) : finalValue)
-
-                            setFocused(false)
-                        }
+                        if (k.key === KEYS.Enter)
+                            submit()
                     }}
-                    onBlur={() => {
-                        let finalValue = parseFloat(inputCache)
-
-                        if (props.onFinish !== undefined)
-                            props.onFinish()
-
-                        if (!isNaN(finalValue)) {
-                            if (props.maxValue !== undefined && finalValue > props.maxValue)
-                                finalValue = props.maxValue
-                            if (props.minValue !== undefined && finalValue < props.minValue)
-                                finalValue = props.minValue
-
-                            props.handleChange(props.integer ? parseInt(finalValue) : finalValue)
-                        }
-
-
-                        setFocused(false)
-                    }}
+                    onBlur={() => submit()}
                     className={styles.draggable}
                 />
                 :
@@ -114,7 +104,6 @@ export default function Range(props) {
                         cursor: props.disabled ? 'default' : undefined,
                         background: props.disabled ? 'var(--background-0)' : undefined
                     }}
-
                     className={styles.draggable}
                 >
                     {parseFloat(props.value).toFixed(props.precision ? props.precision : 1)}
