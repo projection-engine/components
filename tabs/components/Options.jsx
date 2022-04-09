@@ -27,6 +27,7 @@ export default function Options(props) {
                                         <Dropdown
                                             align={'bottom'}
                                             justify={"start"}
+                                            disabled={option.disabled}
                                             className={styles.option}
                                         >
                                             {option.icon}
@@ -44,7 +45,10 @@ export default function Options(props) {
                             } else
                                 return (
                                     <React.Fragment key={i + '-option-' + index}>
-                                        <Button onClick={option.onClick} className={styles.option}>
+                                        <Button
+                                            onClick={option.onClick}
+                                            disabled={option.disabled}
+                                            className={styles.option}>
                                             {option.icon}
                                             {option.label}
                                         </Button>

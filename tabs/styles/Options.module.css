@@ -42,7 +42,9 @@
 .option:active{
     background: var(--fabric-background-secondary);
 }
-
+.option:disabled{
+    color: #999999 !important;
+}
 .group {
     display: flex;
     align-items: center;
