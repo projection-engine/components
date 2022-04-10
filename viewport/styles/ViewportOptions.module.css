@@ -43,7 +43,7 @@
     color: var(--fabric-color-secondary) !important;
 
     overflow: hidden;
-    font-family: "Roboto" !important;
+    background: var(--fabric-border-primary);
 }
 .highlighted{
     background: var(--fabric-background-tertiary);

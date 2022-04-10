@@ -107,7 +107,6 @@ export default function ViewportOptions(props) {
                     <div style={{justifyContent: 'flex-start'}} className={styles.align}>
                         <Dropdown
                             hideArrow={true}
-                            variant={'outlined'}
                             className={styles.optionWrapper}>
                             <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>more_vert</span>
                             <DropdownOptions>
@@ -176,8 +175,6 @@ export default function ViewportOptions(props) {
 
                         <Dropdown
                             className={styles.optionWrapper}
-                            variant={'outlined'}
-
                         >
                             <div className={styles.summary}>
                           <span style={{fontSize: '1.1rem'}}
@@ -340,7 +337,7 @@ export default function ViewportOptions(props) {
                     </div>
                     <div style={{justifyContent: 'center'}} className={styles.align}>
                         <Dropdown
-                            variant={"outlined"}
+
                             className={styles.optionWrapper}>
                             <div className={styles.summary}>
                           <span style={{fontSize: '1.1rem'}}
