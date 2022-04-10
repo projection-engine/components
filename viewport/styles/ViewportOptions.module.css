@@ -158,13 +158,13 @@
 .floating{
 
     position: absolute;
-    right: 4px;
+    right: 0px;
     top: 35px;
     z-index: 999;
     display: grid;
     align-content: flex-start;
 
-    justify-items: flex-end;
+    justify-items: center;
     gap: 4px;
     height: fit-content;
 
@@ -180,14 +180,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--fabric-background-tertiary) !important;
+    background: var(--fabric-border-primary) !important;
 
     height: 25px;
     width: 25px;
 
     padding: 0 !important;
     border-radius: 0;
-    border: var(--fabric-border-primary) 1px solid;
+    border: var(--fabric-background-primary) 1px solid;
 }
 .groupItem:hover{
     --colorToApply: var(--fabric-accent-color);
@@ -214,7 +214,8 @@
 
 }
 .dragInput{
-    cursor: move;
+   cursor: move;
+
 }
 .dragInput:active{
     color: var(--fabric-accent-color);
@@ -226,7 +227,7 @@
 }
 
 .floatingOption{
-    border-radius: 50%;
+
     backdrop-filter: blur(20px) brightness(.65);
 
     display: flex;
@@ -258,6 +259,7 @@
 
     padding: 0 !important;
     border-radius: 0;
+    color: white;
 
 }
 .groupItemVert > *{

@@ -40,9 +40,12 @@ export default function TreeNode(props) {
 
     return (
         <>
-            <div className={styles.container} data-selected={`${selected}`}  data-highlight={`${props.focusedNode === props.node.id}`}
+            <div
+                className={styles.container}
+                data-selected={`${selected}`}
+                data-highlight={`${props.focusedNode === props.node.id}`}
             >
-                {props.node.canBeHidden?
+                {props.node.canBeHidden ?
                     <button className={styles.button} onClick={props.node.onHide}>
                         <span className={'material-icons-round'}
                               style={{fontSize: '1rem'}}>{!props.node.hidden ? 'visibility' : 'visibility_off'}</span>
@@ -89,15 +92,15 @@ export default function TreeNode(props) {
                         <div
                             className={styles.rowContentWrapper}
 
-                             onClick={e => {
-                            props.setFocusedNode(props.node.id)
-                            if (props.node.onClick)
-                                props.node.onClick(e)
-                        }}>
+                            onClick={e => {
+                                props.setFocusedNode(props.node.id)
+                                if (props.node.onClick)
+                                    props.node.onClick(e)
+                            }}>
                             <div
-                                id={props.node.id }
+                                id={props.node.id}
                                 className={styles.rowContent}
-                                style={{fontWeight: '550'}}
+                                style={{fontWeight: '550', width: !props.node.type  ? '90%' : undefined}}
 
                                 draggable={!props.node.phantomNode && props.draggable && props.node.draggable}
 
@@ -116,9 +119,13 @@ export default function TreeNode(props) {
                                 </div>
                             </div>
 
-                            <div className={[styles.rowContent, styles.rowType, styles.overflow].join(' ')}>
-                                {props.node.type}
-                            </div>
+                            {props.node.type ?
+                                <div className={[styles.rowContent, styles.rowType, styles.overflow].join(' ')}>
+                                    {props.node.type}
+                                </div>
+                                :
+                                null
+                            }
                         </div>
                     }
                 </div>

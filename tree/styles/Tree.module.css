@@ -51,7 +51,6 @@
     outline: transparent 1px dashed;
     transition: 150ms linear;
 
-    border-radius:0  5px 5px 0;
 
     position: relative;
     display: flex;
@@ -99,7 +98,6 @@
     display: flex;
     align-items: center;
 
-    align-content: center;
     justify-content: space-between;
     overflow: hidden;
     max-width: 100%;
@@ -145,8 +143,9 @@
 }
 
 .hoveredNode {
-    opacity: .5;
-    outline: var(--fabric-accent-color) 1px dashed;
+
+    background: var(--fabric-accent-color);
+    color: white !important;
 
 
 }

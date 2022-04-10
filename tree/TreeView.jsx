@@ -19,25 +19,30 @@ export default function TreeView(props) {
         document.addEventListener('mousedown', handleMouseDown)
         return () => document.removeEventListener('mousedown', handleMouseDown)
     }, [focusedNode])
+    let t
     const content = useMemo(() => {
         return (
             (searchString.length > 0 ? props.nodes.filter(n => n.label.toLowerCase().includes(searchString.toLowerCase())) : props.nodes).map((child, index) => (
                 <React.Fragment key={'tree-' + index}>
                     <TreeNode
-
                         open={true}
                         onDragOver={(e) => {
                             if(props.draggable) {
                                 e.preventDefault()
-                                e.currentTarget.classList.add(styles.hoveredNode)
+
+                                t = e.currentTarget.parentNode.parentNode
+                                t.classList.add(styles.hoveredNode)
                             }
                             if (props.onDragOver)
                                 props.onDragOver(e, e.currentTarget.id)
                         }}
                         onDragLeave={(e) => {
                             if(props.draggable) {
+
                                 e.preventDefault()
-                                e.currentTarget.classList.remove(styles.hoveredNode)
+                                console.log(t)
+                                if(t)
+                                    t.classList.remove(styles.hoveredNode)
                             }
                             if (props.onDragLeave)
                                 props.onDragLeave(e, e.currentTarget.id)
@@ -45,7 +50,9 @@ export default function TreeView(props) {
                         onDrop={(e) => {
                             if(props.draggable) {
                                 e.preventDefault()
-                                e.currentTarget.classList.remove(styles.hoveredNode)
+                                console.log(t)
+                                if(t)
+                                    t.classList.remove(styles.hoveredNode)
                             }
                             if (props.onDrop)
                                 props.onDrop(e, e.currentTarget.id)

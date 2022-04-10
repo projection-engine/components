@@ -104,7 +104,7 @@ export default function ViewportOptions(props) {
         <>
             {props.minimal ? null :
                 <div className={styles.options} style={{display: fullscreen ? 'none' : undefined}} draggable={false}>
-                    <div style={{justifyContent: 'flex-start'}}  className={styles.align}>
+                    <div style={{justifyContent: 'flex-start'}} className={styles.align}>
                         <Dropdown
                             hideArrow={true}
                             variant={'outlined'}
@@ -338,10 +338,10 @@ export default function ViewportOptions(props) {
 
 
                     </div>
-                    <div style={{justifyContent: 'center'}}  className={styles.align}>
+                    <div style={{justifyContent: 'center'}} className={styles.align}>
                         <Dropdown
-
-                            className={[styles.optionWrapper, styles.highlighted].join(' ')}>
+                            variant={"outlined"}
+                            className={styles.optionWrapper}>
                             <div className={styles.summary}>
                           <span style={{fontSize: '1.1rem'}}
                                 className={'material-icons-round'}>transform</span>
@@ -565,24 +565,28 @@ export default function ViewportOptions(props) {
                             </div>
                         </div>
                     )}
-
-                {props.minimal ? null :
-                    (
-                        <>
-                            <Dropdown className={styles.floatingOption} hideArrow={true}>
-
-                                <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>videocam</span>
-
-                                <DropdownOptions>
-                                    {cameraOptions.map((c, i) => (
-                                        <React.Fragment key={i + '-options-vp'}>
-                                            <DropdownOption
-                                                option={c}/>
-                                        </React.Fragment>
-                                    ))}
-                                </DropdownOptions>
-                            </Dropdown>
-                            <Button className={styles.floatingOption}
+                <div className={styles.buttonGroup} style={{display: 'grid'}}>
+                    {props.minimal ? null :
+                        (
+                            <>
+                                <Dropdown
+                                    styles={{borderRadius: '5px 5px 0  0'}}
+                                    className={styles.groupItemVert}
+                                    hideArrow={true}>
+                                    <span className={'material-icons-round'}
+                                          style={{fontSize: '1.1rem'}}>videocam</span>
+                                    <DropdownOptions>
+                                        {cameraOptions.map((c, i) => (
+                                            <React.Fragment key={i + '-options-vp'}>
+                                                <DropdownOption
+                                                    option={c}
+                                                />
+                                            </React.Fragment>
+                                        ))}
+                                    </DropdownOptions>
+                                </Dropdown>
+                                <Button
+                                    className={styles.groupItemVert}
                                     onClick={() => {
                                         if (cameraIsOrthographic)
                                             settingsContext.cameraType = lastCamera.perspective
@@ -591,21 +595,23 @@ export default function ViewportOptions(props) {
 
                                         setCameraIsOrthographic(!cameraIsOrthographic)
                                     }}>
-                                {cameraIcon}
-                            </Button>
-                        </>
-                    )}
-                <div
-                    style={{display: props.engine.renderer?.camera instanceof SphericalCamera ? undefined : 'none'}}
-                    className={[styles.floatingOption, styles.dragInput].join(' ')}
-                    onMouseDown={e => handleGrab(e, props.engine.renderer)}
-                    onDoubleClick={() => {
-                        props.engine.renderer.camera.centerOn = [0, 0, 0]
-                        props.engine.renderer.camera.updateViewMatrix()
-                    }}>
-                    <span className={'material-icons-round'} style={{fontSize: '1rem'}}>back_hand</span>
+                                    {cameraIcon}
+                                </Button>
+                            </>
+                        )}
+                    <div
+                        className={[styles.groupItemVert, styles.dragInput].join(' ')}
+                        style={{borderRadius: '0 0 5px 5px', display: props.engine.renderer?.camera instanceof SphericalCamera ? undefined : 'none'}}
+                        onMouseDown={e => handleGrab(e, props.engine.renderer)}
+                        onDoubleClick={() => {
+                            props.engine.renderer.camera.centerOn = [0, 0, 0]
+                            props.engine.renderer.camera.updateViewMatrix()
+                        }}>
+                        <span className={'material-icons-round'} style={{fontSize: '1rem'}}>back_hand</span>
+                    </div>
                 </div>
             </div>
+
         </>
     )
 

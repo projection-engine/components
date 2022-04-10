@@ -14,9 +14,9 @@ export default function Preferences() {
 
     return (
         <Modal
-            blurIntensity={'5px'}
+            blurIntensity={'1px'}
             open={settingsContext.preferencesVisibility}
-            handleClose={() => null}
+            handleClose={() => settingsContext.preferencesVisibility = false}
             className={styles.wrapper}
         >
 
