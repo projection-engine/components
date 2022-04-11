@@ -64,7 +64,7 @@ export default function Tabs(props) {
                                                 })
                                             }
 
-                                            props.handleTabClose(i - 1, i)
+                                            props.handleTabClose(i - 1, props.tab)
 
                                         }}
                                     >

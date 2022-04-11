@@ -29,6 +29,7 @@ export default function Range(props) {
         else if (currentValue < props.minValue && props.minValue !== undefined)
             currentValue = props.minValue
 
+        ref.current.innerText = currentValue.toFixed(props.precision ? props.precision : 1)
         props.handleChange(currentValue)
     }
     const ref = useRef()
@@ -106,7 +107,7 @@ const submit = () => {
                     }}
                     className={styles.draggable}
                 >
-                    {parseFloat(props.value).toFixed(props.precision ? props.precision : 1)}
+                    {currentValue.toFixed(props.precision ? props.precision : 1)}
                 </div>
             }
             {props.metric ?

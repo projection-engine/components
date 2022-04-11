@@ -2,15 +2,26 @@ import PropTypes from "prop-types";
 
 import styles from './styles/Viewport.module.css'
 import useDimensions from "./hooks/useDimensions";
-import {useRef} from "react";
+import {useMemo, useRef} from "react";
 
 export default function Viewport(props) {
     const ref = useRef()
     useDimensions(
         props.id,
-        props.engine)
-
-
+        props.engine
+    )
+    const {width, height} = useMemo(() => {
+        if (props.resolutionMultiplier !== undefined)
+            return {
+                height: window.screen.height * props.resolutionMultiplier,
+                width: window.screen.width * props.resolutionMultiplier
+            }
+        else
+            return {
+                height: window.screen.height,
+                width: window.screen.width
+            }
+    }, [props.resolutionMultiplier])
     return (
         <div
             ref={ref}
@@ -34,11 +45,14 @@ export default function Viewport(props) {
                 }
             }}>
             <canvas
+                width={width}
+                height={height}
                 style={{background: 'transparent'}}
                 onContextMenu={e => e.preventDefault()}
                 id={props.id + '-canvas'}
             />
-            <div style={{display: props.showPosition ? undefined : 'none'}} className={styles.position} id={props.id + '-camera-position'}/>
+            <div style={{display: props.showPosition ? undefined : 'none'}} className={styles.position}
+                 id={props.id + '-camera-position'}/>
         </div>
     )
 }
@@ -48,5 +62,6 @@ Viewport.propTypes = {
     handleDrop: PropTypes.func,
     engine: PropTypes.object,
     showPosition: PropTypes.bool,
-    id: PropTypes.string
+    id: PropTypes.string,
+    resolutionMultiplier: PropTypes.number
 }
