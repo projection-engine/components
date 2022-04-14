@@ -78,7 +78,14 @@
 
 .metricWrapper{
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     right: 2px;
     font-size: .6rem;
+}
+
+.overflow{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    white-space: nowrap;
 }

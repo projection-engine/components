@@ -24,12 +24,19 @@ import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import COMPONENTS from "../../services/engine/templates/COMPONENTS";
 import CameraComponent from "../../services/engine/ecs/components/CameraComponent";
 import {HISTORY_ACTIONS} from "../../services/utils/historyReducer";
+import Cameras from "./options/Cameras";
+import ShadingTypes from "./options/ShadingTypes";
+import TransformationTypes from "./options/TransformationTypes";
+import AddComponent from "./options/AddComponent";
+import VisualSettings from "./options/VisualSettings";
+import MoreOptions from "./options/MoreOptions";
+import CameraCube from "./options/CameraCube";
 
 
 export default function ViewportOptions(props) {
     const settingsContext = useContext(SettingsProvider)
-    const [res, setRes] = useState(settingsContext.resolutionMultiplier * 100)
-    const [fov, setFov] = useState(settingsContext.fov * 180 / 3.1415)
+
+    const [gridSize, setGridSize] = useState(settingsContext.gridSize)
     const [fullscreen, setFullscreen] = useState(false)
     const [cameraIsOrthographic, setCameraIsOrthographic] = useState(!(settingsContext.cameraType === CAMERA_TYPES.SPHERICAL || settingsContext.cameraType === CAMERA_TYPES.FREE))
     const [lastCamera, setLastCamera] = useState({
@@ -44,9 +51,7 @@ export default function ViewportOptions(props) {
     }
     useEffect(() => {
         document.addEventListener('fullscreenchange', handleFullscreen)
-        return () => {
-            document.removeEventListener('fullscreenchange', handleFullscreen)
-        }
+        return () => document.removeEventListener('fullscreenchange', handleFullscreen)
     }, [fullscreen])
 
     const cameraIcon = useMemo(() => {
@@ -55,42 +60,13 @@ export default function ViewportOptions(props) {
                 <div
                     style={{width: '20px', height: '20px', perspective: '40px', transformStyle: 'preserve-3d'}}>
                         <span
-                            style={{fontSize: '1.2rem', transform: 'rotateX(45deg)'}}
+                            style={{fontSize: '1.1rem', transform: 'rotateX(45deg)'}}
                             className={'material-icons-round'}>grid_on</span>
                 </div>
             )
         else
             return <span style={{fontSize: '1rem'}} className={'material-icons-round'}>grid_on</span>
     }, [cameraIsOrthographic])
-    const cameraOptions = useMemo(() => {
-
-        return Object.keys(CAMERA_TYPES)
-            .map(c => {
-                return {
-                    label: CAMERA_TYPES[c],
-                    icon: settingsContext.cameraType === CAMERA_TYPES[c] ?
-                        <span style={{fontSize: '1.2rem'}}
-                              className={'material-icons-round'}>check</span> : undefined,
-                    onClick: () => {
-                        const isOrtho = CAMERA_TYPES[c] !== CAMERA_TYPES.SPHERICAL && CAMERA_TYPES[c] !== CAMERA_TYPES.FREE
-                        if (isOrtho)
-                            setLastCamera({
-                                ...lastCamera,
-                                ortho: CAMERA_TYPES[c]
-                            })
-                        else
-                            setLastCamera({
-                                ...lastCamera,
-                                perspective: CAMERA_TYPES[c]
-                            })
-                        settingsContext.cameraType = CAMERA_TYPES[c]
-
-                        setCameraIsOrthographic(isOrtho)
-                    },
-                    disabled: settingsContext.cameraType === CAMERA_TYPES[c]
-                }
-            })
-    }, [settingsContext.cameraType, props.engine, lastCamera, cameraIsOrthographic])
 
     const dispatchEntity = (entity) => {
         props.engine.dispatchChanges({
@@ -105,339 +81,19 @@ export default function ViewportOptions(props) {
             {props.minimal ? null :
                 <div className={styles.options} style={{display: fullscreen ? 'none' : undefined}} draggable={false}>
                     <div style={{justifyContent: 'flex-start'}} className={styles.align}>
-                        <Dropdown
-                            hideArrow={true}
-                            className={styles.optionWrapper}>
-                            <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>more_vert</span>
-                            <DropdownOptions>
-                                <DropdownOption option={{
-                                    label: 'Fullscreen',
-                                    shortcut: 'Ctrl + shift + f',
-                                    onClick: () => {
-                                        const el = document.getElementById(props.fullscreenID)
-                                        if (el) {
-                                            if (!fullscreen) {
-                                                el.requestFullscreen()
-                                                    .then(r => {
-                                                        setFullscreen(true)
-                                                    })
-                                            } else {
-                                                document.exitFullscreen()
-                                                    .then(() => setFullscreen(false))
-
-                                            }
-                                        }
-                                    }
-                                }}/>
-                                <DropdownOption option={{
-                                    label: 'Show FPS',
-                                    icon: settingsContext.performanceMetrics ? <span style={{fontSize: '1.2rem'}}
-                                                                                     className={'material-icons-round'}>check</span> : undefined,
-                                    onClick: () => settingsContext.performanceMetrics = !settingsContext.performanceMetrics,
-                                    shortcut: 'Ctrl + shift + h'
-                                }}/>
-
-                                <div className={styles.divider}/>
-
-                                <div className={styles.rangeWrapper}>
-                                    <div className={styles.rangeLabel}>
-                                        Fov
-                                    </div>
-                                    <Range
-                                        accentColor={'green'}
-                                        value={fov} maxValue={120} minValue={45}
-                                        onFinish={() => {
-                                            settingsContext.fov = fov * 3.14 / 180
-                                        }}
-                                        handleChange={e => {
-                                            setFov(e)
-                                        }}
-                                    />
-                                </div>
-                                <div className={styles.rangeWrapper}>
-                                    <div className={styles.rangeLabel}>
-                                        Resolution
-                                    </div>
-                                    <Range
-                                        accentColor={'red'}
-                                        value={res} maxValue={200} minValue={10}
-                                        onFinish={() => {
-                                            settingsContext.resolutionMultiplier = res / 100
-                                        }}
-                                        handleChange={e => {
-                                            setRes(e)
-                                        }}
-                                    />
-                                </div>
-
-                            </DropdownOptions>
-                        </Dropdown>
-
-                        <Dropdown
-                            className={styles.optionWrapper}
-                        >
-                            <div className={styles.summary}>
-                          <span style={{fontSize: '1.1rem'}}
-                                className={'material-icons-round'}>visibility</span>
-                                <div className={styles.overflow}>
-                                    View
-                                </div>
-                            </div>
-                            <DropdownOptions>
-                                <DropdownOption option={{
-                                    label: 'Anti-aliasing',
-                                    keepAlive: true,
-                                    icon: settingsContext.typeRendering === RENDERING_TYPES.FXAA ?
-                                        <span style={{fontSize: '1.2rem'}}
-                                              className={'material-icons-round'}>check</span> : undefined,
-                                    onClick: () => settingsContext.typeRendering = RENDERING_TYPES.FXAA,
-                                }}/>
-                                <DropdownOption option={{
-                                    label: 'AMD FSR',
-                                    keepAlive: true,
-                                    icon: settingsContext.typeRendering === RENDERING_TYPES.FSR ?
-                                        <span style={{fontSize: '1.2rem'}}
-                                              className={'material-icons-round'}>check</span> : undefined,
-                                    onClick: () => settingsContext.typeRendering = RENDERING_TYPES.FSR,
-                                }}/>
-                                <DropdownOption option={{
-                                    label: 'Default',
-                                    keepAlive: true,
-                                    icon: settingsContext.typeRendering === RENDERING_TYPES.DEFAULT ?
-                                        <span style={{fontSize: '1.2rem'}}
-                                              className={'material-icons-round'}>check</span> : undefined,
-                                    onClick: () => settingsContext.typeRendering = RENDERING_TYPES.DEFAULT,
-                                }}/>
-                                <div className={styles.divider}/>
-                                <DropdownOption option={{
-                                    label: 'Grid',
-                                    keepAlive: true,
-                                    icon: settingsContext.gridVisibility ? <span style={{fontSize: '1.2rem'}}
-                                                                                 className={'material-icons-round'}>check</span> : undefined,
-                                    onClick: () => settingsContext.gridVisibility = !settingsContext.gridVisibility,
-                                }}/>
-                                <DropdownOption option={{
-                                    label: 'Icons',
-                                    keepAlive: true,
-                                    icon: settingsContext.iconsVisibility ? <span style={{fontSize: '1.2rem'}}
-                                                                                  className={'material-icons-round'}>check</span> : undefined,
-                                    onClick: () => settingsContext.iconsVisibility = !settingsContext.iconsVisibility
-                                }}/>
-                            </DropdownOptions>
-                        </Dropdown>
-                        <Dropdown className={styles.optionWrapper} hideArrow={true} variant={'outlined'}>
-                            <div className={styles.align}>
-                                <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>add</span> Create
-                            </div>
-                            <DropdownOptions>
-                                <div className={styles.dividerWrapper}>
-                                    Lights
-                                    <div className={styles.divider}/>
-                                </div>
-                                <DropdownOption option={{
-                                    label: 'Point light',
-                                    icon: <span className={'material-icons-round'}
-                                                style={{fontSize: '1.2rem'}}>lightbulb</span>,
-                                    onClick: () => {
-                                        const actor = new Entity(undefined, 'Point light')
-                                        actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
-                                        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                                        actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
-                                        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
-                                        actor.components[COMPONENTS.PICK] = new PickComponent(undefined, props.engine.entities.length)
-                                        dispatchEntity(actor)
-                                    }
-                                }}/>
-                                <DropdownOption option={{
-                                    disabled: true,
-                                    label: 'Spot light',
-                                    icon: <span className={'material-icons-round'}
-                                                style={{fontSize: '1.2rem'}}>flashlight_on</span>,
-                                    onClick: () => {
-                                        const actor = new Entity(undefined, 'Point light')
-                                        actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new PointLightComponent()
-                                        dispatchEntity(actor)
-                                    }
-                                }}/>
-                                <DropdownOption option={{
-
-                                    label: 'Directional light',
-                                    icon: <span className={'material-icons-round'}
-                                                style={{fontSize: '1.1rem'}}>light_mode</span>,
-                                    onClick: () => {
-
-                                        const actor = new Entity(undefined, 'Directional light')
-                                        actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent()
-                                        dispatchEntity(actor)
-                                    }
-                                }}/>
-                                <DropdownOption option={{
-
-                                    label: 'Skylight',
-                                    icon: <span className={'material-icons-round'}
-                                                style={{fontSize: '1.1rem'}}>sky</span>,
-                                    onClick: () => {
-                                        const actor = new Entity(undefined, 'Skylight')
-                                        actor.components[COMPONENTS.SKYLIGHT] = new SkylightComponent()
-                                        dispatchEntity(actor)
-                                    }
-                                }}/>
-                                <DropdownOption option={{
-                                    label: 'Camera',
-                                    icon: <span className={'material-icons-round'}
-                                                style={{fontSize: '1.1rem'}}>videocam</span>,
-                                    onClick: () => {
-                                        const actor = new Entity(undefined, 'Camera')
-                                        actor.components[COMPONENTS.CAMERA] = new CameraComponent()
-
-                                        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                                        actor.components[COMPONENTS.TRANSFORM].rotation = [0, 0, 0]
-                                        actor.components[COMPONENTS.TRANSFORM].scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
-                                        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
-
-
-                                        actor.components[COMPONENTS.PICK] = new PickComponent(undefined, props.engine.entities.length)
-                                        dispatchEntity(actor)
-                                    }
-                                }}/>
-                                <div className={styles.dividerWrapper}>
-                                    Misc
-                                    <div className={styles.divider}/>
-                                </div>
-                                <DropdownOption option={{
-                                    label: 'Skybox',
-                                    icon: <span className={'material-icons-round'}
-                                                style={{fontSize: '1.1rem'}}>cloud</span>,
-                                    onClick: () => {
-                                        const actor = new Entity(undefined, 'Skybox')
-                                        actor.components.SkyboxComponent = new SkyboxComponent(undefined, props.engine.gpu)
-                                        dispatchEntity(actor)
-                                    }
-                                }}/>
-                                <DropdownOption option={{
-                                    label: 'CubeMap',
-                                    icon: <span className={'material-icons-round'}
-                                                style={{fontSize: '1.1rem'}}>panorama_photosphere</span>,
-                                    onClick: () => {
-
-                                        const actor = new Entity(undefined, 'Cubemap')
-                                        actor.components[COMPONENTS.CUBE_MAP] = new CubeMapComponent()
-                                        actor.components[COMPONENTS.CUBE_MAP].cubeMap = new CubeMapInstance(props.engine.gpu, actor.components[COMPONENTS.CUBE_MAP].resolution)
-                                        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                                        actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
-                                        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
-                                        actor.components[COMPONENTS.PICK] = new PickComponent(undefined, props.engine.entities.length)
-                                        dispatchEntity(actor)
-                                    }
-                                }}/>
-                            </DropdownOptions>
-                        </Dropdown>
-
-
+                        <MoreOptions settingsContext={settingsContext} fullscreen={fullscreen}
+                                     setFullscreen={setFullscreen} fullscreenID={props.fullscreenID}/>
+                        <VisualSettings settingsContext={settingsContext}/>
+                        <AddComponent dispatchEntity={dispatchEntity} engine={props.engine}/>
                     </div>
-                    <div style={{justifyContent: 'center'}} className={styles.align}>
-                        <Dropdown
-
-                            className={styles.optionWrapper}>
-                            <div className={styles.summary}>
-                          <span style={{fontSize: '1.1rem'}}
-                                className={'material-icons-round'}>transform</span>
-                                <div className={styles.overflow}>
-                                    {settingsContext.rotationType === ROTATION_TYPES.RELATIVE ? 'Local' : 'Global'}
-                                </div>
-                            </div>
-                            <DropdownOptions>
-                                <DropdownOption option={{
-                                    label: 'Local',
-
-                                    icon: settingsContext.rotationType === ROTATION_TYPES.RELATIVE ?
-                                        <span style={{fontSize: '1.2rem'}}
-                                              className={'material-icons-round'}>check</span> : undefined,
-                                    onClick: () => {
-                                        settingsContext.rotationType = ROTATION_TYPES.RELATIVE
-                                    }
-                                }}/>
-                                <DropdownOption option={{
-                                    label: 'Global',
-                                    icon: settingsContext.rotationType === ROTATION_TYPES.GLOBAL ?
-                                        <span style={{fontSize: '1.2rem'}}
-                                              className={'material-icons-round'}>check</span> : undefined,
-                                    onClick: () => {
-                                        settingsContext.rotationType = ROTATION_TYPES.GLOBAL
-
-                                    }
-                                }}/>
-                            </DropdownOptions>
-                        </Dropdown>
-                    </div>
-                    <div style={{justifyContent: 'flex-end'}} className={styles.align}>
-                        <div className={styles.buttonGroup}>
-                            <Button
-                                className={styles.groupItem}
-                                variant={'minimal'}
-                                highlight={settingsContext.shadingModel === SHADING_MODELS.DETAIL}
-                                onClick={() => {
-                                    settingsContext.shadingModel = SHADING_MODELS.DETAIL
-                                }}
-                                styles={{borderRadius: '5px 0 0 5px'}}>
-                                <div className={styles.shadedIcon}/>
-                                <ToolTip>
-                                    <div style={{textAlign: 'left'}}>
-                                        <div style={{fontWeight: 'normal'}}>
-                                            Viewport shading:
-                                        </div>
-                                        Details
-                                    </div>
-                                </ToolTip>
-                            </Button>
-                            <Button
-                                className={styles.groupItem}
-                                variant={'minimal'}
-                                highlight={settingsContext.shadingModel === SHADING_MODELS.FLAT}
-                                onClick={() => {
-                                    settingsContext.shadingModel = SHADING_MODELS.FLAT
-                                }}>
-                                <div className={styles.flatIcon}/>
-                                <ToolTip>
-                                    <div style={{textAlign: 'left'}}>
-                                        <div style={{fontWeight: 'normal'}}>
-                                            Viewport shading:
-                                        </div>
-                                        Flat
-                                    </div>
-                                </ToolTip>
-                            </Button>
-                            <Button
-                                disabled={true}
-                                className={styles.groupItem}
-                                variant={'minimal'}
-                                highlight={settingsContext.shadingModel === SHADING_MODELS.WIREFRAME}
-                                onClick={() => {
-                                    settingsContext.shadingModel = SHADING_MODELS.WIREFRAME
-                                }}
-                                styles={{borderRadius: '0 5px 5px 0'}}>
-
-                                <div className={'material-icons-round'}
-                                     style={{fontSize: '17px', color: 'var(-colorToApply)'}}>
-                                    language
-                                </div>
-                                <ToolTip>
-                                    <div style={{textAlign: 'left'}}>
-                                        <div style={{fontWeight: 'normal'}}>
-                                            Viewport shading:
-                                        </div>
-                                        Wireframe
-                                    </div>
-                                </ToolTip>
-                            </Button>
-                        </div>
-                    </div>
+                    <TransformationTypes settingsContext={settingsContext}/>
+                    <ShadingTypes settingsContext={settingsContext}/>
                 </div>}
             <div className={styles.floating}
                  style={{left: '4px', right: 'unset', top: 'calc(50% - 35px)', transform: 'translateY(-50%)'}}>
                 <div className={styles.buttonGroup} style={{display: 'grid'}}>
                     <Button
-                        className={styles.groupItemVert}
+                        className={styles.transformationWrapper}
                         variant={settingsContext.gizmo === GIZMOS.TRANSLATION ? 'filled' : undefined}
                         styles={{borderRadius: '5px 5px 0  0'}}
                         highlight={settingsContext.gizmo === GIZMOS.TRANSLATION}
@@ -447,7 +103,7 @@ export default function ViewportOptions(props) {
                         <span className={'material-icons-round'}>open_with</span>
                     </Button>
                     <Button
-                        className={styles.groupItemVert}
+                        className={styles.transformationWrapper}
                         variant={settingsContext.gizmo === GIZMOS.ROTATION ? 'filled' : undefined}
                         highlight={settingsContext.gizmo === GIZMOS.ROTATION}
                         onClick={() => {
@@ -456,7 +112,7 @@ export default function ViewportOptions(props) {
                         <span className={'material-icons-round'}>cached</span>
                     </Button>
                     <Button
-                        className={styles.groupItemVert}
+                        className={styles.transformationWrapper}
                         variant={settingsContext.gizmo === GIZMOS.SCALE ? 'filled' : undefined}
                         styles={{borderRadius: '0 0 5px 5px'}}
                         highlight={settingsContext.gizmo === GIZMOS.SCALE}
@@ -468,120 +124,17 @@ export default function ViewportOptions(props) {
                 </div>
             </div>
             <div className={styles.floating} style={{top: props.minimal ? '4px' : undefined}}>
-                {props.minimal ? null :
-                    (
-                        <div className={styles.cameraView}>
-                            <div className={styles.cube} id={props.id + '-camera'}>
-                                <div
-                                    className={[styles.face, styles.front].join(' ')}
-                                    onClick={() => {
-                                        if (!cameraIsOrthographic) {
-                                            lastCamera.perspective = settingsContext.cameraType
-                                            settingsContext.cameraType = CAMERA_TYPES.FRONT
-                                            setCameraIsOrthographic(true)
-                                        } else {
-                                            settingsContext.cameraType = lastCamera.perspective
-                                            setCameraIsOrthographic(false)
-                                            lastCamera.ortho = settingsContext.cameraType
-                                        }
-                                    }}
-                                >
-                                    Front
-                                </div>
-                                <div className={[styles.face, styles.back].join(' ')}
-                                     onClick={() => {
-                                         if (!cameraIsOrthographic) {
-                                             lastCamera.perspective = settingsContext.cameraType
-                                             settingsContext.cameraType = CAMERA_TYPES.BACK
-                                             setCameraIsOrthographic(true)
-                                         } else {
-                                             settingsContext.cameraType = lastCamera.perspective
-                                             setCameraIsOrthographic(false)
-                                             lastCamera.ortho = settingsContext.cameraType
-                                         }
-                                     }}
-                                >
-                                    Back
-                                </div>
-                                <div className={[styles.face, styles.right].join(' ')}
-                                     onClick={() => {
-                                         if (!cameraIsOrthographic) {
-                                             lastCamera.perspective = settingsContext.cameraType
-                                             settingsContext.cameraType = CAMERA_TYPES.RIGHT
-                                             setCameraIsOrthographic(true)
-                                         } else {
-                                             settingsContext.cameraType = lastCamera.perspective
-                                             setCameraIsOrthographic(false)
-                                             lastCamera.ortho = settingsContext.cameraType
-                                         }
-                                     }}
-                                >Right
-                                </div>
-                                <div className={[styles.face, styles.left].join(' ')}
-                                     onClick={() => {
-                                         if (!cameraIsOrthographic) {
-                                             lastCamera.perspective = settingsContext.cameraType
-                                             settingsContext.cameraType = CAMERA_TYPES.LEFT
-                                             setCameraIsOrthographic(true)
-                                         } else {
-                                             settingsContext.cameraType = lastCamera.perspective
-                                             setCameraIsOrthographic(false)
-                                             lastCamera.ortho = settingsContext.cameraType
-                                         }
-                                     }}
-                                >Left
-                                </div>
-                                <div className={[styles.face, styles.top].join(' ')}
-                                     onClick={() => {
-                                         if (!cameraIsOrthographic) {
-                                             lastCamera.perspective = settingsContext.cameraType
-                                             settingsContext.cameraType = CAMERA_TYPES.TOP
-                                             setCameraIsOrthographic(true)
-                                         } else {
-                                             settingsContext.cameraType = lastCamera.perspective
-                                             setCameraIsOrthographic(false)
-                                             lastCamera.ortho = settingsContext.cameraType
-                                         }
-                                     }}
-                                >Top
-                                </div>
-                                <div className={[styles.face, styles.bottom].join(' ')}
-                                     onClick={() => {
-                                         if (!cameraIsOrthographic) {
-                                             lastCamera.perspective = settingsContext.cameraType
-                                             settingsContext.cameraType = CAMERA_TYPES.BOTTOM
-                                             setCameraIsOrthographic(true)
-                                         } else {
-                                             settingsContext.cameraType = lastCamera.perspective
-                                             setCameraIsOrthographic(false)
-                                             lastCamera.ortho = settingsContext.cameraType
-                                         }
-                                     }}
-                                >Bottom
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                <div className={styles.buttonGroup} style={{display: 'grid'}}>
+                {props.minimal ? null : <CameraCube id={props.id} setCameraIsOrthographic={setCameraIsOrthographic}
+                                                    settingsContext={settingsContext}
+                                                    cameraIsOrthographic={cameraIsOrthographic}
+                                                    lastCamera={lastCamera}/>}
+                <div className={styles.buttonGroup} style={{display: 'grid', gap: '2px'}}>
                     {props.minimal ? null :
                         (
                             <>
-                                <Dropdown
-                                    styles={{borderRadius: '5px 5px 0  0'}}
-                                    className={styles.groupItemVert}
-                                    hideArrow={true}>
-                                    <span className={'material-icons-round'}
-                                          style={{fontSize: '1.1rem'}}>videocam</span>
-                                    <DropdownOptions>
-                                        {cameraOptions.map((c, i) => (
-                                            <React.Fragment key={i + '-options-vp'}>
-                                                <DropdownOption
-                                                    option={c}
-                                                />
-                                            </React.Fragment>
-                                        ))}
-                                    </DropdownOptions>
-                                </Dropdown>
+                                <Cameras lastCamera={lastCamera} cameraIsOrthographic={cameraIsOrthographic}
+                                         setCameraIsOrthographic={setCameraIsOrthographic} setLastCamera={setLastCamera}
+                                         settingsContext={settingsContext}/>
                                 <Button
                                     className={styles.groupItemVert}
                                     onClick={() => {
@@ -592,19 +145,68 @@ export default function ViewportOptions(props) {
 
                                         setCameraIsOrthographic(!cameraIsOrthographic)
                                     }}>
+                                    <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
+                                        <div>- Switch between last Ortho/Perspective</div>
+                                    </ToolTip>
                                     {cameraIcon}
                                 </Button>
+
+                                <Dropdown
+
+                                    className={styles.groupItemVert}
+                                    hideArrow={true}>
+                                    <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
+                                        <div>- Grid size</div>
+                                    </ToolTip>
+                                    <span className={'material-icons-round'}
+                                          style={{fontSize: '1rem'}}>grid_4x4</span>
+                                    <DropdownOptions>
+                                        <div className={styles.rangeWrapper} style={{display: 'grid'}}>
+                                            <div className={styles.rangeLabel}>
+                                                Grid size
+                                            </div>
+                                            <Range
+                                                onFinish={v => {
+                                                    setGridSize(v)
+                                                    settingsContext.gridSize = v
+                                                }} accentColor={'red'}
+                                                handleChange={(v) => setGridSize(v)}
+                                                value={gridSize}
+                                                precision={2}
+                                            />
+                                        </div>
+                                    </DropdownOptions>
+                                </Dropdown>
                             </>
                         )}
-                    <div
-                        className={[styles.groupItemVert, styles.dragInput].join(' ')}
-                        style={{borderRadius: '0 0 5px 5px', display: props.engine.renderer?.camera instanceof SphericalCamera ? undefined : 'none'}}
-                        onMouseDown={e => handleGrab(e, props.engine.renderer)}
-                        onDoubleClick={() => {
-                            props.engine.renderer.camera.centerOn = [0, 0, 0]
-                            props.engine.renderer.camera.updateViewMatrix()
-                        }}>
-                        <span className={'material-icons-round'} style={{fontSize: '1rem'}}>back_hand</span>
+                    <div className={styles.buttonGroup} style={{
+                        display: props.engine.renderer?.camera instanceof SphericalCamera ? 'grid' : 'none',
+                        transform: 'translateY(12px)',
+                        gap: '2px'
+                    }}>
+                        <div
+                            className={[styles.groupItemVert, styles.dragInput].join(' ')}
+                            onMouseDown={e => handleGrab(e, props.engine.renderer, 0)}
+                        >
+                            <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
+                                <div>- Drag Y to zoom in/out</div>
+                            </ToolTip>
+                            <span className={'material-icons-round'}>zoom_in</span>
+                        </div>
+                        <div
+                            className={[styles.groupItemVert, styles.dragInput].join(' ')}
+                            onMouseDown={e => handleGrab(e, props.engine.renderer, 1)}
+                            onDoubleClick={() => {
+                                props.engine.renderer.camera.centerOn = [0, 0, 0]
+                                props.engine.renderer.camera.updateViewMatrix()
+                            }}>
+                            <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
+                                <div>- Drag X to move forward/backwards</div>
+                                <div>- Drag Y to move up/down</div>
+                                <div>- Double click to center</div>
+                            </ToolTip>
+                            <span className={'material-icons-round'}>back_hand</span>
+                        </div>
                     </div>
                 </div>
             </div>

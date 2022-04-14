@@ -60,25 +60,35 @@ export default function importMesh(type, engine) {
 }
 
 
-export function handleGrab(event, engine) {
+export function handleGrab(event, engine, type) {
     let requested = false
     const handleMouseMove = (e) => {
         if (!requested) {
             e.target.requestPointerLock()
             requested = true
         }
+
+
         const incrementX = ((0.1) * e.movementX),
             incrementY = ((0.1) * e.movementY),
             c = [...engine.camera.centerOn]
-        let newPosition = linearAlgebraMath.multiplyMatrixVec(linearAlgebraMath.rotationMatrix('y', engine.camera.yaw), new Vector(incrementX, 0, 0))
-        newPosition = newPosition.matrix
 
-        c[0] += newPosition[0]
-        c[1] -= incrementY
-        c[2] += newPosition[2]
+        if(type === 1) {
+            let newPosition = linearAlgebraMath.multiplyMatrixVec(linearAlgebraMath.rotationMatrix('y', engine.camera.yaw), new Vector(incrementX, 0, 0))
+            newPosition = newPosition.matrix
 
-        engine.camera.centerOn = c
-        engine.camera.updateViewMatrix()
+            c[0] += newPosition[0]
+            c[1] -= incrementY
+            c[2] += newPosition[2]
+
+            engine.camera.centerOn = c
+            engine.camera.updateViewMatrix()
+        }
+        else{
+
+            engine.camera.radius +=  (0.1) * e.movementX
+            engine.camera.updateViewMatrix()
+        }
     }
     const handleMouseUp = () => {
         document.exitPointerLock()

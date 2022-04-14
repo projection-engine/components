@@ -40,17 +40,17 @@ export default function Range(props) {
 const submit = () => {
     let finalValue = parseFloat(inputCache)
 
-    if (props.onFinish !== undefined)
-        props.onFinish()
-
     if (!isNaN(finalValue)) {
         if (props.maxValue !== undefined && finalValue > props.maxValue)
             finalValue = props.maxValue
         if (props.minValue !== undefined && finalValue < props.minValue)
             finalValue = props.minValue
 
-        props.handleChange(props.integer ? parseInt(finalValue) : finalValue)
+        props.handleChange(finalValue)
     }
+
+    if (props.onFinish !== undefined)
+        props.onFinish(finalValue)
 
     setFocused(false)
 }
@@ -72,6 +72,7 @@ const submit = () => {
                     }} type={'number'}
                     style={{cursor: 'text', background: 'var(--fabric-background-quaternary)'}}
                     onKeyDown={k => {
+
                         if (k.key === KEYS.Enter)
                             submit()
                     }}
@@ -92,7 +93,7 @@ const submit = () => {
                     onMouseUp={() => {
                         document.exitPointerLock()
                         if (props.onFinish !== undefined)
-                            props.onFinish()
+                            props.onFinish(currentValue)
                         if (!props.disabled) {
                             if (!dragged)
                                 setFocused(true)
@@ -107,7 +108,9 @@ const submit = () => {
                     }}
                     className={styles.draggable}
                 >
-                    {currentValue.toFixed(props.precision ? props.precision : 1)}
+                    <div className={styles.overflow}>
+                        {currentValue.toFixed(props.precision ? props.precision : 1)}
+                    </div>
                 </div>
             }
             {props.metric ?
