@@ -1,6 +1,6 @@
 import styles from "../styles/ViewportOptions.module.css";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import ROTATION_TYPES from "../../../services/engine/editor/gizmo/ROTATION_TYPES";
+import ROTATION_TYPES from "../../../engine/editor/gizmo/ROTATION_TYPES";
 import PropTypes from "prop-types";
 
 export default function TransformationTypes(props){

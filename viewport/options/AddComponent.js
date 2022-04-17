@@ -1,16 +1,16 @@
 import styles from "../styles/ViewportOptions.module.css";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import Entity from "../../../services/engine/shared/ecs/basic/Entity";
-import COMPONENTS from "../../../services/engine/shared/templates/COMPONENTS";
-import PointLightComponent from "../../../services/engine/shared/ecs/components/PointLightComponent";
-import TransformComponent from "../../../services/engine/shared/ecs/components/TransformComponent";
-import PickComponent from "../../../services/engine/shared/ecs/components/PickComponent";
-import DirectionalLightComponent from "../../../services/engine/shared/ecs/components/DirectionalLightComponent";
-import SkylightComponent from "../../../services/engine/shared/ecs/components/SkyLightComponent";
-import CameraComponent from "../../../services/engine/shared/ecs/components/CameraComponent";
-import SkyboxComponent from "../../../services/engine/shared/ecs/components/SkyboxComponent";
-import CubeMapComponent from "../../../services/engine/shared/ecs/components/CubeMapComponent";
-import CubeMapInstance from "../../../services/engine/shared/instances/CubeMapInstance";
+import Entity from "../../../engine/shared/ecs/basic/Entity";
+import COMPONENTS from "../../../engine/shared/templates/COMPONENTS";
+import PointLightComponent from "../../../engine/shared/ecs/components/PointLightComponent";
+import TransformComponent from "../../../engine/shared/ecs/components/TransformComponent";
+import PickComponent from "../../../engine/shared/ecs/components/PickComponent";
+import DirectionalLightComponent from "../../../engine/shared/ecs/components/DirectionalLightComponent";
+import SkylightComponent from "../../../engine/shared/ecs/components/SkyLightComponent";
+import CameraComponent from "../../../engine/shared/ecs/components/CameraComponent";
+import SkyboxComponent from "../../../engine/shared/ecs/components/SkyboxComponent";
+import CubeMapComponent from "../../../engine/shared/ecs/components/CubeMapComponent";
+import CubeMapInstance from "../../../engine/shared/instances/CubeMapInstance";
 import PropTypes from "prop-types";
 
 export default function AddComponent(props){

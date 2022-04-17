@@ -1,5 +1,5 @@
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import RENDERING_TYPES from "../../../services/engine/shared/templates/RENDERING_TYPES";
+import RENDERING_TYPES from "../../../engine/shared/templates/RENDERING_TYPES";
 import styles from "../styles/ViewportOptions.module.css";
 import PropTypes from "prop-types";
 

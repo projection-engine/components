@@ -90,7 +90,7 @@ export default function ColorPicker(props) {
                         variant={'filled'}
                         onClick={() => {
                             setOpen(false)
-                            props.submit(`rgb(${value.r},${value.g},${value.b})`)
+                            props.submit(`rgb(${value.r},${value.g},${value.b})`, [value.r, value.g, value.b])
                         }}>
                         Ok
                     </Button>

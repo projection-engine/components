@@ -1,6 +1,6 @@
 import {Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core";
 import styles from "../styles/ViewportOptions.module.css";
-import CAMERA_TYPES from "../../../services/engine/editor/camera/CAMERA_TYPES";
+import CAMERA_TYPES from "../../../engine/editor/camera/CAMERA_TYPES";
 import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 
