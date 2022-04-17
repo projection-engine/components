@@ -64,11 +64,10 @@ export default function Selector(props) {
     }, [currentSort, quickAccess.images, quickAccess.meshes, state, searchString, props.selected])
 
     useEffect(() => {
-        let name = 'Empty'
+        let name = 'Empty',
+            data = (typeof props.selected === 'object' && Object.keys(props.selected).length > 0) ? props.selected : quickAccess[props.type + 's']?.find(e => e.registryID === props.selected)
 
-        setState((typeof props.selected === 'object' && Object.keys(props.selected).length > 0) ? props.selected : {
-            name
-        })
+        setState(data ? data : {name})
     }, [props.selected])
     const [className, setClassName] = useState('')
     return (
@@ -157,7 +156,8 @@ export default function Selector(props) {
 }
 
 Selector.propTypes = {
+
     type: PropTypes.oneOf(['image', 'mesh', 'material', 'script']),
     handleChange: PropTypes.func,
-    selected: PropTypes.object
+    selected: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 }

@@ -40,7 +40,6 @@ export default function TreeView(props) {
                             if(props.draggable) {
 
                                 e.preventDefault()
-                                console.log(t)
                                 if(t)
                                     t.classList.remove(styles.hoveredNode)
                             }
@@ -50,7 +49,6 @@ export default function TreeView(props) {
                         onDrop={(e) => {
                             if(props.draggable) {
                                 e.preventDefault()
-                                console.log(t)
                                 if(t)
                                     t.classList.remove(styles.hoveredNode)
                             }
