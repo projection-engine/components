@@ -2,7 +2,7 @@ import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 import styles from "../styles/Options.module.css";
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import groupBy from "../../../services/utils/misc/groupBy";
+import groupBy from "../../../services/engine/utils/groupBy";
 
 export default function Options(props) {
 

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import styles from './styles/Range.module.css'
 import {useEffect, useRef, useState} from "react";
-import {KEYS} from "../../services/hooks/useHotKeys";
+import {KEYS} from "../../pages/project/utils/hooks/useHotKeys";
 
 export default function Range(props) {
     const [focused, setFocused] = useState(false)
