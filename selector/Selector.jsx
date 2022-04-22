@@ -47,10 +47,7 @@ export default function Selector(props) {
                         <SelectorItem
                             path={quickAccess.fileSystem.path}
                             type={props.type}
-                            data={{
-                                ...t,
-                                blob: t.preview
-                            }}
+                            data={t}
                         />
                     </Button>
                 </React.Fragment>
@@ -103,10 +100,7 @@ export default function Selector(props) {
                 <SelectorItem
                     type={props.type}
                     path={quickAccess.fileSystem.path}
-                    data={{
-                        ...state,
-                        blob: state.preview
-                    }}
+                    data={state}
                 />
                 <DropdownOptions>
                     <div className={styles.searchWrapper}>

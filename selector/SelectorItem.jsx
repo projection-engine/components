@@ -1,16 +1,21 @@
 import PropTypes from "prop-types";
 import styles from './styles/SelectorItem.module.css'
 import {useMemo} from "react";
-import usePreview from "../../pages/project/utils/hooks/usePreview";
+import usePreview from "../preview/usePreview";
+import Preview from "../preview/Preview";
 
 export default function SelectorItem(props) {
-    const imageRef = usePreview(props.path + '\\previews\\' + props.data.registryID + '.preview')
+    const p = useMemo(() => {
+        return props.path + '\\previews\\' + props.data.registryID + '.preview'
+    }, [props.data?.registryID])
     const icon = useMemo(() => {
         switch (props.type) {
             case 'mesh':
                 return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>view_in_ar</span>
             case 'image':
-                return <img ref={imageRef} src={undefined} alt={props.data.name} className={styles.image}/>
+                return (
+                    <Preview iconStyles={{fontSize: '1.6rem'}} path={p} className={styles.image}/>
+                )
             case 'material':
                 return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>texture</span>
             case 'script':
