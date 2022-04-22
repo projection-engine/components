@@ -1,21 +1,18 @@
 import PropTypes from "prop-types";
 import styles from './styles/SelectorItem.module.css'
 import {useMemo} from "react";
+import usePreview from "../../pages/project/utils/hooks/usePreview";
 
 export default function SelectorItem(props) {
+    const imageRef = usePreview(props.path + '\\previews\\' + props.data.registryID + '.preview')
     const icon = useMemo(() => {
         switch (props.type) {
             case 'mesh':
                 return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>view_in_ar</span>
             case 'image':
-                return props.data.blob ?
-                    <img src={props.data.blob} alt={props.data.name} className={styles.image}/>
-                    :
-                    <span className={'material-icons-round'} style={{fontSize: '2rem'}}>image</span>
-
+                return <img ref={imageRef} src={undefined} alt={props.data.name} className={styles.image}/>
             case 'material':
                 return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>texture</span>
-
             case 'script':
                 return <span className={'material-icons-round'} style={{fontSize: '2rem'}}>engineering</span>
             default:
@@ -33,10 +30,11 @@ export default function SelectorItem(props) {
     )
 }
 SelectorItem.propTypes = {
+    path: PropTypes.string,
     type: PropTypes.oneOf(['image', 'mesh', 'material', 'script']),
     data: PropTypes.shape({
         name: PropTypes.string,
-        id: PropTypes.string,
+        registryID: PropTypes.string,
         blob: PropTypes.string,
         creationDate: PropTypes.string,
         fallback: PropTypes.bool

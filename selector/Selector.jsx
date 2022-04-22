@@ -45,6 +45,7 @@ export default function Selector(props) {
                         }}
                     >
                         <SelectorItem
+                            path={quickAccess.fileSystem.path}
                             type={props.type}
                             data={{
                                 ...t,
@@ -101,6 +102,7 @@ export default function Selector(props) {
                 className={[styles.button, className].join(' ')}>
                 <SelectorItem
                     type={props.type}
+                    path={quickAccess.fileSystem.path}
                     data={{
                         ...state,
                         blob: state.preview

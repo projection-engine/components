@@ -13,11 +13,13 @@
     display: flex;
     align-items: center;
 
-    background: var(--fabric-background-quaternary);
+    background: var(--fabric-background-tertiary);
+    border: var(--fabric-border-primary) 1px solid;
+    border-radius:5px;
+
     height: 100%;
     width: 100%;
-    border-radius: 5px;
-    border: transparent 1px solid;
+
     transition: 150ms linear;
     color: var(--fabric-color-secondary);
 }
