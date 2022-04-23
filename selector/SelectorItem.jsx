@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import styles from './styles/SelectorItem.module.css'
 import {useMemo} from "react";
-import usePreview from "../preview/usePreview";
 import Preview from "../preview/Preview";
 
 export default function SelectorItem(props) {
