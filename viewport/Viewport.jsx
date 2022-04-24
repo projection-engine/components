@@ -2,10 +2,10 @@ import PropTypes from "prop-types";
 
 import styles from './styles/Viewport.module.css'
 import useDimensions from "./hooks/useDimensions";
-import {useCallback, useMemo, useRef} from "react";
-import DragDrop from "../dragdrop/DragDrop";
+import {useMemo, useRef} from "react";
 
 export default function Viewport(props) {
+    const ref = useRef()
     useDimensions(
         props.id,
         props.engine
@@ -23,16 +23,26 @@ export default function Viewport(props) {
             }
     }, [props.resolutionMultiplier])
     return (
-        <DragDrop
+        <div
+            ref={ref}
             className={styles.viewport}
-            dragIdentifier={'file-item-mesh'}
-            onDrop={e => {
-                if (props.allowDrop)
-                    props.handleDrop([e?.registryID])
+            onDragOver={e => {
+                if (props.allowDrop) {
+                    e.preventDefault()
+                    ref.current?.classList.add(styles.hovered)
+                }
             }}
-            disabled={true}
-            dragData={null}
-        >
+            onDragLeave={e => {
+                e.preventDefault()
+                ref.current?.classList.remove(styles.hovered)
+            }}
+            onDrop={e => {
+                if (props.allowDrop) {
+                    e.preventDefault()
+                    ref.current?.classList.remove(styles.hovered)
+                    props.handleDrop(e)
+                }
+            }}>
             <canvas
                 width={width}
                 height={height}
@@ -42,7 +52,7 @@ export default function Viewport(props) {
             />
             <div style={{display: props.showPosition ? undefined : 'none'}} className={styles.position}
                  id={props.id + '-camera-position'}/>
-        </DragDrop>
+        </div>
     )
 }
 
