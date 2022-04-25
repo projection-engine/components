@@ -65,7 +65,7 @@
 }
 
 .rangeLabel {
-    font-size: .7rem !important;
+    font-size: .75rem !important;
     color: var(--fabric-color-secondary);
     font-weight: 550;
 }
@@ -99,6 +99,7 @@
 }
 
 .overflow {
+    max-width: 100%;
     width: fit-content;
     white-space: nowrap;
     overflow: hidden;
@@ -292,12 +293,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(45, 45, 45, .9);
+    /*border: rgb(63, 63, 63) 1px solid;*/
 
-    background: rgba(25, 25, 25, .9);
 
-
-    height: 25px;
-    width: 25px;
+    height: 27px;
+    width: 27px;
 
     padding: 0 !important;
     border-radius: 50%;
@@ -312,16 +313,18 @@
 }
 
 .transformationWrapper {
+    position: relative;
     --colorToApply: white;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: rgba(35, 35, 35, .9);
+    background: rgba(45, 45, 45, 1);
+    border: rgb(63, 63, 63) 1px solid;
 
 
     height: 35px;
-    width: 35px;
+    width: 37px;
 
     padding: 0 !important;
     border-radius: 0;
@@ -329,8 +332,24 @@
 
 }
 
-.transformationWrapper > * {
+.transformationWrapper > span {
     font-size: 1.2rem !important;
     color-rendering: optimizeSpeed !important;
     shape-rendering: optimizeSpeed !important;
+}
+
+.button {
+
+    background: var(--fabric-border-primary);
+    padding: 4px 16px !important;
+}
+.button:disabled{
+    color: #999999;
+    background: var(--fabric-background-tertiary);
+}
+.enableButton{
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
