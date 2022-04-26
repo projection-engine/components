@@ -293,17 +293,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(45, 45, 45, .9);
-    /*border: rgb(63, 63, 63) 1px solid;*/
 
+    background: var(--fabric-background-primary);
+    color: var(--fabric-color-primary);
 
     height: 27px;
     width: 27px;
-
     padding: 0 !important;
     border-radius: 50%;
-    color: white;
-
 }
 
 .groupItemVert > * {
@@ -319,16 +316,16 @@
     align-items: center;
     justify-content: center;
 
-    background: rgba(45, 45, 45, 1);
-    border: rgb(63, 63, 63) 1px solid;
-
+    background: var(--fabric-background-primary);
+    border: var(--fabric-border-primary) 1px solid;
+    color: var(--fabric-color-primary);
 
     height: 35px;
     width: 37px;
 
     padding: 0 !important;
     border-radius: 0;
-    color: white;
+
 
 }
 
