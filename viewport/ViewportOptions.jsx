@@ -80,9 +80,9 @@ export default function ViewportOptions(props) {
                  style={{
                      left: '4px',
                      right: 'unset',
-                     top: 'calc(50% - 35px)',
-                     transform: 'translateY(-50%)',
-                     gap: '16px'
+                     top: '36px',
+                     // transform: 'translateY(-50%)',
+                     gap: '8px'
                  }}>
 
 
