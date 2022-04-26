@@ -13,7 +13,7 @@
 .button {
 
     width: 100%;
-    padding: 0 !important;
+    padding: 0 8px !important;
     height: 45px;
     max-width: 100%;
     overflow: hidden;

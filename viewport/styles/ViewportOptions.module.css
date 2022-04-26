@@ -317,8 +317,7 @@
     justify-content: center;
 
     background: var(--fabric-background-primary);
-    border: var(--fabric-border-primary) 1px solid;
-    color: var(--fabric-color-primary);
+
 
     height: 35px;
     width: 37px;

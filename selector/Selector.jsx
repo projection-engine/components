@@ -95,7 +95,6 @@ export default function Selector(props) {
             }}>
             <Dropdown
                 wrapperClassname={styles.modal}
-                variant={'outlined'}
                 className={[styles.button, className].join(' ')}>
                 <SelectorItem
                     type={props.type}

@@ -127,7 +127,7 @@
     display: block;
     text-align: right;
     padding-right: 8px;
-    color: var(--fabric-color-quaternary);
+    color: var(--fabric-color-tertiary);
     cursor: default;
 }
 

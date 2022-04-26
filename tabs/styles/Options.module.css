@@ -36,7 +36,7 @@
 
     font-size: .7rem !important;
     font-weight: 550 !important;
-    color: var(--fabric-color-tertiary) ;
+    color: var(--fabric-color-secondary) ;
 
 }
 .option:active{
