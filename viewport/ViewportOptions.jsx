@@ -56,11 +56,11 @@ export default function ViewportOptions(props) {
     }, [cameraIsOrthographic])
 
     const dispatchEntity = (entity) => {
+        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
         props.engine.dispatchChanges({
             type: HISTORY_ACTIONS.PUSHING_DATA,
             payload: [entity]
         })
-        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }
 
     return (
