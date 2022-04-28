@@ -1,0 +1,25 @@
+.accordion {
+    display: grid;
+    border: var(--fabric-border-primary) 1px solid !important;
+    max-width: 100%;
+    overflow: hidden;
+    background-color: var(--fabric-background-primary);
+    user-select: none;
+    max-height: unset !important;
+    min-height: unset !important;
+}
+
+.content {
+    padding: 4px;
+
+    max-width: 100%;
+    overflow: hidden;
+    background: var(--fabric-background-secondary);
+}
+
+.summary {
+    height: 30px;
+    background-color: var(--fabric-border-primary) !important;
+    border-radius: 5px 5px 0 0;
+    font-size: .75rem !important;
+}

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useMemo, useState} from 'react'
 import PropTypes from "prop-types";
 import styles from "./styles/ViewportOptions.module.css";
-import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core";
+import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core";
 import Range from "../range/Range";
 import SettingsProvider from "../../pages/project/utils/hooks/SettingsProvider";
 import CAMERA_TYPES from "../../engine/editor/camera/CAMERA_TYPES";
@@ -12,7 +12,6 @@ import GIZMOS from "../../engine/editor/gizmo/GIZMOS";
 import {HISTORY_ACTIONS} from "../../pages/project/utils/hooks/historyReducer";
 import Cameras from "./options/Cameras";
 import ShadingTypes from "./options/ShadingTypes";
-import TransformationTypes from "./options/TransformationTypes";
 import AddComponent from "./options/AddComponent";
 import VisualSettings from "./options/VisualSettings";
 import MoreOptions from "./options/MoreOptions";

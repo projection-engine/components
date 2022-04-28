@@ -1,10 +1,6 @@
-import React, {useContext, useEffect, useRef} from "react";
+import React, {useEffect} from "react";
 
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
-
-import {ThemeContext} from "@f-ui/core";
-import DragDropProvider from "./hooks/DragDropProvider";
 import useDragDrop from "./hooks/useDragDrop";
 
 export default function DragDrop(props) {
