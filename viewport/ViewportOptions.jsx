@@ -5,7 +5,7 @@ import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core";
 import Range from "../range/Range";
 import SettingsProvider from "../../pages/project/utils/hooks/SettingsProvider";
 import CAMERA_TYPES from "../../engine/editor/camera/CAMERA_TYPES";
-import {ENTITY_ACTIONS} from "../../engine/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 import SphericalCamera from "../../engine/editor/camera/prespective/SphericalCamera";
 import {handleGrab} from "./utils";
 import GIZMOS from "../../engine/editor/gizmo/GIZMOS";

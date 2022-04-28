@@ -1,10 +1,11 @@
-import MeshInstance from "../../engine/shared/instances/MeshInstance";
-import Entity from "../../engine/shared/ecs/basic/Entity";
-import TransformComponent from "../../engine/shared/ecs/components/TransformComponent";
-import MeshComponent from "../../engine/shared/ecs/components/MeshComponent";
-import PickComponent from "../../engine/shared/ecs/components/PickComponent";
-import {ENTITY_ACTIONS} from "../../engine/utils/entityReducer";
+import MeshInstance from "../../engine/instances/MeshInstance";
+import Entity from "../../engine/ecs/basic/Entity";
+import TransformComponent from "../../engine/ecs/components/TransformComponent";
+import MeshComponent from "../../engine/ecs/components/MeshComponent";
+
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 import {linearAlgebraMath, Vector} from "pj-math";
+import COMPONENTS from "../../engine/templates/COMPONENTS";
 
 export default function importMesh(type, engine) {
     let promise, name
@@ -47,9 +48,8 @@ export default function importMesh(type, engine) {
             transformation.scaling = data.scaling
             transformation.rotation = data.rotation
             transformation.translation = data.translation
-            entity.components.MeshComponent = new MeshComponent(undefined, mesh.id)
-            entity.components.TransformComponent = transformation
-            entity.components.PickComponent = new PickComponent(undefined, engine.entities.length + 1)
+            entity.components[COMPONENTS.MESH] = new MeshComponent(undefined, mesh.id)
+            entity.components[COMPONENTS.TRANSFORM] = transformation
 
             engine.dispatchEntities({
                 type: ENTITY_ACTIONS.ADD,
