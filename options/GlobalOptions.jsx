@@ -1,23 +1,20 @@
 import styles from './styles/GlobalOptions.module.css'
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import PropTypes from "prop-types";
 import {useContext} from "react";
 import SettingsProvider from "../../pages/project/utils/hooks/SettingsProvider";
+import {Link} from "react-router-dom";
 
 export default function GlobalOptions(props) {
     const settingsContext = useContext(SettingsProvider)
     return (
         <div className={styles.wrapper}>
-            <Button
-                onClick={() => {
-                    props.save().then(() => {
-                        props.redirect()
-                    })
-                }}
-                className={styles.logoWrapper}>
-                {/*<span className={'material-icons-round'}>home</span>*/}
-                Projection
-            </Button>
+            <Link to={'/'}>
+                <Button
+                    className={styles.logoWrapper}>
+                    {/*<span className={'material-icons-round'}>home</span>*/}
+                    Projection
+                </Button>
+            </Link>
             <Dropdown className={styles.dropdownLabel} align={'bottom'} justify={'start'}>
                 File
                 <DropdownOptions>
@@ -31,7 +28,7 @@ export default function GlobalOptions(props) {
                     <DropdownOption option={{
                         label: 'Export project',
                         icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>save_alt</span>,
-                        onClick: () => props.downloadProject()
+                        onClick: () => null
                     }}/>
 
                     <DropdownOption option={{
@@ -79,9 +76,4 @@ export default function GlobalOptions(props) {
             </Dropdown>
         </div>
     )
-}
-GlobalOptions.propTypes = {
-    downloadProject: PropTypes.func.isRequired,
-    save: PropTypes.func.isRequired,
-    redirect: PropTypes.func.isRequired
 }

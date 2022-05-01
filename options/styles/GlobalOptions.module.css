@@ -20,7 +20,7 @@
 
 .logoWrapper{
     width: fit-content;
-
+height: 25px;
     background: var(--fabric-background-primary) !important;
     display: flex;
     align-items: center;
