@@ -63,7 +63,7 @@ export default function ViewportOptions(props) {
     }
 
     return (
-        <>
+        <span style={{display: props.executingAnimation || fullscreen? 'none' : undefined}}>
             {props.minimal ? null :
                 <div className={styles.options} style={{display: fullscreen ? 'none' : undefined}} draggable={false}>
                     <div style={{justifyContent: 'flex-start'}} className={styles.align}>
@@ -343,11 +343,12 @@ export default function ViewportOptions(props) {
                 </div>
             </div>
 
-        </>
+        </span>
     )
 
 }
 ViewportOptions.propTypes = {
+    executingAnimation: PropTypes.bool,
     minimal: PropTypes.bool,
     fullscreenID: PropTypes.string,
     engine: PropTypes.object,

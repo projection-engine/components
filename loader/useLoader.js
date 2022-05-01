@@ -1,9 +1,7 @@
-import React, {useEffect, useLayoutEffect, useReducer, useRef} from "react";
+import React, {useLayoutEffect, useRef} from "react";
 
 import styles from "./styles/Loader.module.css";
 import randomInRange from "./utils/randomInRange";
-
-
 
 
 export default function useLoader(dark, accentColor) {
