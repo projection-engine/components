@@ -321,7 +321,7 @@ export default function ViewportOptions(props) {
                             onMouseDown={e => handleGrab(e, props.engine.renderer, 0)}
                         >
                             <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
-                                <div>- Drag Y to zoom in/out</div>
+                                <div>- Drag X to zoom in/out</div>
                             </ToolTip>
                             <span className={'material-icons-round'}>zoom_in</span>
                         </div>
