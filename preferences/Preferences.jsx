@@ -47,34 +47,7 @@ export default function Preferences() {
                             </div>
                         </Accordion>
                     </Tab>
-                    <Tab label={'Viewport'} className={styles.tab}>
-                        <Accordion>
-                            <AccordionSummary styles={{maxWidth: '100%', overflow: 'hidden'}}>
-                                Gamma
-                            </AccordionSummary>
-                            <div style={{padding: '4px'}}>
-                                <Range
-                                    accentColor={'yellow'}
-                                    value={settingsContext.gamma}
-                                    minValue={.1}
-                                    maxValue={10}
-                                    handleChange={e => settingsContext.gamma = e}/>
-                            </div>
-                        </Accordion>
-                        <Accordion>
-                            <AccordionSummary styles={{maxWidth: '100%', overflow: 'hidden'}}>
-                                Exposure
-                            </AccordionSummary>
-                            <div style={{padding: '4px'}}>
-                                <Range
-                                    accentColor={'yellow'}
-                                    value={settingsContext.exposure}
-                                    minValue={.1}
-                                    maxValue={10}
-                                    handleChange={e => settingsContext.exposure = e}/>
-                            </div>
-                        </Accordion>
-                    </Tab>
+
                 </VerticalTabs>
                 <div className={styles.submitWrapper}>
                     <Button
