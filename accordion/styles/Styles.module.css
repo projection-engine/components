@@ -22,4 +22,11 @@
     background-color: var(--fabric-border-primary) !important;
     border-radius: 5px 5px 0 0;
     font-size: .75rem !important;
+
+}
+
+.overflow{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
