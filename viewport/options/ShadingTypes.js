@@ -1,6 +1,6 @@
 import styles from "../styles/ViewportOptions.module.css";
 import {Button, ToolTip} from "@f-ui/core";
-import {SHADING_MODELS} from "../../../pages/project/utils/hooks/useSettings";
+import {SHADING_MODELS} from "../../../pages/project/hooks/useSettings";
 import PropTypes from "prop-types";
 
 export default function ShadingTypes(props){

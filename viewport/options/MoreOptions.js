@@ -58,22 +58,6 @@ export default function MoreOptions(props) {
                         }}
                     />
                 </div>
-                <div className={styles.rangeWrapper}>
-                    <div className={styles.rangeLabel}>
-                        Resolution
-                    </div>
-                    <Range
-                        accentColor={'red'}
-                        value={res} maxValue={200} minValue={10}
-                        onFinish={() => {
-                            settingsContext.resolutionMultiplier = res / 100
-                        }}
-                        handleChange={e => {
-                            setRes(e)
-                        }}
-                    />
-                </div>
-
             </DropdownOptions>
         </Dropdown>
     )

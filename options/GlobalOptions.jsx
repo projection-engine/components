@@ -1,7 +1,7 @@
 import styles from './styles/GlobalOptions.module.css'
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import {useContext} from "react";
-import SettingsProvider from "../../pages/project/utils/hooks/SettingsProvider";
+import SettingsProvider from "../../pages/project/hooks/SettingsProvider";
 import {Link} from "react-router-dom";
 
 export default function GlobalOptions(props) {
