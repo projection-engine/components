@@ -10,18 +10,7 @@ export default function Viewport(props) {
         props.id,
         props.engine
     )
-    const {width, height} = useMemo(() => {
-        if (props.resolutionMultiplier !== undefined)
-            return {
-                height: window.screen.height * props.resolutionMultiplier,
-                width: window.screen.width * props.resolutionMultiplier
-            }
-        else
-            return {
-                height: window.screen.height,
-                width: window.screen.width
-            }
-    }, [props.resolutionMultiplier])
+
     return (
         <div
             ref={ref}
@@ -44,8 +33,8 @@ export default function Viewport(props) {
                 }
             }}>
             <canvas
-                width={width}
-                height={height}
+                width={window.screen.width}
+                height={window.screen.height}
                 style={{background: 'transparent'}}
                 onContextMenu={e => e.preventDefault()}
                 id={props.id + '-canvas'}
