@@ -63,7 +63,7 @@ export default function ViewportOptions(props) {
     }
 
     return (
-        <span style={{display: props.executingAnimation || fullscreen? 'none' : undefined}}>
+        <span style={{display: props.executingAnimation || fullscreen ? 'none' : undefined}}>
             {props.minimal ? null :
                 <div className={styles.options} style={{display: fullscreen ? 'none' : undefined}} draggable={false}>
                     <div style={{justifyContent: 'flex-start'}} className={styles.align}>
@@ -89,7 +89,7 @@ export default function ViewportOptions(props) {
                     styles={{borderRadius: '5px'}}
                     className={styles.transformationWrapper}
                     onClick={() => {
-                        if(settingsContext.rotationType !== ROTATION_TYPES.GLOBAL)
+                        if (settingsContext.rotationType !== ROTATION_TYPES.GLOBAL)
                             settingsContext.rotationType = ROTATION_TYPES.GLOBAL
                         else
                             settingsContext.rotationType = ROTATION_TYPES.RELATIVE
@@ -162,24 +162,28 @@ export default function ViewportOptions(props) {
                             <div style={{display: 'flex', padding: '4px', gap: '4px'}}>
                                 <div style={{display: 'grid', gap: '4px', width: '100%'}}>
                                     {[1, .5, .25].map(e => (
-                                        <Button
-                                            disabled={!settingsContext.gridScaleSize}
-                                            styles={{width: '100%'}} className={styles.button}
-                                            variant={settingsContext.gridScaleSize === e ? 'filled' : undefined}
-                                            onClick={() => settingsContext.gridScaleSize = e}>
-                                            {e}
-                                        </Button>
+                                        <React.Fragment key={e + 'variable-scale'}>
+                                            <Button
+                                                disabled={!settingsContext.gridScaleSize}
+                                                styles={{width: '100%'}} className={styles.button}
+                                                variant={settingsContext.gridScaleSize === e ? 'filled' : undefined}
+                                                onClick={() => settingsContext.gridScaleSize = e}>
+                                                {e}
+                                            </Button>
+                                        </React.Fragment>
                                     ))}
                                 </div>
                                 <div style={{display: 'grid', gap: '4px', width: '100%'}}>
                                     {[.125, .0625, .03125].map(e => (
-                                        <Button
-                                            disabled={!settingsContext.gridScaleSize}
-                                            styles={{width: '100%'}} className={styles.button}
-                                            variant={settingsContext.gridScaleSize === e ? 'filled' : undefined}
-                                            onClick={() => settingsContext.gridScaleSize = e}>
-                                            {e}
-                                        </Button>
+                                        <React.Fragment key={e + 'variable-scale'}>
+                                            <Button
+                                                disabled={!settingsContext.gridScaleSize}
+                                                styles={{width: '100%'}} className={styles.button}
+                                                variant={settingsContext.gridScaleSize === e ? 'filled' : undefined}
+                                                onClick={() => settingsContext.gridScaleSize = e}>
+                                                {e}
+                                            </Button>
+                                        </React.Fragment>
                                     ))}
                                 </div>
                             </div>
@@ -217,24 +221,28 @@ export default function ViewportOptions(props) {
                             <div style={{display: 'flex', padding: '4px', gap: '4px'}}>
                                 <div style={{display: 'grid', gap: '4px', width: '100%'}}>
                                     {[5, 10, 15, 30].map(e => (
-                                        <Button
-                                            disabled={!settingsContext.gridRotationSize}
-                                            styles={{width: '100%'}} className={styles.button}
-                                            variant={settingsContext.gridRotationSize === e ? 'filled' : undefined}
-                                            onClick={() => settingsContext.gridRotationSize = e}>
-                                            {e}
-                                        </Button>
+                                        <React.Fragment key={e + 'variable-rotation'}>
+                                            <Button
+                                                disabled={!settingsContext.gridRotationSize}
+                                                styles={{width: '100%'}} className={styles.button}
+                                                variant={settingsContext.gridRotationSize === e ? 'filled' : undefined}
+                                                onClick={() => settingsContext.gridRotationSize = e}>
+                                                {e}
+                                            </Button>
+                                        </React.Fragment>
                                     ))}
                                 </div>
                                 <div style={{display: 'grid', gap: '4px', width: '100%'}}>
                                     {[45, 60, 90, 120].map(e => (
-                                        <Button
-                                            disabled={!settingsContext.gridRotationSize}
-                                            styles={{width: '100%'}} className={styles.button}
-                                            variant={settingsContext.gridRotationSize === e ? 'filled' : undefined}
-                                            onClick={() => settingsContext.gridRotationSize = e}>
-                                            {e}
-                                        </Button>
+                                        <React.Fragment key={e + 'variable-rotation'}>
+                                            <Button
+                                                disabled={!settingsContext.gridRotationSize}
+                                                styles={{width: '100%'}} className={styles.button}
+                                                variant={settingsContext.gridRotationSize === e ? 'filled' : undefined}
+                                                onClick={() => settingsContext.gridRotationSize = e}>
+                                                {e}
+                                            </Button>
+                                        </React.Fragment>
                                     ))}
                                 </div>
                             </div>
