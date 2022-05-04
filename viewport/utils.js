@@ -1,7 +1,7 @@
 import MeshInstance from "../../engine/instances/MeshInstance";
-import Entity from "../../engine/ecs/basic/Entity";
-import TransformComponent from "../../engine/ecs/components/TransformComponent";
-import MeshComponent from "../../engine/ecs/components/MeshComponent";
+import Entity from "../../engine/basic/Entity";
+import TransformComponent from "../../engine/components/TransformComponent";
+import MeshComponent from "../../engine/components/MeshComponent";
 
 import {ENTITY_ACTIONS} from "../../engine/hooks/useEngineEssentials";
 import {linearAlgebraMath, Vector} from "pj-math";

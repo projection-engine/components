@@ -1,15 +1,15 @@
 import styles from "../styles/ViewportOptions.module.css";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import Entity from "../../../engine/ecs/basic/Entity";
+import Entity from "../../../engine/basic/Entity";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import PointLightComponent from "../../../engine/ecs/components/PointLightComponent";
-import TransformComponent from "../../../engine/ecs/components/TransformComponent";
+import PointLightComponent from "../../../engine/components/PointLightComponent";
+import TransformComponent from "../../../engine/components/TransformComponent";
 
-import DirectionalLightComponent from "../../../engine/ecs/components/DirectionalLightComponent";
-import SkylightComponent from "../../../engine/ecs/components/SkyLightComponent";
-import CameraComponent from "../../../engine/ecs/components/CameraComponent";
-import SkyboxComponent from "../../../engine/ecs/components/SkyboxComponent";
-import CubeMapComponent from "../../../engine/ecs/components/CubeMapComponent";
+import DirectionalLightComponent from "../../../engine/components/DirectionalLightComponent";
+import SkylightComponent from "../../../engine/components/SkyLightComponent";
+import CameraComponent from "../../../engine/components/CameraComponent";
+import SkyboxComponent from "../../../engine/components/SkyboxComponent";
+import CubeMapComponent from "../../../engine/components/CubeMapComponent";
 import CubeMapInstance from "../../../engine/instances/CubeMapInstance";
 import PropTypes from "prop-types";
 
