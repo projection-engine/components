@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 import styles from './styles/Viewport.module.css'
 import useDimensions from "./hooks/useDimensions";
-import {useMemo, useRef} from "react";
+import {useRef} from "react";
 
 export default function Viewport(props) {
     const ref = useRef()

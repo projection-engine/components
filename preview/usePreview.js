@@ -9,7 +9,8 @@ export default function usePreview(path) {
             if (res.ok)
                 ref.current.src = await res.text()
         } catch (err) {
-            ref.current.src = ''
+            if( ref.current)
+                ref.current.src = ''
         }
     }
     useEffect(() => {

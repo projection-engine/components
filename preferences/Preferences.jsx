@@ -4,7 +4,6 @@ import React, {useContext, useState} from "react";
 import SettingsProvider from "../../pages/project/hooks/SettingsProvider";
 import ThemeProvider from "../../pages/project/hooks/ThemeProvider";
 import ColorPicker from "../color/ColorPicker";
-import Range from "../range/Range";
 
 
 export default function Preferences() {

@@ -96,7 +96,7 @@ export default function useDragDrop(props) {
             if (mountingPoint.current)
                 ReactDOM.unmountComponentAtNode(mountingPoint.current)
         } catch (e) {
-            console.log(e)
+
         }
     }
 
