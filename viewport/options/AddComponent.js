@@ -1,16 +1,16 @@
 import styles from "../styles/ViewportOptions.module.css";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import Entity from "../../../engine/basic/Entity";
-import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import PointLightComponent from "../../../engine/components/PointLightComponent";
-import TransformComponent from "../../../engine/components/TransformComponent";
+import Entity from "../../../project/engine/basic/Entity";
+import COMPONENTS from "../../../project/engine/templates/COMPONENTS";
+import PointLightComponent from "../../../project/engine/components/PointLightComponent";
+import TransformComponent from "../../../project/engine/components/TransformComponent";
 
-import DirectionalLightComponent from "../../../engine/components/DirectionalLightComponent";
-import SkylightComponent from "../../../engine/components/SkyLightComponent";
-import CameraComponent from "../../../engine/components/CameraComponent";
-import SkyboxComponent from "../../../engine/components/SkyboxComponent";
-import CubeMapComponent from "../../../engine/components/CubeMapComponent";
-import CubeMapInstance from "../../../engine/instances/CubeMapInstance";
+import DirectionalLightComponent from "../../../project/engine/components/DirectionalLightComponent";
+import SkylightComponent from "../../../project/engine/components/SkyLightComponent";
+import CameraComponent from "../../../project/engine/components/CameraComponent";
+import SkyboxComponent from "../../../project/engine/components/SkyboxComponent";
+import CubeMapComponent from "../../../project/engine/components/CubeMapComponent";
+import CubeMapInstance from "../../../project/engine/instances/CubeMapInstance";
 import PropTypes from "prop-types";
 
 export default function AddComponent(props) {

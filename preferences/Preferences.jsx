@@ -1,8 +1,8 @@
 import styles from './styles/Preferences.module.css'
 import {Accordion, AccordionSummary, Button, Modal, Tab, VerticalTabs} from "@f-ui/core";
 import React, {useContext, useState} from "react";
-import SettingsProvider from "../../pages/project/hooks/SettingsProvider";
-import ThemeProvider from "../../pages/project/hooks/ThemeProvider";
+import SettingsProvider from "../../project/hooks/SettingsProvider";
+import ThemeProvider from "../../project/hooks/ThemeProvider";
 import ColorPicker from "../color/ColorPicker";
 
 

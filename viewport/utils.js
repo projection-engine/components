@@ -1,30 +1,30 @@
-import MeshInstance from "../../engine/instances/MeshInstance";
-import Entity from "../../engine/basic/Entity";
-import TransformComponent from "../../engine/components/TransformComponent";
-import MeshComponent from "../../engine/components/MeshComponent";
+import MeshInstance from "../../project/engine/instances/MeshInstance";
+import Entity from "../../project/engine/basic/Entity";
+import TransformComponent from "../../project/engine/components/TransformComponent";
+import MeshComponent from "../../project/engine/components/MeshComponent";
 
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
+import {ENTITY_ACTIONS} from "../../project/engine/useEngineEssentials";
 import {linearAlgebraMath, Vector} from "pj-math";
-import COMPONENTS from "../../engine/templates/COMPONENTS";
+import COMPONENTS from "../../project/engine/templates/COMPONENTS";
 
 export default function importMesh(type, engine) {
     let promise, name
     switch (type) {
         case 0: {
             name = 'Cube'
-            promise = import('../../engine/editor/assets/Cube.json')
+            promise = import('../../project/engine/editor/assets/Cube.json')
             break
 
         }
         case 1: {
             name = 'Sphere'
-            promise = import('../../engine/editor/assets/Sphere.json')
+            promise = import('../../project/engine/editor/assets/Sphere.json')
             break
 
         }
         case 2: {
             name = 'Plane'
-            promise = import('../../engine/editor/assets/Plane.json')
+            promise = import('../../project/engine/editor/assets/Plane.json')
             break
         }
         default:

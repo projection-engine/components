@@ -1,7 +1,8 @@
 import styles from "../styles/ViewportOptions.module.css";
 import {Button, ToolTip} from "@f-ui/core";
-import {SHADING_MODELS} from "../../../pages/project/hooks/useSettings";
+
 import PropTypes from "prop-types";
+import SHADING_MODELS from "../../../project/engine/templates/SHADING_MODELS";
 
 export default function ShadingTypes(props){
     const {settingsContext} = props

@@ -3,20 +3,20 @@ import PropTypes from "prop-types";
 import styles from "./styles/ViewportOptions.module.css";
 import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core";
 import Range from "../range/Range";
-import SettingsProvider from "../../pages/project/hooks/SettingsProvider";
-import CAMERA_TYPES from "../../engine/editor/camera/CAMERA_TYPES";
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
-import SphericalCamera from "../../engine/editor/camera/prespective/SphericalCamera";
+import SettingsProvider from "../../project/hooks/SettingsProvider";
+import CAMERA_TYPES from "../../project/engine/editor/camera/CAMERA_TYPES";
+import {ENTITY_ACTIONS} from "../../project/engine/useEngineEssentials";
+import SphericalCamera from "../../project/engine/editor/camera/prespective/SphericalCamera";
 import {handleGrab} from "./utils";
-import GIZMOS from "../../engine/editor/gizmo/GIZMOS";
-import {HISTORY_ACTIONS} from "../../pages/project/hooks/historyReducer";
+import GIZMOS from "../../project/engine/editor/gizmo/GIZMOS";
+import {HISTORY_ACTIONS} from "../../project/hooks/historyReducer";
 import Cameras from "./options/Cameras";
 import ShadingTypes from "./options/ShadingTypes";
 import AddComponent from "./options/AddComponent";
 import VisualSettings from "./options/VisualSettings";
 import MoreOptions from "./options/MoreOptions";
 import CameraCube from "./options/CameraCube";
-import ROTATION_TYPES from "../../engine/editor/gizmo/ROTATION_TYPES";
+import ROTATION_TYPES from "../../project/engine/editor/gizmo/ROTATION_TYPES";
 
 
 export default function ViewportOptions(props) {

@@ -1,10 +1,10 @@
 import styles from './styles/GlobalOptions.module.css'
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import {useContext, useMemo} from "react";
-import SettingsProvider from "../../pages/project/hooks/SettingsProvider";
+import SettingsProvider from "../../project/hooks/SettingsProvider";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
-import WebBuilder from "../../builders/web/WebBuilder";
+import WebBuilder from "../../project/builder/web/WebBuilder";
 
 const {shell} = window.require('electron')
 export default function GlobalOptions(props) {
