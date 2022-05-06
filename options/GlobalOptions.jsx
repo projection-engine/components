@@ -5,6 +5,7 @@ import SettingsProvider from "../../pages/project/hooks/SettingsProvider";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 import WebBuilder from "../../builders/web/WebBuilder";
+
 const {shell} = window.require('electron')
 export default function GlobalOptions(props) {
     const settingsContext = useContext(SettingsProvider)

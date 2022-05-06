@@ -7,7 +7,7 @@ export default function usePreview(path) {
         try {
             const res = await fetch(path)
             if (res.ok)
-                ref.current.src = await res.text()
+                ref.current.src =  await res.text()
         } catch (err) {
             if( ref.current)
                 ref.current.src = ''
