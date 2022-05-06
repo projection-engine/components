@@ -1,0 +1,51 @@
+.wrapper{
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    height: 35px;
+user-select: none;
+    background: var(--fabric-background-tertiary);
+
+    border-bottom: var(--fabric-border-primary) 1px solid;
+}
+.draggable{
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+}
+.draggable:active{
+    cursor: grabbing;
+}
+
+.logoWrapper{
+    background: var(--fabric-background-tertiary);
+
+
+    height: 100%;
+    overflow: hidden;
+
+    width: 54px;
+
+
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.logo{
+    height: 100%;
+}
+.divider{
+    height: 55%;
+    width: 2px;
+    background: var(--fabric-border-primary);
+    margin: 0 8px;
+}
+.title{
+    white-space: nowrap;
+    color: var(--fabric-color-secondary);
+    font-weight: 550;
+    font-size: .8rem;
+}
