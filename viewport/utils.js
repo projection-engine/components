@@ -3,7 +3,7 @@ import Entity from "../../engine/basic/Entity";
 import TransformComponent from "../../engine/components/TransformComponent";
 import MeshComponent from "../../engine/components/MeshComponent";
 
-import {ENTITY_ACTIONS} from "../../pages/project/hooks/useEngineEssentials";
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 import {linearAlgebraMath, Vector} from "pj-math";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 
