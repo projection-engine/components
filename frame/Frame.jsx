@@ -2,12 +2,13 @@ import PropTypes from "prop-types";
 import styles from './styles/Frame.module.css'
 import logo from '../../static/logo.png'
 import React from "react"
-import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
+import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import Actions from "./components/Actions";
 
+const {ipcRenderer} = window.require('electron')
 export default function Frame(props) {
-    return (
-        <div className={styles.wrapper}>
+    const LogoContent = (
+        <>
             <div className={styles.logoWrapper}>
                 <img src={logo} alt={'LOGO'} className={styles.logo}/>
             </div>
@@ -15,6 +16,20 @@ export default function Frame(props) {
             <label className={styles.title}>
                 {props.label}
             </label>
+        </>
+    )
+    return (
+        <div className={styles.wrapper}>
+            {props.logoAction ?
+                <Button
+                    className={styles.dropdown}
+                    onClick={() => ipcRenderer.send('switch-window')}>
+                    {LogoContent}
+                </Button>
+                :
+                LogoContent
+            }
+
             {props.options.map((o, i) => (
                 <React.Fragment key={i + '-wrapper-frame'}>
                     <Dropdown className={styles.button}>
@@ -22,7 +37,11 @@ export default function Frame(props) {
                         <DropdownOptions>
                             {o.options.map((oo, j) => (
                                 <React.Fragment key={i + '-wrapper-frame-option-' + j}>
-                                    <DropdownOption option={oo}/>
+                                    <DropdownOption option={{
+                                        ...oo,
+                                        icon: oo.icon ? <span className={'material-icons-round'}
+                                                              style={{fontSize: '1.1rem'}}>{oo.icon}</span> : undefined
+                                    }}/>
                                 </React.Fragment>
                             ))}
                         </DropdownOptions>
@@ -35,6 +54,7 @@ export default function Frame(props) {
     )
 }
 Frame.propTypes = {
+    logoAction: PropTypes.bool,
     pageInfo: PropTypes.shape({
         pageID: PropTypes.string,
         closeEvent: PropTypes.string,
@@ -47,7 +67,7 @@ Frame.propTypes = {
         options: PropTypes.arrayOf(PropTypes.shape({
             label: PropTypes.string,
             onClick: PropTypes.func,
-            icon: PropTypes.node
+            icon: PropTypes.string
         }))
     }))
 }
