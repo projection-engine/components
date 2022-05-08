@@ -1,12 +1,13 @@
 import styles from "../styles/ViewportOptions.module.css";
 import CAMERA_TYPES from "../../../project/engine-editor/camera/CAMERA_TYPES";
 import PropTypes from "prop-types";
+import RENDER_TARGET from "../hooks/RENDER_TARGET";
 
 export default function CameraCube(props){
     const {settingsContext, setCameraIsOrthographic, cameraIsOrthographic, lastCamera, id} = props
     return (
         <div className={styles.cameraView}>
-            <div className={styles.cube} id={id + '-camera'}>
+            <div className={styles.cube} id={RENDER_TARGET+'-camera'}>
                 <div
                     className={[styles.face, styles.front].join(' ')}
                     onClick={() => {

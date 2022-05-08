@@ -2,15 +2,24 @@ import PropTypes from "prop-types";
 
 import styles from './styles/Viewport.module.css'
 import useDimensions from "./hooks/useDimensions";
-import {useRef} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
+import GPUContextProvider from "./hooks/GPUContextProvider";
+import RENDER_TARGET from "./hooks/RENDER_TARGET";
 
 export default function Viewport(props) {
     const ref = useRef()
-    useDimensions(
-        props.id,
-        props.engine
-    )
-
+    const {bindGPU} = useContext(GPUContextProvider)
+    const [visible, setVisible] = useState(false)
+    useDimensions()
+    useEffect(() => {
+        if(visible)
+            bindGPU(ref.current)
+    }, [visible])
+    useEffect(() => {
+        const obs = new IntersectionObserver((e) => setVisible(e[0]?.isIntersecting))
+        obs.observe(ref.current)
+        return () => obs.disconnect()
+    }, [])
     return (
         <div
             ref={ref}
@@ -32,15 +41,16 @@ export default function Viewport(props) {
                     props.handleDrop(e)
                 }
             }}>
-            <canvas
-                width={window.screen.width}
-                height={window.screen.height}
-                style={{background: 'transparent'}}
-                onContextMenu={e => e.preventDefault()}
-                id={props.id + '-canvas'}
-            />
+
+            {/*<canvas*/}
+            {/*    width={window.screen.width}*/}
+            {/*    height={window.screen.height}*/}
+            {/*    style={{background: 'transparent'}}*/}
+            {/*    onContextMenu={e => e.preventDefault()}*/}
+            {/*    id={props.id + '-canvas'}*/}
+            {/*/>*/}
             <div style={{display: props.showPosition ? undefined : 'none'}} className={styles.position}
-                 id={props.id + '-camera-position'}/>
+                 id={RENDER_TARGET + '-camera-position'}/>
         </div>
     )
 }
