@@ -57,14 +57,14 @@ export default function Tabs(props) {
                                         className={styles.closeButton}
                                         onClick={() => {
                                             if (i === props.tab) {
-                                                props.setTab(i - 1)
+                                                props.setTab(0)
                                                 tabAttributes.forEach(t => {
                                                     if (t.onBeforeSwitch)
-                                                        t.onBeforeSwitch(i - 1)
+                                                        t.onBeforeSwitch(0)
                                                 })
                                             }
 
-                                            props.handleTabClose(i - 1, props.tab)
+                                            props.handleTabClose(0, props.tab)
 
                                         }}
                                     >

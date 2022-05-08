@@ -1,5 +1,5 @@
 import styles from "../styles/ViewportOptions.module.css";
-import CAMERA_TYPES from "../../../project/engine/editor/camera/CAMERA_TYPES";
+import CAMERA_TYPES from "../../../project/engine-editor/camera/CAMERA_TYPES";
 import PropTypes from "prop-types";
 
 export default function CameraCube(props){
