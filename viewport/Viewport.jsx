@@ -1,7 +1,5 @@
 import PropTypes from "prop-types";
-
 import styles from './styles/Viewport.module.css'
-import useDimensions from "./hooks/useDimensions";
 import {useContext, useEffect, useRef, useState} from "react";
 import GPUContextProvider from "./hooks/GPUContextProvider";
 import RENDER_TARGET from "./hooks/RENDER_TARGET";
@@ -10,7 +8,7 @@ export default function Viewport(props) {
     const ref = useRef()
     const {bindGPU} = useContext(GPUContextProvider)
     const [visible, setVisible] = useState(false)
-    useDimensions()
+
     useEffect(() => {
         if(visible)
             bindGPU(ref.current)
