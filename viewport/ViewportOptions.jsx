@@ -83,8 +83,6 @@ export default function ViewportOptions(props) {
                      // transform: 'translateY(-50%)',
                      gap: '8px'
                  }}>
-
-
                 <Button
                     styles={{borderRadius: '5px'}}
                     className={styles.transformationWrapper}
@@ -252,10 +250,20 @@ export default function ViewportOptions(props) {
 
 
                 <div className={styles.buttonGroup} style={{display: 'grid'}}>
+                             <Button
+                                 className={styles.transformationWrapper}
+                                 variant={settingsContext.gizmo === GIZMOS.NONE ? 'filled' : undefined}
+                                 styles={{borderRadius: '5px 5px 0  0'}}
+                                 highlight={settingsContext.gizmo === GIZMOS.NONE}
+                                 onClick={() => {
+                                     settingsContext.gizmo = GIZMOS.NONE
+                                 }}>
+                        <span className={'material-icons-round'}>mouse</span>
+                    </Button>
                     <Button
                         className={styles.transformationWrapper}
                         variant={settingsContext.gizmo === GIZMOS.TRANSLATION ? 'filled' : undefined}
-                        styles={{borderRadius: '5px 5px 0  0'}}
+
                         highlight={settingsContext.gizmo === GIZMOS.TRANSLATION}
                         onClick={() => {
                             settingsContext.gizmo = GIZMOS.TRANSLATION
@@ -266,7 +274,7 @@ export default function ViewportOptions(props) {
                         className={styles.transformationWrapper}
                         variant={settingsContext.gizmo === GIZMOS.ROTATION ? 'filled' : undefined}
                         highlight={settingsContext.gizmo === GIZMOS.ROTATION}
-                        styles={{borderTop: 'none'}}
+
                         onClick={() => {
                             settingsContext.gizmo = GIZMOS.ROTATION
                         }}>
