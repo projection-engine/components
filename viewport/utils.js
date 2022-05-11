@@ -12,19 +12,19 @@ export default function importMesh(type, engine) {
     switch (type) {
         case 0: {
             name = 'Cube'
-            promise = import('../../project/engine-editor/assets/Cube.json')
+            promise = import('../../static/assets/Cube.json')
             break
 
         }
         case 1: {
             name = 'Sphere'
-            promise = import('../../project/engine-editor/assets/Sphere.json')
+            promise = import('../../static/assets/Sphere.json')
             break
 
         }
         case 2: {
             name = 'Plane'
-            promise = import('../../project/engine-editor/assets/Plane.json')
+            promise = import('../../static/assets/Plane.json')
             break
         }
         default:
