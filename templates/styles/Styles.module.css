@@ -30,3 +30,19 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+.wrapper{
+    display: grid;
+    width: 100%;
+    align-items: center;
+    gap: 2px;
+}
+.wrapper > label{
+    font-size: .7rem;
+    font-weight: 550;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
