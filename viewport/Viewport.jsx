@@ -39,14 +39,6 @@ export default function Viewport(props) {
                     props.handleDrop(e)
                 }
             }}>
-
-            {/*<canvas*/}
-            {/*    width={window.screen.width}*/}
-            {/*    height={window.screen.height}*/}
-            {/*    style={{background: 'transparent'}}*/}
-            {/*    onContextMenu={e => e.preventDefault()}*/}
-            {/*    id={props.id + '-canvas'}*/}
-            {/*/>*/}
             <div style={{display: props.showPosition ? undefined : 'none'}} className={styles.position}
                  id={RENDER_TARGET + '-camera-position'}/>
         </div>

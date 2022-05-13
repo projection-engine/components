@@ -63,7 +63,9 @@ export default function useGPU(canStart, resolution) {
                 SYSTEMS.SHADOWS,
                 SYSTEMS.PICK,
                 SYSTEMS.CAMERA_CUBE,
-                SYSTEMS.CUBE_MAP
+                SYSTEMS.CUBE_MAP,
+                SYSTEMS.AO,
+                SYSTEMS.DEPTH_PRE_PASS
             ])
         }
         return undefined

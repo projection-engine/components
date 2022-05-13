@@ -4,10 +4,11 @@ import PropTypes from "prop-types";
 import Range from "../../range/Range";
 import {useState} from "react";
 
+const toDegree= 180 / 3.1415
+const toRad= 3.1415 /180
 export default function MoreOptions(props) {
     const {settingsContext, fullscreen, setFullscreen, fullscreenID} = props
-    const [res, setRes] = useState(settingsContext.resolutionMultiplier * 100)
-    const [fov, setFov] = useState(settingsContext.fov * 180 / 3.1415)
+    const [fov, setFov] = useState(settingsContext.fov * toDegree)
     return (
         <Dropdown
             hideArrow={true}
@@ -51,7 +52,7 @@ export default function MoreOptions(props) {
                         accentColor={'green'}
                         value={fov} maxValue={120} minValue={45}
                         onFinish={() => {
-                            settingsContext.fov = fov * 3.14 / 180
+                            settingsContext.fov = fov * toRad
                         }}
                         handleChange={e => {
                             setFov(e)
