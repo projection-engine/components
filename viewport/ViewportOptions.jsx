@@ -120,7 +120,8 @@ export default function ViewportOptions(props) {
                                     }} accentColor={'red'}
                                     handleChange={(v) => setGridSize(v)}
                                     value={gridSize}
-                                    precision={2}
+                                    precision={4}
+                                    incrementPercentage={.001}
                                 />
                             </div>
                         </DropdownOptions>

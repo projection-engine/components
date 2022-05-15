@@ -44,6 +44,7 @@ export default function TreeNode(props) {
         <>
             <div
                 className={styles.container}
+                title={currentLabel}
                 data-selected={`${selected}`}
                 data-highlight={`${props.focusedNode === props.node.id}`}
             >
