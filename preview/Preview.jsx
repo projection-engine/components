@@ -10,7 +10,7 @@ export default function Preview(props){
         <>
             <img draggable={false}  ref={ref} className={props.className} style={{...props.styles, ...{display: error ? 'none' : undefined}}} alt={''} onError={() => setError(true)} onLoad={() => setError(false)} />
             <span className={['material-icons-round', props.iconClassname].join(' ')} style={{...props.iconStyles, ...{display: !error ? 'none' : undefined}}}>{props.fallbackIcon ? props.fallbackIcon : 'image'}</span>
-            {error ? props.children : null}
+            {!error ? props.children : null}
         </>
     )
 }

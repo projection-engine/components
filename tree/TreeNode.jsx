@@ -16,6 +16,8 @@ export default function TreeNode(props) {
             })
         if (!props.node.phantomNode)
             ref.current?.setAttribute('data-node', `${props.node.id}`)
+        else
+            ref.current?.setAttribute('data-root', `${props.node.id}`)
     }, [props.node])
 
 

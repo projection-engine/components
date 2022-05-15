@@ -9,7 +9,7 @@ const canvas = document.getElementById(RENDER_TARGET)
     if (target) {
         if (target === document.body)
             canvas.style.width = '100%'
-        else {
+        else if(canvas?.parentNode){
             const bBox = canvas.parentNode.getBoundingClientRect()
             canvas.style.width = bBox.width + 'px'
             canvas.style.height = bBox.height + 'px'
