@@ -63,35 +63,18 @@ export default function AddComponent(props) {
                     }
                 }}/>
                 <DropdownOption option={{
-
                     label: 'Skylight',
                     icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.1rem'}}>sky</span>,
+                                style={{fontSize: '1.1rem'}}>wb_sunny</span>,
                     onClick: () => {
                         const actor = new Entity(undefined, 'Skylight')
                         actor.components[COMPONENTS.SKYLIGHT] = new SkylightComponent()
                         dispatchEntity(actor)
                     }
                 }}/>
-                <DropdownOption option={{
-                    label: 'Camera',
-                    icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.1rem'}}>videocam</span>,
-                    onClick: () => {
-                        const actor = new Entity(undefined, 'Camera')
-                        actor.components[COMPONENTS.CAMERA] = new CameraComponent()
 
-                        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                        actor.components[COMPONENTS.TRANSFORM].rotation = [0, 0, 0]
-                        actor.components[COMPONENTS.TRANSFORM].scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
-                        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
-
-
-                        dispatchEntity(actor)
-                    }
-                }}/>
                 <div className={styles.dividerWrapper}>
-                    Misc
+                    Ambient
                     <div className={styles.divider}/>
                 </div>
                 <DropdownOption option={{
@@ -116,6 +99,44 @@ export default function AddComponent(props) {
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
+
+                        dispatchEntity(actor)
+                    }
+                }}/>
+                <DropdownOption option={{
+                    label: 'Light probe',
+                    icon: <span className={'material-icons-round'}
+                                style={{fontSize: '1.1rem'}}>lens_blur</span>,
+                    onClick: () => {
+                        const actor = new Entity(undefined, 'Cubemap')
+                        actor.components[COMPONENTS.CUBE_MAP] = new CubeMapComponent()
+                        actor.components[COMPONENTS.CUBE_MAP].asLightProbe = true
+                        actor.components[COMPONENTS.CUBE_MAP].cubeMap = new CubeMapInstance(engine.gpu, actor.components[COMPONENTS.CUBE_MAP].resolution)
+                        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                        actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
+                        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
+
+                        dispatchEntity(actor)
+                    }
+                }}/>
+
+                <div className={styles.dividerWrapper}>
+                    Utils
+                    <div className={styles.divider}/>
+                </div>
+                <DropdownOption option={{
+                    label: 'Camera',
+                    icon: <span className={'material-icons-round'}
+                                style={{fontSize: '1.1rem'}}>videocam</span>,
+                    onClick: () => {
+                        const actor = new Entity(undefined, 'Camera')
+                        actor.components[COMPONENTS.CAMERA] = new CameraComponent()
+
+                        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                        actor.components[COMPONENTS.TRANSFORM].rotation = [0, 0, 0]
+                        actor.components[COMPONENTS.TRANSFORM].scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
+                        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
+
 
                         dispatchEntity(actor)
                     }

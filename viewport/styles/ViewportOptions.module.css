@@ -61,6 +61,7 @@
     align-items: center;
     padding: 4px;
     gap: 4px;
+    color: var(--fabric-color-secondary);
 
 }
 
@@ -193,18 +194,18 @@
 
 .floating {
 
+
     position: absolute;
     right: 0px;
     top: 35px;
     z-index: 999;
     display: grid;
     align-content: flex-start;
-
     justify-items: center;
     gap: 4px;
     height: fit-content;
 
-
+transition: 150ms ease-in;
 }
 
 .buttonGroup {
@@ -212,6 +213,7 @@
 }
 
 .dropdown{
+    width: fit-content;
     --colorToApply: white;
     font-size: .75rem;
 
@@ -348,3 +350,5 @@
     color: var(--fabric-color-secondary);
     font-size: .8rem;
 }
+
+

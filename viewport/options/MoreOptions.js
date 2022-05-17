@@ -3,6 +3,7 @@ import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import PropTypes from "prop-types";
 import Range from "../../range/Range";
 import {useState} from "react";
+import LabeledRange from "../../templates/LabeledRange";
 
 const toDegree= 180 / 3.1415
 const toRad= 3.1415 /180
@@ -45,10 +46,8 @@ export default function MoreOptions(props) {
                 <div className={styles.divider}/>
 
                 <div className={styles.rangeWrapper}>
-                    <div className={styles.rangeLabel}>
-                        Fov
-                    </div>
-                    <Range
+                    <LabeledRange
+                        label={'FOV'}
                         accentColor={'green'}
                         value={fov} maxValue={120} minValue={45}
                         onFinish={() => {

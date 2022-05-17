@@ -61,7 +61,7 @@ export default function ViewportOptions(props) {
             payload: [entity]
         })
     }
-
+    const [hidden, setHidden] = useState(false)
     return (
         <span style={{display: props.executingAnimation || fullscreen ? 'none' : undefined}}>
             {props.minimal ? null :
@@ -75,14 +75,30 @@ export default function ViewportOptions(props) {
 
                     <ShadingTypes settingsContext={settingsContext}/>
                 </div>}
-            <div className={styles.floating}
-                 style={{
-                     left: '4px',
-                     right: 'unset',
-                     top: '36px',
-                     // transform: 'translateY(-50%)',
-                     gap: '8px'
-                 }}>
+            <div
+                className={styles.floating}
+                style={{
+                    left: '4px',
+                    right: 'unset',
+                    top: '36px',
+                    // transform: 'translateY(-50%)',
+                    gap: '8px',
+                    maxHeight: 'calc(100% - 35px)',
+                    transform: hidden ? 'translateX(calc(-100% - 16px))' : undefined
+                }}>
+
+                <Button
+                    className={styles.transformationWrapper}
+                    styles={{
+                        maxWidth: hidden ? '25px' : undefined,
+                        maxHeight: hidden ? '25px' : undefined,
+                        borderRadius: '5px', transform: hidden ? 'translateX(35px)' : undefined}}
+                    onClick={() => setHidden(!hidden)}>
+                        <span className={'material-icons-round'} style={{
+                            fontSize: '1.1rem',
+                            transform: !hidden ? 'rotate(180deg)' : undefined
+                        }}>navigate_next</span>
+                </Button>
                 <Button
                     styles={{borderRadius: '5px'}}
                     className={styles.transformationWrapper}
@@ -293,6 +309,7 @@ export default function ViewportOptions(props) {
                     </Button>
                 </div>
             </div>
+
             <div className={styles.floating} style={{top: props.minimal ? '4px' : undefined}}>
                 {props.minimal ?
                     null

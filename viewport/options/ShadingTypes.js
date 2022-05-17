@@ -11,6 +11,11 @@ export default function ShadingTypes(props) {
 
     const shading = useMemo(() => {
         switch (settingsContext.shadingModel) {
+            case SHADING_MODELS.LIGHT_ONLY:
+                return {
+                    icon: <span className={'material-icons-round'} style={{fontSize: '1.1rem', width:'1.1rem'}}>light_bulb</span>,
+                    label: 'Light only'
+                }
             case SHADING_MODELS.ALBEDO:
                 return {label: 'Unlit', icon: <div style={{'--colorToApply': 'white'}} className={styles.flatIcon}/>}
             case SHADING_MODELS.NORMAL:
