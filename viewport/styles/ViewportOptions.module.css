@@ -211,23 +211,14 @@
     display: flex;
 }
 
-.groupItem {
+.dropdown{
     --colorToApply: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--fabric-border-primary) !important;
+    font-size: .75rem;
 
     height: 25px;
-    width: 25px;
-
-    padding: 0 !important;
-    border-radius: 0;
-    border: var(--fabric-background-primary) 1px solid;
-}
-
-.groupItem:hover {
-    --colorToApply: var(--fabric-accent-color);
+    overflow: hidden;
+    padding: 0 4px !important;
+    background: var(--fabric-border-primary) !important;
 }
 
 .shadedIcon {
@@ -348,4 +339,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.label{
+    padding-left: 8px;
+    font-weight: 550;
+    margin-top: 4px;
+    color: var(--fabric-color-secondary);
+    font-size: .8rem;
 }
