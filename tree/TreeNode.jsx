@@ -10,10 +10,7 @@ export default function TreeNode(props) {
 
     useEffect(() => {
         setCurrentLabel(props.node.label)
-        if (props.node.attributes)
-            Object.keys(props.node.attributes).forEach((attr) => {
-                ref.current?.setAttribute(attr, `${props.node.attributes[attr]}`)
-            })
+
         if (!props.node.phantomNode)
             ref.current?.setAttribute('data-node', `${props.node.id}`)
         else
@@ -30,16 +27,12 @@ export default function TreeNode(props) {
             return false
     }, [props.selected])
 
-    useEffect(() => {
-        if (selected) {
-            // setOpen(true)
-            props.triggerHierarchy()
-        }
-    }, [selected])
+
     const padding = useMemo(() => {
         return (parseInt(props.index) * (props.node.children?.length === 0 ? 30 : 25))
     }, [props.index, props.node.children])
 
+    console.log(open)
     return (
         <>
             <div
@@ -56,18 +49,20 @@ export default function TreeNode(props) {
                     :
                     null}
                 <div
+                    {...props.node.attributes}
                     ref={ref}
                     style={{paddingLeft: padding + 'px'}}
                     className={styles.row}
                 >
 
                     {props.node.children?.length > 0 ? (
-                        <button className={styles.button}
-                                onClick={() => {
-                                    if (!props.node.phantomNode)
-                                        props.node.onClick()
-                                    setOpen(!open)
-                                }}
+                        <button
+                            className={styles.button}
+                            onClick={() => {
+                                if (!props.node.phantomNode)
+                                    props.node.onClick()
+                                setOpen(!open)
+                            }}
                         >
                         <span style={{width: '24px', overflow: 'hidden', fontSize: '1.2rem'}}
                               className={'material-icons-round'}>{open ? 'expand_more' : 'chevron_right'}</span>
@@ -94,7 +89,6 @@ export default function TreeNode(props) {
                         :
                         <div
                             className={styles.rowContentWrapper}
-
                             onClick={e => {
                                 props.setFocusedNode(props.node.id)
                                 if (props.node.onClick)
@@ -103,7 +97,7 @@ export default function TreeNode(props) {
                             <div
                                 id={props.node.id}
                                 className={styles.rowContent}
-                                style={{fontWeight: '550', width: !props.node.type  ? '90%' : undefined}}
+                                style={{fontWeight: '550', width: !props.node.type ? '90%' : undefined}}
 
                                 draggable={!props.node.phantomNode && props.draggable && props.node.draggable}
 
@@ -133,29 +127,27 @@ export default function TreeNode(props) {
                     }
                 </div>
             </div>
-            <div style={{
-                display: open ? undefined : 'none',
-                '--position-left': (padding + props.node.canBeHidden ? 19 : 0) + 'px'
-            }} className={styles.children}>
-                {props.node.children?.map((child, index) => (
-                    <React.Fragment key={props.index + '-tree-node-' + index}>
-                        <TreeNode
-                            {...props}
-                            selected={props.selected}
-                            handleRename={props.handleRename}
-                            node={child}
-                            index={props.index + 1}
-                            focusedNode={props.focusedNode}
-                            setFocusedNode={props.setFocusedNode}
+            {open ?
+                <div style={{
+                    '--position-left': (padding + props.node.canBeHidden ? 19 : 0) + 'px'
+                }} className={styles.children}>
+                    {props.node.children?.map((child, index) => (
+                        <React.Fragment key={props.index + '-tree-node-' + index}>
+                            <TreeNode
+                                {...props}
+                                selected={props.selected}
+                                handleRename={props.handleRename}
+                                node={child}
+                                index={props.index + 1}
+                                focusedNode={props.focusedNode}
+                                setFocusedNode={props.setFocusedNode}
 
-                            triggerHierarchy={() => {
-                                setOpen(true)
-                                props.triggerHierarchy()
-                            }}
-                        />
-                    </React.Fragment>
-                ))}
-            </div>
+                            />
+                        </React.Fragment>
+                    ))}
+                </div>
+                : null
+            }
         </>
     )
 }
@@ -187,6 +179,5 @@ TreeNode.propTypes = {
     onDrop: PropTypes.func,
     onDragOver: PropTypes.func,
     onDragLeave: PropTypes.func,
-    onDragStart: PropTypes.func,
-    triggerHierarchy: PropTypes.func.isRequired
+    onDragStart: PropTypes.func
 }
