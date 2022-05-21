@@ -39,8 +39,7 @@ export default function Viewport(props) {
                     props.handleDrop(e)
                 }
             }}>
-            <div style={{display: props.showPosition ? undefined : 'none'}} className={styles.position}
-                 id={RENDER_TARGET + '-camera-position'}/>
+
         </div>
     )
 }
@@ -49,7 +48,6 @@ Viewport.propTypes = {
     allowDrop: PropTypes.bool.isRequired,
     handleDrop: PropTypes.func,
     engine: PropTypes.object,
-    showPosition: PropTypes.bool,
     id: PropTypes.string,
     resolutionMultiplier: PropTypes.number
 }

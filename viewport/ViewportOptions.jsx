@@ -4,19 +4,19 @@ import styles from "./styles/ViewportOptions.module.css";
 import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core";
 import Range from "../range/Range";
 import SettingsProvider from "../../project/hooks/SettingsProvider";
-import CAMERA_TYPES from "../../project/utils/extension/camera/CAMERA_TYPES";
+import CAMERA_TYPES from "../../project/extension/camera/CAMERA_TYPES";
 import {ENTITY_ACTIONS} from "../../project/engine/useEngineEssentials";
-import SphericalCamera from "../../project/utils/extension/camera/prespective/SphericalCamera";
+import SphericalCamera from "../../project/extension/camera/prespective/SphericalCamera";
 import {handleGrab} from "./utils";
-import GIZMOS from "../../project/utils/extension/gizmo/GIZMOS";
+import GIZMOS from "../../project/extension/gizmo/GIZMOS";
 import {HISTORY_ACTIONS} from "../../project/hooks/historyReducer";
-import Cameras from "./options/Cameras";
-import ShadingTypes from "./options/ShadingTypes";
-import AddComponent from "./options/AddComponent";
-import VisualSettings from "./options/VisualSettings";
-import MoreOptions from "./options/MoreOptions";
-import CameraCube from "./options/CameraCube";
-import ROTATION_TYPES from "../../project/utils/extension/gizmo/ROTATION_TYPES";
+import Cameras from "./components/Cameras";
+import ShadingTypes from "./components/ShadingTypes";
+import CreateEntity from "./components/CreateEntity";
+import VisualSettings from "./components/VisualSettings";
+import Extra from "./components/Extra";
+import CameraCube from "./components/CameraCube";
+import ROTATION_TYPES from "../../project/extension/gizmo/ROTATION_TYPES";
 
 
 export default function ViewportOptions(props) {
@@ -67,10 +67,10 @@ export default function ViewportOptions(props) {
             {props.minimal ? null :
                 <div className={styles.options} style={{display: fullscreen ? 'none' : undefined}} draggable={false}>
                     <div style={{justifyContent: 'flex-start'}} className={styles.align}>
-                        <MoreOptions settingsContext={settingsContext} fullscreen={fullscreen}
-                                     setFullscreen={setFullscreen} fullscreenID={props.fullscreenID}/>
+                        <Extra settingsContext={settingsContext} fullscreen={fullscreen}
+                               setFullscreen={setFullscreen} fullscreenID={props.fullscreenID}/>
                         <VisualSettings settingsContext={settingsContext}/>
-                        <AddComponent dispatchEntity={dispatchEntity} engine={props.engine}/>
+                        <CreateEntity dispatchEntity={dispatchEntity} engine={props.engine}/>
                     </div>
 
                     <ShadingTypes settingsContext={settingsContext}/>

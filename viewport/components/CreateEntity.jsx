@@ -12,8 +12,10 @@ import SkyboxComponent from "../../../project/engine/components/SkyboxComponent"
 import CubeMapComponent from "../../../project/engine/components/CubeMapComponent";
 import CubeMapInstance from "../../../project/engine/instances/CubeMapInstance";
 import PropTypes from "prop-types";
+import LineComponent from "../../../project/engine/components/LineComponent";
+import LightProbeComponent from "../../../project/engine/components/LightProbeComponent";
 
-export default function AddComponent(props) {
+export default function CreateEntity(props) {
     const {dispatchEntity, engine} = props
     return (
         <Dropdown className={styles.optionWrapper} hideArrow={true} variant={'outlined'}>
@@ -83,7 +85,7 @@ export default function AddComponent(props) {
                                 style={{fontSize: '1.1rem'}}>cloud</span>,
                     onClick: () => {
                         const actor = new Entity(undefined, 'Skybox')
-                        actor.components.SkyboxComponent = new SkyboxComponent(undefined, engine.gpu)
+                        actor.components[COMPONENTS.SKYBOX] = new SkyboxComponent(undefined, engine.gpu)
                         dispatchEntity(actor)
                     }
                 }}/>
@@ -108,10 +110,13 @@ export default function AddComponent(props) {
                     icon: <span className={'material-icons-round'}
                                 style={{fontSize: '1.1rem'}}>lens_blur</span>,
                     onClick: () => {
-                        const actor = new Entity(undefined, 'Cubemap')
-                        actor.components[COMPONENTS.CUBE_MAP] = new CubeMapComponent()
-                        actor.components[COMPONENTS.CUBE_MAP].asLightProbe = true
-                        actor.components[COMPONENTS.CUBE_MAP].cubeMap = new CubeMapInstance(engine.gpu, actor.components[COMPONENTS.CUBE_MAP].resolution)
+                        const actor = new Entity(undefined, 'Light probe')
+                        actor.components[COMPONENTS.PROBE] = new LightProbeComponent()
+                        actor.components[COMPONENTS.PROBE].addProbe([-1, 1, -1])
+                        actor.components[COMPONENTS.PROBE].addProbe([-1, -1, -1])
+                        actor.components[COMPONENTS.PROBE].addProbe([1, 1, 1])
+                        actor.components[COMPONENTS.PROBE].addProbe([1, -1, 1])
+
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
@@ -141,12 +146,23 @@ export default function AddComponent(props) {
                         dispatchEntity(actor)
                     }
                 }}/>
+                <DropdownOption option={{
+                    label: 'Line',
+                    icon: <span className={'material-icons-round'}
+                                style={{fontSize: '1.1rem'}}>arrow_right_alt</span>,
+                    onClick: () => {
+                        const actor = new Entity(undefined, 'Line')
+                        actor.components[COMPONENTS.LINE] = new LineComponent()
+
+                        dispatchEntity(actor)
+                    }
+                }}/>
             </DropdownOptions>
         </Dropdown>
     )
 }
 
-AddComponent.propTypes = {
+CreateEntity.propTypes = {
     dispatchEntity: PropTypes.func,
     engine: PropTypes.object
 }

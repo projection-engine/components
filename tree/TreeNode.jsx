@@ -32,7 +32,6 @@ export default function TreeNode(props) {
         return (parseInt(props.index) * (props.node.children?.length === 0 ? 30 : 25))
     }, [props.index, props.node.children])
 
-    console.log(open)
     return (
         <>
             <div
@@ -49,7 +48,7 @@ export default function TreeNode(props) {
                     :
                     null}
                 <div
-                    {...props.node.attributes}
+
                     ref={ref}
                     style={{paddingLeft: padding + 'px'}}
                     className={styles.row}

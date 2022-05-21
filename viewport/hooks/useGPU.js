@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
 import RENDER_TARGET from "./RENDER_TARGET";
-import EditorEngine from "../../../project/utils/extension/EditorEngine";
+import EditorEngine from "../../../project/extension/EditorEngine";
 import SYSTEMS from "../../../project/engine/templates/SYSTEMS";
 
 const callback = (e) => {

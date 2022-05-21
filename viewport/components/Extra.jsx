@@ -7,7 +7,7 @@ import LabeledRange from "../../templates/LabeledRange";
 
 const toDegree= 180 / 3.1415
 const toRad= 3.1415 /180
-export default function MoreOptions(props) {
+export default function Extra(props) {
     const {settingsContext, fullscreen, setFullscreen, fullscreenID} = props
     const [fov, setFov] = useState(settingsContext.fov * toDegree)
     return (
@@ -63,7 +63,7 @@ export default function MoreOptions(props) {
     )
 }
 
-MoreOptions.propTypes = {
+Extra.propTypes = {
     fullscreenID: PropTypes.string,
     settingsContext: PropTypes.object,
     fullscreen: PropTypes.bool, setFullscreen: PropTypes.func

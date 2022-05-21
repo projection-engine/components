@@ -1,5 +1,5 @@
 import styles from "../styles/ViewportOptions.module.css";
-import CAMERA_TYPES from "../../../project/utils/extension/camera/CAMERA_TYPES";
+import CAMERA_TYPES from "../../../project/extension/camera/CAMERA_TYPES";
 import PropTypes from "prop-types";
 import RENDER_TARGET from "../hooks/RENDER_TARGET";
 
