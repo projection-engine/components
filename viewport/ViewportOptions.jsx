@@ -6,11 +6,10 @@ import Range from "../range/Range";
 import SettingsProvider from "../../project/hooks/SettingsProvider";
 import CAMERA_TYPES from "../../project/extension/camera/CAMERA_TYPES";
 import {ENTITY_ACTIONS} from "../../project/engine/useEngineEssentials";
-import SphericalCamera from "../../project/extension/camera/prespective/SphericalCamera";
+import SphericalCamera from "../../project/extension/camera/SphericalCamera";
 import {handleGrab} from "./utils";
 import GIZMOS from "../../project/extension/gizmo/GIZMOS";
 import {HISTORY_ACTIONS} from "../../project/hooks/historyReducer";
-import Cameras from "./components/Cameras";
 import ShadingTypes from "./components/ShadingTypes";
 import CreateEntity from "./components/CreateEntity";
 import VisualSettings from "./components/VisualSettings";
@@ -25,10 +24,7 @@ export default function ViewportOptions(props) {
     const [gridSize, setGridSize] = useState(settingsContext.gridSize)
     const [fullscreen, setFullscreen] = useState(false)
     const [cameraIsOrthographic, setCameraIsOrthographic] = useState(!(settingsContext.cameraType === CAMERA_TYPES.SPHERICAL || settingsContext.cameraType === CAMERA_TYPES.FREE))
-    const [lastCamera, setLastCamera] = useState({
-        ortho: CAMERA_TYPES.FRONT,
-        perspective: CAMERA_TYPES.SPHERICAL
-    })
+
     const handleFullscreen = () => {
         if (!document.fullscreenElement)
             setFullscreen(false)
@@ -40,6 +36,7 @@ export default function ViewportOptions(props) {
         return () => document.removeEventListener('fullscreenchange', handleFullscreen)
     }, [fullscreen])
 
+    console.log(cameraIsOrthographic)
     const cameraIcon = useMemo(() => {
         if (!cameraIsOrthographic)
             return (
@@ -316,25 +313,23 @@ export default function ViewportOptions(props) {
                     :
                     <CameraCube
                         id={props.id}
+                        engine={props.engine}
                         setCameraIsOrthographic={setCameraIsOrthographic}
                         settingsContext={settingsContext}
                         cameraIsOrthographic={cameraIsOrthographic}
-                        lastCamera={lastCamera}
+
                     />}
                 <div className={styles.buttonGroup} style={{display: 'grid', gap: '2px'}}>
                     {props.minimal ? null :
                         (
                             <>
-                                <Cameras lastCamera={lastCamera} cameraIsOrthographic={cameraIsOrthographic}
-                                         setCameraIsOrthographic={setCameraIsOrthographic} setLastCamera={setLastCamera}
-                                         settingsContext={settingsContext}/>
+
                                 <Button
                                     className={styles.groupItemVert}
                                     onClick={() => {
-                                        if (cameraIsOrthographic)
-                                            settingsContext.cameraType = lastCamera.perspective
-                                        else
-                                            settingsContext.cameraType = lastCamera.ortho
+                                        const engine = props.engine
+                                        engine.renderer.camera.ortho = !engine.renderer.camera.ortho
+                                        engine.renderer.camera.updateProjection()
 
                                         setCameraIsOrthographic(!cameraIsOrthographic)
                                     }}>

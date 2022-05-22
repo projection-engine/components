@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
 import RENDER_TARGET from "./RENDER_TARGET";
-import EditorEngine from "../../../project/extension/EditorEngine";
+import EngineTools from "../../../project/extension/EngineTools";
 import SYSTEMS from "../../../project/engine/templates/SYSTEMS";
 
 const callback = (e) => {
@@ -53,7 +53,7 @@ export default function useGPU(canStart, resolution) {
     }, [])
     const renderer = useMemo(() => {
         if (gpu && canStart) {
-            return new EditorEngine( gpu, {
+            return new EngineTools( gpu, {
                 w: resolution[0],
                 h: resolution[1]
             }, [
