@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styles from './styles/Viewport.module.css'
 import {useContext, useEffect, useRef, useState} from "react";
 import GPUContextProvider from "./hooks/GPUContextProvider";
-import RENDER_TARGET from "./hooks/RENDER_TARGET";
+import ContextMenu from "./components/ContextMenu";
 
 export default function Viewport(props) {
     const ref = useRef()
@@ -10,7 +10,7 @@ export default function Viewport(props) {
     const [visible, setVisible] = useState(false)
 
     useEffect(() => {
-        if(visible)
+        if (visible)
             bindGPU(ref.current)
     }, [visible])
     useEffect(() => {
@@ -39,12 +39,13 @@ export default function Viewport(props) {
                     props.handleDrop(e)
                 }
             }}>
-
+            <ContextMenu options={props.options}/>
         </div>
     )
 }
 
 Viewport.propTypes = {
+    options: PropTypes.array,
     allowDrop: PropTypes.bool.isRequired,
     handleDrop: PropTypes.func,
     engine: PropTypes.object,

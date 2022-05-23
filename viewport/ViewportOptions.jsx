@@ -1,20 +1,17 @@
-import React, {useContext, useEffect, useMemo, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import PropTypes from "prop-types";
 import styles from "./styles/ViewportOptions.module.css";
 import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core";
 import Range from "../range/Range";
 import SettingsProvider from "../../project/hooks/SettingsProvider";
-import CAMERA_TYPES from "../../project/extension/camera/CAMERA_TYPES";
 import {ENTITY_ACTIONS} from "../../project/engine/useEngineEssentials";
-import SphericalCamera from "../../project/extension/camera/SphericalCamera";
-import {handleGrab} from "./utils";
 import GIZMOS from "../../project/extension/gizmo/GIZMOS";
 import {HISTORY_ACTIONS} from "../../project/hooks/historyReducer";
 import ShadingTypes from "./components/ShadingTypes";
 import CreateEntity from "./components/CreateEntity";
 import VisualSettings from "./components/VisualSettings";
 import Extra from "./components/Extra";
-import CameraCube from "./components/CameraCube";
+import CameraOptions from "./components/CameraOptions";
 import ROTATION_TYPES from "../../project/extension/gizmo/ROTATION_TYPES";
 
 
@@ -23,7 +20,7 @@ export default function ViewportOptions(props) {
 
     const [gridSize, setGridSize] = useState(settingsContext.gridSize)
     const [fullscreen, setFullscreen] = useState(false)
-    const [cameraIsOrthographic, setCameraIsOrthographic] = useState(!(settingsContext.cameraType === CAMERA_TYPES.SPHERICAL || settingsContext.cameraType === CAMERA_TYPES.FREE))
+    const [cameraIsOrthographic, setCameraIsOrthographic] = useState(props.engine?.renderer?.camera?.ortho)
 
     const handleFullscreen = () => {
         if (!document.fullscreenElement)
@@ -36,21 +33,6 @@ export default function ViewportOptions(props) {
         return () => document.removeEventListener('fullscreenchange', handleFullscreen)
     }, [fullscreen])
 
-    console.log(cameraIsOrthographic)
-    const cameraIcon = useMemo(() => {
-        if (!cameraIsOrthographic)
-            return (
-                <div
-                    style={{width: '20px', height: '20px', perspective: '40px', transformStyle: 'preserve-3d'}}>
-                        <span
-                            style={{fontSize: '1.1rem', transform: 'rotateX(45deg)'}}
-                            className={'material-icons-round'}>grid_on</span>
-                </div>
-            )
-        else
-            return <span style={{fontSize: '1rem'}} className={'material-icons-round'}>grid_on</span>
-    }, [cameraIsOrthographic])
-
     const dispatchEntity = (entity) => {
         props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
         props.engine.dispatchChanges({
@@ -60,7 +42,7 @@ export default function ViewportOptions(props) {
     }
     const [hidden, setHidden] = useState(false)
     return (
-        <span style={{display: props.executingAnimation || fullscreen ? 'none' : undefined}}>
+        <div style={{display: props.executingAnimation || fullscreen ? 'none' : undefined}}>
             {props.minimal ? null :
                 <div className={styles.options} style={{display: fullscreen ? 'none' : undefined}} draggable={false}>
                     <div style={{justifyContent: 'flex-start'}} className={styles.align}>
@@ -89,7 +71,8 @@ export default function ViewportOptions(props) {
                     styles={{
                         maxWidth: hidden ? '25px' : undefined,
                         maxHeight: hidden ? '25px' : undefined,
-                        borderRadius: '5px', transform: hidden ? 'translateX(35px)' : undefined}}
+                        borderRadius: '5px', transform: hidden ? 'translateX(35px)' : undefined
+                    }}
                     onClick={() => setHidden(!hidden)}>
                         <span className={'material-icons-round'} style={{
                             fontSize: '1.1rem',
@@ -264,14 +247,14 @@ export default function ViewportOptions(props) {
 
 
                 <div className={styles.buttonGroup} style={{display: 'grid'}}>
-                             <Button
-                                 className={styles.transformationWrapper}
-                                 variant={settingsContext.gizmo === GIZMOS.NONE ? 'filled' : undefined}
-                                 styles={{borderRadius: '5px 5px 0  0'}}
-                                 highlight={settingsContext.gizmo === GIZMOS.NONE}
-                                 onClick={() => {
-                                     settingsContext.gizmo = GIZMOS.NONE
-                                 }}>
+                    <Button
+                        className={styles.transformationWrapper}
+                        variant={settingsContext.gizmo === GIZMOS.NONE ? 'filled' : undefined}
+                        styles={{borderRadius: '5px 5px 0  0'}}
+                        highlight={settingsContext.gizmo === GIZMOS.NONE}
+                        onClick={() => {
+                            settingsContext.gizmo = GIZMOS.NONE
+                        }}>
                         <span className={'material-icons-round'}>mouse</span>
                     </Button>
                     <Button
@@ -308,71 +291,15 @@ export default function ViewportOptions(props) {
             </div>
 
             <div className={styles.floating} style={{top: props.minimal ? '4px' : undefined}}>
-                {props.minimal ?
-                    null
-                    :
-                    <CameraCube
-                        id={props.id}
-                        engine={props.engine}
-                        setCameraIsOrthographic={setCameraIsOrthographic}
-                        settingsContext={settingsContext}
-                        cameraIsOrthographic={cameraIsOrthographic}
-
-                    />}
-                <div className={styles.buttonGroup} style={{display: 'grid', gap: '2px'}}>
-                    {props.minimal ? null :
-                        (
-                            <>
-
-                                <Button
-                                    className={styles.groupItemVert}
-                                    onClick={() => {
-                                        const engine = props.engine
-                                        engine.renderer.camera.ortho = !engine.renderer.camera.ortho
-                                        engine.renderer.camera.updateProjection()
-
-                                        setCameraIsOrthographic(!cameraIsOrthographic)
-                                    }}>
-                                    <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
-                                        <div>- Switch between last Ortho/Perspective</div>
-                                    </ToolTip>
-                                    {cameraIcon}
-                                </Button>
-                            </>
-                        )}
-                    <div className={styles.buttonGroup} style={{
-                        display: props.engine.renderer?.camera instanceof SphericalCamera ? 'grid' : 'none',
-                        transform: 'translateY(12px)',
-                        gap: '2px'
-                    }}>
-                        <div
-                            className={[styles.groupItemVert, styles.dragInput].join(' ')}
-                            onMouseDown={e => handleGrab(e, props.engine.renderer, 0)}
-                        >
-                            <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
-                                <div>- Drag X to zoom in/out</div>
-                            </ToolTip>
-                            <span className={'material-icons-round'}>zoom_in</span>
-                        </div>
-                        <div
-                            className={[styles.groupItemVert, styles.dragInput].join(' ')}
-                            onMouseDown={e => handleGrab(e, props.engine.renderer, 1)}
-                            onDoubleClick={() => {
-                                props.engine.renderer.camera.centerOn = [0, 0, 0]
-                                props.engine.renderer.camera.updateViewMatrix()
-                            }}>
-                            <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
-                                <div>- Drag X to move forward/backwards</div>
-                                <div>- Drag Y to move up/down</div>
-                                <div>- Double click to center</div>
-                            </ToolTip>
-                            <span className={'material-icons-round'}>back_hand</span>
-                        </div>
-                    </div>
-                </div>
+                <CameraOptions
+                    id={props.id}
+                    engine={props.engine}
+                    setCameraIsOrthographic={setCameraIsOrthographic}
+                    settingsContext={settingsContext}
+                    cameraIsOrthographic={cameraIsOrthographic}
+                />
             </div>
-
-        </span>
+        </div>
     )
 
 }

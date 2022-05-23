@@ -1,5 +1,5 @@
 import styles from "../styles/ViewportOptions.module.css";
-import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core";
+import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 
 import PropTypes from "prop-types";
 import SHADING_MODELS from "../../../project/engine/templates/SHADING_MODELS";

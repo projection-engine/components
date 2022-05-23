@@ -1,7 +1,8 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useContext, useEffect, useMemo, useState} from "react";
 import RENDER_TARGET from "./RENDER_TARGET";
-import EngineTools from "../../../project/extension/EngineTools";
+import Engine from "../../../project/extension/Engine";
 import SYSTEMS from "../../../project/engine/templates/SYSTEMS";
+import SettingsProvider from "../../../project/hooks/SettingsProvider";
 
 const callback = (e) => {
     const target = e[0]?.target
@@ -20,6 +21,7 @@ export default function useGPU(canStart, resolution) {
     const [gpu, setGpu] = useState()
     const [obs, setObs] = useState(new ResizeObserver(callback))
     const [target, setTarget] = useState()
+    const settings = useContext(SettingsProvider)
     useEffect(() => {
         const t = document.createElement('canvas')
 
@@ -53,7 +55,7 @@ export default function useGPU(canStart, resolution) {
     }, [])
     const renderer = useMemo(() => {
         if (gpu && canStart) {
-            return new EngineTools( gpu, {
+            return new Engine( gpu, {
                 w: resolution[0],
                 h: resolution[1]
             }, [
@@ -67,7 +69,7 @@ export default function useGPU(canStart, resolution) {
                 SYSTEMS.AO,
                 SYSTEMS.DEPTH_PRE_PASS,
                 SYSTEMS.PROBE
-            ])
+            ], settings)
         }
         return undefined
     }, [gpu, canStart])

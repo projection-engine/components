@@ -1,7 +1,6 @@
 import styles from "../styles/ViewportOptions.module.css";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import PropTypes from "prop-types";
-import Range from "../../range/Range";
 import {useState} from "react";
 import LabeledRange from "../../templates/LabeledRange";
 
