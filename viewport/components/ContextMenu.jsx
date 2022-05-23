@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import GPUContextProvider from "../hooks/GPUContextProvider";
 import styles from '../styles/ContextMenu.module.css'
 import {Button} from "@f-ui/core";
-import ReactDOM from "react-dom";
+
 const BUTTON_RIGHT = 2
 export default function ContextMenu(props) {
     const {gpu, renderer} = useContext(GPUContextProvider)
