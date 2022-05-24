@@ -55,3 +55,15 @@
   
 
 }
+
+.context{
+    width: 200px;
+    display: grid;
+    align-content: flex-start;
+
+
+    max-height: 350px;
+    background: var(--fabric-background-tertiary);
+
+
+}

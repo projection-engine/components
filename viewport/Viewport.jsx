@@ -3,6 +3,7 @@ import styles from './styles/Viewport.module.css'
 import {useContext, useEffect, useRef, useState} from "react";
 import GPUContextProvider from "./hooks/GPUContextProvider";
 import ContextMenu from "./components/ContextMenu";
+import {ContextWrapper} from "@f-ui/core";
 
 export default function Viewport(props) {
     const ref = useRef()
@@ -11,36 +12,41 @@ export default function Viewport(props) {
 
     useEffect(() => {
         if (visible)
-            bindGPU(ref.current)
+            bindGPU(ref.current.parentNode)
     }, [visible])
     useEffect(() => {
         const obs = new IntersectionObserver((e) => setVisible(e[0]?.isIntersecting))
-        obs.observe(ref.current)
+        obs.observe(ref.current.parentNode)
         return () => obs.disconnect()
     }, [])
     return (
-        <div
-            ref={ref}
-            className={styles.viewport}
-            onDragOver={e => {
-                if (props.allowDrop) {
-                    e.preventDefault()
-                    ref.current?.classList.add(styles.hovered)
-                }
-            }}
-            onDragLeave={e => {
-                e.preventDefault()
-                ref.current?.classList.remove(styles.hovered)
-            }}
-            onDrop={e => {
-                if (props.allowDrop) {
+        <ContextWrapper
+            wrapperClassName={styles.context}
+            attributes={{
+                onDragOver: e => {
+                    if (props.allowDrop) {
+                        e.preventDefault()
+                        ref.current?.classList.add(styles.hovered)
+                    }
+                },
+                onDragLeave: e => {
                     e.preventDefault()
                     ref.current?.classList.remove(styles.hovered)
-                    props.handleDrop(e)
+                },
+                onDrop: e => {
+                    if (props.allowDrop) {
+                        e.preventDefault()
+                        ref.current?.classList.remove(styles.hovered)
+                        props.handleDrop(e)
+                    }
                 }
-            }}>
-            <ContextMenu options={props.options}/>
-        </div>
+            }}
+            triggers={['data-self']}
+            className={styles.viewport}
+            content={() => <ContextMenu options={props.options} engine={props.engine}/>}
+        >
+            <span style={{display: 'none'}} ref={ref}/>
+        </ContextWrapper>
     )
 }
 

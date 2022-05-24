@@ -5,9 +5,10 @@ import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/
 import React, {useMemo, useState} from "react";
 import EditorCamera from "../../../project/extension/camera/EditorCamera";
 import {handleGrab} from "../transformCamera";
+import Range from "../../range/Range";
 
 export default function CameraOptions(props) {
-    const {engine, setCameraIsOrthographic, cameraIsOrthographic} = props
+    const {settingsContext, engine, setCameraIsOrthographic, cameraIsOrthographic} = props
     const cameraIcon = useMemo(() => {
         if (!cameraIsOrthographic)
             return (
@@ -31,6 +32,9 @@ export default function CameraOptions(props) {
         renderer.camera.updateViewMatrix()
         setCameraIsOrthographic(true)
     }
+    const [cameraSpeed, setCameraSpeed] = useState(settingsContext.cameraSpeed)
+    const [cameraScrollDelay, setCameraScrollDelay] = useState(settingsContext.cameraScrollDelay)
+    const [cameraScrollSpeed, setCameraScrollSpeed] = useState(settingsContext.cameraScrollSpeed)
 
     return (
         <>
@@ -67,6 +71,7 @@ export default function CameraOptions(props) {
                     </div>
                 </div>
             </div>
+
             <div className={styles.buttonGroup} style={{display: 'grid', gap: '2px'}}>
                 <Dropdown hideArrow={true}
                     className={styles.groupItemVert}
@@ -114,6 +119,65 @@ export default function CameraOptions(props) {
                             }}/>
                     </DropdownOptions>
                 </Dropdown>
+                <Dropdown
+                    className={styles.groupItemVert}
+                    hideArrow={true}>
+                    <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
+                        <div>Camera sensitivity</div>
+                    </ToolTip>
+                    <span className={'material-icons-round'}
+                          style={{fontSize: '1rem'}}>directions_run</span>
+                    <DropdownOptions>
+                        <div className={styles.rangeWrapper} style={{display: 'grid'}}>
+                            <div className={styles.rangeLabel}>
+                                Movement sensitivity
+                            </div>
+                            <Range
+                                onFinish={v => {
+                                    setCameraSpeed(v)
+                                    settingsContext.cameraSpeed = v
+                                }} accentColor={'red'}
+                                handleChange={(v) => setCameraSpeed(v)}
+                                value={cameraSpeed}
+                                minValue={0.00000001}
+                                precision={4}
+                                incrementPercentage={.0001}
+                            />
+                        </div>
+                        <div className={styles.rangeWrapper} style={{display: 'grid'}}>
+                            <div className={styles.rangeLabel}>
+                                Zoom speed
+                            </div>
+                            <Range
+                                onFinish={v => {
+                                    setCameraScrollSpeed(v)
+                                    settingsContext.cameraScrollSpeed = v
+                                }} accentColor={'red'}
+                                handleChange={(v) => setCameraScrollSpeed(v)}
+                                value={cameraScrollSpeed}
+                                minValue={0}
+                                precision={4}
+                                incrementPercentage={.0001}
+                            />
+                        </div>
+                        <div className={styles.rangeWrapper} style={{display: 'grid'}}>
+                            <div className={styles.rangeLabel}>
+                                Zoom delay
+                            </div>
+                            <Range
+                                onFinish={v => {
+                                    setCameraScrollDelay(v)
+                                    settingsContext.cameraScrollDelay = v
+                                }} accentColor={'red'}
+                                handleChange={(v) => setCameraScrollDelay(v)}
+                                value={cameraScrollDelay}
+                                minValue={0}
+                                precision={1}
+                                incrementPercentage={.1}
+                            />
+                        </div>
+                    </DropdownOptions>
+                </Dropdown>
                 <Button
                     className={styles.groupItemVert}
                     onClick={() => {
@@ -127,24 +191,27 @@ export default function CameraOptions(props) {
                     </ToolTip>
                     {cameraIcon}
                 </Button>
-                <Button
-                    className={styles.groupItemVert}
-                    variant={cameraLocked ? 'filled' : undefined}
-                    onClick={() => {
-                        const original = engine.renderer.camera.locked
-                        engine.renderer.camera.locked = !original
-                        setCameraLocked(!original)
-                    }}>
-                    <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
-                        Lock camera rotation
-                    </ToolTip>
-                    <span className={'material-icons-round'} style={{fontSize: '1.1rem'}} >{cameraLocked ? 'lock' : 'lock_open'}</span>
-                </Button>
-                <div className={styles.buttonGroup} style={{
+
+                <div
+                    className={styles.buttonGroup}
+                    style={{
                     display: engine.renderer?.camera instanceof EditorCamera ? 'grid' : 'none',
                     transform: 'translateY(12px)',
                     gap: '2px'
                 }}>
+                    <Button
+                        className={styles.groupItemVert}
+                        variant={cameraLocked ? 'filled' : undefined}
+                        onClick={() => {
+                            const original = engine.renderer.camera.locked
+                            engine.renderer.camera.locked = !original
+                            setCameraLocked(!original)
+                        }}>
+                        <ToolTip styles={{textAlign: 'left', display: 'grid'}}>
+                            Lock camera rotation
+                        </ToolTip>
+                        <span className={'material-icons-round'} style={{fontSize: '1.1rem'}} >{cameraLocked ? 'lock' : 'lock_open'}</span>
+                    </Button>
                     <div
                         className={[styles.groupItemVert, styles.dragInput].join(' ')}
                         onMouseDown={e => handleGrab(e, engine.renderer.camera, 0)}
