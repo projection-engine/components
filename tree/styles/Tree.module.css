@@ -20,8 +20,7 @@
 }
 
 .container:hover{
-    opacity: .8;
-
+    background: var(--fabric-border-primary);
 }
 /*.container:active{*/
 /*    opacity: .5;*/
@@ -87,7 +86,6 @@
 }
 .button:active{
     color: var(--fabric-accent-color);
-    opacity: .5;
 }
 .rowContentWrapper {
 
@@ -115,6 +113,7 @@
 }
 
 .input {
+    height: 20px;
     padding: 4px;
     border: var(--fabric-border-primary) 1px solid;
     outline: none;

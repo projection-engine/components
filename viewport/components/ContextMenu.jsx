@@ -1,13 +1,12 @@
 import PropTypes from "prop-types";
-import React, {useContext, useEffect, useRef, useState} from "react";
-import GPUContextProvider from "../hooks/GPUContextProvider";
+import React from "react";
 import styles from '../styles/ContextMenu.module.css'
 import {Button} from "@f-ui/core";
 
 const BUTTON_RIGHT = 2
 export default function ContextMenu(props) {
     const {options} = props
-    if (options.length > 0 && props.engine.selected.length > 0)
+    if (options && options.length > 0 && props.engine.selected.length > 0)
         return (
             <>
                 {options.map((o, i) => (
