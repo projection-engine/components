@@ -38,7 +38,6 @@ export default function TreeNode(props) {
                 className={styles.container}
                 title={currentLabel}
                 data-selected={`${selected}`}
-                data-highlight={`${props.focusedNode === props.node.id}`}
             >
                 {props.node.canBeHidden ?
                     <button className={styles.button} onClick={props.node.onHide}>
@@ -89,14 +88,13 @@ export default function TreeNode(props) {
                         <div
                             className={styles.rowContentWrapper}
                             onClick={e => {
-                                props.setFocusedNode(props.node.id)
                                 if (props.node.onClick)
                                     props.node.onClick(e)
                             }}>
                             <div
                                 id={props.node.id}
                                 className={styles.rowContent}
-                                style={{fontWeight: '550', width: !props.node.type ? '90%' : undefined}}
+                                style={{fontWeight: props.index === 0 ? '550' : undefined, width: !props.node.type ? '90%' : undefined}}
 
                                 draggable={!props.node.phantomNode && props.draggable && props.node.draggable}
 
@@ -138,8 +136,6 @@ export default function TreeNode(props) {
                                 handleRename={props.handleRename}
                                 node={child}
                                 index={props.index + 1}
-                                focusedNode={props.focusedNode}
-                                setFocusedNode={props.setFocusedNode}
 
                             />
                         </React.Fragment>
@@ -171,9 +167,6 @@ TreeNode.propTypes = {
         canBeHidden: PropTypes.bool
     }).isRequired,
     index: PropTypes.number,
-    focusedNode: PropTypes.any,
-    setFocusedNode: PropTypes.func,
-
     draggable: PropTypes.bool,
     onDrop: PropTypes.func,
     onDragOver: PropTypes.func,

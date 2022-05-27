@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useMemo, useState} from "react";
 import styles from './styles/Tree.module.css'
 import TreeNode from "./TreeNode";
 import {ContextMenu} from "@f-ui/core";
@@ -7,18 +7,7 @@ import Search from "../search/Search";
 import SelectBox from "../selectbox/SelectBox";
 
 export default function TreeView(props) {
-    const [focusedNode, setFocusedNode] = useState()
     const [searchString, setSearchString] = useState('')
-    const ref = useRef()
-    const handleMouseDown = (ev) => {
-        if (focusedNode && !document.elementsFromPoint(ev.clientX, ev.clientY).includes(ref.current)) {
-            setFocusedNode(undefined)
-        }
-    }
-    useEffect(() => {
-        document.addEventListener('mousedown', handleMouseDown)
-        return () => document.removeEventListener('mousedown', handleMouseDown)
-    }, [focusedNode])
     let t
     const content = useMemo(() => {
         return (
@@ -68,8 +57,7 @@ export default function TreeView(props) {
                         triggerHierarchy={() => null}
                         node={child} index={0}
                         selected={props.selected}
-                        focusedNode={focusedNode}
-                        setFocusedNode={setFocusedNode}
+
                     />
                 </React.Fragment>
             ))

@@ -3,32 +3,27 @@ import React from "react";
 import styles from '../styles/ContextMenu.module.css'
 import {Button} from "@f-ui/core";
 
-const BUTTON_RIGHT = 2
 export default function ContextMenu(props) {
     const {options} = props
     if (options && options.length > 0 && props.engine.selected.length > 0)
-        return (
-            <>
-                {options.map((o, i) => (
-                    <React.Fragment key={'viewport-option-' + i}>
-                        {o.divider ? <div className={styles.divider}/> :
-                            <Button
-                                disabled={o.disabled}
-                                className={styles.button}
-                                onClick={() => {
-                                    console.log(o)
-                                    o.onClick()
-                                }}>
-                                <div className={styles.icon}>
+        return options.map((o, i) => (
+            <React.Fragment key={'viewport-option-' + i}>
+                {o.divider ? <div className={styles.divider}/> :
+                    <Button
+                        disabled={o.disabled}
+                        className={styles.button}
+                        onClick={() => {
+                            console.log(o)
+                            o.onClick()
+                        }}>
+                        <div className={styles.icon}>
                             <span style={{fontSize: '1.1rem'}}
                                   className={'material-icons-round'}>{o.icon}</span>
-                                </div>
-                                {o.label}
-                            </Button>}
-                    </React.Fragment>
-                ))}
-            </>
-        )
+                        </div>
+                        {o.label}
+                    </Button>}
+            </React.Fragment>
+        ))
     return null
 }
 
