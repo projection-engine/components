@@ -2,10 +2,11 @@ import PropTypes from "prop-types";
 import styles from './styles/SelectorItem.module.css'
 import {useMemo} from "react";
 import Preview from "../preview/Preview";
+import FileSystem from "../../project/utils/files/FileSystem";
 
 export default function SelectorItem(props) {
     const p = useMemo(() => {
-        return props.path + '\\previews\\' + props.data.registryID + '.preview'
+        return props.path + FileSystem.sep + 'previews' + FileSystem.sep + props.data.registryID + '.preview'
     }, [props.data?.registryID])
     const icon = useMemo(() => {
         switch (props.type) {

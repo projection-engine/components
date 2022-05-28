@@ -23,6 +23,7 @@ export default function Frame(props) {
             {props.logoAction ?
                 <Button
                     className={styles.dropdown}
+
                     onClick={() => ipcRenderer.send('switch-window')}>
                     {LogoContent}
                 </Button>

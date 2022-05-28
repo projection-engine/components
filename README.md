@@ -31,13 +31,13 @@
 > Wrapper for selecting items with preview
 
 - tabs
-> Tabs component for editor, with support for customizable option header per page
+> TabRouter component for editor, with support for customizable option header per page
  
 - tree
 > Tree view component with drag/drop support
 
 - viewport
-> Main viewport for editor
+> Editor viewport for editor
 
 
 ## Viewport workflow
