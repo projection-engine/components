@@ -18,6 +18,8 @@
     max-width: 100%;
     overflow: hidden;
 
+
+    background-color: var(--fabric-background-primary) !important;
     outline: transparent 2px dashed;
     transition: 150ms linear;
 

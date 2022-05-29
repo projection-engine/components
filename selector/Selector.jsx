@@ -29,8 +29,8 @@ export default function Selector(props) {
     const content = useMemo(() => {
         let filtered = getType()
             .filter(e => e.name.toLowerCase().includes(searchString))
-        if(currentSort)
-            filtered = filtered.sort((a,b) => (a.name > b.name) ? (currentSort === `up` ? 1 : -1) : ((b.name > a.name) ? (currentSort === `up` ? -1 : 1) : 0))
+        if (currentSort)
+            filtered = filtered.sort((a, b) => (a.name > b.name) ? (currentSort === `up` ? 1 : -1) : ((b.name > a.name) ? (currentSort === `up` ? -1 : 1) : 0))
 
         if (filtered.length > 0)
             return filtered.map((t, i) => (
@@ -41,7 +41,7 @@ export default function Selector(props) {
                         highlight={state.registryID === t.registryID}
                         onClick={() => {
                             setState(t)
-                            props.handleChange(t)
+                            props.handleChange(t, _ => setState({name: 'Empty'}))
                         }}
                     >
                         <SelectorItem
@@ -64,7 +64,6 @@ export default function Selector(props) {
     useEffect(() => {
         let name = 'Empty',
             data = (typeof props.selected === 'object' && Object.keys(props.selected).length > 0) ? props.selected : quickAccess[props.type + 's']?.find(e => e.registryID === props.selected)
-
         setState(data ? data : {name})
     }, [props.selected])
     const [className, setClassName] = useState('')
@@ -83,8 +82,8 @@ export default function Selector(props) {
                     const transfer = JSON.parse(e.dataTransfer.getData('text'))[0]
                     const filtered = getType().find(f => f.registryID === transfer)
                     if (filtered) {
-                        props.handleChange(filtered)
                         setState(filtered)
+                        props.handleChange(filtered, _ => setState({name: 'Empty'}))
                     }
                 } catch (e) {
                 }

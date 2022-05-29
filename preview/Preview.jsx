@@ -3,12 +3,12 @@ import usePreview from "./usePreview";
 import {useState} from "react";
 
 export default function Preview(props){
-    const ref= usePreview(props.path)
     const [error, setError] = useState(false)
+    const ref= usePreview(props.path, setError)
 
     return (
         <>
-            <img draggable={false}  ref={ref} className={props.className} style={{...props.styles, ...{display: error ? 'none' : undefined}}} alt={''} onError={() => setError(true)} onLoad={() => setError(false)} />
+            <img src={'.'} draggable={false}  ref={ref} className={props.className} style={{...props.styles, ...{display: error ? 'none' : undefined}}} alt={''}/>
             <span className={['material-icons-round', props.iconClassname].join(' ')} style={{...props.iconStyles, ...{display: !error ? 'none' : undefined}}}>{props.fallbackIcon ? props.fallbackIcon : 'image'}</span>
             {!error ? props.children : null}
         </>

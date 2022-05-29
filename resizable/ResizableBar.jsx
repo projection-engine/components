@@ -41,10 +41,12 @@ export default function ResizableBar(props) {
         }
     }
 
+    const initial = useRef({})
     useEffect(() => {
-        if(ref.current.previousSibling) {
+        if (ref.current.previousSibling) {
             const initialW1 = ref.current.previousSibling.style.width, initialW2 = ref.current.nextSibling.style.width,
                 initialH1 = ref.current.previousSibling.style.height, initialH2 = ref.current.nextSibling.style.height
+            initial.current = {initialW1, initialW2, initialH1, initialH2}
             const r = new ResizeObserver(() => {
                 if (ref.current) {
                     if (props.type === 'width') {
@@ -58,8 +60,21 @@ export default function ResizableBar(props) {
             })
             r.observe(document.body)
         }
-
     }, [])
+    useEffect(() => {
+        const {initialW1, initialW2, initialH1, initialH2} = initial.current
+        if (props.type === 'width') {
+            if(props.resetTargets?.previous)
+            ref.current.previousSibling.style.width = initialW1
+            if(props.resetTargets?.next)
+            ref.current.nextSibling.style.width = initialW2
+        } else {
+            if(props.resetTargets?.previous)
+            ref.current.previousSibling.style.height = initialH1
+            if(props.resetTargets?.next)
+            ref.current.nextSibling.style.height = initialH2
+        }
+    }, [props.resetWhen])
     return (
         <div
             onMouseDown={handleMouseDown}
@@ -77,6 +92,11 @@ export default function ResizableBar(props) {
 }
 
 ResizableBar.propTypes = {
+    resetTargets: PropTypes.shape({
+        next: PropTypes.bool,
+        previous: PropTypes.bool,
+    }),
+    resetWhen: PropTypes.array,
     onResize: PropTypes.func,
     onResizeEnd: PropTypes.func,
     onResizeStart: PropTypes.func,
