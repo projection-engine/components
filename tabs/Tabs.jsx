@@ -37,6 +37,7 @@ export default function Tabs(props) {
                 <div className={styles.switcher} style={stylesHidden}>
                     <Button
                         className={styles.button}
+                        styles={{background: 'var(--fabric-border-primary)'}}
                         onClick={() => setHidden(!hidden)}
                     >
                     <span className={'material-icons-round'}
@@ -58,20 +59,20 @@ export default function Tabs(props) {
 
                         </React.Fragment>
                     ))}
-                    {current?.close ?
-                    <Button
-                        className={[styles.button, styles.close].join(' ')}
-                        onClick={() => {
-                            props.setOpen(prev => prev - 1)
-                            current.close()
-                        }}
-                        variant={"filled"}
-                    >
-                        <ToolTip content={'Close active view'} animation={'0ms'}/>
-                        <span className={'material-icons-round'} style={{fontSize: '1rem'}}>close</span>
-                    </Button>
-                    :
-                    null}
+                    {current?.close && !hidden ?
+                        <Button
+                            className={[styles.button, styles.close].join(' ')}
+                            onClick={() => {
+                                props.setOpen(prev => prev - 1)
+                                current.close()
+                            }}
+                            variant={"filled"}
+                        >
+                            <ToolTip content={'Close active view'} animation={'0ms'}/>
+                            <span className={'material-icons-round'} style={{fontSize: '1rem'}}>close</span>
+                        </Button>
+                        :
+                        null}
 
                 </div>
 
