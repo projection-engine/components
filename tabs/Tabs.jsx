@@ -58,8 +58,7 @@ export default function Tabs(props) {
 
                         </React.Fragment>
                     ))}
-                </div>
-                {current?.close ?
+                    {current?.close ?
                     <Button
                         className={[styles.button, styles.close].join(' ')}
                         onClick={() => {
@@ -73,6 +72,9 @@ export default function Tabs(props) {
                     </Button>
                     :
                     null}
+
+                </div>
+
                 {props.tabs.map((t, i) => (
                     <div style={{
                         display: props.open === i && !hidden ? undefined : 'none',

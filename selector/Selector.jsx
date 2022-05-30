@@ -4,7 +4,7 @@ import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core";
 import SelectorItem from "./SelectorItem";
 import PropTypes from "prop-types";
 import Search from "../search/Search";
-import QuickAccessProvider from "../../project/hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../project/utils/hooks/QuickAccessProvider";
 
 export default function Selector(props) {
     const [state, setState] = useState({})

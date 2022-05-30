@@ -21,11 +21,5 @@ export default function FileOptions(props){
 }
 
 FileOptions.propTypes={
-    options: PropTypes.arrayOf(PropTypes.shape({
-        label: PropTypes.string,
-        disabled: PropTypes.bool,
-        icon: PropTypes.string,
-        onClick: PropTypes.func,
-        divider: PropTypes.bool
-    }))
+    options: PropTypes.array
 }

@@ -5,10 +5,11 @@
     height: clamp(450px, 50vh, 650px);
     width: 100%;
     min-height: 25px;
-    position: relative;
 }
 
 .switcher {
+
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
