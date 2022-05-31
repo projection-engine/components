@@ -1,6 +1,6 @@
-import styles from '../styles/Actions.module.css'
-import {Button} from "@f-ui/core";
-import PropTypes from "prop-types";
+import styles from "../styles/Actions.module.css"
+import {Button} from "@f-ui/core"
+import PropTypes from "prop-types"
 
 const {ipcRenderer} = window.require('electron')
 

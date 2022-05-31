@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import styles from './styles/Search.module.css'
+import PropTypes from "prop-types"
+import styles from "./styles/Search.module.css"
 
 export default function Search(props) {
     return (

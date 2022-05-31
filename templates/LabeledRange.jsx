@@ -1,6 +1,6 @@
-import styles from './styles/Styles.module.css'
-import PropTypes from "prop-types";
-import Range from "../range/Range";
+import styles from "./styles/Styles.module.css"
+import PropTypes from "prop-types"
+import Range from "../range/Range"
 
 export default function LabeledRange(props) {
     return (

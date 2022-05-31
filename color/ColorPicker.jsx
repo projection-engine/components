@@ -1,9 +1,9 @@
-import styles from './styles/Color.module.css'
-import {useEffect, useState} from "react";
-import PropTypes from "prop-types";
-import {Button, Modal, ToolTip} from "@f-ui/core";
-import {RgbColorPicker} from "react-colorful";
-import Range from "../range/Range";
+import styles from "./styles/Color.module.css"
+import {useEffect, useState} from "react"
+import PropTypes from "prop-types"
+import {Button, Modal, ToolTip} from "@f-ui/core"
+import {RgbColorPicker} from "react-colorful"
+import Range from "../range/Range"
 
 
 export default function ColorPicker(props) {

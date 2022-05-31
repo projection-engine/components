@@ -1,9 +1,9 @@
-import PropTypes from "prop-types";
-import styles from './styles/Frame.module.css'
-import logo from '../../static/logo.png'
+import PropTypes from "prop-types"
+import styles from "./styles/Frame.module.css"
+import logo from "../../static/logo.png"
 import React from "react"
-import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import Actions from "./components/Actions";
+import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
+import Actions from "./components/Actions"
 
 const {ipcRenderer} = window.require('electron')
 export default function Frame(props) {

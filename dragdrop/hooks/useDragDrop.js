@@ -1,7 +1,7 @@
-import React, {useContext, useEffect, useRef} from "react";
-import ReactDOM from "react-dom";
-import styles from "../styles/DragDrop.module.css";
-import {ThemeContext} from "@f-ui/core";
+import React, {useContext, useEffect, useRef} from "react"
+import ReactDOM from "react-dom"
+import styles from "../styles/DragDrop.module.css"
+import {ThemeContext} from "@f-ui/core"
 
 export default function useDragDrop(props) {
     const {

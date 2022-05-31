@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
-import usePreview from "./usePreview";
-import {useState} from "react";
+import PropTypes from "prop-types"
+import usePreview from "./usePreview"
+import {useState} from "react"
 
 export default function Preview(props){
     const [error, setError] = useState(false)

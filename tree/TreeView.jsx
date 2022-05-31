@@ -1,10 +1,10 @@
-import PropTypes from "prop-types";
-import React, {useMemo, useState} from "react";
-import styles from './styles/Tree.module.css'
-import TreeNode from "./TreeNode";
-import {ContextMenu} from "@f-ui/core";
-import Search from "../search/Search";
-import SelectBox from "../selectbox/SelectBox";
+import PropTypes from "prop-types"
+import React, {useMemo, useState} from "react"
+import styles from "./styles/Tree.module.css"
+import TreeNode from "./TreeNode"
+import {ContextMenu} from "@f-ui/core"
+import Search from "../search/Search"
+import SelectBox from "../selectbox/SelectBox"
 
 export default function TreeView(props) {
     const [searchString, setSearchString] = useState('')

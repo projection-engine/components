@@ -1,6 +1,6 @@
-import styles from './styles/Styles.module.css'
-import PropTypes from "prop-types";
-import {Accordion, AccordionSummary} from "@f-ui/core";
+import styles from "./styles/Styles.module.css"
+import PropTypes from "prop-types"
+import {Accordion, AccordionSummary} from "@f-ui/core"
 
 export default function AccordionTemplate(props) {
     return (

@@ -1,8 +1,8 @@
-import PropTypes from "prop-types";
-import styles from './styles/SelectorItem.module.css'
-import {useMemo} from "react";
-import Preview from "../preview/Preview";
-import FileSystem from "../../project/utils/files/FileSystem";
+import PropTypes from "prop-types"
+import styles from "./styles/SelectorItem.module.css"
+import {useMemo} from "react"
+import Preview from "../preview/Preview"
+import FileSystem from "../../project/utils/files/FileSystem"
 
 export default function SelectorItem(props) {
     const p = useMemo(() => {

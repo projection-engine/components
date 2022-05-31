@@ -1,8 +1,8 @@
-import styles from './styles/Tabs.module.css'
-import PropTypes from "prop-types";
-import {Button, ToolTip} from "@f-ui/core";
-import React, {useMemo, useRef, useState} from 'react'
-import ResizableBar from "../resizable/ResizableBar";
+import styles from "./styles/Tabs.module.css"
+import PropTypes from "prop-types"
+import {Button, ToolTip} from "@f-ui/core"
+import React, {useMemo, useRef, useState} from "react"
+import ResizableBar from "../resizable/ResizableBar"
 
 export default function Tabs(props) {
     const [hidden, setHidden] = useState(false)

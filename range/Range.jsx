@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
-import styles from './styles/Range.module.css'
-import {useEffect, useRef, useState} from "react";
-import KEYS from "../../project/engine/templates/KEYS";
+import PropTypes from "prop-types"
+import styles from "./styles/Range.module.css"
+import {useEffect, useRef, useState} from "react"
+import KEYS from "../../project/engine/templates/KEYS"
 
 export default function Range(props) {
     const [focused, setFocused] = useState(false)

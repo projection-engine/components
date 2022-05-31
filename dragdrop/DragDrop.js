@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
+import React, {useEffect} from "react"
 
-import PropTypes from 'prop-types'
-import useDragDrop from "./hooks/useDragDrop";
+import PropTypes from "prop-types"
+import useDragDrop from "./hooks/useDragDrop"
 
 export default function DragDrop(props) {
     const {ref, hover} = useDragDrop(props)

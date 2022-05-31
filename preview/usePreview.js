@@ -1,5 +1,5 @@
-import {useEffect, useRef} from "react";
-import AsyncFS from "../../project/utils/AsyncFS";
+import {useEffect, useRef} from "react"
+import AsyncFS from "../../project/utils/AsyncFS"
 
 export default function usePreview(path, setError) {
     const ref = useRef()

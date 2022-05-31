@@ -1,7 +1,7 @@
-import styles from './Styles.module.css'
-import PropTypes from "prop-types";
-import {Button, ToolTip} from "@f-ui/core";
-import React from 'react'
+import styles from "./Styles.module.css"
+import PropTypes from "prop-types"
+import {Button, ToolTip} from "@f-ui/core"
+import React from "react"
 
 export default function FileOptions(props){
     return (

@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
-import {useEffect, useMemo, useRef} from "react";
-import styles from './styles/SelectBox.module.css'
+import PropTypes from "prop-types"
+import {useEffect, useMemo, useRef} from "react"
+import styles from "./styles/SelectBox.module.css"
 
 export default function SelectBox(props) {
     const ref = useRef()
