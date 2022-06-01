@@ -1,38 +1,40 @@
 import styles from "./styles/Color.module.css"
-import {useEffect, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import PropTypes from "prop-types"
-import {Button, Modal, ToolTip} from "@f-ui/core"
+import {Button, Dropdown, DropdownOption, DropdownOptions, DropdownProvider, Modal, ToolTip} from "@f-ui/core"
 import {RgbColorPicker} from "react-colorful"
 import Range from "../range/Range"
 
 
 export default function ColorPicker(props) {
-    const [open, setOpen] = useState(false)
+
     const [value, setValue] = useState({r: 0, g: 0, b: 0})
     useEffect(() => {
 
-        if (typeof props.value === 'string') {
+        if (typeof props.value === "string") {
             const split = props.value.match(/[\d.]+/g)
-            const [r, g, b, a] = split.map(v => parseFloat(v))
+            const [r, g, b] = split.map(v => parseFloat(v))
 
             setValue({r: r, g: g, b: b})
         }
         else if(typeof props.value === "object")
             setValue(props.value)
-    }, [props.value, open])
+    }, [props.value])
 
 
     return (
-
-        <div className={styles.wrapper} style={{...{    height: '35px'}, ...props.styles}}>
-            <Modal
-                blurIntensity={0}
-                variant={'fit'}
-                open={open}
-                handleClose={() => null}
-
-                className={styles.modal}
-            >
+        <Dropdown
+            style={props.styles}
+            hideArrow={true}
+            wrapperClassname={styles.modal}
+            className={styles.wrapper}
+        >
+            {props.label ? <div className={styles.label}>{props.label}</div> : null}
+            <div className={styles.placeholder}
+                style={{...{    height: "35px", background: `rgb(${value.r},${value.g},${value.b})`}, ...props.styles}}>
+                <ToolTip content={`rgb(${value.r},${value.g},${value.b})`}/>
+            </div>
+            <DropdownOptions>
                 <RgbColorPicker color={value} onChange={e => setValue(e)}/>
                 <div className={styles.inputs}>
                     <div className={styles.inputLabel}>
@@ -48,7 +50,7 @@ export default function ColorPicker(props) {
                                 }
                             })}
                             value={value.r}
-                            accentColor={'red'}
+                            accentColor={"red"}
                         />
                     </div>
                     <div className={styles.inputLabel}>
@@ -64,7 +66,7 @@ export default function ColorPicker(props) {
                                 }
                             })}
                             value={value.g}
-                            accentColor={'green'}
+                            accentColor={"green"}
                         />
                     </div>
                     <div className={styles.inputLabel}>
@@ -80,37 +82,13 @@ export default function ColorPicker(props) {
                                 }
                             })}
                             value={value.b}
-                            accentColor={'blue'}
+                            accentColor={"blue"}
                         />
                     </div>
                 </div>
-                <div className={styles.buttons}>
-                    <Button
-                        className={styles.button}
-                        variant={'filled'}
-                        onClick={() => {
-                            setOpen(false)
-                            props.submit(`rgb(${value.r},${value.g},${value.b})`, [value.r, value.g, value.b])
-                        }}>
-                        Ok
-                    </Button>
-                    <Button className={styles.button} onClick={() => {
-                        setOpen(false)
-                        setValue({r: 0, g: 0, b: 0})
-                    }}>
-                        Cancel
-                    </Button>
-                </div>
-            </Modal>
-
-            {props.label ? <div className={styles.label}>{props.label}</div> : null}
-            <Button className={styles.placeholder}
-                    styles={{...{    height: '35px', background: `rgb(${value.r},${value.g},${value.b})`}, ...props.styles}}
-                    onClick={() => setOpen(true)}>
-                <ToolTip content={`rgb(${value.r},${value.g},${value.b})`}/>
-            </Button>
-
-        </div>
+                <Buttons setValue={setValue} value={value} submit={props.submit}/>
+            </DropdownOptions>
+        </Dropdown>
     )
 }
 
@@ -119,4 +97,29 @@ ColorPicker.propTypes = {
     submit: PropTypes.func.isRequired,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     styles: PropTypes.object
+}
+
+const Buttons = ({submit, value, setValue}) => {
+    const ctx = useContext(DropdownProvider)
+    return ( 
+
+        <div className={styles.buttons}>
+            <Button
+                className={styles.button}
+                variant={"filled"}
+                onClick={() => {
+                    ctx.setOpen(false)
+                    submit(`rgb(${value.r},${value.g},${value.b})`, [value.r, value.g, value.b])
+                }}>
+                    Ok
+            </Button>
+            <Button className={styles.button} onClick={() => {
+                ctx.setOpen(false)
+                setValue({r: 0, g: 0, b: 0})
+            }}>
+                    Cancel
+            </Button>
+        </div>
+    
+    )
 }
