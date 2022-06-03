@@ -1,7 +1,7 @@
 import styles from "./styles/Color.module.css"
 import React, {useContext, useEffect, useState} from "react"
 import PropTypes from "prop-types"
-import {Button, Dropdown, DropdownOption, DropdownOptions, DropdownProvider, Modal, ToolTip} from "@f-ui/core"
+import {Button, Dropdown, DropdownOptions, DropdownProvider, ToolTip} from "@f-ui/core"
 import {RgbColorPicker} from "react-colorful"
 import Range from "../range/Range"
 
