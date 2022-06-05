@@ -26,7 +26,7 @@
 }
 
 .label {
-  color: var(--fabric-color-secondary);
+  color: var(--pj-color-secondary);
   font-family: Roboto;
   font-weight: 550;
   font-size: 0.75rem;
@@ -47,7 +47,7 @@
   align-items: center;
   padding: 16px 10px;
   border-radius: 5px;
-  background-color: var(--fabric-background-primary);
+  background-color: var(--pj-background-primary);
   box-shadow: rgb(0 0 0 / 30%) 2px 4px 10px 2px;
 }
 
@@ -55,7 +55,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: var(--fabric-color-secondary) !important;
+  color: var(--pj-color-secondary) !important;
   font-size: 0.7rem;
   font-weight: 550;
   width: 100%;

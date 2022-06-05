@@ -1,6 +1,6 @@
 .wrapper{
     display: flex;
-    color: var(--fabric-color-secondary);
+    color: var(--pj-color-secondary);
 
     border: none;
     width: 100%;
@@ -19,7 +19,7 @@
     height: 25px;
     font-size: .75rem;
 
-    background-color:var(--fabric-background-primary);
+    background-color:var(--pj-background-primary);
     border-radius: 0 3px 3px 0;
 
     min-width: unset;
@@ -28,7 +28,7 @@
 }
 .wrapper[data-disabled = 'true']{
     background: transparent !important;
-    border: var(--fabric-border-primary) 1px solid;
+    border: var(--pj-border-primary) 1px solid;
     color: #999999 !important;
     border-left: var(--accentColor) 2px solid;
 }
@@ -57,7 +57,7 @@
     justify-content: center;
     outline: none;
     border: none;
-    color: var(--fabric-color-secondary);
+    color: var(--pj-color-secondary);
     font-size: inherit;
     text-align: center;
 
@@ -65,7 +65,7 @@
 }
 
 .draggable:active{
-    background-color: var(--fabric-background-quaternary);
+    background-color: var(--pj-background-quaternary);
 }
 .draggable::-webkit-inner-spin-button {
     -webkit-appearance: none;

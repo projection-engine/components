@@ -12,10 +12,11 @@ export default function Frame(props) {
             <div className={styles.logoWrapper}>
                 <img src={logo} alt={"LOGO"} className={styles.logo}/>
             </div>
-            <div className={styles.divider}/>
-            <label className={styles.title}>
+
+            <div className={styles.title}>
                 {props.label}
-            </label>
+            </div>
+
         </>
     )
     return (
@@ -23,17 +24,17 @@ export default function Frame(props) {
             {props.logoAction ?
                 <Button
                     className={styles.dropdown}
-
                     onClick={() => ipcRenderer.send("switch-window")}>
                     {LogoContent}
                 </Button>
                 :
                 LogoContent
             }
+            {props.options && props.options.length > 0 ? <div className={styles.divider}/> : null}
 
             {props.options.map((o, i) => (
                 <React.Fragment key={i + "-wrapper-frame"}>
-                    <Dropdown className={styles.button}>
+                    <Dropdown>
                         {o.label}
                         <DropdownOptions>
                             {o.options.map((oo, j) => (

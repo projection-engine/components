@@ -1,9 +1,9 @@
 .accordion {
     display: grid;
-    border: var(--fabric-border-primary) 1px solid !important;
+    border: var(--pj-border-primary) 1px solid !important;
     max-width: 100%;
     overflow: hidden;
-    background-color: var(--fabric-background-primary);
+    background-color: var(--pj-background-primary);
     user-select: none;
     max-height: unset !important;
     min-height: unset !important;
@@ -14,12 +14,12 @@
 
     max-width: 100%;
     overflow: hidden;
-    background: var(--fabric-background-secondary);
+    background: var(--pj-background-secondary);
 }
 
 .summary {
     height: 25px;
-    background-color: var(--fabric-border-primary) !important;
+    background-color: var(--pj-border-primary) !important;
     border-radius: 5px 5px 0 0;
     font-size: .75rem !important;
 

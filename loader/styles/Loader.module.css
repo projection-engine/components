@@ -13,7 +13,7 @@
 
 .loadInfo {
   display: grid;
-  color: var(--fabric-color-primary);
+  color: var(--pj-color-primary);
   height: 35px;
   font-size: 0.8rem;
   font-weight: 550;
@@ -24,7 +24,7 @@
   overflow: hidden;
   position: relative;
   height: 5px;
-  background-color: var(--fabric-background-tertiary);
+  background-color: var(--pj-background-tertiary);
   border-radius: 5px;
 }
 

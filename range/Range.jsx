@@ -70,7 +70,7 @@ export default function Range(props) {
                     onChange={(e) => {
                         setInputCache(e.target.value)
                     }} type={"number"}
-                    style={{cursor: "text", background: "var(--fabric-background-quaternary)"}}
+                    style={{cursor: "text", background: "var(--pj-background-quaternary)"}}
                     onKeyDown={k => {
 
                         if (k.key === KEYS.Enter)

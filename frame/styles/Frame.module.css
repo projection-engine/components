@@ -1,82 +1,72 @@
 .wrapper {
-    display: flex;
-    align-items: center;
-    width: 100vw;
-    height: 35px;
-    user-select: none;
-    overflow: hidden;
-    background: var(--fabric-background-tertiary);
-
-    border-bottom: var(--fabric-border-primary) 1px solid;
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 35px;
+  user-select: none;
+  overflow: hidden;
+  background: var(--pj-background-primary);
+  border-bottom: var(--pj-border-primary) 1px solid;
 }
 
 .draggable {
-    width: 100%;
-    height: 100%;
-    cursor: grab;
-    -webkit-user-select: none;
-    -webkit-app-region: drag;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  user-select: none;
+  -webkit-app-region: drag;
 }
 
 .draggable:active {
-    cursor: grabbing;
+  cursor: grabbing;
 }
 
 .logoWrapper {
-    background: var(--fabric-background-tertiary);
-
-
-    height: 100%;
-    overflow: hidden;
-
-
-    min-width: 54px;
-    max-width: 54px;
-
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 100%;
+  overflow: hidden;
+  min-width: 54px;
+  max-width: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo {
-    height: 100%;
+  height: 100%;
 }
 
 .divider {
-    height: 55%;
-    width: 1px;
-    background: var(--fabric-border-primary);
-    margin-right: 8px;
+  height: 55%;
+  width: 1px;
+  background: var(--pj-border-primary);
+  margin-right: 8px;
 }
 
 .title {
-
-    white-space: nowrap;
-    color: var(--fabric-color-secondary);
-    font-weight: 550;
-    font-size: .8rem;
+  text-align: left;
+  color: var(--pj-color-secondary);
+  font-weight: 550;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  margin-right: 24px;
 }
 
 .dropdown {
-
-    display: flex;
-    align-items: center;
-    height: 35px;
-    background: var(--fabric-background-tertiary);
-    width: 150px;
-
-    padding: 0 !important;
-
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 35px;
+  width: fit-content;
+  padding: 0 !important;
 }
 
 .agreeButton {
-    width: 100%;
-    height: 35px;
+  width: 100%;
+  height: 35px;
 }
 
 .dropdownContent {
-    padding: 4px;
-    background: var(--fabric-border-primary) !important;
+  padding: 4px;
+  background: var(--pj-border-primary) !important;
 }
-

@@ -1,23 +1,24 @@
-.wrapper{
-    display: flex;
-    align-items: center;
+.wrapper {
+  display: flex;
+  align-items: center;
+}
 
+.button {
+  width: 35px;
+  height: 30px;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.button{
-    width: 35px;
-    height: 30px;
-    border-radius: 0;
-    padding: 0;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.button:hover {
+  background: var(--pj-border-primary);
+  color: var(--pj-accent-color);
 }
-.button:hover{
-    background: var(--fabric-border-primary);
-    color: var(--fabric-accent-color);
-}
-.button:active{
-    background: var(--fabric-accent-color);
-    color:white;
+
+.button:active {
+  background: var(--pj-accent-color);
+  color: white;
 }

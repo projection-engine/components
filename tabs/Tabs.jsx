@@ -37,7 +37,7 @@ export default function Tabs(props) {
                 <div className={styles.switcher} style={stylesHidden}>
                     <Button
                         className={styles.button}
-                        styles={{background: "var(--fabric-border-primary)"}}
+                        styles={{background: "var(--pj-border-primary)"}}
                         onClick={() => setHidden(!hidden)}
                     >
                         <span className={"material-icons-round"}

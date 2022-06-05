@@ -10,7 +10,7 @@
 }
 
 .wrapper:active, .wrapper:hover {
-    background: var(--fabric-border-secondary) !important;
+    background: var(--pj-border-secondary) !important;
 }
 
 .wrapper[data-disabled = 'true']{

@@ -5,22 +5,22 @@
     overflow: hidden;
     max-width: 100%;
     border-left: transparent 3px solid;
-    color: var(--fabric-color-secondary);
+    color: var(--pj-color-secondary);
 }
 
 .container[data-selected = 'true'] {
-    border-left-color: var(--fabric-accent-color);
-    color: var(--fabric-accent-color);
+    border-left-color: var(--pj-accent-color);
+    color: var(--pj-accent-color);
 }
 
 .container:active {
-    border-left-color: var(--fabric-accent-color);
+    border-left-color: var(--pj-accent-color);
 
 }
 
 
 .container:hover{
-    background: var(--fabric-border-primary);
+    background: var(--pj-border-primary);
 }
 
 
@@ -36,7 +36,7 @@
 
     height: 100%;
     max-height: 100%;
-    background-color: var(--fabric-background-tertiary);
+    background-color: var(--pj-background-tertiary);
 
 
 }
@@ -73,16 +73,16 @@
 
     outline: none;
     border: none;
-    color: var(--fabric-color-primary);
+    color: var(--pj-color-primary);
     background: none;
 
     transition: 150ms linear;
 }
 .button:hover{
-    color: var(--fabric-accent-color);
+    color: var(--pj-accent-color);
 }
 .button:active{
-    color: var(--fabric-accent-color);
+    color: var(--pj-accent-color);
 }
 .rowContentWrapper {
 
@@ -112,11 +112,11 @@
 .input {
     height: 20px;
     padding: 4px;
-    border: var(--fabric-border-primary) 1px solid;
+    border: var(--pj-border-primary) 1px solid;
     outline: none;
     border-radius: 5px;
-    background-color: var(--fabric-background-quaternary);
-    color: var(--fabric-color-tertiary);
+    background-color: var(--pj-background-quaternary);
+    color: var(--pj-color-tertiary);
 
 }
 
@@ -124,7 +124,7 @@
     display: block;
     text-align: right;
     padding-right: 8px;
-    color: var(--fabric-color-tertiary);
+    color: var(--pj-color-tertiary);
     cursor: default;
 }
 
@@ -136,7 +136,7 @@
 }
 
 .hoveredNode {
-    background: var(--fabric-accent-color);
+    background: var(--pj-accent-color);
     color: white !important;
 }
 .children{
@@ -152,16 +152,16 @@
     left: calc(var(--position-left) + .8rem);
     width: 1px;
     height: 100%;
-    border-left: var(--fabric-border-secondary) 1px dashed;
+    border-left: var(--pj-border-secondary) 1px dashed;
 }
 
 .backgroundStripes{
     background: linear-gradient(
             to bottom,
-            var(--fabric-background-secondary),
-            var(--fabric-background-secondary) 50%,
-            var(--fabric-background-tertiary) 50%,
-            var(--fabric-background-tertiary)
+            var(--pj-background-secondary),
+            var(--pj-background-secondary) 50%,
+            var(--pj-background-tertiary) 50%,
+            var(--pj-background-tertiary)
     );
     background-size: 100% 50px;
 }

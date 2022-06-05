@@ -20,7 +20,7 @@
     width: 35px;
     height: 100%;
     border-radius: 5px 0 0 5px;
-    background: var(--fabric-background-tertiary);
+    background: var(--pj-background-tertiary);
 
 
 }
@@ -41,7 +41,7 @@
     border-radius: 3px;
     display: flex;
     align-items: center;
-    background: var(--fabric-background-primary);
+    background: var(--pj-background-primary);
 }
 
 
@@ -50,6 +50,6 @@
     bottom: 3px;
     left: 3px;
     z-index: 999;
-    --fabric-accent-color: #ff5555;
+    --pj-accent-color: #ff5555;
 
 }

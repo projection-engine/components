@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import  React, {useEffect, useMemo, useRef} from "react"
+import React, {useEffect, useMemo, useRef} from "react"
 import styles from "./styles/SelectBox.module.css"
 
 export default function SelectBox(props) {

@@ -2,6 +2,7 @@ import styles from "./styles/Styles.module.css"
 import PropTypes from "prop-types"
 import Range from "../range/Range"
 import React from "react"
+
 export default function LabeledRange(props) {
     return (
         <div
