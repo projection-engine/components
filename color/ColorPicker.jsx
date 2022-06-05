@@ -4,13 +4,12 @@ import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOptions, DropdownProvider, ToolTip} from "@f-ui/core"
 import {RgbColorPicker} from "react-colorful"
 import Range from "../range/Range"
+import EN from "../../static/locale/EN"
 
 
 export default function ColorPicker(props) {
-
     const [value, setValue] = useState({r: 0, g: 0, b: 0})
     useEffect(() => {
-
         if (typeof props.value === "string") {
             const split = props.value.match(/[\d.]+/g)
             const [r, g, b] = split.map(v => parseFloat(v))
@@ -21,7 +20,6 @@ export default function ColorPicker(props) {
             setValue(props.value)
     }, [props.value])
 
-
     return (
         <Dropdown
             style={props.styles}
@@ -31,7 +29,7 @@ export default function ColorPicker(props) {
         >
             {props.label ? <div className={styles.label}>{props.label}</div> : null}
             <div className={styles.placeholder}
-                style={{...{    height: "35px", background: `rgb(${value.r},${value.g},${value.b})`}, ...props.styles}}>
+                style={{height: "35px", background: `rgb(${value.r},${value.g},${value.b})`, ...props.styles}}>
                 <ToolTip content={`rgb(${value.r},${value.g},${value.b})`}/>
             </div>
             <DropdownOptions>
@@ -58,7 +56,6 @@ export default function ColorPicker(props) {
                         <Range
                             maxValue={255}
                             minValue={0}
-
                             handleChange={v => setValue(prev => {
                                 return {
                                     ...prev,
@@ -99,7 +96,8 @@ ColorPicker.propTypes = {
     styles: PropTypes.object
 }
 
-const Buttons = ({submit, value, setValue}) => {
+const Buttons = (props) => {
+    const {submit, value, setValue} = props
     const ctx = useContext(DropdownProvider)
     return ( 
 
@@ -111,15 +109,20 @@ const Buttons = ({submit, value, setValue}) => {
                     ctx.setOpen(false)
                     submit(`rgb(${value.r},${value.g},${value.b})`, [value.r, value.g, value.b])
                 }}>
-                    Ok
+                {EN.COMPONENTS.COLOR_PICKER.ACCEPT}
             </Button>
             <Button className={styles.button} onClick={() => {
                 ctx.setOpen(false)
                 setValue({r: 0, g: 0, b: 0})
             }}>
-                    Cancel
+                {EN.COMPONENTS.COLOR_PICKER.CANCEL}
             </Button>
         </div>
     
     )
+}
+Buttons.propTypes={
+    submit: PropTypes.func,
+    value: PropTypes.object,
+    setValue: PropTypes.func,
 }

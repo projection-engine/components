@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Range.module.css"
-import {useEffect, useRef, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import KEYS from "../../project/engine/templates/KEYS"
 
 export default function Range(props) {
@@ -37,29 +37,29 @@ export default function Range(props) {
     useEffect(() => {
         setInputCache(props.value)
     }, [focused])
-const submit = () => {
-    let finalValue = parseFloat(inputCache)
+    const submit = () => {
+        let finalValue = parseFloat(inputCache)
 
-    if (!isNaN(finalValue)) {
-        if (props.maxValue !== undefined && finalValue > props.maxValue)
-            finalValue = props.maxValue
-        if (props.minValue !== undefined && finalValue < props.minValue)
-            finalValue = props.minValue
+        if (!isNaN(finalValue)) {
+            if (props.maxValue !== undefined && finalValue > props.maxValue)
+                finalValue = props.maxValue
+            if (props.minValue !== undefined && finalValue < props.minValue)
+                finalValue = props.minValue
 
-        props.handleChange(finalValue)
+            props.handleChange(finalValue)
+        }
+
+        if (props.onFinish !== undefined)
+            props.onFinish(finalValue)
+
+        setFocused(false)
     }
-
-    if (props.onFinish !== undefined)
-        props.onFinish(finalValue)
-
-    setFocused(false)
-}
     return (
         <div
             data-disabled={`${props.disabled}`}
             className={styles.wrapper}
-            style={{...{'--accentColor': props.accentColor, borderRadius: !props.accentColor ? '5px' : undefined}, ...props.styles}}
-            title={props.label}>
+            style={{"--accentColor": props.accentColor, borderRadius: !props.accentColor ? "5px" : undefined, ...props.styles}}
+            title={props.title}>
             {focused ?
                 <input
                     disabled={props.disabled}
@@ -69,8 +69,8 @@ const submit = () => {
                     autoFocus={true}
                     onChange={(e) => {
                         setInputCache(e.target.value)
-                    }} type={'number'}
-                    style={{cursor: 'text', background: 'var(--fabric-background-quaternary)'}}
+                    }} type={"number"}
+                    style={{cursor: "text", background: "var(--fabric-background-quaternary)"}}
                     onKeyDown={k => {
 
                         if (k.key === KEYS.Enter)
@@ -102,9 +102,9 @@ const submit = () => {
                         }
                     }}
                     style={{
-                        color: props.disabled ? '#999999' : undefined,
-                        cursor: props.disabled ? 'default' : undefined,
-                        background: props.disabled ? 'var(--background-0)' : undefined
+                        color: props.disabled ? "#999999" : undefined,
+                        cursor: props.disabled ? "default" : undefined,
+                        background: props.disabled ? "var(--background-0)" : undefined
                     }}
                     className={styles.draggable}
                 >
@@ -115,7 +115,7 @@ const submit = () => {
             }
             {props.metric ?
                 <div className={styles.metricWrapper}>
-                    {props.metric === 'angle' ? 'θ' : props.metric}
+                    {props.metric === "angle" ? "θ" : props.metric}
                 </div>
                 :
                 null
@@ -126,6 +126,7 @@ const submit = () => {
 }
 
 Range.propTypes = {
+    title: PropTypes.string,
     styles: PropTypes.object,
 
     metric: PropTypes.string,
@@ -139,5 +140,6 @@ Range.propTypes = {
     incrementPercentage: PropTypes.number,
 
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    handleChange: PropTypes.func
+    handleChange: PropTypes.func,
+    integer: PropTypes.bool
 }

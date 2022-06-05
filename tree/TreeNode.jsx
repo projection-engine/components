@@ -12,14 +12,14 @@ export default function TreeNode(props) {
         setCurrentLabel(props.node.label)
 
         if (!props.node.phantomNode)
-            ref.current?.setAttribute('data-node', `${props.node.id}`)
+            ref.current?.setAttribute("data-node", `${props.node.id}`)
         else
-            ref.current?.setAttribute('data-root', `${props.node.id}`)
+            ref.current?.setAttribute("data-root", `${props.node.id}`)
     }, [props.node])
 
 
     const selected = useMemo(() => {
-        if (typeof props.selected === 'string')
+        if (typeof props.selected === "string")
             return props.selected === props.node.id
         else if (Array.isArray(props.selected))
             return props.selected.includes(props.node.id)
@@ -41,15 +41,15 @@ export default function TreeNode(props) {
             >
                 {props.node.canBeHidden ?
                     <button className={styles.button} onClick={props.node.onHide}>
-                        <span className={'material-icons-round'}
-                              style={{fontSize: '1rem'}}>{!props.node.hidden ? 'visibility' : 'visibility_off'}</span>
+                        <span className={"material-icons-round"}
+                            style={{fontSize: "1rem"}}>{!props.node.hidden ? "visibility" : "visibility_off"}</span>
                     </button>
                     :
                     null}
                 <div
 
                     ref={ref}
-                    style={{paddingLeft: padding + 'px'}}
+                    style={{paddingLeft: padding + "px"}}
                     className={styles.row}
                 >
 
@@ -62,15 +62,15 @@ export default function TreeNode(props) {
                                 setOpen(!open)
                             }}
                         >
-                        <span style={{width: '24px', overflow: 'hidden', fontSize: '1.2rem'}}
-                              className={'material-icons-round'}>{open ? 'expand_more' : 'chevron_right'}</span>
+                            <span style={{width: "24px", overflow: "hidden", fontSize: "1.2rem"}}
+                                className={"material-icons-round"}>{open ? "expand_more" : "chevron_right"}</span>
                         </button>
                     ) : null}
 
                     {onEdit ?
                         <input
                             onKeyPress={key => {
-                                if (key.code === 'Enter' && currentLabel !== props.node.label) {
+                                if (key.code === "Enter" && currentLabel !== props.node.label) {
                                     setOnEdit(false)
                                     props.handleRename(props.node, currentLabel)
                                 }
@@ -94,7 +94,7 @@ export default function TreeNode(props) {
                             <div
                                 id={props.node.id}
                                 className={styles.rowContent}
-                                style={{fontWeight: props.index === 0 ? '550' : undefined, width: !props.node.type ? '90%' : undefined}}
+                                style={{fontWeight: props.index === 0 ? "550" : undefined, width: !props.node.type ? "90%" : undefined}}
 
                                 draggable={!props.node.phantomNode && props.draggable && props.node.draggable}
 
@@ -114,7 +114,7 @@ export default function TreeNode(props) {
                             </div>
 
                             {props.node.type ?
-                                <div className={[styles.rowContent, styles.rowType, styles.overflow].join(' ')}>
+                                <div className={[styles.rowContent, styles.rowType, styles.overflow].join(" ")}>
                                     {props.node.type}
                                 </div>
                                 :
@@ -126,10 +126,10 @@ export default function TreeNode(props) {
             </div>
             {open ?
                 <div style={{
-                    '--position-left': (padding + props.node.canBeHidden ? 19 : 0) + 'px'
+                    "--position-left": (padding + props.node.canBeHidden ? 19 : 0) + "px"
                 }} className={styles.children}>
                     {props.node.children?.map((child, index) => (
-                        <React.Fragment key={props.index + '-tree-node-' + index}>
+                        <React.Fragment key={props.index + "-tree-node-" + index}>
                             <TreeNode
                                 {...props}
                                 selected={props.selected}
@@ -164,7 +164,8 @@ TreeNode.propTypes = {
 
         hidden: PropTypes.bool,
         onHide: PropTypes.func,
-        canBeHidden: PropTypes.bool
+        canBeHidden: PropTypes.bool,
+        draggable: PropTypes.bool
     }).isRequired,
     index: PropTypes.number,
     draggable: PropTypes.bool,

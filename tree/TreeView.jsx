@@ -4,15 +4,15 @@ import styles from "./styles/Tree.module.css"
 import TreeNode from "./TreeNode"
 import {ContextMenu} from "@f-ui/core"
 import Search from "../search/Search"
-import SelectBox from "../selectbox/SelectBox"
+import SelectBox from "../select-box/SelectBox"
 
 export default function TreeView(props) {
-    const [searchString, setSearchString] = useState('')
+    const [searchString, setSearchString] = useState("")
     let t
     const content = useMemo(() => {
         return (
             (searchString.length > 0 ? props.nodes.filter(n => n.label.toLowerCase().includes(searchString.toLowerCase())) : props.nodes).map((child, index) => (
-                <React.Fragment key={'tree-' + index}>
+                <React.Fragment key={"tree-" + index}>
                     <TreeNode
 
                         open={true}
@@ -48,7 +48,7 @@ export default function TreeView(props) {
                         onDragStart={(e) => {
 
                             if(!props.onDragStart)
-                                e.dataTransfer.setData('text', e.currentTarget.id)
+                                e.dataTransfer.setData("text", e.currentTarget.id)
                             else
                                 props.onDragStart(e, e.currentTarget.id)
                         }}
@@ -65,8 +65,8 @@ export default function TreeView(props) {
     }, [searchString, props])
 
     return (
-        <div data-self={'self'} className={[styles.wrapper, props.className].join(' ')} style={props.styles}>
-            {props.searchable ? <Search width={'100%'} size={'default'} searchString={searchString} setSearchString={setSearchString}/> : undefined}
+        <div data-self={"self"} className={[styles.wrapper, props.className].join(" ")} style={props.styles}>
+            {props.searchable ? <Search width={"100%"} size={"default"} searchString={searchString} setSearchString={setSearchString}/> : undefined}
 
             {props.onMultiSelect && Array.isArray(props.selected) && props.multiSelect? <SelectBox setSelected={props.onMultiSelect} selected={props.selected} nodes={props.ids} />: null}
             {props.options && props.options.length > 0 ?
@@ -106,7 +106,8 @@ TreeView.propTypes = {
 
         hidden: PropTypes.bool,
         onHide: PropTypes.func,
-        canBeHidden: PropTypes.bool
+        canBeHidden: PropTypes.bool,
+        draggable: PropTypes.bool
     })).isRequired,
     handleRename: PropTypes.func.isRequired,
 

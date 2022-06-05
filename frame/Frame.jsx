@@ -1,16 +1,16 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Frame.module.css"
-import logo from "../../static/logo.png"
+import logo from "../../static/icons/logo.png"
 import React from "react"
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
 import Actions from "./components/Actions"
 
-const {ipcRenderer} = window.require('electron')
+const {ipcRenderer} = window.require("electron")
 export default function Frame(props) {
     const LogoContent = (
         <>
             <div className={styles.logoWrapper}>
-                <img src={logo} alt={'LOGO'} className={styles.logo}/>
+                <img src={logo} alt={"LOGO"} className={styles.logo}/>
             </div>
             <div className={styles.divider}/>
             <label className={styles.title}>
@@ -24,7 +24,7 @@ export default function Frame(props) {
                 <Button
                     className={styles.dropdown}
 
-                    onClick={() => ipcRenderer.send('switch-window')}>
+                    onClick={() => ipcRenderer.send("switch-window")}>
                     {LogoContent}
                 </Button>
                 :
@@ -32,16 +32,16 @@ export default function Frame(props) {
             }
 
             {props.options.map((o, i) => (
-                <React.Fragment key={i + '-wrapper-frame'}>
+                <React.Fragment key={i + "-wrapper-frame"}>
                     <Dropdown className={styles.button}>
                         {o.label}
                         <DropdownOptions>
                             {o.options.map((oo, j) => (
-                                <React.Fragment key={i + '-wrapper-frame-option-' + j}>
+                                <React.Fragment key={i + "-wrapper-frame-option-" + j}>
                                     <DropdownOption option={{
                                         ...oo,
-                                        icon: oo.icon ? <span className={'material-icons-round'}
-                                                              style={{fontSize: '1.1rem'}}>{oo.icon}</span> : undefined
+                                        icon: oo.icon ? <span className={"material-icons-round"}
+                                            style={{fontSize: "1.1rem"}}>{oo.icon}</span> : undefined
                                     }}/>
                                 </React.Fragment>
                             ))}
