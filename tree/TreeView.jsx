@@ -2,13 +2,17 @@ import PropTypes from "prop-types"
 import React, {useMemo, useState} from "react"
 import styles from "./styles/Tree.module.css"
 import TreeNode from "./TreeNode"
-import {ContextMenu} from "@f-ui/core"
 import Search from "../search/Search"
 import SelectBox from "../select-box/SelectBox"
+import useContextTarget from "../context/hooks/useContextTarget"
+import {v4} from "uuid"
 
 export default function TreeView(props) {
     const [searchString, setSearchString] = useState("")
     let t
+    const ID = useMemo(() => {
+        return v4()
+    }, [])
     const content = useMemo(() => {
         return (
             (searchString.length > 0 ? props.nodes.filter(n => n.label.toLowerCase().includes(searchString.toLowerCase())) : props.nodes).map((child, index) => (
@@ -57,6 +61,10 @@ export default function TreeView(props) {
                         triggerHierarchy={() => null}
                         node={child} index={0}
                         selected={props.selected}
+                        setSelected={(v) => {
+                            if(typeof props.onMultiSelect === "function")
+                                props.onMultiSelect([v])
+                        }}
 
                     />
                 </React.Fragment>
@@ -64,18 +72,20 @@ export default function TreeView(props) {
         )
     }, [searchString, props])
 
+    useContextTarget(
+        {id: "tree-view-"+ID},
+        props.options,
+        props.contextTriggers
+    )
     return (
-        <div data-self={"self"} className={[styles.wrapper, props.className].join(" ")} style={props.styles}>
+        <div data-self={"self"} className={[styles.wrapper, props.className].join(" ")} style={props.styles} id={"tree-view-"+ID}>
             {props.searchable ? <Search width={"100%"} size={"default"} searchString={searchString} setSearchString={setSearchString}/> : undefined}
 
             {props.onMultiSelect && Array.isArray(props.selected) && props.multiSelect? <SelectBox setSelected={props.onMultiSelect} selected={props.selected} nodes={props.ids} />: null}
             {props.options && props.options.length > 0 ?
-                <ContextMenu
-                    className={styles.content}
-                    options={props.options}
-                    triggers={props.contextTriggers}>
+                <div className={styles.content}>
                     {content}
-                </ContextMenu>
+                </div>
                 :
                 content
             }

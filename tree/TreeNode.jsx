@@ -38,6 +38,7 @@ export default function TreeNode(props) {
                 className={styles.container}
                 title={currentLabel}
                 data-selected={`${selected}`}
+                onContextMenu={() => props.setSelected(props.node.id)}
             >
                 {props.node.canBeHidden ?
                     <button className={styles.button} onClick={props.node.onHide}>
@@ -148,7 +149,7 @@ export default function TreeNode(props) {
 }
 
 TreeNode.propTypes = {
-
+    setSelected: PropTypes.func,
     selected: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     handleRename: PropTypes.func.isRequired,
     node: PropTypes.shape({
