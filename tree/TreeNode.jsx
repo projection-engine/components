@@ -20,11 +20,12 @@ export default function TreeNode(props) {
 
     const selected = useMemo(() => {
         if (typeof props.selected === "string")
-            return props.selected === props.node.id
+            return props.selected === props.node.id ? 1 : 0
         else if (Array.isArray(props.selected))
-            return props.selected.includes(props.node.id)
+
+            return props.selected[0] === props.node.id ? 1 : props.selected.includes(props.node.id) ? 2 : 0
         else
-            return false
+            return 0
     }, [props.selected])
 
 

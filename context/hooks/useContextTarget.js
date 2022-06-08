@@ -1,27 +1,35 @@
 import {useContext, useEffect, useRef} from "react"
 import ContextMenuProvider from "./ContextMenuProvider"
 
-export default function useContextTarget(targetRef, op, tg) {
+export default function useContextTarget(targetRef, options, triggers) {
     const {id, ref} = targetRef,
-
-        {targetElement, setOptions, setTriggers, setTargetElement} = useContext(ContextMenuProvider),
+        state= useContext(ContextMenuProvider),
         focused = useRef(false)
-
     function handler(e){
         if(e.type === "mouseenter") {
             focused.current = true
-            if(targetElement.id !== id) {
-                setOptions(op)
-                setTriggers(tg)
-                setTargetElement(targetRef)
+
+            if(state.target?.id !== id) {
+                state.options = options
+                state.target = targetRef
+                state.triggers = triggers
             }
         }
         else
             focused.current = false
     }
+    // useEffect(() => {
+    //     console.log("UPDATED BECAUSE TARGET")
+    // } , [state.target])
+    // useEffect(() => {
+    //     console.log("UPDATED BECAUSE OPTIONS")
+    // } , [options])
+    // useEffect(() => {
+    //     console.log("UPDATED BECAUSE TRIGGERS")
+    // } , [triggers])
     useEffect(() => {
         if(focused.current)
-            setOptions(op)
+            state.options = options
         const target = ref ? ref : document.getElementById(id)
         target?.addEventListener("mouseenter", handler)
         target?.addEventListener("mouseleave", handler)
@@ -30,5 +38,5 @@ export default function useContextTarget(targetRef, op, tg) {
             target?.removeEventListener("mouseenter", handler)
             target?.removeEventListener("mouseleave", handler)
         }
-    }, [tg, op])
+    }, [triggers, options, state.target])
 }

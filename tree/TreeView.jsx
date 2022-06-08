@@ -8,87 +8,94 @@ import useContextTarget from "../context/hooks/useContextTarget"
 import {v4} from "uuid"
 
 export default function TreeView(props) {
+    const {
+        nodes,
+        draggable,
+        onDragOver,
+        onDragLeave,
+        onDrop,
+        onDragStart,
+        handleRename,
+        onMultiSelect,
+        contextTriggers,
+        options,
+        selected,
+        searchable,
+        className,
+        multiSelect,
+        ids
+    } = props
     const [searchString, setSearchString] = useState("")
     let t
-    const ID = useMemo(() => {
-        return v4()
-    }, [])
-    const content = useMemo(() => {
-        return (
-            (searchString.length > 0 ? props.nodes.filter(n => n.label.toLowerCase().includes(searchString.toLowerCase())) : props.nodes).map((child, index) => (
-                <React.Fragment key={"tree-" + index}>
-                    <TreeNode
-
-                        open={true}
-                        onDragOver={(e) => {
-                            if(props.draggable) {
-                                e.preventDefault()
-
-                                t = e.currentTarget.parentNode.parentNode
-                                t.classList.add(styles.hoveredNode)
-                            }
-                            if (props.onDragOver)
-                                props.onDragOver(e, e.currentTarget.id)
-                        }}
-                        onDragLeave={(e) => {
-                            if(props.draggable) {
-
-                                e.preventDefault()
-                                if(t)
-                                    t.classList.remove(styles.hoveredNode)
-                            }
-                            if (props.onDragLeave)
-                                props.onDragLeave(e, e.currentTarget.id)
-                        }}
-                        onDrop={(e) => {
-                            if(props.draggable) {
-                                e.preventDefault()
-                                if(t)
-                                    t.classList.remove(styles.hoveredNode)
-                            }
-                            if (props.onDrop)
-                                props.onDrop(e, e.currentTarget.id)
-                        }}
-                        onDragStart={(e) => {
-
-                            if(!props.onDragStart)
-                                e.dataTransfer.setData("text", e.currentTarget.id)
-                            else
-                                props.onDragStart(e, e.currentTarget.id)
-                        }}
-                        draggable={props.draggable}
-                        handleRename={props.handleRename}
-                        triggerHierarchy={() => null}
-                        node={child} index={0}
-                        selected={props.selected}
-                        setSelected={(v) => {
-                            if(typeof props.onMultiSelect === "function")
-                                props.onMultiSelect([v])
-                        }}
-
-                    />
-                </React.Fragment>
-            ))
-        )
-    }, [searchString, props])
+    const ID = useMemo(() => v4(), [])
 
     useContextTarget(
         {id: "tree-view-"+ID},
-        props.options,
-        props.contextTriggers
+        options,
+        contextTriggers
     )
-    return (
-        <div data-self={"self"} className={[styles.wrapper, props.className].join(" ")} style={props.styles} id={"tree-view-"+ID}>
-            {props.searchable ? <Search width={"100%"} size={"default"} searchString={searchString} setSearchString={setSearchString}/> : undefined}
 
-            {props.onMultiSelect && Array.isArray(props.selected) && props.multiSelect? <SelectBox setSelected={props.onMultiSelect} selected={props.selected} nodes={props.ids} />: null}
-            {props.options && props.options.length > 0 ?
-                <div className={styles.content}>
-                    {content}
-                </div>
-                :
-                content
-            }
+    return (
+        <div data-self={"self"} className={[styles.wrapper, className].join(" ")} style={styles} id={"tree-view-"+ID}>
+            {searchable ? <Search width={"100%"} size={"default"} searchString={searchString} setSearchString={setSearchString}/> : undefined}
+
+            {onMultiSelect && Array.isArray(selected) && multiSelect? <SelectBox setSelected={onMultiSelect} selected={selected} nodes={ids} />: null}
+            {nodes
+                .filter(n => searchString.length === 0 || n.label.toLowerCase().includes(searchString.toLowerCase()))
+                .map((child, index) => (
+                    <React.Fragment key={"tree-" + index}>
+                        <TreeNode
+
+                            open={true}
+                            onDragOver={(e) => {
+                                if(draggable) {
+                                    e.preventDefault()
+
+                                    t = e.currentTarget.parentNode.parentNode
+                                    t.classList.add(styles.hoveredNode)
+                                }
+                                if (onDragOver)
+                                    onDragOver(e, e.currentTarget.id)
+                            }}
+                            onDragLeave={(e) => {
+                                if(draggable) {
+
+                                    e.preventDefault()
+                                    if(t)
+                                        t.classList.remove(styles.hoveredNode)
+                                }
+                                if (onDragLeave)
+                                    onDragLeave(e, e.currentTarget.id)
+                            }}
+                            onDrop={(e) => {
+                                if(draggable) {
+                                    e.preventDefault()
+                                    if(t)
+                                        t.classList.remove(styles.hoveredNode)
+                                }
+                                if (onDrop)
+                                    onDrop(e, e.currentTarget.id)
+                            }}
+                            onDragStart={(e) => {
+
+                                if(!onDragStart)
+                                    e.dataTransfer.setData("text", e.currentTarget.id)
+                                else
+                                    onDragStart(e, e.currentTarget.id)
+                            }}
+                            draggable={draggable}
+                            handleRename={handleRename}
+                            triggerHierarchy={() => null}
+                            node={child} index={0}
+                            selected={selected}
+                            setSelected={(v) => {
+                                if(typeof onMultiSelect === "function")
+                                    onMultiSelect([v])
+                            }}
+
+                        />
+                    </React.Fragment>
+                ))}
         </div>
     )
 }

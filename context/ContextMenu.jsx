@@ -6,9 +6,10 @@ import {Button} from "@f-ui/core"
 export default function ContextMenu(props) {
     const {options, close, selected} = props
     useEffect(() => {
-        console.log("CLOSING")
         close()
+        console.log("HEREEEEEEEEEEEe")
     }, [options])
+
     return options?.map((o, i) => !o.requiredTrigger || o.requiredTrigger === selected?.trigger ? (
         <React.Fragment key={"viewport-option-" + i}>
             {o.divider ? <div className={styles.divider}/> :

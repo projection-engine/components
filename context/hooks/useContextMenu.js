@@ -1,14 +1,10 @@
-import {useState} from "react"
+import useDirectState from "../../hooks/useDirectState"
 
 export default function useContextMenu(){
-    const [options, setOptions] = useState([])
-    const [triggers, setTriggers] = useState([])
-    const [onContext, setOnContext] = useState()
-    const [targetElement, setTargetElement] = useState({})
-    return {
-        options, setOptions,
-        targetElement, setTargetElement,
-        triggers, setTriggers,
-        onContext, setOnContext
-    }
+    const [state] = useDirectState({
+        options: [],
+        element: undefined,
+        target: {}
+    })
+    return state
 }
