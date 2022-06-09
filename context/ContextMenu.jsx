@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import React, {useEffect, useMemo} from "react"
-import styles from "../../project/components/viewport/styles/ContextMenu.module.css"
+import styles from "./ContextMenu.module.css"
 import {Button} from "@f-ui/core"
 
 export default function ContextMenu(props) {
