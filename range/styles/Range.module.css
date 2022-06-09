@@ -1,93 +1,84 @@
-.wrapper{
-    display: flex;
-    color: var(--pj-color-secondary);
+.wrapper {
+  display: flex;
+  color: var(--pj-color-secondary);
+  border: none;
+  width: 100%;
+  align-items: center;
+  gap: 4px;
 
-    border: none;
-    width: 100%;
-    align-items: center;
-    gap: 4px;
+  --accentColor: transparent;
 
-    --accentColor: transparent;
-
-    overflow: hidden;
-    max-width: 100%;
-    user-select: none !important;
-
-    border-left: var(--accentColor) 2px solid;
-
-
-    height: 25px;
-    font-size: .75rem;
-
-    background-color:var(--pj-background-primary);
-    border-radius: 0 3px 3px 0;
-
-    min-width: unset;
-
-    position: relative;
-}
-.wrapper[data-disabled = 'true']{
-    background: transparent !important;
-    border: var(--pj-border-primary) 1px solid;
-    color: #999999 !important;
-    border-left: var(--accentColor) 2px solid;
+  overflow: hidden;
+  max-width: 100%;
+  user-select: none !important;
+  border-left: var(--accentColor) 2px solid;
+  height: 25px;
+  font-size: 0.75rem;
+  background-color: var(--background-input);
+  border-radius: 0 3px 3px 0;
+  min-width: unset;
+  position: relative;
 }
 
-.button{
-    width: 35px !important;
-    overflow: hidden;
-    height: 100%;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.draggable{
-    /*width: 50px;*/
-    width: inherit;
-    max-width: 100%;
-    overflow: hidden;
-
-
-    cursor: col-resize;
-    height: 100%;
-    transition: 150ms linear;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    outline: none;
-    border: none;
-    color: var(--pj-color-secondary);
-    font-size: inherit;
-    text-align: center;
-
-
+.wrapper[data-disabled="true"] {
+  background: transparent !important;
+  border: var(--pj-border-primary) 1px solid;
+  color: #999 !important;
+  border-left: var(--accentColor) 2px solid;
 }
 
-.draggable:active{
-    background-color: var(--pj-background-quaternary);
+.button {
+  width: 35px !important;
+  overflow: hidden;
+  height: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.draggable {
+  /* width: 50px; */
+  width: inherit;
+  max-width: 100%;
+  overflow: hidden;
+  cursor: col-resize;
+  height: 100%;
+  transition: 150ms linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: none;
+  color: var(--pj-color-secondary);
+  font-size: inherit;
+  text-align: center;
+}
+
+.draggable:active {
+  background-color: var(--pj-background-quaternary);
+}
+
 .draggable::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  appearance: none;
+  margin: 0;
 }
-
 
 /* Firefox */
-.draggable[type=number] {
-    -moz-appearance: textfield;
+.draggable[type="number"] {
+  appearance: textfield;
 }
 
-.metricWrapper{
-    position: absolute;
-    bottom: 0;
-    right: 2px;
-    font-size: .6rem;
+.metricWrapper {
+  position: absolute;
+  bottom: 0;
+  right: 2px;
+  font-size: 0.6rem;
 }
 
-.overflow{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    white-space: nowrap;
+.overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  white-space: nowrap;
 }

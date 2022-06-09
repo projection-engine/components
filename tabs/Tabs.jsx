@@ -25,8 +25,8 @@ export default function Tabs(props) {
                 resetTargets={{previous: true, next: false}}
                 resetWhen={[hidden]}
                 type={"height"}
-                onResize={() => {
-                    if (hidden && ref.current.getBoundingClientRect().height > 45)
+                onResizeStart={() => {
+                    if(hidden)
                         setHidden(false)
                 }}
                 onResizeEnd={() => {

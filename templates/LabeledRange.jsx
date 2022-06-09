@@ -7,13 +7,18 @@ export default function LabeledRange(props) {
     return (
         <div
             className={styles.wrapper}
+            data-variant={props.variant}
+            style={{background: props.disabled ? "transparent" : undefined}}
         >
-            <label title={props.label}>{props.label}</label>
-            <Range {...props}/>
+            <label title={props.label} style={{minWidth: props.minLabelWidth}}>{props.label}</label>
+            {props.variant === "embedded" ? <div className={styles.divider}/> : undefined}
+            <Range {...props} styles={{width: "100%"}} accentColor={props.variant === "embedded" ? undefined : props.accentColor}/>
         </div>
     )
 }
 LabeledRange.propTypes = {
+    minLabelWidth: PropTypes.string,
+    variant: PropTypes.oneOf(["embedded", "default"]),
     label: PropTypes.string,
     styles: PropTypes.object,
 
