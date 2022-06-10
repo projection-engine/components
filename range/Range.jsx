@@ -29,7 +29,8 @@ export default function Range(props) {
         else if (currentValue < props.minValue && props.minValue !== undefined)
             currentValue = props.minValue
 
-        ref.current.innerText = currentValue.toFixed(props.precision ? props.precision : 1)
+        if(!props.hideValue)
+            ref.current.innerText = currentValue.toFixed(props.precision ? props.precision : 1)
         props.handleChange(currentValue)
     }
     const ref = useRef()
@@ -109,7 +110,7 @@ export default function Range(props) {
                     className={styles.draggable}
                 >
                     <div className={styles.overflow}>
-                        {currentValue.toFixed(props.precision ? props.precision : 1)}
+                        {props.hideValue ? <span style={{transform: "rotate(90deg)", fontSize: "1.1rem"}} className={"material-icons-round"}>unfold_more</span> : currentValue.toFixed(props.precision ? props.precision : 1)}
                     </div>
                 </div>
             }
@@ -126,6 +127,8 @@ export default function Range(props) {
 }
 
 Range.propTypes = {
+
+    hideValue: PropTypes.bool,
     title: PropTypes.string,
     styles: PropTypes.object,
 

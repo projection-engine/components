@@ -31,7 +31,7 @@ LabeledRange.propTypes = {
     accentColor: PropTypes.string,
     disabled: PropTypes.bool,
     incrementPercentage: PropTypes.number,
-
+    hideValue: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     handleChange: PropTypes.func
 }

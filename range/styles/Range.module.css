@@ -19,6 +19,13 @@
   min-width: unset;
   position: relative;
 }
+.wrapper:active {
+  background-color: var(--pj-background-secondary) !important;
+}
+
+.wrapper:hover{
+  background-color: var(--pj-border-primary);
+}
 
 .wrapper[data-disabled="true"] {
   background: transparent !important;
@@ -55,9 +62,6 @@
   text-align: center;
 }
 
-.draggable:active {
-  background-color: var(--pj-background-quaternary);
-}
 
 .draggable::-webkit-inner-spin-button {
   appearance: none;
