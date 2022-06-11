@@ -1,16 +1,16 @@
-.box{
-    border: var(--pj-accent-color) 2px solid;
-    border-radius: 5px;
-    position: absolute;
-    z-index: 999;
+.box {
+  border: gray 1px dashed;
+  border-radius: 3px;
+  position: absolute;
+  z-index: 999;
 }
-.box::after{
- content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--pj-accent-color);
-    opacity: .2;
+
+.box::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(128 128 128 / 50%);
 }

@@ -11,7 +11,7 @@ export default function TreeNode(props) {
     useEffect(() => {
         setCurrentLabel(props.node.label)
 
-        if (!props.node.phantomNode)
+        if (!props.rootIndex)
             ref.current?.setAttribute("data-node", `${props.node.id}`)
         else
             ref.current?.setAttribute("data-root", `${props.node.id}`)
@@ -38,16 +38,10 @@ export default function TreeNode(props) {
             <div
                 className={styles.container}
                 title={currentLabel}
+                data-disabled={`${props.node.disabled === true}`}
                 data-selected={`${selected}`}
-                onContextMenu={() => props.setSelected(props.node.id)}
             >
-                {props.node.canBeHidden ?
-                    <button className={styles.button} onClick={props.node.onHide}>
-                        <span className={"material-icons-round"}
-                            style={{fontSize: "1rem"}}>{!props.node.hidden ? "visibility" : "visibility_off"}</span>
-                    </button>
-                    :
-                    null}
+
                 <div
 
                     ref={ref}
@@ -58,9 +52,8 @@ export default function TreeNode(props) {
                     {props.node.children?.length > 0 ? (
                         <button
                             className={styles.button}
+                            disabled={props.node.disabled}
                             onClick={() => {
-                                if (!props.node.phantomNode)
-                                    props.node.onClick()
                                 setOpen(!open)
                             }}
                         >
@@ -87,48 +80,59 @@ export default function TreeNode(props) {
                             onChange={e => setCurrentLabel(e.target.value)}
                         />
                         :
-                        <div
-                            className={styles.rowContentWrapper}
-                            onClick={e => {
-                                if (props.node.onClick)
-                                    props.node.onClick(e)
-                            }}>
+                        <>
                             <div
-                                id={props.node.id}
-                                className={styles.rowContent}
-                                style={{fontWeight: props.index === 0 ? "550" : undefined, width: !props.node.type ? "90%" : undefined}}
+                                className={styles.rowContentWrapper}
+                                onClick={e => {
+                                    if (props.node.onClick)
+                                        props.node.onClick(e)
+                                }}>
+                                <div
+                                    id={props.node.id}
+                                    className={styles.rowContent}
+                                    style={{
+                                        fontWeight: props.index === 0 ? "550" : undefined,
+                                        width: !props.node.type ? "90%" : undefined
+                                    }}
 
-                                draggable={!props.node.phantomNode && props.draggable && props.node.draggable}
+                                    draggable={props.node.draggable}
 
-                                onDrop={props.onDrop}
-                                onDragOver={props.onDragOver}
-                                onDragLeave={props.onDragLeave}
-                                onDragStart={props.onDragStart}
+                                    onDrop={props.onDrop}
+                                    onDragOver={props.onDragOver}
+                                    onDragLeave={props.onDragLeave}
+                                    onDragStart={props.onDragStart}
 
-                                onDoubleClick={() => {
-                                    setOnEdit(true)
-                                }}
-                            >
-                                {props.node.icon}
-                                <div className={styles.overflow}>
-                                    {currentLabel}
+                                >
+                                    {props.node.icon}
+                                    <div 
+                                        className={styles.overflow}
+                                        onDoubleClick={() => {
+                                            if(!props.node.disabled)
+                                                setOnEdit(true)
+                                        }}
+                                        style={{
+                                            cursor: !props.node.disabled ? "pointer" : undefined
+                                        }}>
+                                        {currentLabel}
+                                    </div>
                                 </div>
+
                             </div>
-
-                            {props.node.type ?
-                                <div className={[styles.rowContent, styles.rowType, styles.overflow].join(" ")}>
-                                    {props.node.type}
-                                </div>
+                            {props.node.canBeHidden ?
+                                <button className={styles.button} onClick={props.node.onHide}>
+                                    <span className={"material-icons-round"}
+                                        style={{fontSize: "1rem"}}>{!props.node.hidden ? "visibility" : "visibility_off"}</span>
+                                </button>
                                 :
-                                null
-                            }
-                        </div>
+                                null}
+                        </>
                     }
+
                 </div>
             </div>
             {open ?
                 <div style={{
-                    "--position-left": (padding + props.node.canBeHidden ? 19 : 0) + "px"
+                    "--position-left": `${padding}px`
                 }} className={styles.children}>
                     {props.node.children?.map((child, index) => (
                         <React.Fragment key={props.index + "-tree-node-" + index}>
@@ -137,8 +141,8 @@ export default function TreeNode(props) {
                                 selected={props.selected}
                                 handleRename={props.handleRename}
                                 node={child}
+                                rootIndex={false}
                                 index={props.index + 1}
-
                             />
                         </React.Fragment>
                     ))}
@@ -162,7 +166,7 @@ TreeNode.propTypes = {
         icon: PropTypes.node,
         type: PropTypes.string,
         attributes: PropTypes.object,
-        phantomNode: PropTypes.bool,
+        disabled: PropTypes.bool,
 
         hidden: PropTypes.bool,
         onHide: PropTypes.func,
@@ -174,5 +178,6 @@ TreeNode.propTypes = {
     onDrop: PropTypes.func,
     onDragOver: PropTypes.func,
     onDragLeave: PropTypes.func,
-    onDragStart: PropTypes.func
+    onDragStart: PropTypes.func,
+    rootIndex: PropTypes.bool
 }

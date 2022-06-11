@@ -45,8 +45,8 @@ export default function TreeView(props) {
                 .map((child, index) => (
                     <React.Fragment key={"tree-" + index}>
                         <TreeNode
-
                             open={true}
+                            rootIndex={index === 0}
                             onDragOver={(e) => {
                                 if(draggable) {
                                     e.preventDefault()
