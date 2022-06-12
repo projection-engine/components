@@ -101,9 +101,10 @@ export default function SelectBox(props) {
     }
 
     useEffect(() => {
-        ref.current?.parentNode.addEventListener("mousedown", handleMouseDown)
+        if(!props.disabled)
+            ref.current?.parentNode.addEventListener("mousedown", handleMouseDown)
         return () => ref.current?.parentNode.removeEventListener("mousedown", handleMouseDown)
-    }, [props.nodes, ids, props.selected])
+    }, [props.nodes, ids, props.selected, props.disabled])
 
 
     return (
@@ -111,6 +112,7 @@ export default function SelectBox(props) {
     )
 }
 SelectBox.propTypes = {
+    disabled: PropTypes.bool,
     target: PropTypes.string,
     setSelected: PropTypes.func.isRequired,
     selected: PropTypes.arrayOf(PropTypes.string).isRequired,
