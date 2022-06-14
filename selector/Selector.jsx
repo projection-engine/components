@@ -46,7 +46,7 @@ export default function Selector(props) {
                         }}
                     >
                         <SelectorItem
-                            path={quickAccess.fileSystem.path}
+                            path={document.fileSystem.path}
                             type={props.type}
                             data={t}
                         />
@@ -101,7 +101,7 @@ export default function Selector(props) {
                 {props.children ? props.children :
                     <SelectorItem
                         type={props.type}
-                        path={quickAccess.fileSystem.path}
+                        path={document.fileSystem.path}
                         data={state}
                     />
                 }
