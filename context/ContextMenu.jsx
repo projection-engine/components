@@ -1,39 +1,66 @@
 import PropTypes from "prop-types"
-import React, {useEffect, useMemo} from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import styles from "./ContextMenu.module.css"
-import {Button} from "@f-ui/core"
+import {Button, Icon, TextField} from "@f-ui/core"
 
 export default function ContextMenu(props) {
-    const {options, close, selected} = props
+    const {options, close, selected, target} = props
+    const [search, setSearch] = useState("")
+    const optionsToRender = useMemo(() => {
+        if(selected && options)
+            return options.filter(o => !search || o.label.toLowerCase().includes(search.toLowerCase()))
+        return []
+    }, [options, search, selected])
     useEffect(() => {
-        close()
-        console.log("HEREEEEEEEEEEEe")
+        if(selected) {
+            close()
+            setSearch("")
+        }
     }, [options])
 
-    return options?.map((o, i) => !o.requiredTrigger || o.requiredTrigger === selected?.trigger ? (
-        <React.Fragment key={"viewport-option-" + i}>
-            {o.divider ? <div className={styles.divider}/> :
-                <Button
-                    disabled={o.disabled}
-                    className={styles.button}
-                    onClick={e => {
-                        o.onClick(props.selected?.selected, e)
-                        close()
-                    }}>
-                    <div className={styles.inline}>
-                        <div className={styles.icon}>
-                            <span style={{fontSize: "1.1rem"}}
-                                className={"material-icons-round"}>{o.icon}</span>
-                        </div>
-                        <label className={styles.overflow}>{o.label}</label>
-                    </div>
-                    <Shortcut shortcut={o.shortcut}/>
-                </Button>}
-        </React.Fragment>
-    ) : null)
+    if(!selected)
+        return null
+    return (
+        < >
+            {target?.label ?
+                <label className={styles.label}>
+                    <div className={styles.overflow}>{target.label}</div>
+                </label>
+                :
+                null}
+            <div style={{overflowY: "auto", maxHeight: "275px"}}>
+                {optionsToRender.map((o, i) => !o.requiredTrigger || o.requiredTrigger === selected?.trigger ? (
+                    <React.Fragment key={"viewport-option-" + i}>
+                        {o.divider ? <div className={styles.divider}/> :
+                            <Button
+                                disabled={o.disabled}
+                                className={styles.button}
+                                onClick={e => {
+                                    o.onClick(props.selected?.selected, e)
+                                    close()
+                                }}>
+                                <div className={styles.inline}>
+                                    <div className={styles.icon}>
+                                        <Icon styles={{fontSize: "1.1rem"}}>{o.icon}</Icon>
+                                    </div>
+                                    <label className={styles.overflow}>{o.label}</label>
+                                </div>
+                                <Shortcut shortcut={o.shortcut}/>
+                            </Button>}
+                    </React.Fragment>
+                )
+                    :
+                    null)}
+            </div>
+            <div style={{padding: "0 4px", position: "absolute", bottom: "0", width: "100%"}}>
+                <TextField handleChange={e => setSearch(e.target.value)} width={"100%"} value={search} height={"25px"} placeholder={"Search"}/>
+            </div>
+        </ >
+    )
 }
 
 ContextMenu.propTypes = {
+    target: PropTypes.object,
     options: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.string,
         icon: PropTypes.string,

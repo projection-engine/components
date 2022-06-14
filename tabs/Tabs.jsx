@@ -1,6 +1,6 @@
 import styles from "./styles/Tabs.module.css"
 import PropTypes from "prop-types"
-import {Button, ToolTip} from "@f-ui/core"
+import {Button, Icon, ToolTip} from "@f-ui/core"
 import React, {useMemo, useRef, useState} from "react"
 import ResizableBar from "../resizable/ResizableBar"
 
@@ -40,8 +40,8 @@ export default function Tabs(props) {
                         styles={{background: "var(--pj-border-primary)"}}
                         onClick={() => setHidden(!hidden)}
                     >
-                        <span className={"material-icons-round"}
-                            style={{fontSize: "1rem"}}>{hidden ? "expand_more" : "expand_less"}</span>
+                        <Icon
+                            styles={{fontSize: "1rem"}}>{hidden ? "expand_more" : "expand_less"}</Icon>
                     </Button>
                     {props.tabs.map((t, i) => (
                         <React.Fragment key={i + "-open-tab-view"}>
@@ -52,8 +52,8 @@ export default function Tabs(props) {
                                     props.setOpen(i)
                                 }} variant={i === props.open ? "filled" : undefined}
                             >
-                                {t.icon ? <span className={"material-icons-round"}
-                                    style={{fontSize: "1rem"}}>{t.icon}</span> : null}
+                                {t.icon ? <Icon
+                                    styles={{fontSize: "1rem"}}>{t.icon}</Icon> : null}
                                 <ToolTip animation={"0ms"}>{t.label}</ToolTip>
                             </Button>
 
@@ -69,7 +69,7 @@ export default function Tabs(props) {
                             variant={"filled"}
                         >
                             <ToolTip content={"Close active view"} animation={"0ms"}/>
-                            <span className={"material-icons-round"} style={{fontSize: "1rem"}}>close</span>
+                            <Icon  styles={{fontSize: "1rem"}}>close</Icon>
                         </Button>
                         :
                         null}

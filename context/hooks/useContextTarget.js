@@ -3,33 +3,31 @@ import ContextMenuProvider from "./ContextMenuProvider"
 
 export default function useContextTarget(targetRef, options, triggers) {
     const {id, ref} = targetRef,
-        state= useContext(ContextMenuProvider),
+        [state, setState]= useContext(ContextMenuProvider),
         focused = useRef(false)
     function handler(e){
         if(e.type === "mouseenter") {
             focused.current = true
 
             if(state.target?.id !== id) {
-                state.options = options
-                state.target = targetRef
-                state.triggers = triggers
+                setState({
+                    options,
+                    target: targetRef,
+                    triggers,
+                })
             }
         }
         else
             focused.current = false
     }
-    // useEffect(() => {
-    //     console.log("UPDATED BECAUSE TARGET")
-    // } , [state.target])
-    // useEffect(() => {
-    //     console.log("UPDATED BECAUSE OPTIONS")
-    // } , [options])
-    // useEffect(() => {
-    //     console.log("UPDATED BECAUSE TRIGGERS")
-    // } , [triggers])
+
     useEffect(() => {
-        if(focused.current)
-            state.options = options
+        if(focused.current) {
+            setState(prev => ({
+                ...prev,
+                options,
+            }))
+        }
         const target = ref ? ref : document.getElementById(id)
         target?.addEventListener("mouseenter", handler)
         target?.addEventListener("mouseleave", handler)

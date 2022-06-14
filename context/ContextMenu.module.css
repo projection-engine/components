@@ -42,3 +42,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.label {
+  font-weight: 550;
+  font-size: 0.7rem;
+  padding: 4px;
+  color: var(--pj-color-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: var(--pj-border-primary) 1px solid;
+  width: 100%;
+}

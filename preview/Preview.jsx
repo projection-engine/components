@@ -1,6 +1,7 @@
 import PropTypes from "prop-types"
 import usePreview from "./usePreview"
 import React, {useState} from "react"
+import {Icon} from "@f-ui/core"
 
 export default function Preview(props){
     const [error, setError] = useState(false)
@@ -9,7 +10,7 @@ export default function Preview(props){
     return (
         <>
             <img draggable={false} ref={ref} className={props.className} style={{...props.styles, display: error ? "none" : undefined}} alt={""}/>
-            <span className={["material-icons-round", props.iconClassname].join(" ")} style={{...props.iconStyles, display: !error ? "none" : undefined}}>{props.fallbackIcon ? props.fallbackIcon : "image"}</span>
+            <Icon className={props.iconClassname} styles={{...props.iconStyles, display: !error ? "none" : undefined}}>{props.fallbackIcon ? props.fallbackIcon : "image"}</Icon>
             {!error ? props.children : null}
         </>
     )

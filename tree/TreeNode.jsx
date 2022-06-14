@@ -1,6 +1,7 @@
 import styles from "./styles/Tree.module.css"
 import PropTypes from "prop-types"
 import React, {useEffect, useMemo, useRef, useState} from "react"
+import {Icon} from "@f-ui/core"
 
 export default function TreeNode(props) {
     const [open, setOpen] = useState(props.index === 0)
@@ -57,8 +58,9 @@ export default function TreeNode(props) {
                                 setOpen(!open)
                             }}
                         >
-                            <span style={{width: "24px", overflow: "hidden", fontSize: "1.2rem"}}
-                                className={"material-icons-round"}>{open ? "expand_more" : "chevron_right"}</span>
+                            <Icon 
+                                styles={{width: "24px", overflow: "hidden", fontSize: "1.2rem"}}
+                            >{open ? "expand_more" : "chevron_right"}</Icon>
                         </button>
                     ) : null}
 
@@ -120,8 +122,8 @@ export default function TreeNode(props) {
                             </div>
                             {props.node.canBeHidden ?
                                 <button className={styles.button} onClick={props.node.onHide}>
-                                    <span className={"material-icons-round"}
-                                        style={{fontSize: "1rem"}}>{!props.node.hidden ? "visibility" : "visibility_off"}</span>
+                                    <Icon
+                                        styles={{fontSize: "1rem"}}>{!props.node.hidden ? "visibility" : "visibility_off"}</Icon>
                                 </button>
                                 :
                                 null}

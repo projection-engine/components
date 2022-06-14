@@ -2,6 +2,7 @@ import PropTypes from "prop-types"
 import styles from "./styles/Range.module.css"
 import React, {useEffect, useRef, useState} from "react"
 import KEYS from "../../project/engine/templates/KEYS"
+import {Icon} from "@f-ui/core"
 
 export default function Range(props) {
     const [focused, setFocused] = useState(false)
@@ -110,7 +111,7 @@ export default function Range(props) {
                     className={styles.draggable}
                 >
                     <div className={styles.overflow}>
-                        {props.hideValue ? <span style={{transform: "rotate(90deg)", fontSize: "1.1rem"}} className={"material-icons-round"}>unfold_more</span> : currentValue.toFixed(props.precision ? props.precision : 1)}
+                        {props.hideValue ? <Icon styles={{transform: "rotate(90deg)", fontSize: "1.1rem"}}>unfold_more</Icon> : currentValue.toFixed(props.precision ? props.precision : 1)}
                     </div>
                 </div>
             }

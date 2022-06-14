@@ -41,8 +41,7 @@ export default function Frame(props) {
                                 <React.Fragment key={i + "-wrapper-frame-option-" + j}>
                                     <DropdownOption option={{
                                         ...oo,
-                                        icon: oo.icon ? <span className={"material-icons-round"}
-                                            style={{fontSize: "1.1rem"}}>{oo.icon}</span> : undefined
+                                        icon: oo.icon ? oo.icon : undefined
                                     }}/>
                                 </React.Fragment>
                             ))}

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useMemo, useState} from "react"
 import styles from "./styles/Selector.module.css"
-import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core"
+import {Button, Dropdown, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
 import SelectorItem from "./SelectorItem"
 import PropTypes from "prop-types"
 import Search from "../search/Search"
@@ -56,7 +56,7 @@ export default function Selector(props) {
         else
             return (
                 <div className={styles.nothing}>
-                    <span style={{fontSize: "2rem"}} className={"material-icons-round"}>folder</span>
+                    <Icon styles={{fontSize: "2rem"}}>folder</Icon>
                     {EN.COMPONENTS.SELECTOR.NOTHING}
                 </div>
             )
@@ -125,23 +125,24 @@ export default function Selector(props) {
                                 })
                             }}
                         >
-                            <span style={{
-                                color: !currentSort ? "#999999" : undefined,
-                                transform: currentSort === "up" ? undefined : "rotate(180deg)"
-                            }} className={"material-icons-round"}>arrow_upward</span>
+                            <Icon 
+                                styles={{
+                                    color: !currentSort ? "#999999" : undefined,
+                                    transform: currentSort === "up" ? undefined : "rotate(180deg)"
+                                }} >arrow_upward</Icon>
                         </Button>
                         <Search searchString={searchString} setSearchString={setSearchString} width={"100%"}/>
                         {props.type === "material" ?
                             <Button className={styles.resetButton} variant={"outlined"}
                                 onClick={() => props.handleChange()}>
-                                <span className={"material-icons-round"}>clear</span>
+                                <Icon >clear</Icon>
                                 <ToolTip content={EN.COMPONENTS.SELECTOR.DEFAULT_MATERIAL}/>
                             </Button>
                             : null}
                         {props.type === "script" ?
                             <Button className={styles.resetButton} variant={"outlined"}
                                 onClick={() => props.handleChange()}>
-                                <span className={"material-icons-round"}>clear</span>
+                                <Icon >clear</Icon>
                                 <ToolTip content={EN.COMPONENTS.SELECTOR.REMOVE_SCRIPT}/>
                             </Button>
                             : null}

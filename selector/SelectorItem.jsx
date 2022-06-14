@@ -3,6 +3,7 @@ import styles from "./styles/SelectorItem.module.css"
 import React, {useMemo} from "react"
 import Preview from "../preview/Preview"
 import FileSystem from "../../project/utils/files/FileSystem"
+import {Icon} from "@f-ui/core"
 
 export default function SelectorItem(props) {
     const p = useMemo(() => {
@@ -11,15 +12,15 @@ export default function SelectorItem(props) {
     const icon = useMemo(() => {
         switch (props.type) {
         case "mesh":
-            return <span className={"material-icons-round"} style={{fontSize: "2rem"}}>view_in_ar</span>
+            return <Icon styles={{fontSize: "2rem"}}>view_in_ar</Icon>
         case "image":
             return (
                 <Preview iconStyles={{fontSize: "1.6rem"}} path={p} className={styles.image}/>
             )
         case "material":
-            return <span className={"material-icons-round"} style={{fontSize: "2rem"}}>texture</span>
+            return <Icon  styles={{fontSize: "2rem"}}>texture</Icon>
         case "script":
-            return <span className={"material-icons-round"} style={{fontSize: "1.5rem"}}>code</span>
+            return <Icon  styles={{fontSize: "1.5rem"}}>code</Icon>
         default:
             return
         }
