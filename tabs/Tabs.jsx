@@ -22,13 +22,10 @@ export default function Tabs(props) {
     return (
         <>
             <ResizableBar
-                resetTargets={{previous: true, next: false}}
+                // resetTargets={{previous: true, next: true}}
                 resetWhen={[hidden]}
                 type={"height"}
-                onResizeStart={() => {
-                    if(hidden)
-                        setHidden(false)
-                }}
+                onResizeStart={() => setHidden(false)}
                 onResizeEnd={() => {
                     if (ref.current.getBoundingClientRect().height <= 45)
                         setHidden(true)

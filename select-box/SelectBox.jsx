@@ -4,9 +4,6 @@ import styles from "./styles/SelectBox.module.css"
 
 const MIN_BOX_SIZE = 50
 export default function SelectBox(props) {
-    const target = useMemo(() => {
-        return document.getElementById(props.target)
-    }, [props.target])
     const ref = useRef()
     let initiated = false,
         startingPosition = {x: 0, y: 0}
@@ -57,7 +54,7 @@ export default function SelectBox(props) {
             document.removeEventListener("mousemove", handleMouseMove)
     }
     const handleMouseDown = (event) => {
-        if(event.target === target || event.target === event.currentTarget) {
+        if(event.target.id === props.target || event.target === event.currentTarget) {
             const ctrl = event.ctrlKey
             if (event.button === 0 && !document.elementsFromPoint(event.clientX, event.clientY).find(n => (ids.indexOf(n.id) > -1) || n.tagName === "INPUT" || n.tagName === "BUTTON")) {
                 if (!ctrl)
