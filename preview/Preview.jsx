@@ -11,12 +11,13 @@ export default function Preview(props){
         <>
             <img draggable={false} ref={ref} className={props.className} style={{...props.styles, display: error ? "none" : undefined}} alt={""}/>
             <Icon className={props.iconClassname} styles={{...props.iconStyles, display: !error ? "none" : undefined}}>{props.fallbackIcon ? props.fallbackIcon : "image"}</Icon>
-            {!error ? props.children : null}
+            {!error  || props.drawOnError ? props.children : null}
         </>
     )
 }
 
 Preview.propTypes={
+    drawOnError: PropTypes.bool,
     children: PropTypes.node,
     iconClassname: PropTypes.string,
     iconStyles: PropTypes.object,

@@ -42,7 +42,7 @@ export default function Selector(props) {
                         highlight={state.registryID === t.registryID}
                         onClick={() => {
                             setState(t)
-                            props.handleChange(() => setState({name: "Empty"}))
+                            props.handleChange(t, () => setState({name: "Empty"}))
                         }}
                     >
                         <SelectorItem

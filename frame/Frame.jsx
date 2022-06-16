@@ -24,31 +24,35 @@ export default function Frame(props) {
                     :
                     LogoContent
                 }
-                {props.options.map((o, i) => o.divider ?
-                    <div className={styles.divider}/>
-                    :
-                    o.options ? (
-                        <React.Fragment key={i + "-wrapper-frame"}>
-                            <Dropdown className={styles.button}>
-                                {o.label}
-                                <DropdownOptions>
-                                    {o.options.map((oo, j) => (
-                                        <React.Fragment key={i + "-wrapper-frame-option-" + j}>
-                                            <DropdownOption option={{
-                                                ...oo,
-                                                icon: oo.icon ? oo.icon : undefined
-                                            }}/>
-                                        </React.Fragment>
-                                    ))}
-                                </DropdownOptions>
-                            </Dropdown>
-                        </React.Fragment>
-                    ) : (
-                        <Button onClick={o.onClick} className={styles.button}>
-                            {o.icon ? <Icon styles={{fontSize: "1.1rem"}}>{o.icon}</Icon> : null}
-                            {o.label}
-                        </Button>
-                    ))}
+                {props.options.map((o, i) => (
+                    <React.Fragment key={i + "-wrapper-frame"}>
+                        {o.divider ?
+                            <div className={styles.divider}/>
+                            :
+                            o.options ? (
+                                <Dropdown className={styles.button}>
+                                    {o.label}
+                                    <DropdownOptions>
+                                        {o.options.map((oo, j) => (
+                                            <React.Fragment key={i + "-wrapper-frame-option-" + j}>
+                                                <DropdownOption option={{
+                                                    ...oo,
+                                                    icon: oo.icon ? oo.icon : undefined
+                                                }}/>
+                                            </React.Fragment>
+                                        ))}
+                                    </DropdownOptions>
+                                </Dropdown>
+                            )
+                                :
+                                <Button onClick={o.onClick} className={styles.button}>
+                                    {o.icon ? <Icon styles={{fontSize: "1.1rem"}}>{o.icon}</Icon> : null}
+                                    {o.label}
+                                </Button>        
+                        }
+                            
+                    </React.Fragment>
+                ))}
             </div>
             <div className={styles.draggable}/>
             <Actions pageInfo={props.pageInfo}/>
