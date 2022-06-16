@@ -8,20 +8,24 @@ export default function ResizableBar(props) {
     const handleMouseMove = (event) => {
         if (props.onResize)
             props.onResize()
+        try{
 
-        const bBox = ref.current?.previousSibling.getBoundingClientRect()
-        const prevBbox = ref.current?.nextSibling.getBoundingClientRect()
+            const bBox = ref.current?.previousSibling.getBoundingClientRect()
+            const prevBbox = ref.current?.nextSibling.getBoundingClientRect()
 
-        if (props.type === "width") {
-            const newW = (event.clientX - bBox.left)
-            const offset = newW - bBox.width
-            ref.current.previousSibling.style.width = (event.clientX - bBox.left) + "px"
-            ref.current.nextSibling.style.width = (prevBbox.width - offset) + "px"
-        } else {
-            const newH = (event.clientY - bBox.top)
-            const offset = newH - bBox.height
-            ref.current.previousSibling.style.height = (event.clientY - bBox.top) + "px"
-            ref.current.nextSibling.style.height = (prevBbox.height - offset) + "px"
+            if (props.type === "width") {
+                const newW = (event.clientX - bBox.left)
+                const offset = newW - bBox.width
+                ref.current.previousSibling.style.width = (event.clientX - bBox.left) + "px"
+                ref.current.nextSibling.style.width = (prevBbox.width - offset) + "px"
+            } else {
+                const newH = (event.clientY - bBox.top)
+                const offset = newH - bBox.height
+                ref.current.previousSibling.style.height = (event.clientY - bBox.top) + "px"
+                ref.current.nextSibling.style.height = (prevBbox.height - offset) + "px"
+            }
+        }catch (err){
+            console.error(err)
         }
     }
     const handleMouseUp = () => {

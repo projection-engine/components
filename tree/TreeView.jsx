@@ -1,11 +1,9 @@
 import PropTypes from "prop-types"
-import React, {useMemo, useState} from "react"
+import React, {useId} from "react"
 import styles from "./styles/Tree.module.css"
 import TreeNode from "./TreeNode"
-import Search from "../search/Search"
 import SelectBox from "../select-box/SelectBox"
 import useContextTarget from "../context/hooks/useContextTarget"
-import {v4} from "uuid"
 
 export default function TreeView(props) {
     const {
@@ -19,15 +17,13 @@ export default function TreeView(props) {
         onMultiSelect,
         contextTriggers,
         options,
-        selected,
-        searchable,
+        selected, 
         className,
         multiSelect,
         ids
-    } = props
-    const [searchString, setSearchString] = useState("")
+    } = props 
     let t
-    const ID = useMemo(() => v4(), [])
+    const ID = useId()
 
     useContextTarget(
         {id: "tree-view-"+ID},
@@ -37,65 +33,60 @@ export default function TreeView(props) {
 
     return (
         <div data-self={"self"} className={[styles.wrapper, className].join(" ")} style={styles} id={"tree-view-"+ID}>
-            {searchable ? <Search width={"100%"} size={"default"} searchString={searchString} setSearchString={setSearchString}/> : undefined}
-
             {onMultiSelect && Array.isArray(selected) && multiSelect? <SelectBox setSelected={onMultiSelect} selected={selected} nodes={ids} />: null}
-            {nodes
-                .filter(n => searchString.length === 0 || n.label.toLowerCase().includes(searchString.toLowerCase()))
-                .map((child, index) => (
-                    <React.Fragment key={"tree-" + index}>
-                        <TreeNode
-                            open={true}
-                            rootIndex={index === 0}
-                            onDragOver={(e) => {
-                                if(draggable) {
-                                    e.preventDefault()
+            {nodes.map((child, index) => (
+                <React.Fragment key={ID + "-tree-" + index}>
+                    <TreeNode
+                        open={true}
+                        rootIndex={index === 0}
+                        onDragOver={(e) => {
+                            if(draggable) {
+                                e.preventDefault()
 
-                                    t = e.currentTarget.parentNode.parentNode
-                                    t.classList.add(styles.hoveredNode)
-                                }
-                                if (onDragOver)
-                                    onDragOver(e, e.currentTarget.id)
-                            }}
-                            onDragLeave={(e) => {
-                                if(draggable) {
+                                t = e.currentTarget.parentNode.parentNode
+                                t.classList.add(styles.hoveredNode)
+                            }
+                            if (onDragOver)
+                                onDragOver(e, e.currentTarget.id)
+                        }}
+                        onDragLeave={(e) => {
+                            if(draggable) {
 
-                                    e.preventDefault()
-                                    if(t)
-                                        t.classList.remove(styles.hoveredNode)
-                                }
-                                if (onDragLeave)
-                                    onDragLeave(e, e.currentTarget.id)
-                            }}
-                            onDrop={(e) => {
-                                if(draggable) {
-                                    e.preventDefault()
-                                    if(t)
-                                        t.classList.remove(styles.hoveredNode)
-                                }
-                                if (onDrop)
-                                    onDrop(e, e.currentTarget.id)
-                            }}
-                            onDragStart={(e) => {
+                                e.preventDefault()
+                                if(t)
+                                    t.classList.remove(styles.hoveredNode)
+                            }
+                            if (onDragLeave)
+                                onDragLeave(e, e.currentTarget.id)
+                        }}
+                        onDrop={(e) => {
+                            if(draggable) {
+                                e.preventDefault()
+                                if(t)
+                                    t.classList.remove(styles.hoveredNode)
+                            }
+                            if (onDrop)
+                                onDrop(e, e.currentTarget.id)
+                        }}
+                        onDragStart={(e) => {
+                            if(!onDragStart)
+                                e.dataTransfer.setData("text", e.currentTarget.id)
+                            else
+                                onDragStart(e, e.currentTarget.id)
+                        }}
+                        draggable={draggable}
+                        handleRename={handleRename}
+                        triggerHierarchy={() => null}
+                        node={child} index={0}
+                        selected={selected}
+                        setSelected={(v) => {
+                            if(typeof onMultiSelect === "function")
+                                onMultiSelect([v])
+                        }}
 
-                                if(!onDragStart)
-                                    e.dataTransfer.setData("text", e.currentTarget.id)
-                                else
-                                    onDragStart(e, e.currentTarget.id)
-                            }}
-                            draggable={draggable}
-                            handleRename={handleRename}
-                            triggerHierarchy={() => null}
-                            node={child} index={0}
-                            selected={selected}
-                            setSelected={(v) => {
-                                if(typeof onMultiSelect === "function")
-                                    onMultiSelect([v])
-                            }}
-
-                        />
-                    </React.Fragment>
-                ))}
+                    />
+                </React.Fragment>
+            ))}
         </div>
     )
 }
@@ -106,8 +97,7 @@ TreeView.propTypes = {
     onMultiSelect: PropTypes.func,
     multiSelect: PropTypes.bool,
 
-    contextTriggers: PropTypes.array,
-    searchable: PropTypes.bool,
+    contextTriggers: PropTypes.array, 
     selected: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 
     ids: PropTypes.array,

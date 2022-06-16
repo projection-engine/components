@@ -3,8 +3,8 @@ import React, {useContext, useEffect, useState} from "react"
 import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOptions, DropdownProvider, ToolTip} from "@f-ui/core"
 import {RgbColorPicker} from "react-colorful"
-import Range from "../range/Range"
 import EN from "../../static/locale/EN"
+import LabeledRange from "../templates/LabeledRange"
 
 
 export default function ColorPicker(props) {
@@ -35,53 +35,52 @@ export default function ColorPicker(props) {
             <DropdownOptions>
                 <RgbColorPicker color={value} onChange={e => setValue(e)}/>
                 <div className={styles.inputs}>
-                    <div className={styles.inputLabel}>
-                        R
-                        <Range
-                            maxValue={255}
-                            minValue={0}
+                    <LabeledRange 
+                        label={"R"}
+                        variant={"embedded"}
+                        maxValue={255}
+                        minValue={0}
 
-                            handleChange={v => setValue(prev => {
-                                return {
-                                    ...prev,
-                                    r: v
-                                }
-                            })}
-                            value={value.r}
-                            accentColor={"red"}
-                        />
-                    </div>
-                    <div className={styles.inputLabel}>
-                        G
-                        <Range
-                            maxValue={255}
-                            minValue={0}
-                            handleChange={v => setValue(prev => {
-                                return {
-                                    ...prev,
-                                    g: v
-                                }
-                            })}
-                            value={value.g}
-                            accentColor={"green"}
-                        />
-                    </div>
-                    <div className={styles.inputLabel}>
-                        B
-                        <Range
-                            maxValue={255}
-                            minValue={0}
+                        handleChange={v => setValue(prev => {
+                            return {
+                                ...prev,
+                                r: v
+                            }
+                        })}
+                        value={value.r}
+                        accentColor={"red"}
+                    />
+                  
+                    <LabeledRange
+                        label={"G"}
+                        variant={"embedded"}
+                        maxValue={255}
+                        minValue={0}
+                        handleChange={v => setValue(prev => {
+                            return {
+                                ...prev,
+                                g: v
+                            }
+                        })}
+                        value={value.g}
+                        accentColor={"green"}
+                    />
+   
+                    <LabeledRange
+                        label={"B"}
+                        variant={"embedded"}
+                        maxValue={255}
+                        minValue={0}
 
-                            handleChange={v => setValue(prev => {
-                                return {
-                                    ...prev,
-                                    b: v
-                                }
-                            })}
-                            value={value.b}
-                            accentColor={"blue"}
-                        />
-                    </div>
+                        handleChange={v => setValue(prev => {
+                            return {
+                                ...prev,
+                                b: v
+                            }
+                        })}
+                        value={value.b}
+                        accentColor={"blue"}
+                    />
                 </div>
                 <Buttons setValue={setValue} value={value} submit={props.submit}/>
             </DropdownOptions>

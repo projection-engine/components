@@ -4,7 +4,7 @@ import {Button, Icon, ToolTip} from "@f-ui/core"
 import React, {useMemo, useRef, useState} from "react"
 import ResizableBar from "../resizable/ResizableBar"
 
-export default function Tabs(props) {
+export default function ViewTabs(props) {
     const [hidden, setHidden] = useState(false)
     const ref = useRef()
     const stylesHidden = useMemo(() => {
@@ -15,61 +15,59 @@ export default function Tabs(props) {
             borderRadius: hidden ? "5px" : undefined
         }
     }, [hidden])
-    const current = useMemo(() => {
-        return props.tabs[props.open]
-    }, [props.open, props.tabs])
 
     return (
         <>
             <ResizableBar
-                // resetTargets={{previous: true, next: true}}
                 resetWhen={[hidden]}
                 type={"height"}
                 onResizeStart={() => setHidden(false)}
                 onResizeEnd={() => {
                     if (ref.current.getBoundingClientRect().height <= 45)
                         setHidden(true)
-                }}/>
+                }}
+            />
             <div className={styles.wrapper} ref={ref} style={{height: hidden ? "fit-content" : undefined}}>
                 <div className={styles.switcher} style={stylesHidden}>
                     <Button
                         className={styles.button}
-                        styles={{background: "var(--pj-border-primary)"}}
                         onClick={() => setHidden(!hidden)}
                     >
                         <Icon
                             styles={{fontSize: "1rem"}}>{hidden ? "expand_more" : "expand_less"}</Icon>
                     </Button>
                     {props.tabs.map((t, i) => (
-                        <React.Fragment key={i + "-open-tab-view"}>
+                        <div className={styles.tab} key={i + "-open-tab-view"}>
                             <Button
                                 className={styles.button}
+                                attributes={{"data-active": `${props.open === i}`, "data-closable": `${t.close !== undefined}`}}
                                 onClick={() => {
                                     setHidden(false)
                                     props.setOpen(i)
-                                }} variant={i === props.open ? "filled" : undefined}
+                                }}
                             >
                                 {t.icon ? <Icon
                                     styles={{fontSize: "1rem"}}>{t.icon}</Icon> : null}
-                                <ToolTip animation={"0ms"}>{t.label}</ToolTip>
+                                {t.label}
                             </Button>
-
-                        </React.Fragment>
+                            {t.close && !hidden ?
+                                <Button
+                                    attributes={{"data-active": `${props.open === i}`}}
+                                    className={[styles.button, styles.close].join(" ")}
+                                    onClick={() => {
+                                        if(props.open === i)
+                                            props.setOpen(i - 1)
+                                        t.close()
+                                    }}
+                                >
+                                    <ToolTip content={"Close active view"} animation={"0ms"}/>
+                                    <Icon  styles={{fontSize: "1rem"}}>close</Icon>
+                                </Button>
+                                :
+                                null}
+                        </div>
                     ))}
-                    {current?.close && !hidden ?
-                        <Button
-                            className={[styles.button, styles.close].join(" ")}
-                            onClick={() => {
-                                props.setOpen(prev => prev - 1)
-                                current.close()
-                            }}
-                            variant={"filled"}
-                        >
-                            <ToolTip content={"Close active view"} animation={"0ms"}/>
-                            <Icon  styles={{fontSize: "1rem"}}>close</Icon>
-                        </Button>
-                        :
-                        null}
+
 
                 </div>
 
@@ -88,7 +86,7 @@ export default function Tabs(props) {
     )
 }
 
-Tabs.propTypes = {
+ViewTabs.propTypes = {
     open: PropTypes.number,
     setOpen: PropTypes.func,
 

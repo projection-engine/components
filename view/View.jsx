@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./View.module.css"
-import {Dropdown, DropdownOption, Icon} from "@f-ui/core"
+import {Icon} from "@f-ui/core"
 import React, {useId, useRef, useState} from "react"
 import ResizableBar from "../resizable/ResizableBar"
 

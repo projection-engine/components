@@ -52,10 +52,14 @@ export default function ContextMenu(props) {
                     :
                     null)}
             </div>
-            <div style={{padding: "0 4px", position: "absolute", bottom: "0", width: "100%"}}>
-                <TextField handleChange={e => setSearch(e.target.value)} width={"100%"} value={search} height={"25px"} placeholder={"Search"}/>
-            </div>
-        </ >
+            {optionsToRender.length > 5 ?  
+                <div style={{padding: "0 4px", position: "absolute", bottom: "0", width: "100%"}}>
+                    <TextField handleChange={e => setSearch(e.target.value)} width={"100%"} value={search} height={"25px"} placeholder={"Search"}/>
+                </div>
+                :
+                null
+            }
+        </>
     )
 }
 
