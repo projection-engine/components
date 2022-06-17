@@ -10,7 +10,7 @@ export default function Preview(props){
     return (
         <>
             <img draggable={false} ref={ref} className={props.className} style={{...props.styles, display: error ? "none" : undefined}} alt={""}/>
-            <Icon className={props.iconClassname} styles={{...props.iconStyles, display: !error ? "none" : undefined}}>{props.fallbackIcon ? props.fallbackIcon : "image"}</Icon>
+            <Icon className={props.iconClassname} styles={{...props.iconStyles, display: !error ? "none" : undefined, color: "var(--pg-color-secondary)"}}>{props.fallbackIcon ? props.fallbackIcon : "image"}</Icon>
             {!error  || props.drawOnError ? props.children : null}
         </>
     )

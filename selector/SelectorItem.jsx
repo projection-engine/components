@@ -12,15 +12,15 @@ export default function SelectorItem(props) {
     const icon = useMemo(() => {
         switch (props.type) {
         case "mesh":
-            return <Icon styles={{fontSize: "2rem"}}>view_in_ar</Icon>
+            return <Preview iconStyles={{fontSize: "2rem"}} path={p} className={styles.image} fallbackIcon={"view_in_ar"}/>
         case "image":
             return (
-                <Preview iconStyles={{fontSize: "1.6rem"}} path={p} className={styles.image}/>
+                <Preview iconStyles={{fontSize: "1.6rem"}} path={p} className={styles.image} fallbackIcon={"image"}/>
             )
         case "material":
-            return <Icon  styles={{fontSize: "2rem"}}>texture</Icon>
+            return <Preview iconStyles={{fontSize: "2rem"}} path={p} className={styles.image} fallbackIcon={"texture"}/>
         case "script":
-            return <Icon  styles={{fontSize: "1.5rem"}}>code</Icon>
+            return <Icon  styles={{fontSize: "2rem", color: "var(--pj-color-secondary)"}}>javascript</Icon>
         default:
             return
         }

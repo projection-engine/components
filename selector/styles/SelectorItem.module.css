@@ -1,31 +1,26 @@
 .wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 4px;
-    padding: 4px;
-
-    max-width: 100%;
-    overflow: hidden;
-
-
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .label {
-    font-size: .75rem;
-    font-weight: 550;
-    color: var(--pj-color-secondary);
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-
+  font-size: 0.75rem;
+  font-weight: 550;
+  color: var(--pj-color-secondary);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .image {
-    object-fit: cover;
-    width: 35px;
-    height: 35px;
-    border-radius: 5px;
+  object-fit: cover;
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
 }

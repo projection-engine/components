@@ -1,6 +1,6 @@
-import React, {useContext, useEffect, useMemo, useState} from "react"
+import React, {useContext, useDeferredValue, useEffect, useMemo, useState} from "react"
 import styles from "./styles/Selector.module.css"
-import {Button, Dropdown, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
+import {Button, Dropdown, DropdownOptions, DropdownProvider, Icon, ToolTip} from "@f-ui/core"
 import SelectorItem from "./SelectorItem"
 import PropTypes from "prop-types"
 import Search from "../search/Search"
@@ -9,8 +9,7 @@ import EN from "../../static/locale/EN"
 
 export default function Selector(props) {
     const [state, setState] = useState({})
-    const [searchString, setSearchString] = useState("")
-    const [currentSort, setCurrentSort] = useState()
+
     const quickAccess = useContext(QuickAccessProvider)
 
     const getType = () => {
@@ -27,41 +26,7 @@ export default function Selector(props) {
             return []
         }
     }
-    const content = useMemo(() => {
-        let filtered = getType()
-            .filter(e => e.name.toLowerCase().includes(searchString))
-        if (currentSort)
-            filtered = filtered.sort((a, b) => (a.name > b.name) ? (currentSort === "up" ? 1 : -1) : ((b.name > a.name) ? (currentSort === "up" ? -1 : 1) : 0))
-
-        if (filtered.length > 0)
-            return filtered.map((t, i) => (
-                <React.Fragment key={"texture-" + t.name + "-" + i}>
-                    <Button
-                        className={styles.button}
-                        variant={state.registryID === t.registryID ? "filled" : undefined}
-                        highlight={state.registryID === t.registryID}
-                        onClick={() => {
-                            setState(t)
-                            props.handleChange(t, () => setState({name: "Empty"}))
-                        }}
-                    >
-                        <SelectorItem
-                            path={document.fileSystem.path}
-                            type={props.type}
-                            data={t}
-                        />
-                    </Button>
-                </React.Fragment>
-            ))
-        else
-            return (
-                <div className={styles.nothing}>
-                    <Icon styles={{fontSize: "2rem"}}>folder</Icon>
-                    {EN.COMPONENTS.SELECTOR.NOTHING}
-                </div>
-            )
-    }, [currentSort, quickAccess.images, quickAccess.meshes, state, searchString, props.selected])
-
+   
     useEffect(() => {
         let name = EN.COMPONENTS.SELECTOR.EMPTY,
             data = (typeof props.selected === "object" && Object.keys(props.selected).length > 0) ? props.selected : quickAccess[props.type + "s"]?.find(e => e.registryID === props.selected)
@@ -75,7 +40,6 @@ export default function Selector(props) {
                 e.preventDefault()
                 setClassName(styles.hovered)
             }}
-
             onDrop={e => {
                 e.preventDefault()
 
@@ -95,7 +59,7 @@ export default function Selector(props) {
                 setClassName("")
             }}>
             <Dropdown
-                hideArrow={props.children  !== undefined}
+                hideArrow={true}
                 wrapperClassname={styles.modal}
                 className={[styles.button, className, props.children  !== undefined ? styles.noPadding : "" ].join(" ")}>
                 {props.children ? props.children :
@@ -106,48 +70,17 @@ export default function Selector(props) {
                     />
                 }
                 <DropdownOptions>
-                    <div className={styles.searchWrapper}>
-                        <Button
-                            className={styles.resetButton}
-                            variant={"outlined"}
-                            onClick={() => {
-                                setCurrentSort(prev => {
-                                    switch (prev) {
-                                    case "up":
-                                        return undefined
-                                    case undefined:
-                                        return "down"
-                                    case "down":
-                                        return "up"
-                                    default:
-                                        return prev
-                                    }
-                                })
-                            }}
-                        >
-                            <Icon 
-                                styles={{
-                                    color: !currentSort ? "#999999" : undefined,
-                                    transform: currentSort === "up" ? undefined : "rotate(180deg)"
-                                }} >arrow_upward</Icon>
-                        </Button>
-                        <Search searchString={searchString} setSearchString={setSearchString} width={"100%"}/>
-                        {props.type === "material" ?
-                            <Button className={styles.resetButton} variant={"outlined"}
-                                onClick={() => props.handleChange()}>
-                                <Icon >clear</Icon>
-                                <ToolTip content={EN.COMPONENTS.SELECTOR.DEFAULT_MATERIAL}/>
-                            </Button>
-                            : null}
-                        {props.type === "script" ?
-                            <Button className={styles.resetButton} variant={"outlined"}
-                                onClick={() => props.handleChange()}>
-                                <Icon >clear</Icon>
-                                <ToolTip content={EN.COMPONENTS.SELECTOR.REMOVE_SCRIPT}/>
-                            </Button>
-                            : null}
-                    </div>
-                    {content}
+                    <Options
+                        handleChange={props.handleChange}
+                        type={props.type}
+                        images={quickAccess.images}
+                        meshes={quickAccess.meshes}
+                        selected={props.selected}
+                        getType={getType}
+                        setState={setState}
+                        state={state}
+                        autoClose={props.autoClose}
+                    />
                 </DropdownOptions>
             </Dropdown>
         </div>
@@ -155,8 +88,91 @@ export default function Selector(props) {
 }
 
 Selector.propTypes = {
+    autoClose: PropTypes.bool,
     children: PropTypes.node,
     type: PropTypes.oneOf(["image", "mesh", "material", "script"]),
     handleChange: PropTypes.func,
     selected: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
+}
+
+function Options(props){
+    const {autoClose, handleChange, type, images, meshes, selected, getType, setState, state} = props
+    const [searchString, setSearchString] = useState("")
+    const dropdownContext = useContext(DropdownProvider)
+    const search = useDeferredValue(searchString)
+    const content = useMemo(() => {
+        let filtered = getType()
+            .filter(e => e.name.toLowerCase().includes(search.toLowerCase()))
+        
+        if (filtered.length > 0)
+            return filtered.map((t, i) => (
+                <React.Fragment key={"texture-" + t.name + "-" + i}>
+                    <button
+                        className={styles.button}
+                        data-highlight={`${state.registryID === t.registryID}`}
+                        onClick={() => {
+                            setState(t)
+                            handleChange(t, () => setState({name: "Empty"}))
+
+                            if(autoClose)
+                                dropdownContext.setOpen(false)
+                        }}
+                    >
+                        <SelectorItem
+                            path={document.fileSystem.path}
+                            type={type}
+                            data={t}
+                        />
+                    </button>
+                </React.Fragment>
+            ))
+        else
+            return (
+                <div className={styles.nothing}>
+                    <Icon styles={{fontSize: "2rem"}}>folder</Icon>
+                    {EN.COMPONENTS.SELECTOR.NOTHING}
+                </div>
+            )
+    }, [ images, meshes, selected, state, search])
+
+    return (
+        <>
+            <div className={styles.searchWrapper}>
+                <Search searchString={searchString} setSearchString={setSearchString} width={"100%"}/>
+                {type === "material" ?
+                    <Button
+                        className={styles.resetButton}
+                        variant={"outlined"}
+                        onClick={() => handleChange()}
+                    >
+                        <Icon >clear</Icon>
+                        <ToolTip content={EN.COMPONENTS.SELECTOR.DEFAULT_MATERIAL}/>
+                    </Button>
+                    : null}
+                {type === "script" ?
+                    <Button 
+                        className={styles.resetButton}
+                        onClick={() => handleChange()}
+                    >
+                        <Icon >clear</Icon>
+                        <ToolTip content={EN.COMPONENTS.SELECTOR.REMOVE_SCRIPT}/>
+                    </Button>
+                    : null}
+            </div>
+            <div className={styles.contentWrapper}>
+                {content}
+            </div>
+        </>
+    )
+}
+Options.propTypes={
+    autoClose: PropTypes.bool,
+    handleChange: PropTypes.func,
+    type: PropTypes.string,
+    images: PropTypes.array,
+    meshes: PropTypes.array,
+    selected: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    getType: PropTypes.func,
+    setState: PropTypes.func,
+    state: PropTypes.object
 }

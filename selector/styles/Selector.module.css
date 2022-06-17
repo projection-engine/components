@@ -4,36 +4,57 @@
   position: relative;
   max-width: 100%;
   justify-self: stretch;
-
 }
 
 .button {
+  background: transparent;
+  outline: none;
+  border: none;
   width: 100%;
-  padding: 0 8px !important;
+  padding: 0 4px;
   height: 40px;
   max-width: 100%;
   overflow: hidden;
-  background-color: var(--pj-background-primary) !important;
-  outline: transparent 2px dashed;
   transition: 150ms linear;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.button:hover {
+  background: var(--pj-border-primary);
+}
+
+.button:active {
+  background: var(--pj-background-quaternary);
+  opacity: 0.9;
+}
+
+.button[data-highlight="true"] {
+  background: var(--pj-accent-color) !important;
+  color: white !important;
+}
+
+.button[data-highlight="true"] > * {
+  color: white !important;
 }
 
 .modal {
-  width: 250px !important;
+  width: 230px !important;
   position: relative;
-  background-color: var(--pj-background-secondary) !important;
+  background-color: var(--pj-background-tertiary) !important;
   box-shadow: var(--pj-boxshadow);
   display: flex;
   flex-direction: column;
+  border-radius: 5px;
 }
-.noPadding{
-    padding: 0 !important;
+
+.noPadding {
+  padding: 0 !important;
 }
 
 .searchWrapper {
   position: sticky;
   top: 0;
-  background-color: var(--pj-background-primary) !important;
   z-index: 999;
   height: 25px;
   border-bottom: var(--pj-border-primary) 1px solid;
@@ -63,6 +84,7 @@
 }
 
 .content {
+  width: 100%;
   max-width: 100%;
   display: grid;
   overflow: hidden;
@@ -84,4 +106,8 @@
 
 .resetButton > * {
   font-size: 1rem !important;
+}
+
+.contentWrapper {
+  padding: 4px;
 }
