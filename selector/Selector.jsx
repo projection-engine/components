@@ -51,7 +51,7 @@ export default function Selector(props) {
                         props.handleChange(() => setState({name: EN.COMPONENTS.SELECTOR.EMPTY}))
                     }
                 } catch (e) {
-                    console.error(e)
+                    alert.pushAlert("Error loading file", "error")
                 }
                 setClassName("")
             }}
