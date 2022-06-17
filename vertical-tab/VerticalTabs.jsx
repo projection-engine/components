@@ -5,7 +5,8 @@ import {Button, Icon} from "@f-ui/core"
 import ResizableBar from "../resizable/ResizableBar"
 
 export default function VerticalTabs(props){
-    const [open, setOpen] = useState(false)
+    const {open, setOpen} = props
+
     const [tab, setTab] = useState(-1)
     const id = useId()
 
@@ -33,12 +34,14 @@ export default function VerticalTabs(props){
                 null
             }
             <div className={styles.bar} data-hidden={`${!open}`}>
+
                 <Button onClick={() => {
                     setOpen(!open)
                     setTab(-1)
                 }} className={styles.hideButton}>
                     <Icon  styles={{fontSize: "1.1rem"}}>{open ? "navigate_next" : "chevron_left"}</Icon>
                 </Button>
+
                 {props.tabs.map((o ,i)=> (
                     <React.Fragment key={id + "-option-vertical-tab-" + i}>
                         <Button
@@ -64,6 +67,8 @@ export default function VerticalTabs(props){
     )
 }
 VerticalTabs.propTypes={
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
     absolute: PropTypes.bool,
     tabs: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.string,

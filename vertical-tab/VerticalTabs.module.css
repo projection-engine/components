@@ -1,5 +1,3 @@
-
-
 .bar {
   padding: 4px 0;
   min-width: 25px;
@@ -11,10 +9,14 @@
   align-items: flex-end;
   justify-content: flex-end;
   gap: 4px;
+
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .bar[data-hidden="true"] {
-  transform: translateX(-100%);
+  transform: translateX(+100%);
 }
 
 .hideButton {
@@ -58,11 +60,12 @@
   gap: 4px;
   min-width: 50px;
   overflow: hidden;
+  box-shadow: var(--pj-boxshadow);
 }
 
 .contentWrapper {
   display: flex;
   position: absolute;
-  right: 40px;
+  right: 30px;
   bottom: 4px;
 }
