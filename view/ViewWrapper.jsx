@@ -1,23 +1,28 @@
 import PropTypes from "prop-types"
 import styles from "./ViewWrapper.module.css"
 import {Button, Icon} from "@f-ui/core"
-import React, {useContext, useId, useMemo, useRef, useState} from "react"
+import React, {useContext, useEffect, useId, useMemo, useRef, useState} from "react"
 import ResizableBar from "../resizable/ResizableBar"
 import Search from "../search/Search"
 import {createFolder} from "../../project/components/hierarchy/utils/hiearchyUtils"
 import Hierarchy from "../../project/components/hierarchy/Hierarchy"
 import ComponentEditor from "../../project/components/component/ComponentEditor"
+import EngineProvider from "../../project/providers/EngineProvider"
 
-const ViewWrapperProvider = React.createContext(false)
 export default function ViewWrapper(props){
     const id = useId()
-    const SIZE = props.content.length
+
     const [hidden, setHidden] = useState(false)
     const ref = useRef()
- 
-    
+    const [tabs, setTabs] = useState(props.content)
+    const SIZE = useMemo(() => {
+        return tabs.length
+    }, [tabs])
+    useEffect(() => {
+        console.log(tabs)
+    }, [tabs])
     return (
-        <ViewWrapperProvider.Provider value={hidden}>
+        <>
             <ResizableBar
                 resetTargets={{previous: true, next: false}}
                 resetWhen={[hidden]}
@@ -29,141 +34,96 @@ export default function ViewWrapper(props){
                 onResizeEnd={() => {
                     if (ref.current.getBoundingClientRect().width <= 45)
                         setHidden(true)
-                }}/>
+                }}
+            />
             <div 
                 ref={ref} 
                 className={styles.wrapper}
                 data-orientation={props.orientation} 
                 style={{width: "300px", maxWidth: hidden ? "30px" : undefined, minWidth: hidden ? "30px" : undefined}}
             >
-                {props.content.map((view, vI) => (
+                {tabs.map((view, vI) => (
                     <React.Fragment key={id + "-view-"+vI} >
-                        <div className={styles.view}>
-                            {hidden ? (
-                                <div className={styles.header}>
-                                    <div className={[styles.title, styles.titleHidden].join(" ")}>
-                                        {view.icon ? <div className={styles.icon}><Icon styles={{fontSize: "1.2rem"}}>{view.icon}</Icon></div> : null}
-                                        <label>{view.title}</label>
-                                    </div>
-                                </div>
-                            ) 
-                                : 
-                                view.content
-                            }
-                        </div>
-                        {vI < SIZE -1 && SIZE > 1 ? <ResizableBar type={"height"}/> : null}
+                        <View 
+                            hidden={hidden} 
+                            instance={view} 
+                            switchView={(newView) => {
+                                console.log(newView)
+                                if(newView !== view)
+                                    setTabs(prev => {
+                                        const copy = [...prev]
+                                        copy[vI] = newView
+                                        return copy
+                                    })
+                            }}
+                        />
+                        {vI < SIZE -1 && SIZE > 1 ? (
+                            <ResizableBar
+                                type={"height"}
+                                onResizeEnd={(next, prev) => {
+                                    const nextBB = next.getBoundingClientRect()
+                                    const prevBB = prev.getBoundingClientRect()
+
+                                    if (prevBB.height < 25) {
+                                        prev.style.height = "100%"
+                                        setTabs(prev => {
+                                            const copy = [...prev]
+                                            copy.shift()
+                                            return copy
+                                        })
+
+                                    }
+                                    if (nextBB.height < 25) {
+
+                                        next.style.height = "100%"
+                                        setTabs(prev => {
+                                            const copy = [...prev]
+                                            copy[vI + 1] = undefined
+                                            return copy.filter(e => e)
+                                        })
+                                    }
+                                }}
+                            />
+                        ): null}
                     </React.Fragment>
                 ))}
             </div>
-        </ViewWrapperProvider.Provider>
+        </>
     )
 }
 
 ViewWrapper.propTypes={
-    content: PropTypes.arrayOf(PropTypes.shape({
-        title: PropTypes.string,
-        icon: PropTypes.string,
-        headerOptions: PropTypes.node,
-        
-        content: PropTypes.node
-    })),
+    content: PropTypes.arrayOf(PropTypes.oneOf(["hierarchy", "component", "files", "blueprint"])),
     orientation: PropTypes.oneOf(["vertical", "horizontal"]),
 }
 
+function View(props){
+    const Component = useMemo(() => {
+        switch (props.instance){
+        case "blueprint":
+            return null
+        case "hierarchy":
+            return  Hierarchy
+        case "component":
+            return ComponentEditor
+        case "files":
+            return null
+        default:
+            return null
+        }
+    }, [props.instance])
 
-function Header(props){
-    const {icon, title, children} = props 
-    return (
-        <div className={styles.header}>
-            <div className={styles.title}>
-                {icon ? <div className={styles.icon}><Icon styles={{fontSize: "1.2rem"}}>{icon}</Icon></div> : null}
-                <label>{title}</label>
+    if(Component)
+        return (
+            <div className={styles.view}>
+                <Component hidden={props.hidden} switchView={props.switchView}/>
             </div>
-            {children  ?
-                <div className={styles.options}>
-                    {children}
-                </div>
-                :
-                null}
-        </div>
-    )
+        )
+    return null
 }
-Header.propTypes={
-    icon: PropTypes.string,
-    title: PropTypes.string,
-    children: PropTypes.node
+View.propTypes={
+    switchView: PropTypes.func,
+    hidden: PropTypes.bool,
+    instance: PropTypes.oneOf(["hierarchy", "component", "files", "blueprint"])
 }
-ViewWrapper.Header = Header
-
-// function View(props){
-//     const view = useMemo(() => {
-//         switch (props.instance){
-//         case "blueprint":
-//             break
-//         case "hierarchy":
-//             return   {
-//                 title: "Hierarchy",
-//                 icon: "account_tree",
-//                 headerOptions:(
-//                     <div style={{display: "flex", gap: "2px"}}>
-//                         <Search
-//                             width={"100%"}
-//                             searchString={searchedEntity}
-//                             setSearchString={setSearchedEntity}
-//                         />
-//                         <Button className={styles.button} onClick={() => createFolder()}>
-//                             <Icon styles={{fontSize: "1rem"}}>create_new_folder</Icon>
-//                         </Button>
-//                     </div>
-//                 ),
-//                 content: (
-//                     <Hierarchy/>
-//                 )
-//             }
-//         case "component":
-//             return {
-//                 title: props.engine.selectedEntity ? props.engine.selectedEntity.name : "Component editor",
-//                 icon: "category",
-//                 headerOptions: props.engine.selectedEntity ?(
-//                     <Button
-//                         styles={{minHeight: "25px", minWidth: "25px"}}
-//                         onClick={() => props.engine.setLockedEntity(props.engine.lockedEntity === props.engine.selectedEntity.id ? undefined : props.engine.selectedEntity.id)}
-//                         className={styles.button}
-//                         variant={props.engine.lockedEntity === props.engine.selectedEntity.id ? "filled" : undefined}
-//                     >
-//                         <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
-//                     </Button>
-//                 ) : null,
-//                 content: <ComponentEditor engine={props.engine}/>
-//             }
-//
-//         case "files":
-//             return  null
-//         default:
-//             return null
-//         }
-//     }, [])
-//     return (
-//         <div className={styles.view}>
-//             <div className={styles.header}>
-//                 <div className={[styles.title, props.hidden ? styles.titleHidden : ""].join(" ")}>
-//                     {view.icon ? <div className={styles.icon}><Icon styles={{fontSize: "1.2rem"}}>{view.icon}</Icon></div> : null}
-//                     <label>{view.title}</label>
-//                 </div>
-//                 {!props.hidden && view.headerOptions  ?
-//                     <div className={styles.options}>
-//                         {view.headerOptions}
-//                     </div>
-//                     :
-//                     null
-//                 }
-//             </div>
-//             {props.hidden ? null : view.content}
-//         </div>
-//     )
-// }
-// View.propTypes={
-//     engine: PropTypes.object,
-//     hidden: PropTypes.bool,
-//     instance: PropTypes.oneOf(["hierarchy", "component", "files", "blueprint"])
-// }
+ 

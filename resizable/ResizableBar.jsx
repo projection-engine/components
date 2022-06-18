@@ -9,10 +9,8 @@ export default function ResizableBar(props) {
         if (props.onResize)
             props.onResize()
         try{
-
             const bBox = ref.current?.previousSibling.getBoundingClientRect()
             const prevBbox = ref.current?.nextSibling.getBoundingClientRect()
-
             if (props.type === "width") {
                 const newW = (event.clientX - bBox.left)
                 const offset = newW - bBox.width
@@ -26,11 +24,12 @@ export default function ResizableBar(props) {
             }
         }catch (err){
             console.error(err)
+            document.removeEventListener("mousemove", handleMouseMove)
         }
     }
     const handleMouseUp = () => {
         if (props.onResizeEnd)
-            props.onResizeEnd()
+            props.onResizeEnd(ref.current.nextSibling, ref.current.previousSibling)
         ref.current.parentNode.style.userSelect = "default"
         document.removeEventListener("mousemove", handleMouseMove)
     }
