@@ -112,7 +112,7 @@ function Options(props){
                         data-highlight={`${state.registryID === t.registryID}`}
                         onClick={() => {
                             setState(t)
-                            handleChange(t, () => setState({name: "Empty"}))
+                            handleChange(t, () => setState({name: "Empty"}), () => dropdownContext.setOpen(false))
 
                             if(autoClose)
                                 dropdownContext.setOpen(false)
@@ -143,7 +143,9 @@ function Options(props){
                     <Button
                         className={styles.resetButton}
                         variant={"outlined"}
-                        onClick={() => handleChange()}
+                        onClick={() => {
+                            handleChange(undefined, () => setState({name: "Empty"}), () => dropdownContext.setOpen(false))
+                        }}
                     >
                         <Icon >clear</Icon>
                         <ToolTip content={EN.COMPONENTS.SELECTOR.DEFAULT_MATERIAL}/>
@@ -152,7 +154,9 @@ function Options(props){
                 {type === "script" ?
                     <Button 
                         className={styles.resetButton}
-                        onClick={() => handleChange()}
+                        onClick={() => {
+                            handleChange(undefined, () => setState({name: "Empty"}), () => dropdownContext.setOpen(false))
+                        }}
                     >
                         <Icon >clear</Icon>
                         <ToolTip content={EN.COMPONENTS.SELECTOR.REMOVE_SCRIPT}/>
