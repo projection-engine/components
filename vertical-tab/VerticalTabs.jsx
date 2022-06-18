@@ -33,15 +33,12 @@ export default function VerticalTabs(props){
                 :
                 null
             }
-            <div className={styles.bar} data-hidden={`${!open}`}>
-
-                <Button onClick={() => {
-                    setOpen(!open)
-                    setTab(-1)
-                }} className={styles.hideButton}>
-                    <Icon  styles={{fontSize: "1.1rem"}}>{open ? "navigate_next" : "chevron_left"}</Icon>
-                </Button>
-
+            <div
+                className={styles.bar} data-hidden={`${!open}`}
+                style={{
+                    position: !props.absolute && open ? "relative" : undefined
+                }}
+            >
                 {props.tabs.map((o ,i)=> (
                     <React.Fragment key={id + "-option-vertical-tab-" + i}>
                         <Button
@@ -61,6 +58,15 @@ export default function VerticalTabs(props){
                         </Button>
                     </React.Fragment>
                 ))}
+                <Button
+                    onClick={() => {
+                        setOpen(!open)
+                        setTab(-1)
+                    }}
+                    className={open ? styles.button : styles.hideButton}
+                >
+                    <Icon  styles={{fontSize: "1.1rem"}}>{open ? "navigate_next" : "chevron_left"}</Icon>
+                </Button>
             </div>
         </>
         

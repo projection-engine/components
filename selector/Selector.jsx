@@ -4,7 +4,7 @@ import {Button, Dropdown, DropdownOptions, DropdownProvider, Icon, ToolTip} from
 import SelectorItem from "./SelectorItem"
 import PropTypes from "prop-types"
 import Search from "../search/Search"
-import QuickAccessProvider from "../../project/hooks/QuickAccessProvider"
+import QuickAccessProvider from "../../project/providers/QuickAccessProvider"
 import EN from "../../static/locale/EN"
 
 export default function Selector(props) {

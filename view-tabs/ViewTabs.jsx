@@ -1,6 +1,6 @@
 import styles from "./styles/Tabs.module.css"
 import PropTypes from "prop-types"
-import {Button, Icon, ToolTip} from "@f-ui/core"
+import {Button, Icon} from "@f-ui/core"
 import React, {useMemo, useRef, useState} from "react"
 import ResizableBar from "../resizable/ResizableBar"
 
@@ -52,7 +52,7 @@ export default function ViewTabs(props) {
                             </Button>
                             {t.close && !hidden ?
                                 <Button
-                                    attributes={{"data-active": `${props.open === i}`}}
+                                    attributes={{"data-active": `${props.open === i}`, title: "Close active view"}}
                                     className={[styles.button, styles.close].join(" ")}
                                     onClick={() => {
                                         if(props.open === i)
@@ -60,7 +60,6 @@ export default function ViewTabs(props) {
                                         t.close()
                                     }}
                                 >
-                                    <ToolTip content={"Close active view"} animation={"0ms"}/>
                                     <Icon  styles={{fontSize: "1rem"}}>close</Icon>
                                 </Button>
                                 :
