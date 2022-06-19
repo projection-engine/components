@@ -1,13 +1,11 @@
 import PropTypes from "prop-types"
 import styles from "./ViewWrapper.module.css"
-import {Button, Icon} from "@f-ui/core"
-import React, {useContext, useEffect, useId, useMemo, useRef, useState} from "react"
+import React, {useId, useMemo, useRef, useState} from "react"
 import ResizableBar from "../resizable/ResizableBar"
-import Search from "../search/Search"
-import {createFolder} from "../../project/components/hierarchy/utils/hiearchyUtils"
 import Hierarchy from "../../project/components/hierarchy/Hierarchy"
 import ComponentEditor from "../../project/components/component/ComponentEditor"
-import EngineProvider from "../../project/providers/EngineProvider"
+import ContentBrowser from "../../project/components/files/ContentBrowser"
+import ShaderEditor from "../../project/components/blueprints/ShaderEditor"
 
 export default function ViewWrapper(props){
     const id = useId()
@@ -18,21 +16,21 @@ export default function ViewWrapper(props){
     const SIZE = useMemo(() => {
         return tabs.length
     }, [tabs])
-    useEffect(() => {
-        console.log(tabs)
-    }, [tabs])
+    const orientation = props.orientation === "horizontal" ? "height" : "width"
+    const maxMin= props.orientation === "horizontal" ? "Height" : "Width"
+    const invOrientation = props.orientation === "horizontal" ? "width" : "height"
     return (
         <>
             <ResizableBar
                 resetTargets={{previous: true, next: false}}
                 resetWhen={[hidden]}
-                type={"width"}
+                type={orientation}
                 onResizeStart={() => {
                     if(hidden)
                         setHidden(false)
                 }}
                 onResizeEnd={() => {
-                    if (ref.current.getBoundingClientRect().width <= 45)
+                    if (ref.current.getBoundingClientRect()[orientation] <= 45)
                         setHidden(true)
                 }}
             />
@@ -40,32 +38,44 @@ export default function ViewWrapper(props){
                 ref={ref} 
                 className={styles.wrapper}
                 data-orientation={props.orientation} 
-                style={{width: "300px", maxWidth: hidden ? "30px" : undefined, minWidth: hidden ? "30px" : undefined}}
+                style={{
+                    flexDirection: props.orientation === "horizontal" ? "row" : undefined,
+                    [orientation]: "300px", ["max" + maxMin]: hidden ? "30px" : undefined,
+                    ["min" + maxMin]: hidden ? "30px" : undefined,
+                }}
             >
                 {tabs.map((view, vI) => (
                     <React.Fragment key={id + "-view-"+vI} >
                         <View 
                             hidden={hidden} 
-                            instance={view} 
+                            instance={view}
                             switchView={(newView) => {
-                                console.log(newView)
-                                if(newView !== view)
+                                if(!newView) {
+                                    setTabs(prev => {
+                                        const copy = [...prev]
+                                        copy[vI] = undefined
+                                        return copy.filter(e => e)
+                                    })
+                                }
+                                else if (newView !== view)
                                     setTabs(prev => {
                                         const copy = [...prev]
                                         copy[vI] = newView
                                         return copy
                                     })
                             }}
+                            orientation={props.orientation}
                         />
                         {vI < SIZE -1 && SIZE > 1 ? (
                             <ResizableBar
-                                type={"height"}
+                                type={invOrientation}
+                                resetWhen={tabs}
                                 onResizeEnd={(next, prev) => {
                                     const nextBB = next.getBoundingClientRect()
                                     const prevBB = prev.getBoundingClientRect()
 
-                                    if (prevBB.height < 25) {
-                                        prev.style.height = "100%"
+                                    if (prevBB[invOrientation] < 25) {
+                                        prev.style[invOrientation] = "100%"
                                         setTabs(prev => {
                                             const copy = [...prev]
                                             copy.shift()
@@ -73,9 +83,9 @@ export default function ViewWrapper(props){
                                         })
 
                                     }
-                                    if (nextBB.height < 25) {
+                                    if (nextBB[invOrientation] < 25) {
 
-                                        next.style.height = "100%"
+                                        next.style[invOrientation] = "100%"
                                         setTabs(prev => {
                                             const copy = [...prev]
                                             copy[vI + 1] = undefined
@@ -83,8 +93,25 @@ export default function ViewWrapper(props){
                                         })
                                     }
                                 }}
-                            />
-                        ): null}
+                            >
+
+                            </ResizableBar>
+                        ):
+                            vI === SIZE -1 ? (
+                                <div style={{position: "relative",[invOrientation]: "0px", [orientation]: "100%"}}>
+                                    <button
+                                        onClick={() =>
+                                            setTabs([...tabs, "hierarchy"])}
+                                        style={{
+                                            left: props.orientation === "vertical" ? undefined : "100%",
+                                            top: props.orientation === "vertical" ? undefined : "100%",
+                                            transform: props.orientation === "vertical" ? "translate(0%, -100%)" : "translate(-100%, -100%)"
+                                        }}
+                                        className={styles.extendView}
+                                    />
+                                </div>
+                            ) : null
+                        }
                     </React.Fragment>
                 ))}
             </div>
@@ -101,13 +128,13 @@ function View(props){
     const Component = useMemo(() => {
         switch (props.instance){
         case "blueprint":
-            return null
+            return ShaderEditor
         case "hierarchy":
-            return  Hierarchy
+            return Hierarchy
         case "component":
             return ComponentEditor
         case "files":
-            return null
+            return ContentBrowser
         default:
             return null
         }
@@ -116,12 +143,15 @@ function View(props){
     if(Component)
         return (
             <div className={styles.view}>
-                <Component hidden={props.hidden} switchView={props.switchView}/>
+                <Component {...props}/>
+
             </div>
         )
     return null
 }
 View.propTypes={
+    extendView: PropTypes.func,
+    orientation: PropTypes.string,
     switchView: PropTypes.func,
     hidden: PropTypes.bool,
     instance: PropTypes.oneOf(["hierarchy", "component", "files", "blueprint"])

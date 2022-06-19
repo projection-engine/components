@@ -1,33 +1,61 @@
 import PropTypes from "prop-types"
 import styles from "./ViewWrapper.module.css"
-import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
-import React from "react" 
+import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
+import React from "react"
+
 export default function ViewHeader(props){
-    const {icon, title, children} = props
+    const {icon, title, children, orientation, hidden, switchView} = props
     return (
         <div className={styles.header}>
             <Dropdown
+                variant={"outlined"}
                 hideArrow={true}
-                className={[styles.title, props.hidden ?  styles.titleHidden : ""].join(" ")}
+                className={[styles.title, hidden ?  styles.titleHidden : ""].join(" ")}
             >
-                {icon ? <div className={styles.icon}><Icon styles={{fontSize: "1.2rem"}}>{icon}</Icon></div> : null}
-                <label>{title}</label>
+                <div className={styles.label} style={{flexDirection: hidden && orientation === "vertical" ? "column" : undefined}}>
+                    {icon ? <div className={styles.icon}><Icon styles={{fontSize: "1rem"}}>{icon}</Icon></div> : null}
+                    <label>{title}</label>
+                </div>
                 <DropdownOptions>
                     <DropdownOption
                         option={{
+                            label: "Close",
+                            icon: <Icon styles={{fontSize: "1rem"}}>close</Icon>,
+                            onClick: () => switchView(undefined)
+                        }}
+                    />
+                    <div className={styles.divider}/>
+                    <DropdownOption
+                        option={{
                             label: "Hierarchy",
-                            onClick: () => props.switchView("hierarchy")
+                            icon: <Icon styles={{fontSize: "1rem"}}>account_tree</Icon>,
+                            onClick: () => switchView("hierarchy")
                         }}
                     />
                     <DropdownOption
                         option={{
                             label: "Component Editor",
-                            onClick: () => props.switchView("component")
+                            icon: <Icon styles={{fontSize: "1rem"}}>category</Icon>,
+                            onClick: () => switchView("component")
+                        }}
+                    />
+                    <DropdownOption
+                        option={{
+                            label: "Content Browser",
+                            icon: <Icon styles={{fontSize: "1rem"}}>folder</Icon>,
+                            onClick: () => switchView("files")
+                        }}
+                    />
+                    <DropdownOption
+                        option={{
+                            label: "Shader Editor",
+                            icon: <Icon styles={{fontSize: "1rem"}}>texture</Icon>,
+                            onClick: () => switchView("blueprint")
                         }}
                     />
                 </DropdownOptions>
             </Dropdown>
-            {!props.hidden && children  ?
+            {!hidden && children  ?
                 <div className={styles.options}>
                     {children}
                 </div>
@@ -37,6 +65,7 @@ export default function ViewHeader(props){
     )
 }
 ViewHeader.propTypes={
+    orientation: PropTypes.oneOf(["vertical", "horizontal"]),
     icon: PropTypes.string,
     title: PropTypes.string,
     children: PropTypes.node,

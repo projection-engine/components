@@ -61,7 +61,10 @@ export default function Selector(props) {
             <Dropdown
                 hideArrow={true}
                 wrapperClassname={styles.modal}
-                className={[styles.button, className, props.children  !== undefined ? styles.noPadding : "" ].join(" ")}>
+                className={[styles.button, className, props.children  !== undefined ? styles.noPadding : "" ].join(" ")}
+                styles={{height: "100%"}}
+            >
+
                 {props.children ? props.children :
                     <SelectorItem
                         type={props.type}

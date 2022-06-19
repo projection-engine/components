@@ -22,6 +22,7 @@ export default function ResizableBar(props) {
                 ref.current.previousSibling.style.height = (event.clientY - bBox.top) + "px"
                 ref.current.nextSibling.style.height = (prevBbox.height - offset) + "px"
             }
+
         }catch (err){
             console.error(err)
             document.removeEventListener("mousemove", handleMouseMove)
@@ -33,51 +34,68 @@ export default function ResizableBar(props) {
         ref.current.parentNode.style.userSelect = "default"
         document.removeEventListener("mousemove", handleMouseMove)
     }
-    const handleMouseDown = () => {
+    const handleMouseDown = (event) => {
+
         if (!props.disabled) {
+            const siblings = Array.from(event.currentTarget.parentNode.children)
+            const t = props.type === "width" ? "width" : "height"
+            const next = event.currentTarget.nextSibling
+            const prev = event.currentTarget.previousSibling
+            siblings.forEach(s => {
+                if(s !== prev && s !== next)
+                    s.style[t] = s.getBoundingClientRect()[t] + "px"
+            })
             if (props.onResizeStart)
                 props.onResizeStart()
-            ref.current.parentNode.style.userSelect = "none"
-            ref.current.parentNode.style.transition = "none"
+            event.currentTarget.parentNode.style.userSelect = "none"
+            event.currentTarget.style.transition = "none"
             document.addEventListener("mousemove", handleMouseMove)
             document.addEventListener("mouseup", handleMouseUp, {once: true})
         }
     }
 
     const initial = useRef({})
+    const callback = () => {
+        console.log("ON EVENT")
+        try{
+            if (props.type === "width") {
+                ref.current.previousSibling.style.width = initial.current.initialW1
+                ref.current.nextSibling.style.width = initial.current.initialW2
+            } else {
+                ref.current.previousSibling.style.height = initial.current.initialH1
+                ref.current.nextSibling.style.height = initial.current.initialH2
+            }
+        }catch (err) {}
+    }
     useEffect(() => {
+        const resize = new ResizeObserver(callback)
+        const mutation = new MutationObserver(callback)
+
         if (ref.current.previousSibling) {
             const initialW1 = ref.current.previousSibling.style.width, initialW2 = ref.current.nextSibling.style.width,
                 initialH1 = ref.current.previousSibling.style.height, initialH2 = ref.current.nextSibling.style.height
             initial.current = {initialW1, initialW2, initialH1, initialH2}
-            const r = new ResizeObserver(() => {
-                if (ref.current) {
-                    if (props.type === "width") {
-                        ref.current.previousSibling.style.width = initialW1
-                        ref.current.nextSibling.style.width = initialW2
-                    } else {
-                        ref.current.previousSibling.style.height = initialH1
-                        ref.current.nextSibling.style.height = initialH2
-                    }
-                }
-            })
-            r.observe(document.body)
+            mutation.observe(ref.current.parentNode, {childList: true})
+            resize.observe(document.body)
         }
-    }, [])
-    useEffect(() => {
-        const {initialW1, initialW2, initialH1, initialH2} = initial.current
+
         if (props.type === "width") {
             if(props.resetTargets?.previous)
-                ref.current.previousSibling.style.width = initialW1
+                ref.current.previousSibling.style.width = initial.current.initialW1
             if(props.resetTargets?.next)
-                ref.current.nextSibling.style.width = initialW2
+                ref.current.nextSibling.style.width = initial.current.initialW2
         } else {
             if(props.resetTargets?.previous)
-                ref.current.previousSibling.style.height = initialH1
+                ref.current.previousSibling.style.height = initial.current.initialH1
             if(props.resetTargets?.next)
-                ref.current.nextSibling.style.height = initialH2
+                ref.current.nextSibling.style.height = initial.current.initialH2
+        }
+        return () => {
+            mutation.disconnect()
+            resize.disconnect()
         }
     }, [props.resetWhen])
+
     return (
         <div
             onMouseDown={handleMouseDown}
