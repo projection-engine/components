@@ -6,16 +6,20 @@ import React from "react"
 export default function ViewHeader(props){
     const {icon, title, children, orientation, hidden, switchView} = props
     return (
-        <div className={styles.header}>
+        <div className={hidden ? styles.headerHidden : styles.header}>
             <Dropdown
                 variant={"outlined"}
+                styles={{  height: orientation === "vertical" && hidden ? "fit-content" : "25px"}}
                 hideArrow={true}
-                className={[styles.title, hidden ?  styles.titleHidden : ""].join(" ")}
+
+                className={styles.title}
             >
-                <div className={styles.label} style={{flexDirection: hidden && orientation === "vertical" ? "column" : undefined}}>
+
+                <div className={styles.label} data-hidden={`${hidden && orientation === "vertical"}`}>
                     {icon ? <div className={styles.icon}><Icon styles={{fontSize: "1rem"}}>{icon}</Icon></div> : null}
                     <label>{title}</label>
                 </div>
+
                 <DropdownOptions>
                     <DropdownOption
                         option={{

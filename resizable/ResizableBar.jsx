@@ -29,10 +29,15 @@ export default function ResizableBar(props) {
         }
     }
     const handleMouseUp = () => {
-        if (props.onResizeEnd)
-            props.onResizeEnd(ref.current.nextSibling, ref.current.previousSibling)
-        ref.current.parentNode.style.userSelect = "default"
-        document.removeEventListener("mousemove", handleMouseMove)
+        try{
+            if (props.onResizeEnd)
+                props.onResizeEnd(ref.current.nextSibling, ref.current.previousSibling)
+            ref.current.parentNode.style.userSelect = "default"
+            document.removeEventListener("mousemove", handleMouseMove)
+        }catch (err){
+            console.error(err)
+            document.removeEventListener("mousemove", handleMouseMove)
+        }
     }
     const handleMouseDown = (event) => {
 
@@ -56,7 +61,6 @@ export default function ResizableBar(props) {
 
     const initial = useRef({})
     const callback = () => {
-        console.log("ON EVENT")
         try{
             if (props.type === "width") {
                 ref.current.previousSibling.style.width = initial.current.initialW1
@@ -67,6 +71,7 @@ export default function ResizableBar(props) {
             }
         }catch (err) {}
     }
+
     useEffect(() => {
         const resize = new ResizeObserver(callback)
         const mutation = new MutationObserver(callback)
@@ -95,7 +100,15 @@ export default function ResizableBar(props) {
             resize.disconnect()
         }
     }, [props.resetWhen])
-
+    useEffect(() => {
+        return () => {
+            console.log(initial.current)
+            if(ref.current?.previousSibling)
+                ref.current.previousSibling.style[props.type] = "100%"
+            if(ref.current?.nextSibling)
+                ref.current.nextSibling.style[props.type] = "100%"
+        }
+    }, [])
     return (
         <div
             onMouseDown={handleMouseDown}

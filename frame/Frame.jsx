@@ -8,8 +8,9 @@ import Actions from "./components/Actions"
 const {ipcRenderer} = window.require("electron")
 export default function Frame(props) {
     const LogoContent = (
-        <div className={styles.logoWrapper}>
+        <div className={styles.logoWrapper} style={{maxWidth: props.logoAction ? undefined : "unset", padding: "0 16px"}}>
             <img src={logo} alt={"LOGO"} className={styles.logo}/>
+            {props.logoAction  ?null : <label className={styles.title}>{props.label}</label>}
         </div>
     )
     return (

@@ -21,27 +21,29 @@ export default function ViewWrapper(props){
     const invOrientation = props.orientation === "horizontal" ? "width" : "height"
     return (
         <>
-            <ResizableBar
-                resetTargets={{previous: true, next: false}}
-                resetWhen={[hidden]}
-                type={orientation}
-                onResizeStart={() => {
-                    if(hidden)
-                        setHidden(false)
-                }}
-                onResizeEnd={() => {
-                    if (ref.current.getBoundingClientRect()[orientation] <= 45)
-                        setHidden(true)
-                }}
-            />
+            {props.resizePosition === "bottom" || tabs.length === 0 ? null :
+                <ResizableBar
+                    resetTargets={{previous: true, next: false}}
+                    resetWhen={[hidden]}
+                    type={orientation}
+                    onResizeStart={() => {
+                        if(hidden)
+                            setHidden(false)
+                    }}
+                    onResizeEnd={() => {
+                        if (ref.current.getBoundingClientRect()[orientation] <= 45)
+                            setHidden(true)
+                    }}
+                />
+            }
             <div 
                 ref={ref} 
                 className={styles.wrapper}
                 data-orientation={props.orientation} 
                 style={{
                     flexDirection: props.orientation === "horizontal" ? "row" : undefined,
-                    [orientation]: "300px", ["max" + maxMin]: hidden ? "30px" : undefined,
-                    ["min" + maxMin]: hidden ? "30px" : undefined,
+                    [orientation]: tabs.length > 0 ? "300px" : "0", ["max" + maxMin]: tabs.length === 0 ? "0px" : (hidden ? "30px" : undefined),
+                    ["min" + maxMin]: tabs.length  === 0 ? "0px" : (hidden ? "30px" : undefined),
                 }}
             >
                 {tabs.map((view, vI) => (
@@ -51,6 +53,7 @@ export default function ViewWrapper(props){
                             instance={view}
                             switchView={(newView) => {
                                 if(!newView) {
+
                                     setTabs(prev => {
                                         const copy = [...prev]
                                         copy[vI] = undefined
@@ -96,30 +99,43 @@ export default function ViewWrapper(props){
                             >
 
                             </ResizableBar>
-                        ):
-                            vI === SIZE -1 ? (
-                                <div style={{position: "relative",[invOrientation]: "0px", [orientation]: "100%"}}>
-                                    <button
-                                        onClick={() =>
-                                            setTabs([...tabs, "hierarchy"])}
-                                        style={{
-                                            left: props.orientation === "vertical" ? undefined : "100%",
-                                            top: props.orientation === "vertical" ? undefined : "100%",
-                                            transform: props.orientation === "vertical" ? "translate(0%, -100%)" : "translate(-100%, -100%)"
-                                        }}
-                                        className={styles.extendView}
-                                    />
-                                </div>
-                            ) : null
-                        }
+                        ): null}
                     </React.Fragment>
                 ))}
+
+                <button
+                    onClick={() =>
+                        setTabs([...tabs, "hierarchy"])}
+                    style={{
+                        left: props.orientation === "vertical" ? tabs.length  === 0 ? props.leftOffset : "10px" : "100%",
+                        top: "100%",
+                        transform: props.orientation === "vertical" ?  "translate(-100%, -100%)" : (tabs.length  === 0? "translate(0, -100%)" : "translate(-100%, -100%)")
+                    }}
+                    className={styles.extendView}
+                />
             </div>
+            {props.resizePosition === "top" || tabs.length === 0 ? null :
+                <ResizableBar
+                    resetTargets={{previous: true, next: false}}
+                    resetWhen={[hidden]}
+                    type={orientation}
+                    onResizeStart={() => {
+                        if(hidden)
+                            setHidden(false)
+                    }}
+                    onResizeEnd={() => {
+                        if (ref.current.getBoundingClientRect()[orientation] <= 45)
+                            setHidden(true)
+                    }}
+                />
+            }
         </>
     )
 }
 
 ViewWrapper.propTypes={
+    resizePosition: PropTypes.oneOf(["top", "bottom"]),
+    leftOffset: PropTypes.string,
     content: PropTypes.arrayOf(PropTypes.oneOf(["hierarchy", "component", "files", "blueprint"])),
     orientation: PropTypes.oneOf(["vertical", "horizontal"]),
 }
@@ -144,7 +160,6 @@ function View(props){
         return (
             <div className={styles.view}>
                 <Component {...props}/>
-
             </div>
         )
     return null

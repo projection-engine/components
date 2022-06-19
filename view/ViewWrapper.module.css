@@ -1,4 +1,5 @@
 .wrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -16,7 +17,6 @@
   align-content: flex-start;
   background-color: var(--pj-background-secondary);
   border-radius: 5px;
-
 }
 
 .header {
@@ -29,12 +29,18 @@
   padding: 2px;
 }
 
+.headerHidden {
+  height: 100%;
+  width: 100%;
+  background-color: var(--pj-background-primary);
+  padding: 2px;
+}
+
 .title {
-  height: 25px;
   background: var(--pj-background-tertiary);
   flex: 1 0 auto;
   width: fit-content;
-  padding: 2px 4px !important;
+  padding: 0 !important;
   display: flex;
   align-items: center;
   font-size: 0.7rem;
@@ -46,7 +52,19 @@
   display: flex;
   align-items: center;
   white-space: nowrap;
+  padding: 2px 4px !important;
+}
 
+.label[data-hidden="true"] {
+  max-width: 30px;
+  padding: 4px 2px !important;
+
+  /* display: grid; */
+  display: flex;
+  align-items: center;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
 }
 
 .icon {
@@ -64,24 +82,6 @@
   align-items: center;
   justify-content: flex-end;
   gap: 2px;
-}
-
-.titleHidden {
-  display: grid;
-  justify-content: center;
-  justify-items: center;
-  padding: 4px 0 !important;
-  background: transparent !important;
-  border: none !important;
-}
-
-.titleHidden > label {
-  width: 30px;
-  display: grid;
-  align-items: center;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
 }
 
 .button {
@@ -111,11 +111,13 @@
 .extendView:hover {
   background: var(--pj-accent-color);
 }
+
 .extendView:active {
   background: var(--pj-accent-color);
   transform: scale(1.5);
 }
-.divider{
+
+.divider {
   width: 100%;
   background: var(--pj-border-primary);
   height: 1px;
