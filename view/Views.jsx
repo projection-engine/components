@@ -2,11 +2,6 @@ import PropTypes from "prop-types"
 import styles from "./styles/Views.module.css"
 import React, {useId, useMemo, useRef, useState} from "react"
 import ResizableBar from "../resizable/ResizableBar"
-import Hierarchy from "../../project/components/hierarchy/Hierarchy"
-import ComponentEditor from "../../project/components/component/ComponentEditor"
-import ContentBrowser from "../../project/components/files/ContentBrowser"
-import ShaderEditor from "../../project/components/blueprints/ShaderEditor"
-import Console from "../../project/components/console/Console"
 import View from "./components/View"
 
 export default function Views(props){

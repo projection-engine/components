@@ -17,7 +17,7 @@
   overflow: hidden;
   transition: 150ms linear;
   cursor: pointer;
-  border-radius: 3px;
+
 }
 
 .button:hover {
