@@ -102,7 +102,6 @@ export default function ResizableBar(props) {
     }, [props.resetWhen])
     useEffect(() => {
         return () => {
-            console.log(initial.current)
             if(ref.current?.previousSibling)
                 ref.current.previousSibling.style[props.type] = "100%"
             if(ref.current?.nextSibling)

@@ -1,18 +1,21 @@
 import PropTypes from "prop-types"
-import styles from "./ViewWrapper.module.css"
+import styles from "./styles/Views.module.css"
 import React, {useId, useMemo, useRef, useState} from "react"
 import ResizableBar from "../resizable/ResizableBar"
 import Hierarchy from "../../project/components/hierarchy/Hierarchy"
 import ComponentEditor from "../../project/components/component/ComponentEditor"
 import ContentBrowser from "../../project/components/files/ContentBrowser"
 import ShaderEditor from "../../project/components/blueprints/ShaderEditor"
+import Console from "../../project/components/console/Console"
+import View from "./components/View"
 
-export default function ViewWrapper(props){
+export default function Views(props){
+    const {tabs, setTabs} = props
     const id = useId()
 
     const [hidden, setHidden] = useState(false)
     const ref = useRef()
-    const [tabs, setTabs] = useState(props.content)
+
     const SIZE = useMemo(() => {
         return tabs.length
     }, [tabs])
@@ -48,24 +51,21 @@ export default function ViewWrapper(props){
             >
                 {tabs.map((view, vI) => (
                     <React.Fragment key={id + "-view-"+vI} >
-                        <View 
+                        <View
                             hidden={hidden} 
                             instance={view}
                             switchView={(newView) => {
                                 if(!newView) {
+                                    const copy = [...tabs]
+                                    copy[vI] = undefined
 
-                                    setTabs(prev => {
-                                        const copy = [...prev]
-                                        copy[vI] = undefined
-                                        return copy.filter(e => e)
-                                    })
+                                    setTabs(copy.filter(e => e))
                                 }
-                                else if (newView !== view)
-                                    setTabs(prev => {
-                                        const copy = [...prev]
-                                        copy[vI] = newView
-                                        return copy
-                                    })
+                                else if (newView !== view) {
+                                    const copy = [...tabs]
+                                    copy[vI] = newView
+                                    setTabs(copy)
+                                }
                             }}
                             orientation={props.orientation}
                         />
@@ -79,21 +79,19 @@ export default function ViewWrapper(props){
 
                                     if (prevBB[invOrientation] < 25) {
                                         prev.style[invOrientation] = "100%"
-                                        setTabs(prev => {
-                                            const copy = [...prev]
-                                            copy.shift()
-                                            return copy
-                                        })
+
+                                        const copy = [...tabs]
+                                        copy.shift()
+                                        setTabs(copy)
 
                                     }
                                     if (nextBB[invOrientation] < 25) {
 
                                         next.style[invOrientation] = "100%"
-                                        setTabs(prev => {
-                                            const copy = [...prev]
-                                            copy[vI + 1] = undefined
-                                            return copy.filter(e => e)
-                                        })
+
+                                        const copy = [...tabs]
+                                        copy[vI + 1] = undefined
+                                        setTabs(copy.filter(e => e))
                                     }
                                 }}
                             >
@@ -105,7 +103,7 @@ export default function ViewWrapper(props){
 
                 <button
                     onClick={() =>
-                        setTabs([...tabs, "hierarchy"])}
+                        setTabs([...tabs, "console"])}
                     style={{
                         left: props.orientation === "vertical" ? tabs.length  === 0 ? props.leftOffset : "10px" : "100%",
                         top: "100%",
@@ -133,42 +131,12 @@ export default function ViewWrapper(props){
     )
 }
 
-ViewWrapper.propTypes={
+Views.propTypes={
+    setTabs: PropTypes.func.isRequired,
+    tabs: PropTypes.func.isRequired,
+
+
     resizePosition: PropTypes.oneOf(["top", "bottom"]),
     leftOffset: PropTypes.string,
-    content: PropTypes.arrayOf(PropTypes.oneOf(["hierarchy", "component", "files", "blueprint"])),
     orientation: PropTypes.oneOf(["vertical", "horizontal"]),
 }
-
-function View(props){
-    const Component = useMemo(() => {
-        switch (props.instance){
-        case "blueprint":
-            return ShaderEditor
-        case "hierarchy":
-            return Hierarchy
-        case "component":
-            return ComponentEditor
-        case "files":
-            return ContentBrowser
-        default:
-            return null
-        }
-    }, [props.instance])
-
-    if(Component)
-        return (
-            <div className={styles.view}>
-                <Component {...props}/>
-            </div>
-        )
-    return null
-}
-View.propTypes={
-    extendView: PropTypes.func,
-    orientation: PropTypes.string,
-    switchView: PropTypes.func,
-    hidden: PropTypes.bool,
-    instance: PropTypes.oneOf(["hierarchy", "component", "files", "blueprint"])
-}
- 

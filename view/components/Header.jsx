@@ -1,9 +1,10 @@
 import PropTypes from "prop-types"
-import styles from "./ViewWrapper.module.css"
+import styles from "../styles/Views.module.css"
 import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import React from "react"
+import VIEWS from "../VIEWS"
 
-export default function ViewHeader(props){
+export default function Header(props){
     const {icon, title, children, orientation, hidden, switchView} = props
     return (
         <div className={hidden ? styles.headerHidden : styles.header}>
@@ -33,28 +34,35 @@ export default function ViewHeader(props){
                         option={{
                             label: "Hierarchy",
                             icon: <Icon styles={{fontSize: "1rem"}}>account_tree</Icon>,
-                            onClick: () => switchView("hierarchy")
+                            onClick: () => switchView(VIEWS.HIERARCHY)
                         }}
                     />
                     <DropdownOption
                         option={{
                             label: "Component Editor",
                             icon: <Icon styles={{fontSize: "1rem"}}>category</Icon>,
-                            onClick: () => switchView("component")
+                            onClick: () => switchView(VIEWS.COMPONENT)
                         }}
                     />
                     <DropdownOption
                         option={{
                             label: "Content Browser",
                             icon: <Icon styles={{fontSize: "1rem"}}>folder</Icon>,
-                            onClick: () => switchView("files")
+                            onClick: () => switchView(VIEWS.FILES)
                         }}
                     />
                     <DropdownOption
                         option={{
                             label: "Shader Editor",
                             icon: <Icon styles={{fontSize: "1rem"}}>texture</Icon>,
-                            onClick: () => switchView("blueprint")
+                            onClick: () => switchView(VIEWS.BLUEPRINT)
+                        }}
+                    />
+                    <DropdownOption
+                        option={{
+                            label: "Console",
+                            icon: <Icon styles={{fontSize: "1rem"}}>terminal</Icon>,
+                            onClick: () => switchView(VIEWS.CONSOLE)
                         }}
                     />
                 </DropdownOptions>
@@ -68,7 +76,7 @@ export default function ViewHeader(props){
         </div>
     )
 }
-ViewHeader.propTypes={
+Header.propTypes={
     orientation: PropTypes.oneOf(["vertical", "horizontal"]),
     icon: PropTypes.string,
     title: PropTypes.string,

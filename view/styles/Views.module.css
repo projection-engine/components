@@ -46,6 +46,7 @@
   font-size: 0.7rem;
   font-weight: 550;
   color: var(--pj-color-secondary);
+  height: 20px;
 }
 
 .label {
