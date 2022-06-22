@@ -128,7 +128,7 @@ export default function Views(props){
 
 Views.propTypes={
     setTabs: PropTypes.func.isRequired,
-    tabs: PropTypes.func.isRequired,
+    tabs: PropTypes.array.isRequired,
 
 
     resizePosition: PropTypes.oneOf(["top", "bottom"]),

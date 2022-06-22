@@ -68,7 +68,7 @@ export default function Selector(props) {
                 {props.children ? props.children :
                     <SelectorItem
                         type={props.type}
-                        path={document.fileSystem.path}
+                        path={window.fileSystem.path}
                         data={state}
                     />
                 }
@@ -122,7 +122,7 @@ function Options(props){
                         }}
                     >
                         <SelectorItem
-                            path={document.fileSystem.path}
+                            path={window.fileSystem.path}
                             type={type}
                             data={t}
                         />

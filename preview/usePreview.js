@@ -5,10 +5,12 @@ export default function usePreview(path, setError) {
     const ref = useRef()
 
     const getData = async () => {
+
         try {
             AsyncFS.read(path).then(res => {
                 if (!res[0]) {
-                    ref.current.src = res[1]
+                    if(ref.current)
+                        ref.current.src = res[1]
                     setError(false)
                 }
                 else
