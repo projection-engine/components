@@ -20,7 +20,8 @@
   height: 25px;
   background-color: var(--pj-border-primary) !important;
   border-radius: 5px 5px 0 0;
-  font-size: 0.75rem !important;
+  font-size: 0.7rem !important;
+  font-weight: 550;
 }
 
 .overflow {
