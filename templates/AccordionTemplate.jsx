@@ -8,7 +8,7 @@ export default function AccordionTemplate(props) {
         <Accordion
             className={styles.accordion}
             contentClassName={styles.content}
-            contentStyles={{display: props.type, gap: "4px"}}>
+            contentStyles={{display: props.type ? props.type : "grid", gap: "4px"}}>
             <AccordionSummary className={styles.summary}>
                 <label className={styles.overflow}>{props.title}</label>
             </AccordionSummary>
