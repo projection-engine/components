@@ -13,17 +13,20 @@
   user-select: none !important;
   border-left: var(--accentColor) 2px solid;
   height: 25px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   background-color: var(--background-input);
   border-radius: 0 3px 3px 0;
   min-width: unset;
   position: relative;
 }
+
 .wrapper:active {
-  background-color: var(--pj-background-secondary) !important;
+  background-color: var(--pj-background-quaternary) !important;
+
+  font-weight: 550;
 }
 
-.wrapper:hover{
+.wrapper:hover {
   background-color: var(--pj-border-primary);
 }
 
@@ -62,7 +65,6 @@
   text-align: center;
 }
 
-
 .draggable::-webkit-inner-spin-button {
   appearance: none;
   margin: 0;
@@ -85,4 +87,37 @@
   text-overflow: ellipsis;
   max-width: 100%;
   white-space: nowrap;
+}
+
+.labeledWrapper {
+  display: grid;
+  width: 100%;
+  align-items: center;
+  gap: 2px;
+}
+
+.labeledWrapper[data-variant="embedded"] {
+  display: flex;
+  align-items: center;
+  background: var(--background-input);
+  border-radius: 3px;
+  padding-left: 4px;
+}
+
+.labeledWrapper > label {
+  font-size: 0.7rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.labeledWrapper[data-variant="embedded"] > label {
+  min-width: 15px;
+  text-align: center;
+}
+
+.divider {
+  min-width: 1px;
+  min-height: 15px;
+  background: var(--pj-background-secondary);
 }

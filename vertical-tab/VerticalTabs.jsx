@@ -7,7 +7,7 @@ import ResizableBar from "../resizable/ResizableBar"
 export default function VerticalTabs(props){
     const {open, setOpen} = props
 
-    const [tab, setTab] = useState(-1)
+    const [tab, setTab] = useState(props.initialTab !== undefined ? props.initialTab : -1)
     const id = useId()
 
     return (
@@ -58,27 +58,33 @@ export default function VerticalTabs(props){
                         </Button>
                     </React.Fragment>
                 ))}
-                <Button
-                    onClick={() => {
-                        setOpen(!open)
-                        setTab(-1)
-                    }}
-                    className={open ? styles.button : styles.hideButton}
-                >
-                    <Icon  styles={{fontSize: "1.1rem"}}>{open ? "navigate_next" : "chevron_left"}</Icon>
-                </Button>
+                {setOpen ?
+                    <Button
+                        onClick={() => {
+                            setOpen(!open)
+                            setTab(-1)
+                        }}
+                        className={open ? styles.button : styles.hideButton}
+                    >
+                        <Icon  styles={{fontSize: "1.1rem"}}>{open ? "navigate_next" : "chevron_left"}</Icon>
+                    </Button>
+                    :
+                    null
+                }
             </div>
         </>
         
     )
 }
 VerticalTabs.propTypes={
-    open: PropTypes.bool.isRequired,
-    setOpen: PropTypes.func.isRequired,
+    initialTab: PropTypes.number,
+    
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
     absolute: PropTypes.bool,
     tabs: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.string,
         content: PropTypes.node,
         disabled: PropTypes.bool
-    }))
+    })).isRequired
 }

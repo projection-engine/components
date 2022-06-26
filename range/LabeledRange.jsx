@@ -1,12 +1,12 @@
-import styles from "./styles/Styles.module.css"
+import styles from "./styles/Range.module.css"
 import PropTypes from "prop-types"
-import Range from "../range/Range"
+import Range from "./Range"
 import React from "react"
 
 export default function LabeledRange(props) {
     return (
         <div
-            className={styles.wrapper}
+            className={styles.labeledWrapper}
             data-variant={props.variant}
             style={{background: props.disabled ? "transparent" : undefined}}
         >

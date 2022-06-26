@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import React, {useEffect, useMemo, useState} from "react"
-import styles from "./ContextMenu.module.css"
+import styles from "./styles/ContextMenu.module.css"
 import {Button, Icon, TextField} from "@f-ui/core"
 
 export default function ContextMenu(props) {
@@ -31,7 +31,9 @@ export default function ContextMenu(props) {
             <div style={{overflowY: "auto", maxHeight: "275px"}}>
                 {optionsToRender.map((o, i) => !o.requiredTrigger || o.requiredTrigger === selected?.trigger ? (
                     <React.Fragment key={"viewport-option-" + i}>
-                        {o.divider ? <div className={styles.divider}/> :
+                        {o.divider ?
+                            <div className={styles.divider}/>
+                            :
                             <Button
                                 disabled={o.disabled}
                                 className={styles.button}
@@ -52,9 +54,11 @@ export default function ContextMenu(props) {
                     :
                     null)}
             </div>
-            <div style={{padding: "0 4px", position: "absolute", bottom: "0", width: "100%"}}>
-                <TextField handleChange={e => setSearch(e)} width={"100%"} value={search} height={"25px"} placeholder={"Search"}/>
-            </div>
+            {optionsToRender.length > 5 || search ? (
+                <div style={{padding: "0 4px", position: "absolute", bottom: "0", width: "100%"}}>
+                    <TextField handleChange={e => setSearch(e)} width={"100%"} value={search} height={"25px"} placeholder={"Search"}/>
+                </div>
+            ) : null}
         </>
     )
 }
