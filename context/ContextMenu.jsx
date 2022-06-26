@@ -41,7 +41,7 @@ export default function ContextMenu(props) {
                                 }}>
                                 <div className={styles.inline}>
                                     <div className={styles.icon}>
-                                        <Icon styles={{fontSize: "1.1rem"}}>{o.icon}</Icon>
+                                        {o.icon ? <Icon styles={{fontSize: "1.1rem"}}>{o.icon}</Icon> : null}
                                     </div>
                                     <label className={styles.overflow}>{o.label}</label>
                                 </div>

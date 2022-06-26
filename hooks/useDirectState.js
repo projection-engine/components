@@ -24,9 +24,10 @@ export default function useDirectState(initialState={}){
         (data) => {
             const newState = {...state}
             Object.keys(data).forEach(d => {
-                if(data[d])
+                if(data[d] !== undefined)
                     newState[d] = data[d]
             })
             setState(newState)
+
         }]
 }
