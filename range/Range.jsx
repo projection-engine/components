@@ -32,7 +32,8 @@ export default function Range(props) {
 
         if(!props.hideValue)
             ref.current.innerText = currentValue.toFixed(props.precision ? props.precision : 1)
-        props.handleChange(currentValue)
+        if(props.handleChange)
+            props.handleChange(currentValue)
     }
     const ref = useRef()
 
@@ -48,7 +49,8 @@ export default function Range(props) {
             if (props.minValue !== undefined && finalValue < props.minValue)
                 finalValue = props.minValue
 
-            props.handleChange(finalValue)
+            if(props.handleChange)
+                props.handleChange(finalValue)
         }
 
         if (props.onFinish !== undefined)
