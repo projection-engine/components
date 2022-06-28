@@ -5,7 +5,7 @@
   height: 35px;
   user-select: none;
   overflow: hidden;
-  background: var(--pj-background-primary);
+  background: var(--pj-background-secondary);
   border-bottom: var(--pj-border-primary) 1px solid;
 }
 
