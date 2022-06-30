@@ -40,7 +40,8 @@ export default function Views(props){
                 data-orientation={props.orientation} 
                 style={{
                     flexDirection: props.orientation === "horizontal" ? "row" : undefined,
-                    [orientation]: tabs.length > 0 ? "300px" : "0", ["max" + maxMin]: tabs.length === 0 ? "0px" : (hidden ? "30px" : undefined),
+                    [orientation]: tabs.length > 0 ? "250px" : "0",
+                    ["max" + maxMin]: tabs.length === 0 ? "0px" : (hidden ? "30px" : undefined),
                     ["min" + maxMin]: tabs.length  === 0 ? "0px" : (hidden ? "30px" : undefined),
                 }}
             >
@@ -49,6 +50,7 @@ export default function Views(props){
                         <View
                             hidden={hidden} 
                             instance={view}
+                            styles={{   [orientation]: "inherit" }}
                             switchView={(newView) => {
                                 if(!newView) {
                                     const copy = [...tabs]

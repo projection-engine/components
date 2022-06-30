@@ -13,6 +13,7 @@ export default function useContextTarget(targetRef, options, triggers) {
                 setState({
                     options,
                     triggers,
+                    target: targetRef
                 })
             }
         }

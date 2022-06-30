@@ -27,13 +27,14 @@ export default function View(props){
 
     if(Component)
         return (
-            <div className={styles.view}>
+            <div className={styles.view} style={props.styles}>
                 <Component {...props}/>
             </div>
         )
     return null
 }
 View.propTypes={
+    styles: PropTypes.object,
     extendView: PropTypes.func,
     orientation: PropTypes.string,
     switchView: PropTypes.func,

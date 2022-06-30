@@ -6,7 +6,6 @@
   align-items: center;
   justify-content: flex-start;
   font-size: 0.75rem;
-  font-weight: normal !important;
 }
 
 .icon {
@@ -36,7 +35,6 @@
   width: 100%;
   display: flex;
   align-items: center;
-  font-weight: 550;
 }
 
 .overflow {
