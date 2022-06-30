@@ -4,6 +4,7 @@ import logo from "../../static/icons/logo.png"
 import React from "react"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import Actions from "./components/Actions"
+import ROUTES from "../../../public/static/ROUTES"
 
 const {ipcRenderer} = window.require("electron")
 export default function Frame(props) {
@@ -19,7 +20,7 @@ export default function Frame(props) {
                 {props.logoAction ?
                     <Button
                         className={styles.dropdown}
-                        onClick={() => ipcRenderer.send("switch-window")}>
+                        onClick={() => ipcRenderer.send(ROUTES.SWITCH_MAIN_WINDOW)}>
                         {LogoContent}
                     </Button>
                     :

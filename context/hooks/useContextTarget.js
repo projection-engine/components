@@ -12,7 +12,6 @@ export default function useContextTarget(targetRef, options, triggers) {
             if(state.target?.id !== id) {
                 setState({
                     options,
-                    target: targetRef,
                     triggers,
                 })
             }
@@ -22,12 +21,12 @@ export default function useContextTarget(targetRef, options, triggers) {
     }
 
     useEffect(() => {
-        if(focused.current) {
+        if(focused.current)
             setState(prev => ({
                 ...prev,
                 options,
             }))
-        }
+
         const target = ref ? ref : document.getElementById(id)
         target?.addEventListener("mouseenter", handler)
         target?.addEventListener("mouseleave", handler)

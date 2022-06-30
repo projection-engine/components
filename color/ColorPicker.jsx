@@ -29,6 +29,7 @@ export default function ColorPicker(props) {
             styles={{height: "35px", background: `rgb(${value.r},${value.g},${value.b})`, ...props.styles}}
         >
             <DropdownOptions>
+
                 <RgbColorPicker color={value} onChange={e => setValue(e)}/>
                 <ColorInput value={value} setValue={setValue}/>
                 <Buttons setValue={setValue} value={value} submit={props.submit}/>

@@ -17,7 +17,7 @@
 .button {
   height: 20px;
   width: fit-content;
-  font-size: .7rem !important;
+  font-size: 0.7rem !important;
   border-radius: 3px;
   font-weight: 550;
   padding: 0 4px !important;
@@ -30,8 +30,6 @@
   border-radius: 3px !important;
 }
 
-
-
 .modal {
   display: flex !important;
   flex-direction: column;
@@ -42,7 +40,6 @@
   max-height: unset !important;
   height: fit-content;
   padding: 15px 4px 4px;
-
   align-items: center;
   border-radius: 3px;
   background-color: var(--pj-background-tertiary);
@@ -59,4 +56,12 @@
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.input{
+
+}
+
+.input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 8px;
 }

@@ -4,7 +4,7 @@ import styles from "./styles/ContextMenu.module.css"
 import {Button, Icon, TextField} from "@f-ui/core"
 
 export default function ContextMenu(props) {
-    const {options, close, selected, target} = props
+    const {options, close, selected} = props
     const [search, setSearch] = useState("")
     const optionsToRender = useMemo(() => {
         if(selected && options)
@@ -21,40 +21,35 @@ export default function ContextMenu(props) {
     if(!selected)
         return null
     return (
-        < >
-            {target?.label ?
-                <label className={styles.label}>
-                    <div className={styles.overflow}>{target.label}</div>
-                </label>
-                :
-                null}
+        <>
             <div style={{overflowY: "auto", maxHeight: "275px"}}>
-                {optionsToRender.map((o, i) => !o.requiredTrigger || o.requiredTrigger === selected?.trigger ? (
-                    <React.Fragment key={"viewport-option-" + i}>
-                        {o.divider ?
-                            <div className={styles.divider}/>
-                            :
-                            <Button
-                                disabled={o.disabled}
-                                className={styles.button}
-                                onClick={e => {
-                                    o.onClick(props.selected?.selected, e)
-                                    close()
-                                }}>
-                                <div className={styles.inline}>
-                                    <div className={styles.icon}>
-                                        {o.icon ? <Icon styles={{fontSize: "1.1rem"}}>{o.icon}</Icon> : null}
+                {optionsToRender.map((o, i) => !o.requiredTrigger || o.requiredTrigger === selected?.trigger ? 
+                    (
+                        <React.Fragment key={"viewport-option-" + i}>
+                            {o.divider ?
+                                <div className={styles.divider}/>
+                                :
+                                <Button
+                                    disabled={o.disabled}
+                                    className={styles.button}
+                                    onClick={e => {
+                                        o.onClick(props.selected?.selected, e)
+                                        close()
+                                    }}>
+                                    <div className={styles.inline}>
+                                        <div className={styles.icon}>
+                                            {o.icon ? <Icon styles={{fontSize: "1.1rem"}}>{o.icon}</Icon> : null}
+                                        </div>
+                                        <label className={styles.overflow}>{o.label}</label>
                                     </div>
-                                    <label className={styles.overflow}>{o.label}</label>
-                                </div>
-                                <Shortcut shortcut={o.shortcut}/>
-                            </Button>}
-                    </React.Fragment>
-                )
+                                    <Shortcut shortcut={o.shortcut}/>
+                                </Button>}
+                        </React.Fragment>
+                    )
                     :
                     null)}
             </div>
-            {optionsToRender.length > 5 || search ? (
+            {optionsToRender.length > 20 || search ? (
                 <div style={{padding: "0 4px", position: "absolute", bottom: "0", width: "100%"}}>
                     <TextField handleChange={e => setSearch(e)} width={"100%"} value={search} height={"25px"} placeholder={"Search"}/>
                 </div>
@@ -64,7 +59,6 @@ export default function ContextMenu(props) {
 }
 
 ContextMenu.propTypes = {
-    target: PropTypes.object,
     options: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.string,
         icon: PropTypes.string,

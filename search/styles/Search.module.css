@@ -1,41 +1,35 @@
 .wrapper {
-    height: 25px;
-    min-height: 25px;
-    width: fit-content;
-    display: flex;
-    gap: 4px;
-    padding: 3px;
-    overflow: hidden;
-
+  height: 25px;
+  min-height: 25px;
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 250px;
 }
 
 .inputWrapper {
-    display: flex;
-    align-items: center;
-
-    background: var(--pj-background-tertiary);
-    border: var(--pj-border-primary) 1px solid;
-    border-radius:5px;
-
-    height: 100%;
-    width: 100%;
-
-    transition: 150ms linear;
-    color: var(--pj-color-secondary);
+  display: flex;
+  align-items: center;
+  background: var(--pj-background-tertiary);
+  border: var(--pj-border-primary) 1px solid;
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+  transition: 150ms linear;
+  color: var(--pj-color-secondary);
 }
 
 .input {
-    border-radius: 5px;
-    border: none;
-    background: transparent;
-    outline: none;
-
-    width: 100%;
-    color: var(--pj-color-secondary);
-
+  border-radius: 5px;
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  color: var(--pj-color-secondary);
 }
 
 .inputWrapper:focus-within {
-    border-color: var(--pj-accent-color);
+  border-color: var(--pj-accent-color);
 }
-
