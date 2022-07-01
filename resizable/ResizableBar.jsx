@@ -30,8 +30,9 @@ export default function ResizableBar(props) {
     }
     const handleMouseUp = () => {
         try{
-            if (props.onResizeEnd)
+            if (props.onResizeEnd !== undefined) {
                 props.onResizeEnd(ref.current.nextSibling, ref.current.previousSibling)
+            }
             ref.current.parentNode.style.userSelect = "default"
             document.removeEventListener("mousemove", handleMouseMove)
         }catch (err){
@@ -69,7 +70,9 @@ export default function ResizableBar(props) {
                 ref.current.previousSibling.style.height = initial.current.initialH1
                 ref.current.nextSibling.style.height = initial.current.initialH2
             }
-        }catch (err) {}
+        }catch (err) {
+            console.error(err)
+        }
     }
 
     useEffect(() => {
@@ -99,7 +102,7 @@ export default function ResizableBar(props) {
             mutation.disconnect()
             resize.disconnect()
         }
-    }, [props.resetWhen])
+    }, [props.resetWhen, props.onResizeEnd])
     useEffect(() => {
         return () => {
             if(ref.current?.previousSibling)

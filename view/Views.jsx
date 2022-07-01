@@ -29,7 +29,9 @@ export default function Views(props){
                             setHidden(false)
                     }}
                     onResizeEnd={() => {
-                        if (ref.current.getBoundingClientRect()[orientation] <= 45)
+                        const bBox = ref.current.getBoundingClientRect()
+                        console.log(bBox, orientation)
+                        if (bBox[orientation] <= 30)
                             setHidden(true)
                     }}
                 />
@@ -50,7 +52,7 @@ export default function Views(props){
                         <View
                             hidden={hidden} 
                             instance={view}
-                            styles={{   [orientation]: "inherit" }}
+                            styles={{   [orientation]: hidden ? "30px" : "inherit" }}
                             switchView={(newView) => {
                                 if(!newView) {
                                     const copy = [...tabs]
@@ -71,19 +73,19 @@ export default function Views(props){
                                 type={invOrientation}
                                 resetWhen={tabs}
                                 onResizeEnd={(next, prev) => {
+
                                     const nextBB = next.getBoundingClientRect()
                                     const prevBB = prev.getBoundingClientRect()
-
-                                    if (prevBB[invOrientation] < 25) {
+                                    if (prevBB[invOrientation] < 30) {
                                         prev.style[invOrientation] = "100%"
 
                                         const copy = [...tabs]
                                         copy.shift()
                                         setTabs(copy)
 
-                                    }
-                                    if (nextBB[invOrientation] < 25) {
 
+                                    }
+                                    if (nextBB[invOrientation] < 30) {
                                         next.style[invOrientation] = "100%"
 
                                         const copy = [...tabs]
@@ -119,7 +121,9 @@ export default function Views(props){
                             setHidden(false)
                     }}
                     onResizeEnd={() => {
-                        if (ref.current.getBoundingClientRect()[orientation] <= 45)
+                        const bBox = ref.current.getBoundingClientRect()
+                        console.log(bBox, orientation)
+                        if (bBox[orientation] <= 30)
                             setHidden(true)
                     }}
                 />
