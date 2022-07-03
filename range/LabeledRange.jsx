@@ -12,7 +12,7 @@ export default function LabeledRange(props) {
         >
             <label title={props.label} style={{minWidth: props.minLabelWidth}}>{props.label}</label>
             {props.variant === "embedded" ? <div className={styles.divider}/> : undefined}
-            <Range {...props} styles={{width: "100%"}} accentColor={props.variant === "embdded" ? undefined : props.accentColor}/>
+            <Range {...props}  styles={{width: "100%"}} accentColor={props.variant === "embedded" ? undefined : props.accentColor}/>
         </div>
     )
 }

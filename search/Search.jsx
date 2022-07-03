@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Search.module.css"
-import React, {useDeferredValue} from "react"
+import React from "react"
 import EN from "../../static/locale/EN"
 import {Icon} from "@f-ui/core"
 
