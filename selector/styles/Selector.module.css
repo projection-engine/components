@@ -77,23 +77,31 @@
 .modal {
   width: 326px !important;
   height: 326px !important;
-  gap: 6px;
   position: relative;
   background-color: var(--pj-background-tertiary) !important;
   box-shadow: var(--pj-boxshadow);
-  display: flex;
-  flex-wrap: wrap;
-  padding: 4px;
+
+
   align-content: flex-start;
   border-radius: 5px;
   color: var(--pj-color-secondary);
+  overflow: hidden;
 }
 
+.contentWrapper{
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+
+  gap: 4px;
+
+  padding: 4px;
+  overflow-y: auto;
+}
 .searchWrapper {
   width: 100%;
-  position: sticky;
-  top: 0;
-  z-index: 999;
+
   background: var(--pj-border-primary);
   border-radius: 3px;
   padding: 4px;

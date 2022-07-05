@@ -103,7 +103,7 @@
   height: 10px;
   padding: 0;
   background: var(--pj-border-secondary);
-  z-index: 999;
+  z-index: 20;
   border: none;
   outline: none;
   cursor: pointer;

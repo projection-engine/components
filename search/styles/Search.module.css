@@ -13,6 +13,7 @@
 }
 
 .input {
+  font-size: .7rem;
   border-radius: 5px;
   border: none;
   background: transparent;
@@ -20,4 +21,3 @@
   width: 100%;
   color: var(--pj-color-secondary);
 }
-

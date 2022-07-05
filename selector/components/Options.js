@@ -70,7 +70,9 @@ export default function Options(props){
                     </Button>
                     : null}
             </div>
-            {content}
+            <div className={styles.contentWrapper}>
+                {content}
+            </div>
         </>
     )
 }
