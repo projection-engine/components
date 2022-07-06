@@ -1,25 +1,16 @@
 import styles from "./styles/Branch.module.css"
 import PropTypes from "prop-types"
-import React, {useContext, useEffect, useMemo, useRef, useState} from "react"
+import React, {useContext, useEffect, useRef} from "react"
 import {Icon} from "@f-ui/core"
-import {TreeProvider} from "./Tree"
-import COMPONENTS from "../../project/engine/templates/COMPONENTS"
 import EntityProvider from "./EntityProvider"
+import COMPONENTS from "../../project/engine/templates/COMPONENTS"
 
 export default function Branch(props) {
-    const {index} = props
-    const offset = useContext(TreeProvider)
-    const {
-        entities,
-        selected,
-        setSelected
-    } = useContext(EntityProvider)
-    const ref=  useRef()
-    const node = useMemo(() => {
-        return entities[index + offset]
-    }, [entities, offset])
+    const {depth, node, open, setOpen} = props
+    const {selected, setSelected} = useContext(EntityProvider)
+    const ref = useRef()
     useEffect(() => {
-        if(node) {
+        if (node) {
             const length = selected.length
             let is = false
             for (let i = 0; i < length; i++) {
@@ -28,32 +19,37 @@ export default function Branch(props) {
             ref.current.setAttribute("data-selected", is ? "-" : "")
         }
     }, [selected, node])
-    if(!node)
+
+    if (!node)
         return null
     return (
         <div
+            id={node.id}
             ref={ref}
             className={styles.wrapper}
-            data-open={""}
+            data-open={open[node.id] ? "-" : ""}
             data-selected={""}
+            data-parentopen={""}
+            style={{paddingLeft: depth * 16 + "px"}}
             onClick={e => {
-                if(e.target.nodeName !== "BUTTON")
+                if (e.target.nodeName !== "BUTTON")
                     setSelected(node.id, e.ctrlKey)
             }}
         >
             <div className={styles.summary}>
                 <button
-                    data-open={""}
+                    data-open={open[node.id] ? "-" : ""}
                     className={styles.buttonSmall}
                     onClick={e => {
-                        const currentValue = e.currentTarget.getAttribute("data-open")
-                        e.currentTarget.setAttribute("data-open", currentValue === "-" ? "" : "-")
-                        ref.current.setAttribute("data-open", currentValue === "-" ? "" : "-")
+                        if (!open[node.id])
+                            setOpen({...open, [node.id]: true})
+                        else
+                            setOpen({...open, [node.id]: false})
                     }}
                 >
                     <Icon>arrow_drop_down</Icon>
                 </button>
-                <div className={styles.info} >
+                <div className={styles.info}>
                     <label className={styles.overflow}>{node.name}</label>
                 </div>
                 <button className={styles.buttonSmall}>
@@ -67,6 +63,7 @@ export default function Branch(props) {
                     <>
                         <Icon>view_in_ar</Icon>
                         Mesh
+                        {}
                     </>
                 ) : null}
             </div>
@@ -74,6 +71,11 @@ export default function Branch(props) {
     )
 }
 
-Branch.propTypes={
-    index: PropTypes.number.isRequired
+Branch.propTypes = {
+    maxDepth: PropTypes.number,
+    totalRendered: PropTypes.number,
+    open: PropTypes.object,
+    setOpen: PropTypes.func,
+    depth: PropTypes.number,
+    node: PropTypes.object,
 }

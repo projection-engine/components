@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import React, {useEffect, useMemo, useRef, useState} from "react"
 import styles from "./styles/ContextMenu.module.css"
-import {Button, Icon, TextField} from "@f-ui/core"
+import {Button, Icon} from "@f-ui/core"
 import Search from "../search/Search"
 
 const MAX_OPTIONS = 10
