@@ -2,45 +2,16 @@ import React, {useEffect, useId, useRef, useState} from "react"
 import styles from "./styles/Tree.module.css"
 import Branch from "./Branch"
 import PropTypes from "prop-types"
+import useInfiniteScroll from "./useInfiniteScroll"
 
 export const TreeProvider = React.createContext([0, [], new Map()])
-const BRANCH_SIZE = 25, DELAY = 500
+
 export default function Tree(props) {
     const ID = useId()
-    const ref = useRef()
-    const [maxDepth, setMaxDepth] = useState(0)
-    useEffect(() => {
-        let timeout
-        const updateSize = () => {
-            clearTimeout(timeout)
-            timeout = setTimeout(() => {
-                const bBox = ref.current.getBoundingClientRect()
-                const quantity = Math.floor(bBox.height / BRANCH_SIZE)
-                setMaxDepth(quantity)
-            }, DELAY)
-        }
-        updateSize()
-        const observer = new ResizeObserver(() => updateSize())
-        observer.observe(ref.current)
-        return () => observer.disconnect()
-    }, [])
-
-    const [offset, setOffset] = useState(0)
-    const handleWheel = (e) => {
-        e.preventDefault()
-        const current = parseInt(ref.current.getAttribute("data-offset")) - Math.sign(e.wheelDelta)
-        if (current >= 0)
-            setOffset(current)
-    }
-    useEffect(() => {
-        ref.current?.addEventListener("wheel", handleWheel, {passive: false})
-        return () => ref.current?.removeEventListener("wheel", handleWheel, {passive: false})
-    }, [])
-
-
     const [open, setOpen] = useState({})
-
     const [toRender, setToRender] = useState([])
+    const [ref, offset, maxDepth] = useInfiniteScroll()
+
     useEffect(() => {
         const entities = Array.from(props.entities.values())
         const data = []

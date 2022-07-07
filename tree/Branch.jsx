@@ -13,9 +13,9 @@ export default function Branch(props) {
         if (node) {
             const length = selected.length
             let is = false
-            for (let i = 0; i < length; i++) {
+            for (let i = 0; i < length; i++)
                 is = is || selected[i] === node.id
-            }
+            console.log(is)
             ref.current.setAttribute("data-selected", is ? "-" : "")
         }
     }, [selected, node])

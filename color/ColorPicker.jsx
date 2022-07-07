@@ -23,7 +23,7 @@ export default function ColorPicker(props) {
     return (
         <Dropdown
             hideArrow={true}
-            wrapperClassname={styles.modal}
+            modalClassName={styles.modal}
             className={styles.placeholder}
             attributes={{title: `rgb(${value.r},${value.g},${value.b})`}}
             styles={{height: "35px", background: `rgb(${value.r},${value.g},${value.b})`, ...props.styles}}

@@ -1,5 +1,5 @@
 import styles from "../styles/Color.module.css"
-import LabeledRange from "../../range/LabeledRange"
+import Range from "../../range/Range"
 import React from "react"
 import PropTypes from "prop-types"
 
@@ -7,7 +7,7 @@ export default function ColorInput(props){
     const {value, setValue} = props
     return (
         <div className={styles.inputs}>
-            <LabeledRange
+            <Range
                 label={"R"}
                 variant={"embedded"}
                 maxValue={255}
@@ -23,7 +23,7 @@ export default function ColorInput(props){
                 accentColor={"red"}
             />
 
-            <LabeledRange
+            <Range
                 label={"G"}
                 variant={"embedded"}
                 maxValue={255}
@@ -38,7 +38,7 @@ export default function ColorInput(props){
                 accentColor={"green"}
             />
 
-            <LabeledRange
+            <Range
                 label={"B"}
                 variant={"embedded"}
                 maxValue={255}

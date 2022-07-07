@@ -1,17 +1,17 @@
-import PropTypes from "prop-types"
 import styles from "./styles/Range.module.css"
+import PropTypes from "prop-types"
 import React, {useEffect, useRef, useState} from "react"
 import KEYS from "../../project/engine/templates/KEYS"
 import {Icon} from "@f-ui/core"
 
+const DELAY = 200
 export default function Range(props) {
     const [focused, setFocused] = useState(false)
-    const [inputCache, setInputCache] = useState(parseFloat(props.value))
     const [dragged, setDragged] = useState(false)
+    const ref = useRef(), inputRef = useRef()
+
     let currentValue = parseFloat(props.value)
-
     const handleMouseMove = (e) => {
-
         let multiplier = e.movementX
         setDragged(true)
         const increment = props.integer ? 1 : Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * multiplier)
@@ -22,8 +22,7 @@ export default function Range(props) {
             currentValue = parseFloat((currentValue - increment).toFixed(props.precision ? props.precision : 1))
 
         if (props.integer)
-            currentValue = parseInt(Math.round(currentValue))
-
+            currentValue = Math.round(parseInt(currentValue))
 
         if (currentValue > props.maxValue && props.maxValue !== undefined)
             currentValue = props.maxValue
@@ -35,116 +34,103 @@ export default function Range(props) {
         if(props.handleChange)
             props.handleChange(currentValue)
     }
-    const ref = useRef()
+
+    let timeout
+    const onChange = (input) => {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+            let finalValue = parseFloat(input.value)
+
+            if (!isNaN(finalValue)) {
+                if (props.maxValue !== undefined && finalValue > props.maxValue)
+                    finalValue = props.maxValue
+                if (props.minValue !== undefined && finalValue < props.minValue)
+                    finalValue = props.minValue
+
+                if(props.handleChange)
+                    props.handleChange(finalValue)
+            }
+
+            if (props.onFinish !== undefined)
+                props.onFinish(finalValue)
+        }, DELAY)
+    }
 
     useEffect(() => {
-        setInputCache(props.value)
-    }, [focused])
-    const submit = () => {
-        let finalValue = parseFloat(inputCache)
+        inputRef.current.value = props.value ? props.value : 0
+    }, [])
 
-        if (!isNaN(finalValue)) {
-            if (props.maxValue !== undefined && finalValue > props.maxValue)
-                finalValue = props.maxValue
-            if (props.minValue !== undefined && finalValue < props.minValue)
-                finalValue = props.minValue
-
-            if(props.handleChange)
-                props.handleChange(finalValue)
-        }
-
-        if (props.onFinish !== undefined)
-            props.onFinish(finalValue)
-
-        setFocused(false)
-    }
     return (
+            
         <div
-            data-disabled={`${props.disabled}`}
-            className={styles.wrapper}
-            style={{"--accentColor": props.accentColor, borderRadius: !props.accentColor ? "3px" : undefined, ...props.styles}}
-            title={props.title}>
-            {focused ?
-                <input
-                    disabled={props.disabled}
-                    ref={ref}
-                    value={inputCache}
 
-                    autoFocus={true}
-                    onChange={(e) => {
-                        setInputCache(e.target.value)
-                    }} type={"number"}
-                    style={{cursor: "text", background: "var(--pj-background-quaternary)"}}
-                    onKeyDown={k => {
+            className={[styles.wrapper, styles.labeledWrapper].join(" ")}
+            data-variant={props.variant}
+            style={{"--accent-color": props.accentColor}}
+        >
+            {props.label ? <label title={props.label} style={{minWidth: props.minLabelWidth}}>{props.label}</label> : null}
+            {props.variant === "embedded" ? <div className={styles.divider}/> : undefined}
+            <input
+                ref={inputRef}
+                disabled={props.disabled}
+                autoFocus={true}
+                onChange={(e) => onChange(e.target)}
+                type={"number"}
+                style={{display: focused ? undefined : "none", cursor: "text", background: "var(--pj-background-quaternary)", borderRadius: !props.accentColor ? "3px" : undefined}}
+                className={styles.draggable}
+                onBlur={() => setFocused(false)}
+            />
 
-                        if (k.key === KEYS.Enter)
-                            submit()
-                    }}
-                    onBlur={() => submit()}
-                    className={styles.draggable}
-                />
-                :
-                <div
-                    ref={ref}
-                    onMouseDown={() => {
-                        if (!focused && !props.disabled)
-                            ref.current?.requestPointerLock()
-                    }}
-                    onMouseMove={(e) => {
-                        if (document.pointerLockElement)
-                            handleMouseMove(e)
-                    }}
-                    onMouseUp={() => {
-                        document.exitPointerLock()
-                        if (props.onFinish !== undefined)
-                            props.onFinish(currentValue)
-                        if (!props.disabled) {
-                            if (!dragged)
-                                setFocused(true)
-                            else
-                                setDragged(false)
-                        }
-                    }}
-                    style={{
-                        color: props.disabled ? "#999999" : undefined,
-                        cursor: props.disabled ? "default" : undefined,
-                        background: props.disabled ? "var(--background-0)" : undefined
-                    }}
-                    className={styles.draggable}
-                >
-                    <div className={styles.overflow}>
-                        {props.hideValue ? <Icon styles={{transform: "rotate(90deg)", fontSize: "1.1rem"}}>unfold_more</Icon> : currentValue.toFixed(props.precision ? props.precision : 1)}
-                    </div>
+            <div
+                ref={ref}
+                data-disabled={`${props.disabled}`}
+                onMouseDown={() => {
+                    if (!focused && !props.disabled)
+                        ref.current?.requestPointerLock()
+                }}
+                onMouseMove={(e) => {
+                    if (document.pointerLockElement)
+                        handleMouseMove(e)
+                }}
+                onMouseUp={() => {
+                    document.exitPointerLock()
+                    if (props.onFinish !== undefined)
+                        props.onFinish(currentValue)
+                    if (!props.disabled) {
+                        if (!dragged)
+                            setFocused(true)
+                        else
+                            setDragged(false)
+                    }
+                }}
+                style={{
+                    display: !focused ? undefined : "none",
+                    color: props.disabled ? "#999999" : undefined,
+                    cursor: props.disabled ? "default" : undefined,
+                    background: props.disabled ? "var(--background-0)" : undefined,
+                    borderRadius: !props.accentColor  || props.disabled ? "3px" : undefined
+                }}
+                className={styles.draggable}
+            >
+                <div className={styles.overflow}>
+                    {props.hideValue ? <Icon styles={{transform: "rotate(90deg)", fontSize: "1.1rem"}}>unfold_more</Icon> : currentValue.toFixed(props.precision ? props.precision : 1)}
                 </div>
-            }
-            {props.metric ?
-                <div className={styles.metricWrapper}>
-                    {props.metric === "angle" ? "θ" : props.metric}
-                </div>
-                :
-                null
-            }
+            </div>
         </div>
     )
-
 }
-
 Range.propTypes = {
-
-    hideValue: PropTypes.bool,
-    title: PropTypes.string,
-    styles: PropTypes.object,
-
-    metric: PropTypes.string,
+    minLabelWidth: PropTypes.string,
+    variant: PropTypes.oneOf(["embedded", "default"]),
+    label: PropTypes.string,
     precision: PropTypes.number,
     maxValue: PropTypes.number,
     minValue: PropTypes.number,
-
     onFinish: PropTypes.func,
     accentColor: PropTypes.string,
     disabled: PropTypes.bool,
     incrementPercentage: PropTypes.number,
-
+    hideValue: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     handleChange: PropTypes.func,
     integer: PropTypes.bool

@@ -11,9 +11,7 @@ export default function Views(props){
     const [hidden, setHidden] = useState(false)
     const ref = useRef()
 
-    const SIZE = useMemo(() => {
-        return tabs.length
-    }, [tabs])
+    const SIZE = useMemo(() => tabs.length, [tabs])
     const orientation = props.orientation === "horizontal" ? "height" : "width"
     const maxMin= props.orientation === "horizontal" ? "Height" : "Width"
     const invOrientation = props.orientation === "horizontal" ? "width" : "height"
