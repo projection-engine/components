@@ -5,7 +5,6 @@ import PropTypes from "prop-types"
 import useInfiniteScroll from "./useInfiniteScroll"
 
 export const TreeProvider = React.createContext([0, [], new Map()])
-
 export default function Tree(props) {
     const ID = useId()
     const [open, setOpen] = useState({})
@@ -13,7 +12,7 @@ export default function Tree(props) {
     const [ref, offset, maxDepth] = useInfiniteScroll()
 
     useEffect(() => {
-        const entities = Array.from(props.entities.values())
+        const entities = Array.from(window.renderer.entitiesMap.values())
         const data = []
         let rendered = -offset
         const size = entities.length
@@ -37,7 +36,7 @@ export default function Tree(props) {
             callback(entities[i], 0)
         }
         setToRender(data)
-    }, [props.entities, offset, maxDepth, open])
+    }, [props.entitiesChangeID, offset, maxDepth, open])
     return (
         <div
             ref={ref}
@@ -64,5 +63,5 @@ export default function Tree(props) {
 }
 
 Tree.propTypes = {
-    entities: PropTypes.object
+    entitiesChangeID: PropTypes.string
 }

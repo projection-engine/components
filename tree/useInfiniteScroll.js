@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from "react"
 
-const BRANCH_SIZE = 25, DELAY = 500
+const BRANCH_SIZE = 23, DELAY = 500
 export default function useInfiniteScroll() {
     const ref = useRef()
     const [maxDepth, setMaxDepth] = useState(0)
@@ -19,7 +19,7 @@ export default function useInfiniteScroll() {
             clearTimeout(timeout)
             timeout = setTimeout(() => {
                 const bBox = ref.current.getBoundingClientRect()
-                const quantity = Math.floor(bBox.height / BRANCH_SIZE)
+                const quantity = Math.ceil(bBox.height / BRANCH_SIZE)
                 setMaxDepth(quantity)
             }, DELAY)
         }
