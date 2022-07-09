@@ -5,16 +5,17 @@ import {Icon} from "@f-ui/core"
 import EntityProvider from "./EntityProvider"
 import COMPONENTS from "../../project/engine/templates/COMPONENTS"
 import handleDropFolder from "../../project/components/files/utils/handleDropFolder"
+import Packager from "../../project/engine/Packager"
 
 export default function Branch(props) {
     const {depth, node, open, setOpen} = props
     const {selected, setSelected, lockedEntity, setLockedEntity} = useContext(EntityProvider)
     const ref = useRef()
-
     const [active, setActive] = useState(true)
+
     useEffect(() => {
         if (node) {
-            setActive(node.active)
+            setActive(window.renderer.entitiesMap.get(node.id).active)
             const length = selected.length
             let is = false
             for (let i = 0; i < length; i++)
@@ -25,15 +26,17 @@ export default function Branch(props) {
     }, [selected, node])
 
     const icon = useMemo(() => {
-        if(node.components[COMPONENTS.FOLDER])
-            return "inventory_2"
-        if(node.components[COMPONENTS.POINT_LIGHT])
-            return "lightbulb"
-        if(node.components[COMPONENTS.DIRECTIONAL_LIGHT])
-            return "light_mode"
-        if(node.components[COMPONENTS.PROBE])
-            return "lens_blur"
-        return "category"
+        if(node) {
+            if (node.components[COMPONENTS.FOLDER])
+                return "inventory_2"
+            if (node.components[COMPONENTS.POINT_LIGHT])
+                return "lightbulb"
+            if (node.components[COMPONENTS.DIRECTIONAL_LIGHT])
+                return "light_mode"
+            if (node.components[COMPONENTS.PROBE])
+                return "lens_blur"
+            return "category"
+        }
     }, [node])
     
     if (!node)
@@ -98,7 +101,8 @@ export default function Branch(props) {
                 <button
                     className={styles.buttonSmall}
                     onClick={() => {
-                        node.active = !active
+                        window.renderer.entitiesMap.get(node.id).active = !active
+                        Packager.lights()
                         setActive(!active)
                     }}>
                     <Icon styles={{fontSize: ".9rem"}}>
@@ -119,8 +123,6 @@ export default function Branch(props) {
 }
 
 Branch.propTypes = {
-    maxDepth: PropTypes.number,
-    totalRendered: PropTypes.number,
     open: PropTypes.object,
     setOpen: PropTypes.func,
     depth: PropTypes.number,
