@@ -69,7 +69,7 @@ export default function Range(props) {
             style={{"--accent-color": props.accentColor}}
         >
             {props.label ? <label title={props.label} style={{minWidth: props.minLabelWidth}}>{props.label}</label> : null}
-            {props.variant === "embedded" ? <div className={styles.divider}/> : undefined}
+            {props.variant === "embedded" && !props.accentColor ? <div className={styles.divider}/> : undefined}
             <input
                 ref={inputRef}
                 disabled={props.disabled}
