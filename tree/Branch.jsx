@@ -13,7 +13,9 @@ export default function Branch(props) {
     const ref = useRef()
     const [active, setActive] = useState(true)
     const nodeRef = useMemo(() => {
-        return window.renderer.entitiesMap.get(node.id)
+        if (node)
+            return window.renderer.entitiesMap.get(node.id)
+        return undefined
     }, [node])
 
     useEffect(() => {
@@ -23,13 +25,13 @@ export default function Branch(props) {
             let is = false
             for (let i = 0; i < length; i++)
                 is = is || selected[i] === nodeRef.id
-             
+
             ref.current.setAttribute("data-selected", is ? "-" : "")
         }
     }, [selected, nodeRef])
 
     const icon = useMemo(() => {
-        if(nodeRef) {
+        if (nodeRef) {
             if (nodeRef.components[COMPONENTS.FOLDER])
                 return "inventory_2"
             if (nodeRef.components[COMPONENTS.POINT_LIGHT])
@@ -41,7 +43,7 @@ export default function Branch(props) {
             return "category"
         }
     }, [nodeRef])
-    
+
     if (!nodeRef)
         return null
     return (
@@ -95,7 +97,7 @@ export default function Branch(props) {
                         <Icon styles={{fontSize: icon === "lens_blur" ? "1.35rem" : "1rem"}}>{icon}</Icon>
                     </button>
                     <div
-                        className={styles.label} 
+                        className={styles.label}
                         draggable={true}
                     >
                         {nodeRef.name}
@@ -106,6 +108,10 @@ export default function Branch(props) {
                     onClick={() => {
                         window.renderer.entitiesMap.get(nodeRef.id).active = !active
                         Packager.lights()
+                        if(!active)
+                            window.renderer.activeEntitiesSize--
+                        else
+                            window.renderer.activeEntitiesSize++
                         setActive(!active)
                     }}>
                     <Icon styles={{fontSize: ".9rem"}}>
@@ -117,7 +123,7 @@ export default function Branch(props) {
                 {nodeRef.components[COMPONENTS.MESH] ? (
                     <>
                         <Icon>view_in_ar</Icon>
-                        Mesh
+						Mesh
                     </>
                 ) : null}
             </div>
