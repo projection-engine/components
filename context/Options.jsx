@@ -1,20 +1,18 @@
 import PropTypes from "prop-types"
-import React, {useEffect, useMemo, useRef, useState} from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import styles from "./styles/ContextMenu.module.css"
 import {Button, Icon} from "@f-ui/core"
 import Search from "../search/Search"
 
 const MAX_OPTIONS = 10
-export default function ContextMenu(props) {
-    const {options, close, selected} = props
+export default function Options(props) {
+    const {options, close, selected, setPadding, trigger, event} = props
     const [search, setSearch] = useState("")
     const optionsToRender = useMemo(() => {
         if(selected && options)
-            return options.filter(o =>(!o.requiredTrigger || o.requiredTrigger === selected?.trigger )&& (!search || o.label && o.label.toLowerCase().includes(search.toLowerCase())))
+            return options.filter(o =>(!o.requiredTrigger || o.requiredTrigger === trigger )&& (!search || o.label && o.label.toLowerCase().includes(search.toLowerCase())))
         return []
     }, [options, search, selected])
-
-    const parent = useRef()
 
     useEffect(() => {
         if(selected) {
@@ -24,21 +22,18 @@ export default function ContextMenu(props) {
     }, [options])
     useEffect(() => {
         if(selected) {
-            if (!parent.current)
-                parent.current = document.getElementById("context-menu-element")?.previousSibling
-            if (parent.current) {
-                if (optionsToRender.length > MAX_OPTIONS || search)
-                    parent.current.style.paddingBottom = "35px"
-                else
-                    parent.current.style.paddingBottom = "0"
-            }
+            if (optionsToRender.length > MAX_OPTIONS || search)
+                setPadding("45px")
+            else
+                setPadding("0px")
         }
+
     }, [optionsToRender])
-    if(!selected)
-        return null
+
+
     return (
         <>
-            <div style={{overflowY: "auto", maxHeight: "275px"}}>
+            <div style={{overflowY: "auto", maxHeight: "265px"}}>
                 {optionsToRender.map((o, i) => 
                     <React.Fragment key={"viewport-option-" + i}>
                         {o.divider ?
@@ -47,8 +42,8 @@ export default function ContextMenu(props) {
                             <Button
                                 disabled={o.disabled}
                                 className={styles.button}
-                                onClick={e => {
-                                    o.onClick(props.selected?.selected, e)
+                                onClick={() => {
+                                    o.onClick(selected, event)
                                     close()
                                 }}>
                                 <div className={styles.inline}>
@@ -63,7 +58,7 @@ export default function ContextMenu(props) {
                 )}
             </div>
             {optionsToRender.length > MAX_OPTIONS || search ? (
-                <div style={{padding: "4px", position: "absolute", bottom: "0", width: "100%"}}>
+                <div style={{padding: "4px", position: "absolute", bottom: "0", width: "100%", borderTop: "var(--pj-border-primary) 1px solid"}}>
                     <Search
                         setSearchString={e => {
                             setSearch(e)
@@ -76,7 +71,7 @@ export default function ContextMenu(props) {
     )
 }
 
-ContextMenu.propTypes = {
+Options.propTypes = {
     options: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.string,
         icon: PropTypes.string,
@@ -85,9 +80,11 @@ ContextMenu.propTypes = {
         disabled: PropTypes.bool,
         shortcut: PropTypes.array
     })),
-    engine: PropTypes.object,
+    trigger: PropTypes.string,
     close: PropTypes.func,
-    selected: PropTypes.object
+    selected: PropTypes.object,
+    setPadding: PropTypes.func,
+    event: PropTypes.object
 }
 function Shortcut(props){
     const shortcut = useMemo(() => {
