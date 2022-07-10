@@ -4,7 +4,6 @@ import React, {useContext, useEffect, useMemo, useRef, useState} from "react"
 import {Icon} from "@f-ui/core"
 import EntityProvider from "./EntityProvider"
 import COMPONENTS from "../../project/engine/templates/COMPONENTS"
-import handleDropFolder from "../../project/components/files/utils/handleDropFolder"
 import Packager from "../../project/engine/Packager"
 
 export default function Branch(props) {

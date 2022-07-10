@@ -1,11 +1,10 @@
-import React, {useEffect, useId, useRef, useState} from "react"
+import React, {useEffect, useId, useState} from "react"
 import styles from "./styles/Tree.module.css"
 import Branch from "./Branch"
 import PropTypes from "prop-types"
 import useInfiniteScroll from "./useInfiniteScroll"
 import {v4} from "uuid"
 import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS"
-import toObject from "../../project/engine/utils/toObject"
 
 const localActionID= v4()
 export const TreeProvider = React.createContext([0, [], new Map()])
@@ -47,18 +46,17 @@ export default function Tree(props) {
         })
         window.addEntityWorkerListener(
             payload => {
-                console.log(payload)
                 const data = []
                 for(let i =0; i < payload.length; i++){
                     if(!payload[i].parent || open[payload[i].parent.id])
                         data.push(payload[i].parent)
                 }
-                setToRender(payload)
+                setToRender(data)
             },
             localActionID
         )
         
-    }, [props.entitiesChangeID, maxDepth])
+    }, [props.entitiesChangeID, maxDepth, open])
     return (
         <div
             ref={ref}

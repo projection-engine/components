@@ -8,6 +8,16 @@
   background: var(--pj-background-secondary);
 }
 
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 8px 8px 8px 20px;
+  border-left: var(--pj-border-primary) 1px solid;
+  font-size: 0.75rem;
+}
+
 .wrapper > .content {
   display: none;
 }
@@ -21,16 +31,6 @@
   border-left-color: var(--pj-accent-color);
 }
 
-.wrapper[data-selected="-"] > .summary {
-  background: var(--pj-accent-color-light);
-  color: white;
-}
-
-.wrapper[data-selected="-"] > .summary:hover {
-  background: var(--pj-accent-color-light);
-  color: white;
-}
-
 .summary {
   display: flex;
   align-items: center;
@@ -42,14 +42,14 @@
   background: var(--pj-border-primary);
 }
 
-.content {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  padding: 8px 8px 8px 20px;
-  border-left: var(--pj-border-primary) 1px solid;
-  font-size: 0.75rem;
+.wrapper[data-selected="-"] > .summary {
+  background: var(--pj-accent-color-light);
+  color: white;
+}
+
+.wrapper[data-selected="-"] > .summary:hover {
+  background: var(--pj-accent-color-light);
+  color: white;
 }
 
 .buttonSmall {
@@ -122,10 +122,11 @@
   overflow: hidden;
   white-space: nowrap;
 }
-.label:active{
+
+.label:active {
   cursor: grabbing;
 }
 
-.draggedOver{
+.draggedOver {
   background: rgb(203 110 53 / 50%);
 }

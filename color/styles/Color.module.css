@@ -58,10 +58,6 @@
   gap: 4px;
 }
 
-.input{
-
-}
-
 .input[type="color"]::-webkit-color-swatch-wrapper {
   padding: 8px;
 }
