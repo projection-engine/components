@@ -1,14 +1,14 @@
 import styles from "./styles/Branch.module.css"
 import PropTypes from "prop-types"
-import React, {useContext, useEffect, useMemo, useRef, useState} from "react"
+import React, {useEffect, useMemo, useRef, useState} from "react"
 import {Icon} from "@f-ui/core"
-import EntityProvider from "./EntityProvider"
 import COMPONENTS from "../../project/engine/templates/COMPONENTS"
 import Packager from "../../project/engine/Packager"
 
+const LEFT_BUTTON = 0
 export default function Branch(props) {
-    const {depth, node, open, setOpen} = props
-    const {selected, setSelected, lockedEntity, setLockedEntity} = useContext(EntityProvider)
+    const {depth, node, open, setOpen, selected, setSelected, lockedEntity, setLockedEntity} = props
+
     const ref = useRef()
     const [active, setActive] = useState(true)
     const nodeRef = useMemo(() => {
@@ -47,6 +47,7 @@ export default function Branch(props) {
         return null
     return (
         <div
+            data-node={nodeRef.id}
             id={nodeRef.id}
             ref={ref}
             className={styles.wrapper}
@@ -55,7 +56,8 @@ export default function Branch(props) {
             data-parentopen={""}
             style={{paddingLeft: depth * 16 + "px"}}
             onMouseDown={e => {
-                if (e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
+                console.log(e.button)
+                if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
                     setSelected(nodeRef.id, e.ctrlKey)
             }}
             onDragOver={e => {
@@ -131,6 +133,11 @@ export default function Branch(props) {
 }
 
 Branch.propTypes = {
+    selected: PropTypes.array,
+    setSelected: PropTypes.func,
+    lockedEntity: PropTypes.string,
+    setLockedEntity: PropTypes.func,
+
     open: PropTypes.object,
     setOpen: PropTypes.func,
     depth: PropTypes.number,
