@@ -78,7 +78,7 @@ Frame.propTypes = {
         options: PropTypes.arrayOf(PropTypes.shape({
             label: PropTypes.string,
             onClick: PropTypes.func,
-            icon: PropTypes.string
+            icon: PropTypes.node
         }))
     }))
 }

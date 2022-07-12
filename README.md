@@ -37,7 +37,7 @@
 > Tree view component with drag/drop support
 
 - viewport
-> Editor viewport for editor
+> EditorCamera viewport for editor
 
 
 ## Viewport workflow
