@@ -6,35 +6,28 @@ import Search from "../search/Search"
 
 const MAX_OPTIONS = 10
 export default function Options(props) {
-    const {options, close, selected, setPadding, trigger, event} = props
+    const {options, close, selected, setPadding, trigger, event, callback} = props
     const [search, setSearch] = useState("")
     const optionsToRender = useMemo(() => {
-        if(selected && options)
-            return options.filter(o =>(!o.requiredTrigger || o.requiredTrigger === trigger )&& (!search || o.label && o.label.toLowerCase().includes(search.toLowerCase())))
-        return []
+        return options.filter(o => (!o.requiredTrigger || o.requiredTrigger === trigger) && (!search || o.label && o.label.toLowerCase().includes(search.toLowerCase())))
     }, [options, search, selected])
 
     useEffect(() => {
-        if(selected) {
-            close()
-            setSearch("")
-        }
+        setSearch("")
     }, [options])
     useEffect(() => {
-        if(selected) {
-            if (optionsToRender.length > MAX_OPTIONS || search)
-                setPadding("45px")
-            else
-                setPadding("0px")
-        }
 
+        if (optionsToRender.length > MAX_OPTIONS || search)
+            setPadding("45px")
+        else
+            setPadding("0px")
     }, [optionsToRender])
 
 
     return (
         <>
-            <div style={{overflowY: "auto", maxHeight: "265px"}}>
-                {optionsToRender.map((o, i) => 
+            <div style={{overflowY: "auto", maxHeight: "265px"}} ref={callback}>
+                {optionsToRender.map((o, i) =>
                     <React.Fragment key={"viewport-option-" + i}>
                         {o.divider ?
                             <div className={styles.divider}/>
@@ -58,11 +51,17 @@ export default function Options(props) {
                 )}
             </div>
             {optionsToRender.length > MAX_OPTIONS || search ? (
-                <div style={{padding: "4px", position: "absolute", bottom: "0", width: "100%", borderTop: "var(--pj-border-primary) 1px solid"}}>
+                <div style={{
+                    padding: "4px",
+                    position: "absolute",
+                    bottom: "0",
+                    width: "100%",
+                    borderTop: "var(--pj-border-primary) 1px solid"
+                }}>
                     <Search
                         setSearchString={e => {
                             setSearch(e)
-                        }} 
+                        }}
                         searchString={search}
                     />
                 </div>
@@ -72,6 +71,7 @@ export default function Options(props) {
 }
 
 Options.propTypes = {
+    callback: PropTypes.func,
     options: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.string,
         icon: PropTypes.string,
@@ -86,19 +86,20 @@ Options.propTypes = {
     setPadding: PropTypes.func,
     event: PropTypes.object
 }
-function Shortcut(props){
+
+function Shortcut(props) {
     const shortcut = useMemo(() => {
-        return props.shortcut?.map((s, i) => s + (i < props.shortcut.length -1 ? " + " : ""))
+        return props.shortcut?.map((s, i) => s + (i < props.shortcut.length - 1 ? " + " : ""))
     }, [props.shortcut])
-    if(!shortcut)
+    if (!shortcut)
         return null
-    return(
+    return (
         <div className={styles.shortcut}>
             {shortcut}
         </div>
     )
 }
 
-Shortcut.propTypes={
+Shortcut.propTypes = {
     shortcut: PropTypes.array
 }

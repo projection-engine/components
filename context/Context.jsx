@@ -10,13 +10,16 @@ function checkMouseOffset(startPosition, event) {
 function setPlacementOffset(target, event) {
     const bBox = target.getBoundingClientRect()
     if (event.clientX + bBox.width > document.body.offsetWidth)
-        target.style.left = (event.clientX - bBox.width / 2) + "px"
+        target.style.left = ((event.clientX - 8) - bBox.width / 2) + "px"
     else
-        target.style.left = event.clientX + "px"
+        target.style.left = (event.clientX - 8)+ "px"
+
+
+    console.log(event.clientY + bBox.height, document.body.offsetHeight)
     if (event.clientY + bBox.height > document.body.offsetHeight) {
-        target.style.top = event.clientY - bBox.height + "px"
+        target.style.top = (event.clientY + 8) - bBox.height + "px"
     } else
-        target.style.top = event.clientY + "px"
+        target.style.top = (event.clientY - 8) + "px"
     target.style.zIndex = "999"
 }
 
@@ -24,12 +27,13 @@ const RIGHT_BUTTON = 2
 export default function Context() {
     const contextRef = useRef()
     const root = useRef()
-    let startPosition = {}, locked = false
+    let startPosition = undefined, locked = false
     const handleContext = (event) => {
-        if (event.button === RIGHT_BUTTON && !locked) {
+        if (startPosition && !locked && window.contextMenu?.focused) {
             event.preventDefault()
             if (!root.current)
                 root.current = DOM.createRoot(contextRef.current)
+
             if (checkMouseOffset(startPosition, event)) {
                 const targets = document.elementsFromPoint(event.clientX, event.clientY)
                     .filter(t => {
@@ -39,7 +43,7 @@ export default function Context() {
                             const attr = attributes[i]
                             if (!attr.nodeName.includes("data-"))
                                 continue
-                            const has = window.contextMenu.triggers.find(f => attr.nodeName === f)
+                            const has = window.contextMenu.focused.triggers.find(f => attr.nodeName === f)
                             if (has)
                                 hasAttribute = hasAttribute || has
 
@@ -51,13 +55,15 @@ export default function Context() {
                 if (targets[0]) {
                     let trigger
                     Array.from(targets[0].attributes).forEach((attr) => {
-                        const has = window.contextMenu.triggers.find((f) => attr.nodeName === f)
+                        const has = window.contextMenu.focused.triggers.find((f) => attr.nodeName === f)
                         if (has)
                             trigger = has
                     })
+
+                    contextRef.current.focus()
                     root.current.render(
                         <Options
-                            options={window.contextMenu.options}
+                            options={window.contextMenu.focused.options}
                             selected={targets[0]}
                             trigger={trigger}
                             event={event}
@@ -67,19 +73,30 @@ export default function Context() {
                             close={() => {
                                 contextRef.current.style.zIndex = "-1"
                             }}
+                            callback={() => setPlacementOffset(contextRef.current, event)}
                         />
                     )
-                    setPlacementOffset(contextRef.current, event)
+
                 }
             }
-            startPosition = {x: 0, y: 0}
+            startPosition = undefined
         }
     }
 
     const handleMouseDown = (event) => {
-        startPosition = {x: event.clientX, y: event.clientY}
-        if (contextRef.current && !document.elementsFromPoint(event.clientX, event.clientY).includes(contextRef.current))
-            contextRef.current.style.zIndex = "-1"
+        if (event.button === RIGHT_BUTTON) {
+            const elements = document.elementsFromPoint(event.clientX, event.clientY)
+            let focused
+            for (let i = 0; i < elements.length; i++) {
+                if (!window.contextMenu.targets[elements[i].id])
+                    continue
+                focused = window.contextMenu.targets[elements[i].id]
+            }
+            if (focused) {
+                startPosition = {x: event.clientX, y: event.clientY}
+                window.contextMenu.focused = focused
+            }
+        }
     }
 
     useEffect(() => {
@@ -96,6 +113,15 @@ export default function Context() {
     }, [])
 
     return (
-        <div className={styles.wrapper} ref={contextRef}/>
+        <div
+            className={styles.wrapper}
+            onBlur={() => {
+                window.contextMenu.focused = undefined
+                contextRef.current.style.zIndex = "-1"
+                startPosition = undefined
+            }}
+            tabIndex={0}
+            ref={contextRef}
+        />
     )
 }
