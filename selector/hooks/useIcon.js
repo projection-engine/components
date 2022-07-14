@@ -1,6 +1,6 @@
 import React, {useMemo} from "react"
 import Preview from "../../preview/Preview"
-import FileSystem from "../../../project/utils/files/FileSystem"
+import FileSystem from "../../../project/libs/FileSystem"
 import {Icon} from "@f-ui/core"
 
 export default function useIcon({type, data}) {

@@ -3,7 +3,7 @@ import styles from "./styles/Selector.module.css"
 import {Dropdown, DropdownOptions} from "@f-ui/core"
 import useIcon from "./hooks/useIcon"
 import PropTypes from "prop-types"
-import QuickAccessProvider from "../../project/providers/QuickAccessProvider"
+import QuickAccessProvider from "../../project/context/QuickAccessProvider"
 import EN from "../../static/locale/EN"
 import Options from "./components/Options"
 
