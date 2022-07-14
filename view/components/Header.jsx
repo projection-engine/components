@@ -39,7 +39,7 @@ export default function Header(props){
                     />
                     <DropdownOption
                         option={{
-                            label: "Component EditorCamera",
+                            label: "Component Editor",
                             icon: <Icon styles={{fontSize: "1rem"}}>category</Icon>,
                             onClick: () => switchView(VIEWS.COMPONENT)
                         }}
@@ -53,7 +53,7 @@ export default function Header(props){
                     />
                     <DropdownOption
                         option={{
-                            label: "Shader EditorCamera",
+                            label: "Shader Editor",
                             icon: <Icon styles={{fontSize: "1rem"}}>texture</Icon>,
                             onClick: () => switchView(VIEWS.BLUEPRINT)
                         }}

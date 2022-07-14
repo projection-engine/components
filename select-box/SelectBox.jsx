@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import React, {useEffect, useMemo, useRef} from "react"
 import styles from "./styles/SelectBox.module.css"
 
-const MIN_BOX_SIZE = 50
+const MIN_BOX_SIZE = 50, LEFT_BUTTON = 0
 export default function SelectBox(props) {
     const ref = useRef()
     let initiated = false,
@@ -13,7 +13,7 @@ export default function SelectBox(props) {
     }, [props.nodes])
 
     const handleMouseMove = (event) => {
-        if(!document.pointerLockElement) {
+        if (!document.pointerLockElement) {
             if (ref.current?.parentNode) {
                 const bBox = ref.current.parentNode.getBoundingClientRect()
                 const offset = {
@@ -50,55 +50,59 @@ export default function SelectBox(props) {
 
                 ref.current.style.transform = `translate(${translation.x + "px"}, ${translation.y + "px"})`
             }
-        }else
+        } else
             document.removeEventListener("mousemove", handleMouseMove)
     }
+
+    function checkFocus(target) {
+        return (ref.current.parentNode === target || target.id === props.targetElementID) && target.tagName !== "INPUT" && target.tagName !== "BUTTON"
+    }
+
     const handleMouseDown = (event) => {
-        if(event.target.id === props.target || event.target === event.currentTarget) {
-            const ctrl = event.ctrlKey
-            if (event.button === 0 && !document.elementsFromPoint(event.clientX, event.clientY).find(n => (ids.indexOf(n.id) > -1) || n.tagName === "INPUT" || n.tagName === "BUTTON")) {
-                if (!ctrl)
-                    props.setSelected([])
-                startingPosition = {x: event.clientX, y: event.clientY}
-                document.addEventListener("mousemove", handleMouseMove)
-                document.addEventListener("mouseup", ({clientY, clientX}) => {
-                    initiated = false
-                    startingPosition = {x: 0, y: 0}
-                    const start = {x: event.clientX, y: event.clientY}, end = {x: clientX, y: clientY}
-                    const deltaX = Math.abs(start.x - end.x)
-                    const deltaY = Math.abs(start.y - end.y)
-                    if (ref.current && deltaX > MIN_BOX_SIZE && deltaY > MIN_BOX_SIZE) {
-                        const bBox = ref.current?.getBoundingClientRect()
-                        let currentBox = {
-                            x1: bBox.x,
-                            y1: bBox.y,
-                            x2: bBox.x + bBox.width,
-                            y2: bBox.y + bBox.height
-                        }
-                        let toSelect = []
-                        for (const index in props.nodes) {
-                            const node = props.nodes[index]
-                            const elBox = document.getElementById(node.id)?.getBoundingClientRect()
-                            if (elBox && elBox.x > currentBox.x1 && elBox.y > currentBox.y1 && elBox.x < currentBox.x2 && elBox.y < currentBox.y2) {
-                                toSelect.push(node.id)
-                            }
-                        }
-                        if (!ctrl)
-                            props.setSelected(toSelect, start, end)
-                        else
-                            props.setSelected([...props.selected, ...toSelect], start, end)
+        const target = event.target
+
+        if (event.button === LEFT_BUTTON && checkFocus(target)) {
+            if (!event.ctrlKey)
+                props.setSelected([])
+            startingPosition = {x: event.clientX, y: event.clientY}
+            document.addEventListener("mousemove", handleMouseMove)
+            document.addEventListener("mouseup", ({clientY, clientX}) => {
+                initiated = false
+                startingPosition = {x: 0, y: 0}
+                const start = {x: event.clientX, y: event.clientY}, end = {x: clientX, y: clientY}
+                const deltaX = Math.abs(start.x - end.x)
+                const deltaY = Math.abs(start.y - end.y)
+                if (ref.current && deltaX > MIN_BOX_SIZE && deltaY > MIN_BOX_SIZE) {
+                    const bBox = ref.current?.getBoundingClientRect()
+                    let currentBox = {
+                        x1: bBox.x,
+                        y1: bBox.y,
+                        x2: bBox.x + bBox.width,
+                        y2: bBox.y + bBox.height
                     }
-                    ref.current.style.height = "0px"
-                    ref.current.style.width = "0px"
-                    ref.current.style.zIndex = -1
-                    document.removeEventListener("mousemove", handleMouseMove)
-                }, {once: true})
-            }
+                    let toSelect = []
+                    for (const index in props.nodes) {
+                        const node = props.nodes[index]
+                        const elBox = document.getElementById(node.id)?.getBoundingClientRect()
+                        if (elBox && elBox.x > currentBox.x1 && elBox.y > currentBox.y1 && elBox.x < currentBox.x2 && elBox.y < currentBox.y2) {
+                            toSelect.push(node.id)
+                        }
+                    }
+                    if (!event.ctrlKey)
+                        props.setSelected(toSelect, start, end)
+                    else
+                        props.setSelected([...props.selected, ...toSelect], start, end)
+                }
+                ref.current.style.height = "0px"
+                ref.current.style.width = "0px"
+                ref.current.style.zIndex = -1
+                document.removeEventListener("mousemove", handleMouseMove)
+            }, {once: true})
         }
     }
 
     useEffect(() => {
-        if(!props.disabled)
+        if (!props.disabled)
             ref.current?.parentNode.addEventListener("mousedown", handleMouseDown)
         return () => ref.current?.parentNode.removeEventListener("mousedown", handleMouseDown)
     }, [props.nodes, ids, props.selected, props.disabled])
@@ -109,9 +113,9 @@ export default function SelectBox(props) {
     )
 }
 SelectBox.propTypes = {
+    targetElementID: PropTypes.string,
     disabled: PropTypes.bool,
-    target: PropTypes.string,
     setSelected: PropTypes.func.isRequired,
     selected: PropTypes.arrayOf(PropTypes.string).isRequired,
-    nodes: PropTypes.arrayOf(PropTypes.shape({id: PropTypes.any})).isRequired
+    nodes: PropTypes.arrayOf(PropTypes.object).isRequired
 }

@@ -115,10 +115,12 @@ export default function Context() {
     return (
         <div
             className={styles.wrapper}
-            onBlur={() => {
-                window.contextMenu.focused = undefined
-                contextRef.current.style.zIndex = "-1"
-                startPosition = undefined
+            onBlur={e => {
+                if(!e.currentTarget.contains(e.nativeEvent.relatedTarget)) {
+                    window.contextMenu.focused = undefined
+                    contextRef.current.style.zIndex = "-1"
+                    startPosition = undefined
+                }
             }}
             tabIndex={0}
             ref={contextRef}
