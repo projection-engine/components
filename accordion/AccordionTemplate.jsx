@@ -1,4 +1,4 @@
-import styles from "./styles/Styles.module.css"
+import styles from "./styles/Accordion.module.css"
 import PropTypes from "prop-types"
 import {Accordion, AccordionSummary} from "@f-ui/core"
 import React from "react"
