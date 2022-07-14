@@ -23,7 +23,7 @@ export default function Search(props) {
 
     return (
         <div className={styles.wrapper} style={{width: props.width, padding: props.noPadding ? "0" : undefined}}>
-            {props.noIcon ? null : <Icon styles={{fontSize: "1rem"}}>search</Icon>}
+            {props.noIcon ? null : <Icon styles={{minWidth: "23px", minHeight: "23px", fontSize: "1rem"}}>search</Icon>}
             <input
                 ref={ref}
                 placeholder={props.noPlaceHolder ? null : EN.COMPONENTS.SEARCH.SEARCH}
