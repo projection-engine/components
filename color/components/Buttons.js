@@ -14,8 +14,8 @@ export default function Buttons(props) {
                 className={styles.button}
                 variant={"filled"}
                 onClick={() => {
-                    ctx.setOpen(false)
                     submit(`rgb(${value.r},${value.g},${value.b})`, [value.r, value.g, value.b])
+                    ctx.setOpen(false)
                 }}>
                 {EN.COMPONENTS.COLOR_PICKER.ACCEPT}
             </Button>

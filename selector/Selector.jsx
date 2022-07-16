@@ -38,10 +38,10 @@ export default function Selector(props) {
             hideArrow={true}
             modalClassName={styles.modal}
             className={styles.button}
-            styles={{height: "100%"}}
+            styles={{maxHeight: props.size === "small" ? "25px" : "43px", minHeight:  props.size === "small" ? "unset" : "43px"}}
         >
             <div className={styles.wrapper}>
-                {icon}
+                {props.size !== "small" ? icon : undefined}
                 <div className={styles.overflow} style={{width: "100%", textAlign: "left"}}>
                     {state.name}
                 </div>
@@ -68,6 +68,7 @@ export default function Selector(props) {
 }
 
 Selector.propTypes = {
+    size: PropTypes.oneOf(["small", "default"]),
     autoClose: PropTypes.bool,
     type: PropTypes.oneOf(["image", "mesh", "material", "script"]),
     handleChange: PropTypes.func,

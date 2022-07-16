@@ -28,9 +28,12 @@ export default function Range(props) {
         else if (currentValue < props.minValue && props.minValue !== undefined)
             currentValue = props.minValue
 
-        if(!props.hideValue)
-            ref.current.innerText = currentValue.toFixed(props.precision ? props.precision : 1)
-        if(props.handleChange)
+        if (!props.hideValue) {
+            const v = currentValue.toFixed(props.precision ? props.precision : 1)
+            ref.current.innerText = v
+            inputRef.current.value = v
+        }
+        if (props.handleChange)
             props.handleChange(currentValue)
     }
 
@@ -46,7 +49,7 @@ export default function Range(props) {
                 if (props.minValue !== undefined && finalValue < props.minValue)
                     finalValue = props.minValue
 
-                if(props.handleChange)
+                if (props.handleChange)
                     props.handleChange(finalValue)
             }
 
@@ -60,22 +63,25 @@ export default function Range(props) {
     }, [])
 
     return (
-            
-        <div
 
+        <div
             className={[styles.wrapper, styles.labeledWrapper].join(" ")}
             data-variant={props.variant}
             style={{"--accent-color": props.accentColor}}
         >
             {props.label ? <label title={props.label} style={{minWidth: props.minLabelWidth}}>{props.label}</label> : null}
-            {props.variant === "embedded" && !props.accentColor ? <div className={styles.divider}/> : undefined}
             <input
                 ref={inputRef}
                 disabled={props.disabled}
                 autoFocus={true}
                 onChange={(e) => onChange(e.target)}
                 type={"number"}
-                style={{display: focused ? undefined : "none", cursor: "text", background: "var(--pj-background-quaternary)", borderRadius: !props.accentColor ? "3px" : undefined}}
+                style={{
+                    display: focused ? undefined : "none",
+                    cursor: "text",
+                    background: "var(--pj-background-quaternary)",
+                    borderRadius: !props.accentColor ? "3px" : undefined
+                }}
                 className={styles.draggable}
                 onBlur={() => setFocused(false)}
             />
@@ -104,15 +110,18 @@ export default function Range(props) {
                 }}
                 style={{
                     display: !focused ? undefined : "none",
-                    color: props.disabled ? "#999999" : undefined,
+                    color: props.disabled ? "#999" : undefined,
                     cursor: props.disabled ? "default" : undefined,
                     background: props.disabled ? "var(--background-0)" : undefined,
-                    borderRadius: !props.accentColor  || props.disabled ? "3px" : undefined
+                    borderRadius: !props.accentColor || props.disabled ? "3px" : undefined
                 }}
                 className={styles.draggable}
             >
                 <div className={styles.overflow}>
-                    {props.hideValue ? <Icon styles={{transform: "rotate(90deg)", fontSize: "1.1rem"}}>unfold_more</Icon> : currentValue.toFixed(props.precision ? props.precision : 1)}
+                    {props.hideValue ? <Icon styles={{
+                        transform: "rotate(90deg)",
+                        fontSize: "1.1rem"
+                    }}>unfold_more</Icon> : currentValue.toFixed(props.precision ? props.precision : 1)}
                 </div>
             </div>
         </div>

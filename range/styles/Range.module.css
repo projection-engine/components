@@ -94,7 +94,7 @@
 
 .labeledWrapper[data-variant="embedded"] > label {
   min-width: 15px;
-  text-align: center;
+  text-align: left;
 }
 
 .divider {

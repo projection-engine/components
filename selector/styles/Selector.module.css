@@ -16,8 +16,7 @@
   overflow: hidden;
   transition: 150ms linear;
   cursor: pointer;
-  height: 43px !important;
-  min-height: 43px !important;
+  height: 43px;
 }
 
 .button[data-highlight="true"] {
