@@ -1,7 +1,6 @@
 import PropTypes from "prop-types"
 import {Button, DropdownProvider} from "@f-ui/core"
 import styles from "../styles/Color.module.css"
-import EN from "../../../global/EN"
 import React, {useContext} from "react"
 import useLocalization from "../../../global/useLocalization"
 

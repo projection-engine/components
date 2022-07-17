@@ -1,9 +1,8 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Search.module.css"
 import React, {useEffect, useRef} from "react"
-import EN from "../../global/EN"
 import {Icon} from "@f-ui/core"
-import KEYS from "../../project/engine/templates/KEYS"
+import KEYS from "../../project/engine/data/KEYS"
 import useLocalization from "../../global/useLocalization"
 
 const DELAY = 250

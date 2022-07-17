@@ -1,8 +1,7 @@
 import PropTypes from "prop-types"
-import React, {useEffect, useMemo, useState} from "react"
+import React, {useMemo} from "react"
 import styles from "./styles/ContextMenu.module.css"
 import {Button, Icon} from "@f-ui/core"
-import Search from "../search/Search"
 
 export default function Options(props) {
     const {options, close, selected, trigger, event, callback} = props

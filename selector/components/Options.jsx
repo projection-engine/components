@@ -1,7 +1,6 @@
-import React, {useContext, useDeferredValue, useMemo, useState} from "react"
+import React, {useContext, useMemo, useState} from "react"
 import {Button, DropdownProvider, Icon} from "@f-ui/core"
 import styles from "../styles/Selector.module.css"
-import EN from "../../../global/EN"
 import Search from "../../search/Search"
 import PropTypes from "prop-types"
 import Option from "./Option"
