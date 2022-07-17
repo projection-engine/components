@@ -8,8 +8,8 @@ export default function Range(props) {
     const [focused, setFocused] = useState(false)
     const [dragged, setDragged] = useState(false)
     const ref = useRef(), inputRef = useRef()
-
-    let currentValue = parseFloat(props.value)
+    const checkValue = () => isNaN(parseFloat(props.value))
+    let currentValue = checkValue() ? 0 : parseFloat(props.value)
     const handleMouseMove = (e) => {
         let multiplier = e.movementX
         setDragged(true)
@@ -59,7 +59,7 @@ export default function Range(props) {
     }
 
     useEffect(() => {
-        inputRef.current.value = props.value ? props.value : 0
+        inputRef.current.value = checkValue() ? 0 : parseFloat(props.value)
     }, [])
 
     return (
@@ -69,7 +69,8 @@ export default function Range(props) {
             data-variant={props.variant}
             style={{"--accent-color": props.accentColor}}
         >
-            {props.label ? <label title={props.label} style={{minWidth: props.minLabelWidth}}>{props.label}</label> : null}
+            {props.label ?
+                <label title={props.label} style={{minWidth: props.minLabelWidth}}>{props.label}</label> : null}
             <input
                 ref={inputRef}
                 disabled={props.disabled}
@@ -94,6 +95,7 @@ export default function Range(props) {
                         ref.current?.requestPointerLock()
                 }}
                 onMouseMove={(e) => {
+                    currentValue = parseFloat(props.value)
                     if (document.pointerLockElement)
                         handleMouseMove(e)
                 }}
