@@ -2,6 +2,7 @@ import useIcon from "../hooks/useIcon"
 import styles from "../styles/Selector.module.css"
 import PropTypes from "prop-types"
 import React from "react"
+import {ToolTip} from "@f-ui/core"
 
 export default function Option(props){
 
@@ -22,6 +23,7 @@ export default function Option(props){
             <div className={styles.overflow}>
                 {props.data.name}
             </div>
+            <ToolTip content={props.data.name}/>
         </button>
     )
 }
