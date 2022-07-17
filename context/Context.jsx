@@ -67,9 +67,6 @@ export default function Context() {
                             selected={targets[0]}
                             trigger={trigger}
                             event={event}
-                            setPadding={p => {
-                                contextRef.current.style.paddingBottom = p
-                            }}
                             close={() => {
                                 contextRef.current.style.zIndex = "-1"
                             }}

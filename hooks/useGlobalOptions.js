@@ -13,7 +13,8 @@ export default function useGlobalOptions() {
     }, [])
 
     return {
-        dark, setDark: (d) => {
+        dark,
+        setDark: (d) => {
             localStorage.setItem("dark", `${d ? 0 : 1}`)
             setDark(d)
 

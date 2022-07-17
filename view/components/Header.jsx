@@ -3,9 +3,11 @@ import styles from "../styles/Views.module.css"
 import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import React from "react"
 import VIEWS from "../VIEWS"
+import useLocalization from "../../../global/useLocalization"
 
 export default function Header(props){
     const {icon, title, children, orientation, hidden, switchView} = props
+    const translate = useLocalization("COMPONENTS", "VIEWS")
     return (
         <div className={hidden ? styles.headerHidden : styles.header}>
             <Dropdown
@@ -24,7 +26,7 @@ export default function Header(props){
                 <DropdownOptions>
                     <DropdownOption
                         option={{
-                            label: "Close",
+                            label: translate("CLOSE"),
                             icon: <Icon styles={{fontSize: "1rem"}}>close</Icon>,
                             onClick: () => switchView(undefined)
                         }}
@@ -32,35 +34,35 @@ export default function Header(props){
                     <div className={styles.divider}/>
                     <DropdownOption
                         option={{
-                            label: "Hierarchy",
+                            label: translate("HIERARCHY"),
                             icon: <Icon styles={{fontSize: "1rem"}}>account_tree</Icon>,
                             onClick: () => switchView(VIEWS.HIERARCHY)
                         }}
                     />
                     <DropdownOption
                         option={{
-                            label: "Component Editor",
+                            label: translate("COMP_EDITOR"),
                             icon: <Icon styles={{fontSize: "1rem"}}>category</Icon>,
                             onClick: () => switchView(VIEWS.COMPONENT)
                         }}
                     />
                     <DropdownOption
                         option={{
-                            label: "Content Browser",
+                            label: translate("CONTENT_BROWSER"),
                             icon: <Icon styles={{fontSize: "1rem"}}>folder</Icon>,
                             onClick: () => switchView(VIEWS.FILES)
                         }}
                     />
                     <DropdownOption
                         option={{
-                            label: "Shader Editor",
+                            label: translate("SHADER_EDITOR"),
                             icon: <Icon styles={{fontSize: "1rem"}}>texture</Icon>,
                             onClick: () => switchView(VIEWS.BLUEPRINT)
                         }}
                     />
                     <DropdownOption
                         option={{
-                            label: "Console",
+                            label: translate("CONSOLE"),
                             icon: <Icon styles={{fontSize: "1rem"}}>terminal</Icon>,
                             onClick: () => switchView(VIEWS.CONSOLE)
                         }}

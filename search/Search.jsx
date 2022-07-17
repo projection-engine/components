@@ -1,9 +1,10 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Search.module.css"
 import React, {useEffect, useRef} from "react"
-import EN from "../../static/locale/EN"
+import EN from "../../global/EN"
 import {Icon} from "@f-ui/core"
 import KEYS from "../../project/engine/templates/KEYS"
+import useLocalization from "../../global/useLocalization"
 
 const DELAY = 250
 export default function Search(props) {
@@ -21,12 +22,13 @@ export default function Search(props) {
             ref.current.value=props.searchString
     }, [props.searchString])
 
+    const translate = useLocalization("COMPONENTS", "SEARCH")
     return (
         <div className={styles.wrapper} style={{width: props.width, padding: props.noPadding ? "0" : undefined}}>
             {props.noIcon ? null : <Icon styles={{minWidth: "23px", minHeight: "23px", fontSize: "1rem"}}>search</Icon>}
             <input
                 ref={ref}
-                placeholder={props.noPlaceHolder ? null : EN.COMPONENTS.SEARCH.SEARCH}
+                placeholder={props.noPlaceHolder ? null : translate("SEARCH")}
                 className={styles.input}
                 onChange={e => {
                     if(!props.noAutoSubmit)

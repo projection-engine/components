@@ -4,12 +4,12 @@ import {Dropdown, DropdownOptions} from "@f-ui/core"
 import useIcon from "./hooks/useIcon"
 import PropTypes from "prop-types"
 import QuickAccessProvider from "../../project/context/QuickAccessProvider"
-import EN from "../../static/locale/EN"
 import Options from "./components/Options"
+import useLocalization from "../../global/useLocalization"
 
 export default function Selector(props) {
     const [state, setState] = useState({})
-
+    const translate = useLocalization("COMPONENTS", "SELECTOR")
     const quickAccess = useContext(QuickAccessProvider)
 
     const getType = () => {
@@ -26,9 +26,9 @@ export default function Selector(props) {
             return []
         }
     }
-   
+
     useEffect(() => {
-        let name = EN.COMPONENTS.SELECTOR.EMPTY,
+        let name = translate("EMPTY"),
             data = (typeof props.selected === "object" && Object.keys(props.selected).length > 0) ? props.selected : quickAccess[props.type + "s"]?.find(e => e.registryID === props.selected)
         setState(data ? data : {name})
     }, [props.selected])

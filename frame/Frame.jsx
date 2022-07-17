@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Frame.module.css"
-import logo from "../../static/icons/logo.png"
+import logo from "../../project/static/icons/logo.png"
 import React from "react"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import Actions from "./components/Actions"

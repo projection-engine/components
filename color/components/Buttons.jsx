@@ -1,12 +1,15 @@
 import PropTypes from "prop-types"
 import {Button, DropdownProvider} from "@f-ui/core"
 import styles from "../styles/Color.module.css"
-import EN from "../../../static/locale/EN"
+import EN from "../../../global/EN"
 import React, {useContext} from "react"
+import useLocalization from "../../../global/useLocalization"
 
 export default function Buttons(props) {
     const {submit, value} = props
     const ctx = useContext(DropdownProvider)
+
+    const translate = useLocalization("COMPONENTS", "COLOR_PICKER")
     return (
 
         <div className={styles.buttons}>
@@ -17,7 +20,7 @@ export default function Buttons(props) {
                     submit(`rgb(${value.r},${value.g},${value.b})`, [value.r, value.g, value.b])
                     ctx.setOpen(false)
                 }}>
-                {EN.COMPONENTS.COLOR_PICKER.ACCEPT}
+                {translate("ACCEPT")}
             </Button>
             <Button 
                 className={styles.button}
@@ -26,7 +29,7 @@ export default function Buttons(props) {
                     ctx.setOpen(false)
                 }}
             >
-                {EN.COMPONENTS.COLOR_PICKER.CANCEL}
+                {translate("CANCEL")}
             </Button>
         </div>
 
