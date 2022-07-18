@@ -12,11 +12,11 @@ export default function useIcon({type, data}) {
         case "mesh":
             return(
                 <Preview
-                    iconStyles={{fontSize: "2rem",}}
+                    iconStyles={{fontSize: "1.6rem",}}
                     styles={{
                         objectFit: "cover",
-                        width: "35px",
-                        height: "35px",
+                        width: "30px",
+                        height: "30px",
                         borderRadius: "5px"
                     }}
                     path={previewPath}
@@ -29,8 +29,8 @@ export default function useIcon({type, data}) {
                     iconStyles={{fontSize: "1.6rem",}}
                     styles={{
                         objectFit: "cover",
-                        width: "35px",
-                        height: "35px",
+                        width: "30px",
+                        height: "30px",
                         borderRadius: "5px"
                     }}
                     path={previewPath}
@@ -40,11 +40,11 @@ export default function useIcon({type, data}) {
         case "material":
             return(
                 <Preview
-                    iconStyles={{fontSize: "2rem",}}
+                    iconStyles={{fontSize: "1.6rem",}}
                     styles={{
                         objectFit: "cover",
-                        width: "35px",
-                        height: "35px",
+                        width: "30px",
+                        height: "30px",
                         borderRadius: "5px"
                     }}
                     path={previewPath}
@@ -52,7 +52,7 @@ export default function useIcon({type, data}) {
                 />
             )
         case "script":
-            return <Icon styles={{fontSize: "2rem", color: "var(--pj-color-secondary)"}}>javascript</Icon>
+            return <Icon styles={{fontSize: "1.6rem", color: "var(--pj-color-secondary)"}}>javascript</Icon>
         default:
             return
         }

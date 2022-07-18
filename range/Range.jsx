@@ -6,35 +6,35 @@ import {Icon} from "@f-ui/core"
 const DELAY = 200
 export default function Range(props) {
     const [focused, setFocused] = useState(false)
-    const [dragged, setDragged] = useState(false)
+    const dragged = useRef(false)
     const ref = useRef(), inputRef = useRef()
-    const checkValue = () => isNaN(parseFloat(props.value))
-    let currentValue = checkValue() ? 0 : parseFloat(props.value)
+    const currentValue = useRef(0)
     const handleMouseMove = (e) => {
         let multiplier = e.movementX
-        setDragged(true)
+        dragged.current = true
         const increment = props.integer ? 1 : Math.abs((props.incrementPercentage ? props.incrementPercentage : 0.1) * multiplier)
 
-        if (e.movementX < 0 && (currentValue <= props.maxValue || !props.maxValue))
-            currentValue = parseFloat((currentValue + increment).toFixed(props.precision ? props.precision : 1))
-        else if (currentValue >= props.minValue || !props.minValue)
-            currentValue = parseFloat((currentValue - increment).toFixed(props.precision ? props.precision : 1))
+        if (e.movementX < 0 && (currentValue.current <= props.maxValue || !props.maxValue))
+            currentValue.current = parseFloat((currentValue.current + increment).toFixed(props.precision ? props.precision : 1))
+        else if (currentValue.current >= props.minValue || !props.minValue)
+            currentValue.current = parseFloat((currentValue.current - increment).toFixed(props.precision ? props.precision : 1))
 
         if (props.integer)
-            currentValue = Math.round(parseInt(currentValue))
+            currentValue.current = Math.round(parseInt(currentValue.current))
 
-        if (currentValue > props.maxValue && props.maxValue !== undefined)
-            currentValue = props.maxValue
-        else if (currentValue < props.minValue && props.minValue !== undefined)
-            currentValue = props.minValue
+        if (currentValue.current > props.maxValue && props.maxValue !== undefined)
+            currentValue.current = props.maxValue
+        else if (currentValue.current < props.minValue && props.minValue !== undefined)
+            currentValue.current = props.minValue
 
-        if (!props.hideValue) {
-            const v = currentValue.toFixed(props.precision ? props.precision : 1)
-            ref.current.innerText = v
-            inputRef.current.value = v
-        }
+
+        const v = currentValue.current.toFixed(props.precision ? props.precision : 1)
+
+        ref.current.innerText = v
+        inputRef.current.value = v
+
         if (props.handleChange)
-            props.handleChange(currentValue)
+            props.handleChange(currentValue.current)
     }
 
     let timeout
@@ -59,8 +59,14 @@ export default function Range(props) {
     }
 
     useEffect(() => {
-        inputRef.current.value = checkValue() ? 0 : parseFloat(props.value)
-    }, [])
+        if (!dragged.current) {
+            const parsedValue = isNaN(parseFloat(props.value)) ? 0 : parseFloat(parseFloat(props.value).toFixed(props.precision ? props.precision : 1))
+            inputRef.current.value = parsedValue
+            ref.current.innerText = parsedValue
+            currentValue.current = parsedValue
+        }
+    }, [props.value])
+
 
     return (
 
@@ -95,19 +101,18 @@ export default function Range(props) {
                         ref.current?.requestPointerLock()
                 }}
                 onMouseMove={(e) => {
-                    currentValue = parseFloat(props.value)
                     if (document.pointerLockElement)
                         handleMouseMove(e)
                 }}
                 onMouseUp={() => {
                     document.exitPointerLock()
                     if (props.onFinish !== undefined)
-                        props.onFinish(currentValue)
+                        props.onFinish(currentValue.current)
                     if (!props.disabled) {
-                        if (!dragged)
+                        if (!dragged.current)
                             setFocused(true)
                         else
-                            setDragged(false)
+                            dragged.current = false
                     }
                 }}
                 style={{
@@ -118,14 +123,7 @@ export default function Range(props) {
                     borderRadius: !props.accentColor || props.disabled ? "3px" : undefined
                 }}
                 className={styles.draggable}
-            >
-                <div className={styles.overflow}>
-                    {props.hideValue ? <Icon styles={{
-                        transform: "rotate(90deg)",
-                        fontSize: "1.1rem"
-                    }}>unfold_more</Icon> : currentValue.toFixed(props.precision ? props.precision : 1)}
-                </div>
-            </div>
+            />
         </div>
     )
 }
@@ -140,7 +138,6 @@ Range.propTypes = {
     accentColor: PropTypes.string,
     disabled: PropTypes.bool,
     incrementPercentage: PropTypes.number,
-    hideValue: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     handleChange: PropTypes.func,
     integer: PropTypes.bool
