@@ -119,7 +119,6 @@ export default function Views(props){
                     }}
                     onResizeEnd={() => {
                         const bBox = ref.current.getBoundingClientRect()
-                        console.log(bBox, orientation)
                         if (bBox[orientation] <= 30)
                             setHidden(true)
                     }}

@@ -28,7 +28,6 @@ export default function Selector(props) {
     }
 
     useEffect(() => {
-        console.log(props.selected)
         const rID = (props.selected?.registryID ? props.selected?.registryID : props.selected)
         let name = translate("EMPTY"),
             data =  quickAccess[props.type + "s"]?.find(e => e.registryID === rID)

@@ -14,8 +14,6 @@ function setPlacementOffset(target, event) {
     else
         target.style.left = (event.clientX - 8)+ "px"
 
-
-    console.log(event.clientY + bBox.height, document.body.offsetHeight)
     if (event.clientY + bBox.height > document.body.offsetHeight) {
         target.style.top = (event.clientY + 8) - bBox.height + "px"
     } else

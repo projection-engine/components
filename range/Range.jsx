@@ -1,7 +1,6 @@
 import styles from "./styles/Range.module.css"
 import PropTypes from "prop-types"
 import React, {useEffect, useRef, useState} from "react"
-import {Icon} from "@f-ui/core"
 
 const DELAY = 200
 export default function Range(props) {
