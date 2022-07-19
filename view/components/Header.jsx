@@ -1,28 +1,24 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Views.module.css"
-import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
+import {Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
 import React from "react"
 import VIEWS from "../VIEWS"
 import useLocalization from "../../../global/useLocalization"
 
-export default function Header(props){
+export default function Header(props) {
     const {icon, title, children, orientation, hidden, switchView} = props
     const translate = useLocalization("COMPONENTS", "VIEWS")
     return (
         <div className={hidden ? styles.headerHidden : styles.header}>
             <Dropdown
                 variant={"outlined"}
-                styles={{  height: orientation === "vertical" && hidden ? "fit-content" : "25px"}}
+                styles={{height: orientation === "vertical" && hidden ? "fit-content" : "25px"}}
                 hideArrow={true}
-
                 className={styles.title}
+
             >
-
-                <div className={styles.label} data-hidden={`${hidden && orientation === "vertical"}`}>
-                    {icon ? <div className={styles.icon}><Icon styles={{fontSize: "1rem"}}>{icon}</Icon></div> : null}
-                    <label>{title}</label>
-                </div>
-
+                <div className={styles.icon}><Icon styles={{fontSize: "1rem"}}>{icon}</Icon></div>
+                <ToolTip content={props.title}/>
                 <DropdownOptions>
                     <DropdownOption
                         option={{
@@ -69,18 +65,16 @@ export default function Header(props){
                     />
                 </DropdownOptions>
             </Dropdown>
-            {!hidden && children  ?
-                <div className={styles.options}>
-                    {children}
-                </div>
+            {!hidden && children ?
+                children
                 :
                 null}
         </div>
     )
 }
-Header.propTypes={
+Header.propTypes = {
     orientation: PropTypes.oneOf(["vertical", "horizontal"]),
-    icon: PropTypes.string,
+    icon: PropTypes.string.isRequired,
     title: PropTypes.string,
     children: PropTypes.node,
     switchView: PropTypes.func.isRequired,
