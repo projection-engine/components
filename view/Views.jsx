@@ -102,7 +102,7 @@ export default function Views(props){
                         setTabs([...tabs, "console"])}
                     style={{
                         left: props.orientation === "vertical" ? tabs.length  === 0 ? props.leftOffset : "10px" : "100%",
-                        top: "100%",
+                        top: "calc(100% - 23px)",
                         transform: props.orientation === "vertical" ?  "translate(-100%, -100%)" : (tabs.length  === 0? "translate(0, -100%)" : "translate(-100%, -100%)")
                     }}
                     className={styles.extendView}
