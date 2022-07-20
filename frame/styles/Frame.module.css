@@ -1,89 +1,109 @@
 .wrapper {
-  display: flex;
-  align-items: center;
-  width: 100vw;
-  height: 35px;
-  user-select: none;
-  overflow: hidden;
-  background: var(--pj-background-secondary);
-  border-bottom: var(--pj-border-primary) 1px solid;
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    height: 35px;
+    user-select: none;
+    overflow: hidden;
+    background: var(--pj-background-secondary);
+    border-bottom: var(--pj-border-primary) 1px solid;
 }
 
 .draggable {
-  width: 100%;
-  height: 100%;
-  cursor: grab;
-  user-select: none;
-  -webkit-app-region: drag;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+    user-select: none;
+    -webkit-app-region: drag;
 }
 
 .draggable:active {
-  cursor: grabbing;
+    cursor: grabbing;
 }
 
 .logoWrapper {
-  height: 100%;
-  overflow: hidden;
-  min-width: 54px;
-  max-width: 54px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
+    height: 100%;
+    overflow: hidden;
+    min-width: 54px;
+    max-width: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
 }
 
 .logo {
-  height: 100%;
+    height: 100%;
+}
+
+.logoButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 30px;
+    width: 30px;
+    background: var(--pj-background-tertiary);
+    border-radius: 3px;
+    padding: 4px !important;
+
+    border: var(--pj-border-primary) 1px solid;
 }
 
 .divider {
-  min-width: 1px;
-  background: var(--pj-border-primary);
-  margin: 4px;
-  height: 25px;
+    min-width: 1px;
+    background: var(--pj-border-primary);
+    margin: 4px;
+    height: 25px;
 }
 
 .title {
-  text-align: left;
-  color: var(--pj-color-secondary);
-  font-weight: 550;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  margin-right: 24px;
+    text-align: left;
+    color: var(--pj-color-secondary);
+    font-weight: 550;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    margin-right: 24px;
 }
 
 .dropdown {
-  overflow: visible;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 35px;
-  width: fit-content;
-  padding: 0 !important;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 35px;
+    width: fit-content;
+    padding: 0 !important;
 }
 
 .agreeButton {
-  width: 100%;
-  height: 35px;
+    width: 100%;
+    height: 35px;
 }
 
 .dropdownContent {
-  padding: 4px;
-  background: var(--pj-border-primary) !important;
+    padding: 4px;
+    background: var(--pj-border-primary) !important;
 }
 
 .button {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px !important;
-  width: fit-content;
-  white-space: nowrap;
-  font-size: 0.7rem;
-  font-weight: 550;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px;
+    width: fit-content;
+    white-space: nowrap;
+    font-size: 0.7rem;
+    font-weight: 550;
+    height: 25px;
+    border-radius: 3px;
+
 }
 
-.options{
-  display: flex;
-  height: 100%;
+.options {
+    padding: 0 4px;
+    display: flex;
+    height: 100%;
+    gap: 4px;
+    align-items: center;
 }

@@ -4,7 +4,7 @@ import React, {useId, useMemo, useRef, useState} from "react"
 import ResizableBar from "../resizable/ResizableBar"
 import View from "./components/View"
 
-export default function Views(props){
+export default function Views(props) {
     const {tabs, setTabs} = props
     const id = useId()
 
@@ -13,7 +13,7 @@ export default function Views(props){
 
     const SIZE = useMemo(() => tabs.length, [tabs])
     const orientation = props.orientation === "horizontal" ? "height" : "width"
-    const maxMin= props.orientation === "horizontal" ? "Height" : "Width"
+    const maxMin = props.orientation === "horizontal" ? "Height" : "Width"
     const invOrientation = props.orientation === "horizontal" ? "width" : "height"
     return (
         <>
@@ -23,7 +23,7 @@ export default function Views(props){
                     resetWhen={[hidden]}
                     type={orientation}
                     onResizeStart={() => {
-                        if(hidden)
+                        if (hidden)
                             setHidden(false)
                     }}
                     onResizeEnd={() => {
@@ -33,31 +33,30 @@ export default function Views(props){
                     }}
                 />
             }
-            <div 
-                ref={ref} 
+            <div
+                ref={ref}
                 className={styles.wrapper}
-                data-orientation={props.orientation} 
+                data-orientation={props.orientation}
                 style={{
                     flexDirection: props.orientation === "horizontal" ? "row" : undefined,
                     [orientation]: tabs.length > 0 ? "250px" : "0",
                     ["max" + maxMin]: tabs.length === 0 ? "0px" : (hidden ? "30px" : undefined),
-                    ["min" + maxMin]: tabs.length  === 0 ? "0px" : (hidden ? "30px" : undefined),
+                    ["min" + maxMin]: tabs.length === 0 ? "0px" : (hidden ? "30px" : undefined),
                 }}
             >
                 {tabs.map((view, vI) => (
-                    <React.Fragment key={id + "-view-"+vI} >
+                    <React.Fragment key={id + "-view-" + vI}>
                         <View
-                            hidden={hidden} 
+                            hidden={hidden}
                             instance={view}
-                            styles={{   [orientation]: hidden ? "30px" : "inherit" }}
+                            styles={{[orientation]: hidden ? "30px" : "inherit"}}
                             switchView={(newView) => {
-                                if(!newView) {
+                                if (!newView) {
                                     const copy = [...tabs]
                                     copy[vI] = undefined
 
                                     setTabs(copy.filter(e => e))
-                                }
-                                else if (newView !== view) {
+                                } else if (newView !== view) {
                                     const copy = [...tabs]
                                     copy[vI] = newView
                                     setTabs(copy)
@@ -65,7 +64,7 @@ export default function Views(props){
                             }}
                             orientation={props.orientation}
                         />
-                        {vI < SIZE -1 && SIZE > 1 ? (
+                        {vI < SIZE - 1 && SIZE > 1 ? (
                             <ResizableBar
                                 type={invOrientation}
                                 resetWhen={tabs}
@@ -93,7 +92,7 @@ export default function Views(props){
                             >
 
                             </ResizableBar>
-                        ): null}
+                        ) : null}
                     </React.Fragment>
                 ))}
 
@@ -101,9 +100,9 @@ export default function Views(props){
                     onClick={() =>
                         setTabs([...tabs, "console"])}
                     style={{
-                        left: props.orientation === "vertical" ? tabs.length  === 0 ? props.leftOffset : "10px" : "100%",
-                        top: "calc(100% - 23px)",
-                        transform: props.orientation === "vertical" ?  "translate(-100%, -100%)" : (tabs.length  === 0? "translate(0, -100%)" : "translate(-100%, -100%)")
+                        left: props.orientation === "vertical" ? tabs.length === 0 ? props.leftOffset : "10px" : "100%",
+                        top: props.topOffset ? `calc(100% - ${props.topOffset})` : "100%",
+                        transform: props.orientation === "vertical" ? "translate(-100%, -100%)" : (tabs.length === 0 ? "translate(0, -100%)" : "translate(-100%, -100%)")
                     }}
                     className={styles.extendView}
                 />
@@ -114,7 +113,7 @@ export default function Views(props){
                     resetWhen={[hidden]}
                     type={orientation}
                     onResizeStart={() => {
-                        if(hidden)
+                        if (hidden)
                             setHidden(false)
                     }}
                     onResizeEnd={() => {
@@ -128,12 +127,13 @@ export default function Views(props){
     )
 }
 
-Views.propTypes={
+Views.propTypes = {
     setTabs: PropTypes.func.isRequired,
     tabs: PropTypes.array.isRequired,
 
 
     resizePosition: PropTypes.oneOf(["top", "bottom"]),
+    topOffset: PropTypes.string,
     leftOffset: PropTypes.string,
     orientation: PropTypes.oneOf(["vertical", "horizontal"]),
 }

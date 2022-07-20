@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Frame.module.css"
-import logo from "../../project/static/icons/logo.png"
+import logo from "../../static/logo.png"
 import React from "react"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import Actions from "./components/Actions"
@@ -19,7 +19,7 @@ export default function Frame(props) {
             <div className={styles.options}>
                 {props.logoAction ?
                     <Button
-                        className={styles.dropdown}
+                        className={styles.logoButton}
                         onClick={() => ipcRenderer.send(ROUTES.SWITCH_MAIN_WINDOW)}>
                         {LogoContent}
                     </Button>
@@ -32,7 +32,7 @@ export default function Frame(props) {
                             <div className={styles.divider}/>
                             :
                             o.options ? (
-                                <Dropdown className={styles.button}>
+                                <Dropdown className={styles.button} styles={{paddingRight: "0"}}>
                                     {o.label}
                                     <DropdownOptions>
                                         {o.options.map((oo, j) => (
