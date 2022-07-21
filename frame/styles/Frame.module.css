@@ -107,3 +107,26 @@
     gap: 4px;
     align-items: center;
 }
+.vertDivider{
+    margin-top: 4px;
+    margin-bottom: 4px;
+    width: 100%;
+    max-height: 1px;
+    height: 1px;
+    background: var(--pj-border-primary);
+}
+.iconContainer{
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.optionButton{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2px;
+    height: 25px;
+    padding: 2px 4px !important;
+}

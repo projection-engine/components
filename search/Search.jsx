@@ -23,8 +23,8 @@ export default function Search(props) {
 
     const translate = useLocalization("COMPONENTS", "SEARCH")
     return (
-        <div className={styles.wrapper} style={{width: props.width, padding: props.noPadding ? "0" : undefined}}>
-            {props.noIcon ? null : <Icon styles={{minWidth: "23px", minHeight: "23px", fontSize: "1rem"}}>search</Icon>}
+        <div className={styles.wrapper} style={{width: props.width, height: props.height ? props.height : undefined, padding: props.noPadding ? "0" : undefined}}>
+            {props.noIcon ? null : <Icon styles={{width: "1rem", height: "1rem", fontSize: "1rem"}}>search</Icon>}
             <input
                 ref={ref}
                 placeholder={props.noPlaceHolder ? null : translate("SEARCH")}
@@ -43,6 +43,7 @@ export default function Search(props) {
 }
 
 Search.propTypes = {
+    height: PropTypes.string,
     noAutoSubmit: PropTypes.bool,
     noIcon: PropTypes.bool,
     noPlaceHolder: PropTypes.bool,

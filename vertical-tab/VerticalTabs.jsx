@@ -1,7 +1,7 @@
 import styles from "./VerticalTabs.module.css"
 import React, {useId, useState} from "react"
 import PropTypes from "prop-types"
-import {Button, Icon} from "@f-ui/core"
+import {Button} from "@f-ui/core"
 import ResizableBar from "../resizable/ResizableBar"
 
 export default function VerticalTabs(props){
